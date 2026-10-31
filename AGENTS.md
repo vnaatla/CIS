@@ -20,3 +20,19 @@
   Crystal report screens and the 3 email-notification screens (Outlook) error when used.
 - Login: same `HISMaintenance.dbo.USR` accounts as GENESIS (local dev: DEVADMIN / Gen12345). Successful logins insert a `Tbl_USRTrack` row with SYSName='CIS'.
 - The `.log` files in the source folder are stale form-load logs from the original developers, not from local runs.
+
+## New web app (Cis API + CisUI Angular) — migration plan: C:\Users\Naresh\.devin\plans\plan-95d6e07b7f9f86e9.md
+- Layout: `Cis\` (ASP.NET Core 10 API, `Cis.sln`, `sql\`, `docs\`), `CisUI\` (Angular 22.2.3). Styles/components mirror GENESIS (`trinath18`).
+  Docs: `Cis\docs\architecture.md`, `onboarding.md`, `menu-mapping.md` (generated: `node scripts/menu-mapping.mjs` in CisUI), `screens\<form>.md`.
+- Phase 0 (foundation) done 2026-10-31: login/logout/change password with desktop parity, layout with the full CIS menu, shared components,
+  report engine, lookups. Phases 1–11 = screens (status per item in `menu-mapping.md` / `CisUI\src\app\layout\menu.ts` `migrated: true`).
+- DB: `sqlcmd -S localhost -E -d CISDB -i Cis\sql\cis-main.sql` (additive `cis` schema; rerun after SQL changes; done locally 2026-10-31).
+  After editing `Cis\sql\main\*.sql`: `$env:CIS_WRITE_SQL='1'; dotnet test Cis\Cis.sln --filter Combined_script_is_up_to_date`.
+- API: `cd Cis\src\Cis.Api; $env:Auth__JwtKey='<32+ chars>'; dotnet run --launch-profile http` → http://localhost:5100 (/swagger, /api/health).
+- UI: `cd CisUI; npm ci; npm start` → http://localhost:4200 (proxy /api → :5100). Needs Node ≥ 22.22.3 (Node 22.23.4 installed 2026-10-31).
+- Tests: `$env:CIS_TEST_DB='Server=(local);Database=CISDB;Integrated Security=true;Encrypt=false;TrustServerCertificate=true;Connect Timeout=60'; dotnet test Cis\Cis.sln`
+  (DB tests roll back); stop the running API first if the build complains about locked DLLs. UI: `npm run lint; npm test; npm run build`;
+  e2e: `$env:E2E_PASSWORD='Gen12345'; npm run e2e` (API + UI running; writes a real login: CIScnt ±1, Tbl_USRTrack, LoginCIS.txt).
+- Pinned deps: PDFsharp-MigraDoc must stay 6.2.x (6.5+ is AGPL and throws without a license). npm deps exact (`save-exact`), ≥ 7 days old.
+- PC is short on RAM: with VB6 + API + ng serve + Chrome running SQL Server can stop answering logins for minutes (pre-login timeout); wait / close apps.
+- Git: repo github.com/vnaatla/CIS (remote URL carries `vnaatla@`); commit with `git -c user.name="vnaatla" -c user.email="vishnu.reddy.naatla@gmail.com" commit ...`.

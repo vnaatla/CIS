@@ -1,0 +1,55 @@
+-- Setup for the CIS web stored procedures. Run on the CIS clinical database (the one that has dbo.CISCas and dbo.PAY).
+-- Creates the cis schema and the synonyms the procedures use to reach the other legacy databases on the same server.
+-- If a database has another name on your server, change the matching variable below before running.
+SET NOEXEC OFF;
+SET NOCOUNT ON;
+DECLARE @HisDb sysname = N'HISDB';
+DECLARE @MaintenanceDb sysname = N'HISMaintenance';
+DECLARE @CisWorksheetDb sysname = N'CISWorksheet';
+DECLARE @CisPaymentDb sysname = N'CISPayment';
+DECLARE @HisWorksheetDb sysname = N'HISWorkSheet';
+DECLARE @HisPaymentDb sysname = N'HISPayment';
+DECLARE @ArchiveDb sysname = N'HISDMArchive';
+
+DECLARE @major int = ISNULL(CAST(SERVERPROPERTY('ProductMajorVersion') AS int), 0);
+DECLARE @build int = ISNULL(CAST(SERVERPROPERTY('ProductBuild') AS int), 0);
+DECLARE @version nvarchar(128) = CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(128));
+IF @major < 13 OR (@major = 13 AND @build < 4001)
+BEGIN
+    RAISERROR(N'STOPPED: this script needs SQL Server 2016 SP1 or later, but this server is version %s.', 16, 1, @version);
+    SET NOEXEC ON;
+END
+ELSE IF OBJECT_ID(N'dbo.CISCas', N'U') IS NULL OR OBJECT_ID(N'dbo.PAY', N'U') IS NULL
+BEGIN
+    DECLARE @current sysname = DB_NAME();
+    RAISERROR(N'STOPPED: database "%s" is not the CIS database (dbo.CISCas / dbo.PAY not found). Pick CISDB and run this script again.', 16, 1, @current);
+    SET NOEXEC ON;
+END
+ELSE IF DB_ID(@MaintenanceDb) IS NULL OR OBJECT_ID(QUOTENAME(@MaintenanceDb) + N'.dbo.USR', N'U') IS NULL
+BEGIN
+    RAISERROR(N'STOPPED: maintenance database "%s" was not found (or it has no dbo.USR). Change @MaintenanceDb at the top of this script.', 16, 1, @MaintenanceDb);
+    SET NOEXEC ON;
+END
+ELSE IF DB_ID(@HisDb) IS NULL OR OBJECT_ID(QUOTENAME(@HisDb) + N'.dbo.tblActionLog', N'U') IS NULL
+BEGIN
+    RAISERROR(N'STOPPED: HIS database "%s" was not found (or it has no dbo.tblActionLog). Change @HisDb at the top of this script.', 16, 1, @HisDb);
+    SET NOEXEC ON;
+END
+
+IF SCHEMA_ID(N'cis') IS NULL EXEC (N'CREATE SCHEMA cis AUTHORIZATION dbo');
+
+-- Synonym name prefix = the database it points to: Maint_ (HISMaintenance), Hdb_ (HISDB), Ws_ (CISWorksheet), Pay_ (CISPayment),
+-- HWs_ (HISWorkSheet), HPay_ (HISPayment), Arch_ (HISDMArchive). Each phase adds the tables its screens use.
+DECLARE @sql nvarchar(max) = N'';
+SELECT @sql += N'IF OBJECT_ID(N''cis.' + s + N''', N''SN'') IS NOT NULL DROP SYNONYM cis.' + s + N';
+CREATE SYNONYM cis.' + s + N' FOR ' + QUOTENAME(d) + N'.dbo.' + t + N';
+'
+FROM (VALUES
+    (N'Maint_USR', @MaintenanceDb, N'USR'),
+    (N'Maint_USRTrack', @MaintenanceDb, N'Tbl_USRTrack'),
+    (N'Maint_ErrorLog', @MaintenanceDb, N'Tbl_ErrorLog'),
+    (N'Hdb_ActionLog', @HisDb, N'tblActionLog'),
+    (N'Hdb_CLN', @HisDb, N'CLN')) v (s, d, t)
+WHERE DB_ID(d) IS NOT NULL;
+EXEC (@sql);
+GO

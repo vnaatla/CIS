@@ -12,6 +12,19 @@ srcsafe.ini
 LocalRun/Src/
 LocalRun/FileLogin/
 
+LocalRun/MailPickup/
+
+# .NET build output, IDE state, API logs
+Cis/**/bin/
+Cis/**/obj/
+Cis/**/logs/
+Cis/**/wwwroot/
+.vs/
+*.user
+TestResults/
+
+# Angular (CisUI has its own .gitignore for node_modules, dist, .angular)
+
 # Logs, temp and backup files
 *.log
 *.tmp
