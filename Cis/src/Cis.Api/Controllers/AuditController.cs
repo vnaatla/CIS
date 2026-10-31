@@ -1,4 +1,4 @@
-using Cis.Api.Audit;
+using Cis.Application.Audit;
 using Cis.Api.Common;
 using Microsoft.AspNetCore.Mvc;
 

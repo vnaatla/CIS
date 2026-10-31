@@ -2,13 +2,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Cis.Application.Auth.Login;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Cis.Api.Auth;
 
 /// <summary>Issues the JWT that carries the user's code, name and USR.USRAccess flags.</summary>
-public class TokenService
+public class TokenService : ITokenIssuer
 {
     /// <summary>Claim holding USR.USRAccess.</summary>
     public const string AccessClaim = "usr_access";
@@ -30,7 +31,7 @@ public class TokenService
     /// <summary>Issuer and audience of the tokens.</summary>
     public string Issuer => _options.Issuer;
 
-    /// <summary>A signed token for the user and its expiry (UTC).</summary>
+    /// <inheritdoc />
     public (string Token, DateTime ExpiresUtc) Create(string userCode, string userName, string access)
     {
         var expires = DateTime.UtcNow.AddHours(_options.TokenHours);

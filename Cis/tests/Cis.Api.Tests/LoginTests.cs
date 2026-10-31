@@ -1,7 +1,10 @@
 using Cis.Api.Auth;
-using Cis.Api.Auth.Login;
-using Cis.Api.Common;
-using Cis.Api.Data;
+using Cis.Application.Abstractions;
+using Cis.Application.Auth.Login;
+using Cis.Domain.Errors;
+using Cis.Domain.Security;
+using Cis.Domain.Users;
+using Cis.Infrastructure.Auth;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -86,13 +89,13 @@ public class LoginServiceTests
 
     private sealed class FakeRepository : ILoginRepository
     {
-        public Dictionary<string, UserRecord> Users { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, UserAccount> Users { get; } = new(StringComparer.OrdinalIgnoreCase);
         public List<string> Suspended { get; } = [];
         public List<(string User, string Time, string Date)> Logins { get; } = [];
         public List<string> Logouts { get; } = [];
         public List<(string User, string Password)> Passwords { get; } = [];
 
-        public Task<UserRecord?> GetActiveUserAsync(IDbSession session, string userCode) => Task.FromResult(Users.GetValueOrDefault(userCode));
+        public Task<UserAccount?> GetActiveUserAsync(IDbSession session, string userCode) => Task.FromResult(Users.GetValueOrDefault(userCode));
 
         public Task SuspendAsync(IDbSession session, string userCode)
         {
@@ -137,7 +140,7 @@ public class LoginServiceTests
 
     public LoginServiceTests()
     {
-        _repository.Users["DEVADMIN"] = new UserRecord("DEVADMIN  ", "Dev Admin", LegacyCrypt.Encrypt(Password).ToUpperInvariant(), "0111");
+        _repository.Users["DEVADMIN"] = new UserAccount("DEVADMIN  ", "Dev Admin", LegacyCrypt.Encrypt(Password).ToUpperInvariant(), "0111");
         _service = new LoginService(_sessions, _repository, new LoginAttempts(new MemoryCache(new MemoryCacheOptions())), _log,
             new TokenService(Options.Create(new AuthOptions { JwtKey = new string('k', 40) })), new FixedClock(Now), NullLogger<LoginService>.Instance);
     }

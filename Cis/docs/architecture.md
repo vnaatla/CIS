@@ -28,30 +28,56 @@ flowchart LR
   several databases is **one transaction** (the desktop used up to eight connections and no transaction).
 - Production: the API serves the Angular build from `wwwroot` (one deployable). Development: `ng serve` proxies `/api` to the API.
 
-## API layers
+## Projects (Clean Architecture)
+
+Unlike GENESIS (one API project, layers by folder), CIS separates the layers into assemblies, so the compiler enforces the dependency
+direction **Domain ← Application ← Infrastructure ← Api**:
+
+| Project | Contains | References |
+|---|---|---|
+| `Cis.Domain` | entities (`UserAccount`), business rules (`AccessRight`, `LegacyCrypt`), domain errors (`BusinessRuleException` family, `NotConfiguredException`) | nothing (BCL only) |
+| `Cis.Application` | use cases (`…Service`), ports (`I…Repository`, `IDbSessions`, `ITokenIssuer`, `ILoginAttempts`, `ILoginLog`, `IErrorLog`, `IReportExporter`, `IFileDrop`, `IEmailSender`), request / response models, validators | Domain, FluentValidation, Microsoft.Extensions abstractions |
+| `Cis.Infrastructure` | adapters: Dapper repositories, `SqlDbSessions` / `DbConnections`, stored-procedure helpers, Excel (ClosedXML) / PDF (MigraDoc) writers, MailKit, file drop, login attempt cache / log file, error log, health check | Application, Dapper, SqlClient, ClosedXML, PDFsharp, MailKit |
+| `Cis.Api` | controllers, `Program.cs` (composition root), JWT (`TokenService` : `ITokenIssuer`), `[RequireAccess]`, `ApiExceptionHandler`, `ValidationFilter`, Swagger | Application (+ Infrastructure for registration only) |
+
+`IDbSession` (Application) carries no SQL types; the infrastructure's `ISqlSession` adds the connection and transaction, and
+repositories reach them with `session.Sql()`. Service tests therefore use a plain fake session.
+
+## Layers inside a screen
 
 | Layer | Lives in | Knows about | Must not |
 |---|---|---|---|
-| Controller | `Controllers/<Screen>Controller.cs` | the service, request / response models, `[RequireAccess]` | touch Dapper / SqlClient / `DbConnections` / `IDbSessions`, validate by hand, `try/catch` |
-| Validator | `<Module>/<Screen>/…Validators.cs` (`RequestValidator<T>`) | the request model | read the database |
-| Service | `<Module>/<Screen>/…Service.cs` | repository **interfaces**, `IDbSessions`, rules, `ILogger` | reference a concrete repository or `HttpContext` |
-| Repository | `<Module>/<Screen>/…Repository.cs` (interface + class) | `IDbSession`, procedure names | hold rules or commit |
-| Cross-cutting | `Auth/`, `Common/`, `Data/`, `Audit/`, `Documents/`, `Files/`, `Email/`, `Lookups/` | everything above uses them | depend on a screen |
+| Controller | `Cis.Api/Controllers/<Screen>Controller.cs` | the application service, request / response models, `[RequireAccess]` | use Cis.Infrastructure, Dapper, SqlClient, sessions; validate by hand; `try/catch` |
+| Validator | `Cis.Application/<Module>/<Screen>/…Validators.cs` (`RequestValidator<T>`) | the request model | read the database |
+| Service | `Cis.Application/<Module>/<Screen>/…Service.cs` | repository **interfaces**, `IDbSessions`, domain rules, `ILogger` | know SQL, HTTP or file formats |
+| Repository | interface in `Cis.Application/<Module>/<Screen>/`, class in `Cis.Infrastructure/<Module>/` | `IDbSession`, procedure names | hold rules or commit |
 
-`tests/Cis.Api.Tests/ArchitectureTests.cs` enforces it for **all** code (CIS starts layered, unlike GENESIS where older modules are
-exempt): no data access or `try/catch` in controllers, services depend on abstractions, every repository / service interface is
-registered, every `…Request` has a validator, every screen endpoint has `[RequireAccess]`, only login / change password are anonymous.
-XML documentation is mandatory for every public API member (`CS1591` is an error).
+`tests/Cis.Api.Tests/ArchitectureTests.cs` enforces it: assembly references (Domain uses only the BCL; Application references no
+Infrastructure / Api / SqlClient / Dapper / ClosedXML / PDFsharp / MailKit / ASP.NET; Infrastructure does not reference Api),
+controllers take application services only and contain no data access or `try/catch`, services depend on abstractions, every
+repository sits in Infrastructure behind an Application interface, every Application port is registered, every `…Request` lives in
+Application and has a validator, every screen endpoint has `[RequireAccess]`, only login / change password are anonymous.
+XML documentation is mandatory for every public member of every project (`CS1591` is an error).
 
 Errors: services throw `BusinessRuleException` (400), `NotFoundException` (404), `ConflictException` (409), `UnauthorizedException`
 (401), `NotConfiguredException` (503); `ApiExceptionHandler` answers Problem Details with a `message` (the desktop's MsgBox text) and
 writes unexpected errors to `HISMaintenance.dbo.Tbl_ErrorLog` (SysName 'CIS'), like `Medix.ErrorLog`.
 
+## Migration rules (agreed 2026-10-31)
+
+- Screens keep the desktop's functionality and logic: same fields, buttons, validations, messages, calculations, tables read / written.
+  Verified per screen with the `docs/screens/<form>.md` checklist and an SQL comparison against the VB6 app (LocalRun).
+- No existing database object is changed; only `cis.*` procedures and synonyms are added.
+- Layout follows the GENESIS web style (same fields and order, grouped in cards / tabs / dialogs); desktop-only mechanisms are replaced
+  (Outlook → SMTP, Crystal / .xlt → generated Excel / PDF, shares → download + optional server copy).
+- **Bugs found in the VB6 logic are reproduced as they are and logged** under "Known desktop issues" in the screen's doc, for the business
+  to decide later. Only security problems and features that cannot work at all are fixed, and each is listed as a "Deliberate difference".
+
 ## Cross-cutting services (Phase 0)
 
 | Need | Use | Desktop equivalent |
 |---|---|---|
-| Login / logout / change password | `Auth/Login/LoginService` | frmLogin, MDIMain.Logout_Click / mnuCloseConnection_Click |
+| Login / logout / change password | `Cis.Application/Auth/Login/LoginService` | frmLogin, MDIMain.Logout_Click / mnuCloseConnection_Click |
 | Menu rights | `AccessRight` + `[RequireAccess(n)]`; UI `access.ts` + `accessGuard` | `Medix.CheckAccess(n)` |
 | Action log | `POST /api/audit/screen-opened`, UI `ScreenAuditService` (route `data.legacyForm`) | `ActionLogUpdate(12, "frmName")` in every Form_Load |
 | Reports / exports | `IReportExporter` (Excel via ClosedXML, PDF via MigraDoc, CSV) with optional legacy templates (`Reports:TemplateRoot`) | `ModListviewtoExcel.ExportToExcel*`, `.xlt` templates, Crystal / DataReport |
@@ -89,7 +115,9 @@ screen route carries `data: { access, legacyForm }`.
 
 1. `docs/screens/<form>.md`: the parity checklist (controls, events, SQL, messages, outputs, pop-ups) from the VB6 form.
 2. `sql/main/NNN_<screen>.sql` → rebuild `cis-main.sql`.
-3. `<Module>/<Screen>/` models + validators + repository + service, register in `CisServiceCollectionExtensions`, controller with `[RequireAccess]`.
+3. `Cis.Application/<Module>/<Screen>/` models + validators + repository interface + service (register in
+   `Cis.Application/DependencyInjection.cs`); repository class in `Cis.Infrastructure/<Module>/` (register in
+   `Cis.Infrastructure/DependencyInjection.cs`); controller in `Cis.Api/Controllers` with `[RequireAccess]`.
 4. UI page under `src/app/features/<module>/`, route with `data: { access, legacyForm }`, set `migrated: true` in `layout/menu.ts`,
    regenerate `docs/menu-mapping.md` (`node scripts/menu-mapping.mjs`).
 5. Tests: service (fake repositories), DB (rolled back), UI spec, e2e step. Then compare with the VB6 desktop (`LocalRun`).

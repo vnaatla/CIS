@@ -1,5 +1,5 @@
 using Cis.Api.Common;
-using Cis.Api.Lookups;
+using Cis.Application.Lookups;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;

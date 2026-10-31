@@ -1,13 +1,12 @@
-using Cis.Api;
 using Cis.Api.Auth;
 using Cis.Api.Common;
-using Cis.Api.Data;
-using Cis.Api.Documents;
-using FluentValidation;
+using Cis.Application;
+using Cis.Application.Auth.Login;
+using Cis.Infrastructure;
+using Cis.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using PdfSharp.Fonts;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Centralized logging: console + rolling files, configured in the "Serilog" section of appsettings.json.
 builder.Host.UseSerilog((context, services, logging) => logging.ReadFrom.Configuration(context.Configuration).Enrich.FromLogContext());
 
-builder.Services.AddCisPlatform(builder.Configuration);
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+// Composition root: application (use cases) + infrastructure (adapters) + the API's own pieces (JWT issuer, filters, error handling).
+builder.Services.AddCisApplication();
+builder.Services.AddCisInfrastructure(builder.Configuration);
+builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection(AuthOptions.SectionName));
+builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<ITokenIssuer>(sp => sp.GetRequiredService<TokenService>());
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("database");
@@ -59,8 +62,6 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document)] = [] });
 });
 
-// PDFsharp needs a font source on hosts where it cannot find fonts by itself.
-GlobalFontSettings.FontResolver ??= new PdfFontResolver();
 
 var app = builder.Build();
 

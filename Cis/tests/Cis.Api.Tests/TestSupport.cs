@@ -1,6 +1,6 @@
-using Cis.Api.Data;
+using Cis.Application.Abstractions;
+using Cis.Infrastructure.Data;
 using FluentValidation;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace Cis.Api.Tests;
@@ -10,9 +10,7 @@ internal sealed class FakeSession(bool transactional) : IDbSession
 {
     public bool Committed { get; private set; }
     public bool RolledBack { get; private set; }
-    public bool Transactional => transactional;
-    public SqlConnection Connection { get; } = new();
-    public SqlTransaction? Transaction => null;
+    public bool IsTransactional => transactional;
 
     public Task CommitAsync()
     {
@@ -26,11 +24,7 @@ internal sealed class FakeSession(bool transactional) : IDbSession
         return Task.CompletedTask;
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await RollbackAsync();
-        await Connection.DisposeAsync();
-    }
+    public async ValueTask DisposeAsync() => await RollbackAsync();
 }
 
 /// <summary>Hands out <see cref="FakeSession"/>s and remembers them.</summary>
@@ -65,7 +59,7 @@ internal static class TestDb
         [$"ConnectionStrings:{DbConnections.MainName}"] = Cis,
     }).Build());
 
-    public static IDbSessions Sessions() => new DbSessions(Connections());
+    public static IDbSessions Sessions() => new SqlDbSessions(Connections());
 }
 
 internal static class ValidatorExtensions

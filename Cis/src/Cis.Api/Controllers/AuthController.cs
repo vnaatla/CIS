@@ -1,5 +1,5 @@
 using Cis.Api.Auth;
-using Cis.Api.Auth.Login;
+using Cis.Application.Auth.Login;
 using Cis.Api.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

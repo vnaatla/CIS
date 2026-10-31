@@ -1,8 +1,10 @@
-using Cis.Api.Audit;
-using Cis.Api.Auth;
-using Cis.Api.Auth.Login;
-using Cis.Api.Data;
-using Cis.Api.Lookups;
+using Cis.Application.Abstractions;
+using Cis.Application.Audit;
+using Cis.Domain.Security;
+using Cis.Infrastructure.Audit;
+using Cis.Infrastructure.Auth;
+using Cis.Infrastructure.Data;
+using Cis.Infrastructure.Lookups;
 using Dapper;
 
 namespace Cis.Api.Tests;
@@ -22,7 +24,7 @@ public class DatabaseTests
         return await TestDb.Sessions().BeginAsync();
     }
 
-    private static Task<T> Scalar<T>(IDbSession s, string sql, object? p = null) => s.Connection.ExecuteScalarAsync<T>(sql, p, s.Transaction)!;
+    private static Task<T> Scalar<T>(IDbSession s, string sql, object? p = null) => s.Sql().Connection.ExecuteScalarAsync<T>(sql, p, s.Sql().Transaction)!;
 
     [Fact]
     public async Task Login_procedures_find_the_dev_user_and_track_the_session_like_the_desktop()
@@ -33,7 +35,7 @@ public class DatabaseTests
 
         var user = await repo.GetActiveUserAsync(s, DevUser);
         Assert.NotNull(user);
-        Assert.True(LegacyCrypt.Matches("Gen12345", user!.UsrPassword), "local dev password is Gen12345 (AGENTS.md)");
+        Assert.True(user!.PasswordMatches("Gen12345"), "local dev password is Gen12345 (AGENTS.md)");
         Assert.Null(await repo.GetActiveUserAsync(s, "NO-SUCH-USER"));
 
         var count = await Scalar<int?>(s, "SELECT CIScnt FROM cis.Maint_USR WHERE USRCode = @DevUser", new { DevUser }) ?? 0;
@@ -56,7 +58,7 @@ public class DatabaseTests
         var repo = new LoginRepository();
 
         await repo.ChangePasswordAsync(s, DevUser, LegacyCrypt.Encrypt("Tmp1").ToUpperInvariant());
-        Assert.True(LegacyCrypt.Matches("Tmp1", (await repo.GetActiveUserAsync(s, DevUser))!.UsrPassword));
+        Assert.True((await repo.GetActiveUserAsync(s, DevUser))!.PasswordMatches("Tmp1"));
 
         await repo.SuspendAsync(s, DevUser);
         Assert.Equal("S", await Scalar<string>(s, "SELECT USRStatus FROM cis.Maint_USR WHERE USRCode = @DevUser", new { DevUser }));

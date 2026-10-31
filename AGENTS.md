@@ -22,7 +22,11 @@
 - The `.log` files in the source folder are stale form-load logs from the original developers, not from local runs.
 
 ## New web app (Cis API + CisUI Angular) — migration plan: C:\Users\Naresh\.devin\plans\plan-95d6e07b7f9f86e9.md
-- Layout: `Cis\` (ASP.NET Core 10 API, `Cis.sln`, `sql\`, `docs\`), `CisUI\` (Angular 22.2.3). Styles/components mirror GENESIS (`trinath18`).
+- Layout: `Cis\` (`Cis.sln`, `sql\`, `docs\`), `CisUI\` (Angular 22.2.3). Styles/components mirror GENESIS (`trinath18`).
+  Backend is Clean Architecture in 4 projects: `Cis.Domain` ← `Cis.Application` (services, ports, models, validators) ← `Cis.Infrastructure`
+  (Dapper repos, SQL sessions, Excel/PDF, mail, files) ← `Cis.Api` (controllers, composition root). ArchitectureTests enforce references.
+- Migration rules: same functionality/logic/messages as the VB6 form, DB schema untouched (only `cis.*` added). VB6 bugs are reproduced and
+  logged in the screen doc ("Known desktop issues"); only security problems / features that cannot work are fixed ("Deliberate differences").
   Docs: `Cis\docs\architecture.md`, `onboarding.md`, `menu-mapping.md` (generated: `node scripts/menu-mapping.mjs` in CisUI), `screens\<form>.md`.
 - Phase 0 (foundation) done 2026-10-31: login/logout/change password with desktop parity, layout with the full CIS menu, shared components,
   report engine, lookups. Phases 1–11 = screens (status per item in `menu-mapping.md` / `CisUI\src\app\layout\menu.ts` `migrated: true`).

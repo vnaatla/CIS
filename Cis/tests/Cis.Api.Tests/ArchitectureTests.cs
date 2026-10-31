@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Cis.Api.Auth;
 using Cis.Api.Common;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
@@ -10,19 +11,57 @@ using Microsoft.Extensions.Options;
 
 namespace Cis.Api.Tests;
 
-/// <summary>The layering of docs/architecture.md, enforced (same rules as GENESIS).</summary>
+/// <summary>
+/// The Clean Architecture boundaries of docs/architecture.md. The compiler already stops a project from using one it does not reference;
+/// these tests stop someone from adding the wrong reference, and check what the compiler cannot (thin controllers, registrations, validators).
+/// </summary>
 public class ArchitectureTests(ApiFactory factory) : IClassFixture<ApiFactory>
 {
+    private static readonly Assembly Domain = typeof(Cis.Domain.Security.AccessRight).Assembly;
+    private static readonly Assembly Application = typeof(Cis.Application.DependencyInjection).Assembly;
+    private static readonly Assembly Infrastructure = typeof(Cis.Infrastructure.DependencyInjection).Assembly;
     private static readonly Assembly Api = typeof(Program).Assembly;
 
     private static IEnumerable<Type> Controllers => Api.GetTypes().Where(t => typeof(ControllerBase).IsAssignableFrom(t) && !t.IsAbstract);
 
+    private static string[] References(Assembly assembly) => assembly.GetReferencedAssemblies().Select(a => a.Name!).ToArray();
+
     [Fact]
-    public void Controllers_hold_no_data_access_and_no_try_catch()
+    public void Domain_references_no_other_project_and_no_library()
     {
-        var banned = new Regex(@"\b(Dapper|SqlConnection|SqlCommand|DbConnections|IDbSessions?|try|catch)\b");
+        Assert.All(References(Domain), name => Assert.True(name is "System.Runtime" || name.StartsWith("System.", StringComparison.Ordinal),
+            $"Cis.Domain must only use the BCL, but references {name}"));
+    }
+
+    [Fact]
+    public void Application_references_only_the_domain_and_abstractions()
+    {
+        var refs = References(Application);
+        Assert.Contains("Cis.Domain", refs);
+        string[] banned = ["Cis.Infrastructure", "Cis.Api", "Microsoft.Data.SqlClient", "Dapper", "ClosedXML", "PdfSharp", "MigraDoc", "MailKit", "MimeKit"];
+        Assert.All(refs, name =>
+        {
+            Assert.DoesNotContain(name, banned);
+            Assert.False(name.StartsWith("Microsoft.AspNetCore", StringComparison.Ordinal), $"Cis.Application must not reference {name}");
+        });
+    }
+
+    [Fact]
+    public void Infrastructure_does_not_reference_the_api()
+    {
+        Assert.DoesNotContain("Cis.Api", References(Infrastructure));
+        Assert.Contains("Cis.Application", References(Infrastructure));
+    }
+
+    [Fact]
+    public void Controllers_use_the_application_layer_only()
+    {
+        var banned = new Regex(@"\b(Cis\.Infrastructure|Dapper|SqlConnection|SqlCommand|DbConnections|IDbSessions?|try|catch)\b");
         foreach (var file in Directory.GetFiles(Path.Combine(RepoPaths.CisRoot, "src", "Cis.Api", "Controllers"), "*.cs"))
-            Assert.False(banned.IsMatch(File.ReadAllText(file)), $"{Path.GetFileName(file)} touches data access or catches exceptions");
+            Assert.False(banned.IsMatch(File.ReadAllText(file)), $"{Path.GetFileName(file)} touches infrastructure or catches exceptions");
+        foreach (var c in Controllers)
+            foreach (var p in c.GetConstructors().SelectMany(ctor => ctor.GetParameters()))
+                Assert.True(p.ParameterType.Assembly == Application, $"{c.Name} depends on {p.ParameterType.Name}; controllers take application services only");
     }
 
     [Fact]
@@ -44,25 +83,31 @@ public class ArchitectureTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
-    public void Services_depend_on_abstractions_only()
+    public void Application_services_depend_on_abstractions_only()
     {
-        Type[] allowedConcrete = [typeof(Cis.Api.Auth.TokenService), typeof(TimeProvider), typeof(Cis.Api.Data.DbConnections),
-            typeof(Cis.Api.Documents.ExcelReportWriter), typeof(Cis.Api.Documents.PdfReportWriter)];
-        foreach (var service in Api.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Service", StringComparison.Ordinal) && t != typeof(Cis.Api.Auth.TokenService)))
+        foreach (var service in Application.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Service", StringComparison.Ordinal)))
             foreach (var p in service.GetConstructors().SelectMany(c => c.GetParameters()))
             {
                 var type = p.ParameterType;
-                var ok = type.IsInterface || allowedConcrete.Contains(type) ||
+                var ok = type.IsInterface || type == typeof(TimeProvider) ||
                     (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(ILogger<>) || type.GetGenericTypeDefinition() == typeof(IOptions<>)));
                 Assert.True(ok, $"{service.Name} depends on concrete {type.Name}");
             }
     }
 
     [Fact]
-    public void Every_repository_and_service_interface_is_registered()
+    public void Repositories_live_in_infrastructure_behind_application_interfaces()
+    {
+        foreach (var repository in Infrastructure.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Repository", StringComparison.Ordinal)))
+            Assert.Contains(repository.GetInterfaces(), i => i.Assembly == Application && i.Name == "I" + repository.Name);
+        Assert.DoesNotContain(Application.GetTypes(), t => t.IsClass && t.Name.EndsWith("Repository", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Every_application_port_is_registered()
     {
         using var scope = factory.Services.CreateScope();
-        foreach (var contract in Api.GetTypes().Where(t => t.IsInterface && Regex.IsMatch(t.Name, "^I[A-Z].*(Repository|Service)$")))
+        foreach (var contract in Application.GetTypes().Where(t => t.IsInterface && t.IsPublic && !t.IsGenericType && t.Name != "IDbSession"))
             Assert.True(scope.ServiceProvider.GetService(contract) is not null, $"{contract.Name} is not registered");
     }
 
@@ -71,9 +116,13 @@ public class ArchitectureTests(ApiFactory factory) : IClassFixture<ApiFactory>
     {
         using var scope = factory.Services.CreateScope();
         var requests = Controllers.SelectMany(c => c.GetMethods()).SelectMany(m => m.GetParameters())
-            .Select(p => p.ParameterType).Where(t => t.Name.EndsWith("Request", StringComparison.Ordinal)).Distinct();
+            .Select(p => p.ParameterType).Where(t => t.Name.EndsWith("Request", StringComparison.Ordinal)).Distinct().ToList();
+        Assert.NotEmpty(requests);
         foreach (var request in requests)
+        {
+            Assert.Equal(Application, request.Assembly);
             Assert.True(scope.ServiceProvider.GetService(typeof(IValidator<>).MakeGenericType(request)) is not null, $"{request.Name} has no validator");
+        }
     }
 
     [Fact]
@@ -82,9 +131,9 @@ public class ArchitectureTests(ApiFactory factory) : IClassFixture<ApiFactory>
         string[] shared = ["AuthController", "AuditController", "LookupsController"];
         foreach (var c in Controllers.Where(c => !shared.Contains(c.Name)))
         {
-            var classLevel = c.GetCustomAttributes<Cis.Api.Auth.RequireAccessAttribute>().Any();
+            var classLevel = c.GetCustomAttributes<RequireAccessAttribute>().Any();
             foreach (var action in c.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-                Assert.True(classLevel || action.GetCustomAttributes<Cis.Api.Auth.RequireAccessAttribute>().Any(), $"{c.Name}.{action.Name} has no [RequireAccess]");
+                Assert.True(classLevel || action.GetCustomAttributes<RequireAccessAttribute>().Any(), $"{c.Name}.{action.Name} has no [RequireAccess]");
         }
     }
 }

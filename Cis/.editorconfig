@@ -50,8 +50,8 @@ csharp_style_namespace_declarations = file_scoped:warning
 csharp_using_directive_placement = outside_namespace:warning
 dotnet_sort_system_directives_first = true
 
-# ---- XML documentation: mandatory for every public member of the API (all CIS code follows the layered style) ----
-[src/Cis.Api/**.cs]
+# ---- XML documentation: mandatory for every public member of every project (all CIS code follows the layered style) ----
+[src/**.cs]
 dotnet_diagnostic.CS1591.severity = error
 
 [tests/**.cs]

@@ -4,6 +4,8 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using Cis.Api.Auth;
 using Cis.Api.Common;
+using Cis.Domain.Errors;
+using Cis.Domain.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;

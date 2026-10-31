@@ -1,7 +1,11 @@
 using System.Text;
-using Cis.Api.Documents;
-using Cis.Api.Email;
-using Cis.Api.Files;
+using Cis.Application.Documents;
+using Cis.Application.Email;
+using Cis.Application.Files;
+using Cis.Domain.Errors;
+using Cis.Infrastructure.Documents;
+using Cis.Infrastructure.Email;
+using Cis.Infrastructure.Files;
 using ClosedXML.Excel;
 using Microsoft.Extensions.Options;
 
@@ -95,7 +99,7 @@ public class DocumentTests
     public async Task File_drop_writes_only_to_configured_folders_and_rejects_paths()
     {
         var root = Path.Combine(Path.GetTempPath(), $"cis-drop-{Guid.NewGuid():N}");
-        var drop = new FileDrop(Options.Create(new Files.FileOptions { Folders = new(StringComparer.OrdinalIgnoreCase) { [FileFolders.ClaimAscii] = root } }));
+        var drop = new FileDrop(Options.Create(new FileDropOptions { Folders = new(StringComparer.OrdinalIgnoreCase) { [FileFolders.ClaimAscii] = root } }));
 
         Assert.Equal(Path.Combine(root, "a.txt"), await drop.SaveAsync(FileFolders.ClaimAscii, "a.txt", [1, 2]));
         Assert.Null(await drop.SaveAsync(FileFolders.Bordx, "a.txt", [1]));
@@ -113,6 +117,6 @@ public class DocumentTests
         Assert.Contains("Subject: Subject", await File.ReadAllTextAsync(Assert.Single(Directory.GetFiles(pickup, "*.eml"))));
         Directory.Delete(pickup, true);
 
-        await Assert.ThrowsAsync<Common.NotConfiguredException>(() => new SmtpEmailSender(Options.Create(new EmailOptions())).SendAsync(message));
+        await Assert.ThrowsAsync<NotConfiguredException>(() => new SmtpEmailSender(Options.Create(new EmailOptions())).SendAsync(message));
     }
 }

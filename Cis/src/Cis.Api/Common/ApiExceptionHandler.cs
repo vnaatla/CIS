@@ -1,4 +1,5 @@
-using Cis.Api.Audit;
+using Cis.Application.Audit;
+using Cis.Domain.Errors;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Data.SqlClient;
