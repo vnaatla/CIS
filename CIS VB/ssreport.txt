@@ -1,0 +1,1506 @@
+$/MEDIXCIS/FrmInvoiceTracking.frm
+
+*****************  Version 12  *****************
+User: Admin           Date: 20/08/18  Time: 10:50a
+Checked in $/MEDIXCIS
+Comment:
+  added BTBG Bordx No
+Changes:
+1879 Change:       NumItems        =   72
+        To:       NumItems        =   73
+1897    Del:          Alignment       =   1
+1899 Change:          Text            =   "Inv. No"
+        To:          Text            =   "BTBG Bordx No"
+1903 Change:          Alignment       =   2
+        To:          Alignment       =   1
+1905 Change:          Text            =   "Inv. Date"
+        To:          Text            =   "Inv. No"
+1909 Change:          Alignment       =   1
+        To:          Alignment       =   2
+1911 Change:          Text            =   "Inv. Amt"
+        To:          Text            =   "Inv. Date"
+1917 Change:          Text            =   "Excess Amt"
+        To:          Text            =   "Inv. Amt"
+1918 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1923 Change:          Text            =   "Net Amt (Inv. Amt - Excess Amt)"
+        To:          Text            =   "Excess Amt"
+1929 Change:          Text            =   "CoyPayment"
+        To:          Text            =   "Net Amt (Inv. Amt - Excess Amt)"
+1930 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1935 Change:          Text            =   "Approved Amt"
+        To:          Text            =   "CoyPayment"
+1936 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1941 Change:          Text            =   "BTB Amt"
+        To:          Text            =   "Approved Amt"
+1942 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1947 Change:          Text            =   "Non GP Fee"
+        To:          Text            =   "BTB Amt"
+1948 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1953 Change:          Text            =   "FFS"
+        To:          Text            =   "Non GP Fee"
+1954 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1957 Change:          Alignment       =   2
+        To:          Alignment       =   1
+1959 Change:          Text            =   "DOR"
+        To:          Text            =   "FFS"
+1965 Change:          Text            =   "DOV"
+        To:          Text            =   "DOR"
+1969 Change:          Alignment       =   1
+        To:          Alignment       =   2
+1971 Change:          Text            =   "No of Days (DOR - DOV)"
+        To:          Text            =   "DOV"
+1972 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1974    Ins:          Alignment       =   1
+1976 Change:          Text            =   "Payee"
+        To:          Text            =   "No of Days (DOR - DOV)"
+1977 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1981 Change:          Text            =   "Clinic Name"
+        To:          Text            =   "Payee"
+1985    Del:          Alignment       =   2
+1987 Change:          Text            =   "Clinic Type"
+        To:          Text            =   "Clinic Name"
+1988 Change:          Object.Width           =   1411
+        To:          Object.Width           =   2540
+1990    Ins:          Alignment       =   2
+1992 Change:          Text            =   "Membership No"
+        To:          Text            =   "Clinic Type"
+1993 Change:          Object.Width           =   2540
+        To:          Object.Width           =   1411
+1997 Change:          Text            =   "Patient Name"
+        To:          Text            =   "Membership No"
+2001    Del:          Alignment       =   2
+2003 Change:          Text            =   "Plan Code"
+        To:          Text            =   "Patient Name"
+2004 Change:          Object.Width           =   1764
+        To:          Object.Width           =   2540
+2009 Change:          Text            =   "Insured Type"
+        To:          Text            =   "Plan Code"
+2012    Ins:          Alignment       =   2
+2014 Change:          Text            =   "Group Company"
+        To:          Text            =   "Insured Type"
+2015 Change:          Object.Width           =   2540
+        To:          Object.Width           =   1764
+2018    Del:          Alignment       =   2
+2020 Change:          Text            =   "Inv. Reg"
+        To:          Text            =   "Group Company"
+2023    Ins:          Alignment       =   2
+2025 Change:          Text            =   "Inv. Entry By"
+        To:          Text            =   "Inv. Reg"
+2030 Change:          Text            =   "OP Batch No"
+        To:          Text            =   "Inv. Entry By"
+2031 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+2034    Del:          Alignment       =   2
+2036 Change:          Text            =   "Case Status"
+        To:          Text            =   "OP Batch No"
+2042 Change:          Text            =   "Claimability"
+        To:          Text            =   "Case Status"
+2048 Change:          Text            =   "Bordx Status"
+        To:          Text            =   "Claimability"
+2051    Ins:          Alignment       =   2
+2053    Ins:          Text            =   "Bordx Status"
+2054    Ins:          Object.Width           =   2117
+2055    Ins:       EndProperty
+2056    Ins:       BeginProperty ColumnHeader(32) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2057    Ins:          SubItemIndex    =   31
+2056 Change:       BeginProperty ColumnHeader(32) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+        To:       BeginProperty ColumnHeader(33) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2058 Change:          SubItemIndex    =   31
+        To:          SubItemIndex    =   32
+2062    Del:       BeginProperty ColumnHeader(33) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2063    Del:          SubItemIndex    =   32
+2064    Del:          Text            =   "MC Days"
+2065    Del:          Object.Width           =   2540
+2066    Del:       EndProperty
+2069 Change:          Text            =   "Reason for Treatment1"
+        To:          Text            =   "MC Days"
+2074 Change:          Text            =   "Reason for Treatment2"
+        To:          Text            =   "Reason for Treatment1"
+2079 Change:          Text            =   "Reason for Treatment3"
+        To:          Text            =   "Reason for Treatment2"
+2084 Change:          Text            =   "Reason for Treatment4"
+        To:          Text            =   "Reason for Treatment3"
+2089 Change:          Text            =   "Reason for Treatment5"
+        To:          Text            =   "Reason for Treatment4"
+2094 Change:          Text            =   "OP Enter By"
+        To:          Text            =   "Reason for Treatment5"
+2099 Change:          Text            =   "FFS Status"
+        To:          Text            =   "OP Enter By"
+2104 Change:          Text            =   "Subsidiary"
+        To:          Text            =   "FFS Status"
+2109 Change:          Text            =   "Last Update User"
+        To:          Text            =   "Subsidiary"
+2114 Change:          Text            =   "Last Update Date"
+        To:          Text            =   "Last Update User"
+2119 Change:          Text            =   "PV No"
+        To:          Text            =   "Last Update Date"
+2124 Change:          Text            =   "PV Date"
+        To:          Text            =   "PV No"
+2129 Change:          Text            =   "Cheque No"
+        To:          Text            =   "PV Date"
+2134 Change:          Text            =   "Cheque Date"
+        To:          Text            =   "Cheque No"
+2139 Change:          Text            =   "OMNI Ref No"
+        To:          Text            =   "Cheque Date"
+2144 Change:          Text            =   "Medication 1"
+        To:          Text            =   "OMNI Ref No"
+2149 Change:          Text            =   "Medication 2"
+        To:          Text            =   "Medication 1"
+2154 Change:          Text            =   "Medication 3"
+        To:          Text            =   "Medication 2"
+2159 Change:          Text            =   "Medication 4"
+        To:          Text            =   "Medication 3"
+2164 Change:          Text            =   "Medication 5"
+        To:          Text            =   "Medication 4"
+2169 Change:          Text            =   "Medication 6"
+        To:          Text            =   "Medication 5"
+2174 Change:          Text            =   "Medication 7"
+        To:          Text            =   "Medication 6"
+2179 Change:          Text            =   "Med Days 1"
+        To:          Text            =   "Medication 7"
+2184 Change:          Text            =   "Med Days 2"
+        To:          Text            =   "Med Days 1"
+2189 Change:          Text            =   "Med Days 3"
+        To:          Text            =   "Med Days 2"
+2194 Change:          Text            =   "Med Days 4"
+        To:          Text            =   "Med Days 3"
+2199 Change:          Text            =   "Med Days 5"
+        To:          Text            =   "Med Days 4"
+2204 Change:          Text            =   "Med Qty 1"
+        To:          Text            =   "Med Days 5"
+2209 Change:          Text            =   "Med Qty 2"
+        To:          Text            =   "Med Qty 1"
+2214 Change:          Text            =   "Med Qty 3"
+        To:          Text            =   "Med Qty 2"
+2219 Change:          Text            =   "Med Qty 4"
+        To:          Text            =   "Med Qty 3"
+2224 Change:          Text            =   "Med Qty 5"
+        To:          Text            =   "Med Qty 4"
+2229 Change:          Text            =   "Consultation Fee"
+        To:          Text            =   "Med Qty 5"
+2234 Change:          Text            =   "Medication Fee"
+        To:          Text            =   "Consultation Fee"
+2239 Change:          Text            =   "Injection Fee"
+        To:          Text            =   "Medication Fee"
+2244 Change:          Text            =   "OMNI Sent"
+        To:          Text            =   "Injection Fee"
+2249 Change:          Text            =   "CAS Mgmt Notes"
+        To:          Text            =   "OMNI Sent"
+2254 Change:          Text            =   "Cas Remark"
+        To:          Text            =   "CAS Mgmt Notes"
+2259    Ins:          Text            =   "Cas Remark"
+2260    Ins:          Object.Width           =   2540
+2261    Ins:       EndProperty
+2262    Ins:       BeginProperty ColumnHeader(73) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2263    Ins:          SubItemIndex    =   72
+2564 Change: Private m_blnDirection(1 To 72) As Boolean
+        To: Private m_blnDirection(1 To 73) As Boolean
+2937    Ins:     Case 73
+2938    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(73)
+3446    Ins:                 If Len(rst2!BTBGBordxRefNo) Then
+3447    Ins:                     Record.SubItems(3) = Trim(rst2!BTBGBordxRefNo)
+3448    Ins:                 End If
+3440 Change:                     Record.SubItems(3) = Trim(rst2!BillNo)
+        To:                     Record.SubItems(4) = Trim(rst2!BillNo)
+3443 Change:                    Record.SubItems(4) = Format(rst2!BillDate, "dd/mm/yyyy")
+        To:                    Record.SubItems(5) = Format(rst2!BillDate, "dd/mm/yyyy")
+3446 Change:                     Record.SubItems(5) = Format(rst2!INVAmount, "#,##0.00")
+        To:                     Record.SubItems(6) = Format(rst2!INVAmount, "#,##0.00")
+3448 Change:                     Record.SubItems(5) = "0.00"
+        To:                     Record.SubItems(6) = "0.00"
+3451 Change:                     Record.SubItems(6) = Format(rst2!INVPaidByMem, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(7) = Format(rst2!INVPaidByMem, "#,##0.00;(#,##0.00)")
+3453 Change:                     Record.SubItems(6) = "0.00"
+        To:                     Record.SubItems(7) = "0.00"
+3457 Change:                     Record.SubItems(7) = Format(rst2!NetAmt, "#,##0.00")
+        To:                     Record.SubItems(8) = Format(rst2!NetAmt, "#,##0.00")
+3459 Change:                     Record.SubItems(7) = "0.00"
+        To:                     Record.SubItems(8) = "0.00"
+3463 Change:                     Record.SubItems(8) = Format(rst2!CLMCoPayCLNColl, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(9) = Format(rst2!CLMCoPayCLNColl, "#,##0.00;(#,##0.00)")
+3465 Change:                     Record.SubItems(8) = "0.00"
+        To:                     Record.SubItems(9) = "0.00"
+3476 Change:                     Record.SubItems(9) = Format(rst2!CLMBordxAmt, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(10) = Format(rst2!CLMBordxAmt, "#,##0.00;(#,##0.00)")
+3478 Change:                     Record.SubItems(9) = "0.00"
+        To:                     Record.SubItems(10) = "0.00"
+3484 Change:                     Record.SubItems(10) = Format(rst2!CLMBTBGAmt, "#,##0.00")
+        To:                     Record.SubItems(11) = Format(rst2!CLMBTBGAmt, "#,##0.00")
+3486 Change:                     Record.SubItems(10) = "0.00"
+        To:                     Record.SubItems(11) = "0.00"
+3519 Change:                     Record.SubItems(11) = Format(rst2!ClmNonGPFee, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(12) = Format(rst2!ClmNonGPFee, "#,##0.00;(#,##0.00)")
+3521 Change:                     Record.SubItems(11) = "0.00"
+        To:                     Record.SubItems(12) = "0.00"
+3525 Change:                     Record.SubItems(12) = Format(rst2!CLMMCOProcFee, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(13) = Format(rst2!CLMMCOProcFee, "#,##0.00;(#,##0.00)")
+3527 Change:                     Record.SubItems(12) = "0.00"
+        To:                     Record.SubItems(13) = "0.00"
+3531 Change:                     Record.SubItems(13) = Format(rst2!RegisterDate, "dd/mm/yyyy")
+        To:                     Record.SubItems(14) = Format(rst2!RegisterDate, "dd/mm/yyyy")
+3535 Change:                     Record.SubItems(14) = Format(rst2!DateVisit, "dd/mm/yyyy")
+        To:                     Record.SubItems(15) = Format(rst2!DateVisit, "dd/mm/yyyy")
+3539 Change:                     Record.SubItems(15) = "1"
+        To:                     Record.SubItems(16) = "1"
+3541 Change:                     Record.SubItems(15) = rst2!NoofDays
+        To:                     Record.SubItems(16) = rst2!NoofDays
+3545 Change:                     Record.SubItems(16) = rst2!INVPayee
+        To:                     Record.SubItems(17) = rst2!INVPayee
+3550 Change:                         Record.SubItems(17) = Trim(rst2!CLNName)
+        To:                         Record.SubItems(18) = Trim(rst2!CLNName)
+3555 Change:                         Record.SubItems(17) = Trim(rst2!NPClinic)
+        To:                         Record.SubItems(18) = Trim(rst2!NPClinic)
+3561 Change:                     Record.SubItems(18) = Trim(rst2!CLNType)
+        To:                     Record.SubItems(19) = Trim(rst2!CLNType)
+3565 Change:                     Record.SubItems(19) = Trim(rst2!MBMNumber)
+        To:                     Record.SubItems(20) = Trim(rst2!MBMNumber)
+3569 Change:                     Record.SubItems(20) = Trim(rst2!PatientName)
+        To:                     Record.SubItems(21) = Trim(rst2!PatientName)
+3573 Change:                     Record.SubItems(21) = Trim(rst2!PLNCode)
+        To:                     Record.SubItems(22) = Trim(rst2!PLNCode)
+3577 Change:                     Record.SubItems(22) = Trim(rst2!INSCode)
+        To:                     Record.SubItems(23) = Trim(rst2!INSCode)
+3581 Change:                     Record.SubItems(23) = Trim(rst2!MBMGroupCompany)
+        To:                     Record.SubItems(24) = Trim(rst2!MBMGroupCompany)
+3585 Change:                     Record.SubItems(24) = Format(rst2!INVEnteredDate, "dd/mm/yyyy")
+        To:                     Record.SubItems(25) = Format(rst2!INVEnteredDate, "dd/mm/yyyy")
+3589 Change:                     Record.SubItems(25) = Trim(rst2!INVEnteredBy)
+        To:                     Record.SubItems(26) = Trim(rst2!INVEnteredBy)
+3593 Change:                     Record.SubItems(26) = Trim(rst2!OPBatchNo)
+        To:                     Record.SubItems(27) = Trim(rst2!OPBatchNo)
+3597 Change:                     Record.SubItems(27) = Trim(rst2!CASStatus)
+        To:                     Record.SubItems(28) = Trim(rst2!CASStatus)
+3601 Change:                     Record.SubItems(28) = Trim(rst2!Claimability)
+        To:                     Record.SubItems(29) = Trim(rst2!Claimability)
+3605 Change:                     Record.SubItems(29) = Trim(rst2!ClaimBordxStatus)
+        To:                     Record.SubItems(30) = Trim(rst2!ClaimBordxStatus)
+3609 Change:                 '    Record.SubItems(30) = Trim(rst2!ReasonDesc)
+        To:                 '    Record.SubItems(31) = Trim(rst2!ReasonDesc)
+3613 Change:                     Record.SubItems(31) = rst2!AccPeriodMonth & "/" & rst2!AccPeriodYear
+        To:                     Record.SubItems(32) = rst2!AccPeriodMonth & "/" & rst2!AccPeriodYear
+3617 Change:                     Record.SubItems(32) = Trim(rst2!MCDays)
+        To:                     Record.SubItems(33) = Trim(rst2!MCDays)
+3621 Change:                     Record.SubItems(33) = Trim(rst2!ReasonDesc1)
+        To:                     Record.SubItems(34) = Trim(rst2!ReasonDesc1)
+3625 Change:                     Record.SubItems(34) = Trim(rst2!ReasonDesc2)
+        To:                     Record.SubItems(35) = Trim(rst2!ReasonDesc2)
+3629 Change:                     Record.SubItems(35) = Trim(rst2!ReasonDesc3)
+        To:                     Record.SubItems(36) = Trim(rst2!ReasonDesc3)
+3633 Change:                     Record.SubItems(36) = Trim(rst2!ReasonDesc4)
+        To:                     Record.SubItems(37) = Trim(rst2!ReasonDesc4)
+3639 Change:                         Record.SubItems(37) = Trim(rst2!ReasonDesc5)
+        To:                         Record.SubItems(38) = Trim(rst2!ReasonDesc5)
+3642 Change:                         Record.SubItems(37) = Trim(rst2!CASDiagnosis5)
+        To:                         Record.SubItems(38) = Trim(rst2!CASDiagnosis5)
+3646 Change:                 Record.SubItems(38) = IIf(Len(rst2!OPNoEnterUser), rst2!OPNoEnterUser, "")
+        To:                 Record.SubItems(39) = IIf(Len(rst2!OPNoEnterUser), rst2!OPNoEnterUser, "")
+3648 Change:                 Record.SubItems(39) = IIf(Len(rst2!CLNFFSStatus), rst2!CLNFFSStatus, "")
+        To:                 Record.SubItems(40) = IIf(Len(rst2!CLNFFSStatus), rst2!CLNFFSStatus, "")
+3650 Change:                 Record.SubItems(40) = IIf(Len(rst2!Subsidiary), rst2!Subsidiary, "")
+        To:                 Record.SubItems(41) = IIf(Len(rst2!Subsidiary), rst2!Subsidiary, "")
+3652 Change:                 Record.SubItems(41) = IIf(Len(rst2!ClaimLastUpdateUser), rst2!ClaimLastUpdateUser, "")
+        To:                 Record.SubItems(42) = IIf(Len(rst2!ClaimLastUpdateUser), rst2!ClaimLastUpdateUser, "")
+3654 Change:                 Record.SubItems(42) = IIf(Len(rst2!ClaimLastUpdateDate), rst2!ClaimLastUpdateDate, "")
+        To:                 Record.SubItems(43) = IIf(Len(rst2!ClaimLastUpdateDate), rst2!ClaimLastUpdateDate, "")
+3656 Change:                 Record.SubItems(43) = IIf(Len(tmpPVNo), tmpPVNo, "")
+        To:                 Record.SubItems(44) = IIf(Len(tmpPVNo), tmpPVNo, "")
+3658 Change:                 Record.SubItems(44) = IIf(Len(tmpPVDate), Format(tmpPVDate, "dd/mm/yyyy"), "")
+        To:                 Record.SubItems(45) = IIf(Len(tmpPVDate), Format(tmpPVDate, "dd/mm/yyyy"), "")
+3660 Change:                 Record.SubItems(45) = IIf(Len(tmpChqNo), tmpChqNo, "")
+        To:                 Record.SubItems(46) = IIf(Len(tmpChqNo), tmpChqNo, "")
+3662 Change:                 Record.SubItems(46) = IIf(Len(tmpChqDate), Format(tmpChqDate, "dd/mm/yyyy"), "")
+        To:                 Record.SubItems(47) = IIf(Len(tmpChqDate), Format(tmpChqDate, "dd/mm/yyyy"), "")
+3665 Change:                 Record.SubItems(47) = IIf(Len(rst2!OMNIRefNo), rst2!OMNIRefNo, "")
+        To:                 Record.SubItems(48) = IIf(Len(rst2!OMNIRefNo), rst2!OMNIRefNo, "")
+3670 Change:                 Record.SubItems(48) = IIf(Len(rst2!MedInjType1), rst2!MedInjType1, "")
+        To:                 Record.SubItems(49) = IIf(Len(rst2!MedInjType1), rst2!MedInjType1, "")
+3671 Change:                 Record.SubItems(49) = IIf(Len(rst2!MedInjType2), rst2!MedInjType2, "")
+        To:                 Record.SubItems(50) = IIf(Len(rst2!MedInjType2), rst2!MedInjType2, "")
+3672 Change:                 Record.SubItems(50) = IIf(Len(rst2!MedInjType3), rst2!MedInjType3, "")
+        To:                 Record.SubItems(51) = IIf(Len(rst2!MedInjType3), rst2!MedInjType3, "")
+3673 Change:                 Record.SubItems(51) = IIf(Len(rst2!MedInjType4), rst2!MedInjType4, "")
+        To:                 Record.SubItems(52) = IIf(Len(rst2!MedInjType4), rst2!MedInjType4, "")
+3674 Change:                 Record.SubItems(52) = IIf(Len(rst2!MedInjType5), rst2!MedInjType5, "")
+        To:                 Record.SubItems(53) = IIf(Len(rst2!MedInjType5), rst2!MedInjType5, "")
+3675 Change:                 Record.SubItems(53) = IIf(Len(rst2!MedInjType6), rst2!MedInjType6, "")
+        To:                 Record.SubItems(54) = IIf(Len(rst2!MedInjType6), rst2!MedInjType6, "")
+3676 Change:                 Record.SubItems(54) = IIf(Len(rst2!MedInjType7), rst2!MedInjType7, "")
+        To:                 Record.SubItems(55) = IIf(Len(rst2!MedInjType7), rst2!MedInjType7, "")
+3678 Change:                 Record.SubItems(55) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+        To:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+3679 Change:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+        To:                 Record.SubItems(57) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+3680 Change:                 Record.SubItems(57) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+        To:                 Record.SubItems(58) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+3681 Change:                 Record.SubItems(58) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+        To:                 Record.SubItems(59) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+3682 Change:                 Record.SubItems(59) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+        To:                 Record.SubItems(60) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+3684 Change:                 Record.SubItems(60) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+        To:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+3685 Change:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+        To:                 Record.SubItems(62) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+3687 Change:                 Record.SubItems(63) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+        To:                 Record.SubItems(64) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+3688 Change:                 Record.SubItems(64) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+        To:                 Record.SubItems(65) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+3698 Change:                 Record.SubItems(65) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+        To:                 Record.SubItems(66) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+3699 Change:                 Record.SubItems(66) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+        To:                 Record.SubItems(67) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+3700 Change:                 Record.SubItems(67) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+        To:                 Record.SubItems(68) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+3701 Change:                 Record.SubItems(68) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+        To:                 Record.SubItems(69) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+3702 Change:                 Record.SubItems(69) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+        To:                 Record.SubItems(70) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+3703 Change:                 Record.SubItems(70) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+        To:                 Record.SubItems(71) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+3704 Change:                 Record.SubItems(71) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+        To:                 Record.SubItems(72) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+
+
+*****************  Version 11  *****************
+User: Admin           Date: 17/08/18  Time:  4:04p
+Checked in $/MEDIXCIS
+Comment:
+  restore back the original SP
+Changes:
+3399 Change:     cmd.CommandText = "ClaimBordxModule2"
+        To:     cmd.CommandText = "ClaimBordxModule"
+
+
+*****************  Version 10  *****************
+User: Admin           Date: 17/08/18  Time:  3:58p
+Checked in $/MEDIXCIS
+Comment:
+  added BTBG column and total BTBG
+Changes:
+  6 Change:    ClientHeight    =   7815
+        To:    ClientHeight    =   7875
+ 13 Change:    ScaleHeight     =   7815
+        To:    ScaleHeight     =   7875
+1879 Change:       NumItems        =   71
+        To:       NumItems        =   72
+1941 Change:          Text            =   "Non GP Fee"
+        To:          Text            =   "BTB Amt"
+1942 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1947 Change:          Text            =   "FFS"
+        To:          Text            =   "Non GP Fee"
+1948 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1951 Change:          Alignment       =   2
+        To:          Alignment       =   1
+1953 Change:          Text            =   "DOR"
+        To:          Text            =   "FFS"
+1959 Change:          Text            =   "DOV"
+        To:          Text            =   "DOR"
+1963 Change:          Alignment       =   1
+        To:          Alignment       =   2
+1965 Change:          Text            =   "No of Days (DOR - DOV)"
+        To:          Text            =   "DOV"
+1966 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+1969    Ins:          Alignment       =   1
+1970 Change:          Text            =   "Payee"
+        To:          Text            =   "No of Days (DOR - DOV)"
+1971 Change:          Object.Width           =   2540
+        To:          Object.Width           =   2117
+1975 Change:          Text            =   "Clinic Name"
+        To:          Text            =   "Payee"
+1979    Del:          Alignment       =   2
+1981 Change:          Text            =   "Clinic Type"
+        To:          Text            =   "Clinic Name"
+1982 Change:          Object.Width           =   1411
+        To:          Object.Width           =   2540
+1985    Ins:          Alignment       =   2
+1986 Change:          Text            =   "Membership No"
+        To:          Text            =   "Clinic Type"
+1987 Change:          Object.Width           =   2540
+        To:          Object.Width           =   1411
+1991 Change:          Text            =   "Patient Name"
+        To:          Text            =   "Membership No"
+1995    Del:          Alignment       =   2
+1997 Change:          Text            =   "Plan Code"
+        To:          Text            =   "Patient Name"
+1998 Change:          Object.Width           =   1764
+        To:          Object.Width           =   2540
+2003 Change:          Text            =   "Insured Type"
+        To:          Text            =   "Plan Code"
+2007    Ins:          Alignment       =   2
+2008 Change:          Text            =   "Group Company"
+        To:          Text            =   "Insured Type"
+2009 Change:          Object.Width           =   2540
+        To:          Object.Width           =   1764
+2012    Del:          Alignment       =   2
+2014 Change:          Text            =   "Inv. Reg"
+        To:          Text            =   "Group Company"
+2018    Ins:          Alignment       =   2
+2019 Change:          Text            =   "Inv. Entry By"
+        To:          Text            =   "Inv. Reg"
+2024 Change:          Text            =   "OP Batch No"
+        To:          Text            =   "Inv. Entry By"
+2025 Change:          Object.Width           =   2117
+        To:          Object.Width           =   2540
+2028    Del:          Alignment       =   2
+2030 Change:          Text            =   "Case Status"
+        To:          Text            =   "OP Batch No"
+2036 Change:          Text            =   "Claimability"
+        To:          Text            =   "Case Status"
+2042 Change:          Text            =   "Bordx Status"
+        To:          Text            =   "Claimability"
+2046    Ins:          Alignment       =   2
+2048    Ins:          Text            =   "Bordx Status"
+2049    Ins:          Object.Width           =   2117
+2050    Ins:       EndProperty
+2051    Ins:       BeginProperty ColumnHeader(31) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2052    Ins:          SubItemIndex    =   30
+2050 Change:       BeginProperty ColumnHeader(31) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+        To:       BeginProperty ColumnHeader(32) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2052 Change:          SubItemIndex    =   30
+        To:          SubItemIndex    =   31
+2056    Del:       BeginProperty ColumnHeader(32) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2057    Del:          SubItemIndex    =   31
+2058    Del:          Text            =   "MC Days"
+2059    Del:          Object.Width           =   2540
+2060    Del:       EndProperty
+2063 Change:          Text            =   "Reason for Treatment1"
+        To:          Text            =   "MC Days"
+2068 Change:          Text            =   "Reason for Treatment2"
+        To:          Text            =   "Reason for Treatment1"
+2073 Change:          Text            =   "Reason for Treatment3"
+        To:          Text            =   "Reason for Treatment2"
+2078 Change:          Text            =   "Reason for Treatment4"
+        To:          Text            =   "Reason for Treatment3"
+2083 Change:          Text            =   "Reason for Treatment5"
+        To:          Text            =   "Reason for Treatment4"
+2088 Change:          Text            =   "OP Enter By"
+        To:          Text            =   "Reason for Treatment5"
+2093 Change:          Text            =   "FFS Status"
+        To:          Text            =   "OP Enter By"
+2098 Change:          Text            =   "Subsidiary"
+        To:          Text            =   "FFS Status"
+2103 Change:          Text            =   "Last Update User"
+        To:          Text            =   "Subsidiary"
+2108 Change:          Text            =   "Last Update Date"
+        To:          Text            =   "Last Update User"
+2113 Change:          Text            =   "PV No"
+        To:          Text            =   "Last Update Date"
+2118 Change:          Text            =   "PV Date"
+        To:          Text            =   "PV No"
+2123 Change:          Text            =   "Cheque No"
+        To:          Text            =   "PV Date"
+2128 Change:          Text            =   "Cheque Date"
+        To:          Text            =   "Cheque No"
+2133 Change:          Text            =   "OMNI Ref No"
+        To:          Text            =   "Cheque Date"
+2138 Change:          Text            =   "Medication 1"
+        To:          Text            =   "OMNI Ref No"
+2143 Change:          Text            =   "Medication 2"
+        To:          Text            =   "Medication 1"
+2148 Change:          Text            =   "Medication 3"
+        To:          Text            =   "Medication 2"
+2153 Change:          Text            =   "Medication 4"
+        To:          Text            =   "Medication 3"
+2158 Change:          Text            =   "Medication 5"
+        To:          Text            =   "Medication 4"
+2163 Change:          Text            =   "Medication 6"
+        To:          Text            =   "Medication 5"
+2168 Change:          Text            =   "Medication 7"
+        To:          Text            =   "Medication 6"
+2173 Change:          Text            =   "Med Days 1"
+        To:          Text            =   "Medication 7"
+2178 Change:          Text            =   "Med Days 2"
+        To:          Text            =   "Med Days 1"
+2183 Change:          Text            =   "Med Days 3"
+        To:          Text            =   "Med Days 2"
+2188 Change:          Text            =   "Med Days 4"
+        To:          Text            =   "Med Days 3"
+2193 Change:          Text            =   "Med Days 5"
+        To:          Text            =   "Med Days 4"
+2198 Change:          Text            =   "Med Qty 1"
+        To:          Text            =   "Med Days 5"
+2203 Change:          Text            =   "Med Qty 2"
+        To:          Text            =   "Med Qty 1"
+2208 Change:          Text            =   "Med Qty 3"
+        To:          Text            =   "Med Qty 2"
+2213 Change:          Text            =   "Med Qty 4"
+        To:          Text            =   "Med Qty 3"
+2218 Change:          Text            =   "Med Qty 5"
+        To:          Text            =   "Med Qty 4"
+2223 Change:          Text            =   "Consultation Fee"
+        To:          Text            =   "Med Qty 5"
+2228 Change:          Text            =   "Medication Fee"
+        To:          Text            =   "Consultation Fee"
+2233 Change:          Text            =   "Injection Fee"
+        To:          Text            =   "Medication Fee"
+2238 Change:          Text            =   "OMNI Sent"
+        To:          Text            =   "Injection Fee"
+2243 Change:          Text            =   "CAS Mgmt Notes"
+        To:          Text            =   "OMNI Sent"
+2248 Change:          Text            =   "Cas Remark"
+        To:          Text            =   "CAS Mgmt Notes"
+2254    Ins:          Text            =   "Cas Remark"
+2255    Ins:          Object.Width           =   2540
+2256    Ins:       EndProperty
+2257    Ins:       BeginProperty ColumnHeader(72) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2258    Ins:          SubItemIndex    =   71
+2258 Change:       Height          =   615
+        To:       Height          =   855
+2261 Change:       Top             =   7080
+        To:       Top             =   7000
+2419    Ins:       Begin VB.TextBox txtTotalBTBGAmt 
+2420    Ins:          Height          =   285
+2421    Ins:          Left            =   3480
+2422    Ins:          TabIndex        =   140
+2423    Ins:          Top             =   450
+2424    Ins:          Width           =   1095
+2425    Ins:       End
+2426    Ins:       Begin VB.Label Label29 
+2427    Ins:          Caption         =   "Total BTB Amt"
+2428    Ins:          BeginProperty Font 
+2429    Ins:             Name            =   "Tahoma"
+2430    Ins:             Size            =   8.25
+2431    Ins:             Charset         =   0
+2432    Ins:             Weight          =   400
+2433    Ins:             Underline       =   0   'False
+2434    Ins:             Italic          =   0   'False
+2435    Ins:             Strikethrough   =   0   'False
+2436    Ins:          EndProperty
+2437    Ins:          Height          =   255
+2438    Ins:          Index           =   2
+2439    Ins:          Left            =   2400
+2440    Ins:          TabIndex        =   139
+2441    Ins:          Top             =   480
+2442    Ins:          Width           =   1095
+2443    Ins:       End
+2462 Change:          Left            =   1440
+        To:          Left            =   1320
+2464 Change:          Top             =   600
+        To:          Top             =   480
+2496    Ins:          Visible         =   0   'False
+2532 Change: Private m_blnDirection(1 To 71) As Boolean
+        To: Private m_blnDirection(1 To 72) As Boolean
+2555 Change:     cbosubsidiary.Clear
+        To:     cboSubsidiary.Clear
+2558 Change:             cbosubsidiary.AddItem IIf(Len(Trim(!MBMGRPSubsidiary)), Trim(!MBMGRPSubsidiary), "")
+        To:             cboSubsidiary.AddItem IIf(Len(Trim(!MBMGRPSubsidiary)), Trim(!MBMGRPSubsidiary), "")
+2930    Ins:     Case 72
+2931    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(72)
+2908 Change:     With CboPayto
+        To:     With CboPayTo
+2913 Change:     With cboClaimability
+        To:     With CboClaimability
+2993 Change:     If Len(Trim(CboPayto)) Then
+        To:     If Len(Trim(CboPayTo)) Then
+2994 Change:         strAppend = strAppend + " AND INVPayTo = '" & Trim(Mid(CboPayto, 1, IIf(InStr(1, CboPayto, "-") = 0, 4, InStr(1, CboPayto, "-") - 1))) & "'"
+        To:         strAppend = strAppend + " AND INVPayTo = '" & Trim(Mid(CboPayTo, 1, IIf(InStr(1, CboPayTo, "-") = 0, 4, InStr(1, CboPayTo, "-") - 1))) & "'"
+3044 Change:     If Len(Trim(txtPatientName)) Then
+        To:     If Len(Trim(TxtPatientName)) Then
+3045 Change:        strAppend = strAppend + " And PatientName = '" & Trim(txtPatientName) & "'"
+        To:        strAppend = strAppend + " And PatientName = '" & Trim(TxtPatientName) & "'"
+3054 Change:     If Len(Trim(txtMBMNo1)) Then
+        To:     If Len(Trim(TxtMBMNo1)) Then
+3055 Change:         strAppend = strAppend + " AND MBMNumber >= '" & Trim(txtMBMNo1) & "'"
+        To:         strAppend = strAppend + " AND MBMNumber >= '" & Trim(TxtMBMNo1) & "'"
+3068 Change:     If Len(Trim(txtInvNo1)) Then
+        To:     If Len(Trim(TxtInvNo1)) Then
+3069 Change:         strAppend = strAppend + " AND BillNo >= '" & Trim(txtInvNo1) & "'"
+        To:         strAppend = strAppend + " AND BillNo >= '" & Trim(TxtInvNo1) & "'"
+3072 Change:     If Len(Trim(txtInvNo2)) Then
+        To:     If Len(Trim(TxtInvNo2)) Then
+3073 Change:         strAppend = strAppend + " AND BillNo <= '" & Trim(txtInvNo2) & "'"
+        To:         strAppend = strAppend + " AND BillNo <= '" & Trim(TxtInvNo2) & "'"
+3104 Change:     If Mid(cboClaimability, 1, 1) = "R" Then
+        To:     If Mid(CboClaimability, 1, 1) = "R" Then
+3106 Change:     ElseIf Mid(cboClaimability, 1, 1) = "A" Then
+        To:     ElseIf Mid(CboClaimability, 1, 1) = "A" Then
+3208 Change:     If Len(Trim(txtInvAmtfr)) Then
+        To:     If Len(Trim(txtINVAmtFr)) Then
+3209 Change:         strAppend = strAppend + " AND INVAmount >= " & Trim(txtInvAmtfr) & ""
+        To:         strAppend = strAppend + " AND INVAmount >= " & Trim(txtINVAmtFr) & ""
+3212 Change:     If Len(Trim(TxtInvAmtTo)) Then
+        To:     If Len(Trim(txtINVAmtTo)) Then
+3213 Change:         strAppend = strAppend + " AND INVAmount <= " & Trim(TxtInvAmtTo) & ""
+        To:         strAppend = strAppend + " AND INVAmount <= " & Trim(txtINVAmtTo) & ""
+3258 Change:     If Len(Trim(txtOPBatchNo1)) Then
+        To:     If Len(Trim(TxtOPBatchNo1)) Then
+3259 Change:         strAppend = strAppend + " AND OPBatchNo >= '" & Trim(txtOPBatchNo1) & "'"
+        To:         strAppend = strAppend + " AND OPBatchNo >= '" & Trim(TxtOPBatchNo1) & "'"
+3262 Change:     If Len(Trim(txtOPBatchNo2)) Then
+        To:     If Len(Trim(TxtOPBatchNo2)) Then
+3263 Change:         strAppend = strAppend + " AND OPBatchNo <= '" & Trim(txtOPBatchNo2) & "'"
+        To:         strAppend = strAppend + " AND OPBatchNo <= '" & Trim(TxtOPBatchNo2) & "'"
+3290 Change:     If Len(Trim(cbosubsidiary)) Then
+        To:     If Len(Trim(cboSubsidiary)) Then
+3291 Change:         strAppend = strAppend + " AND Subsidiary = '" & Trim(cbosubsidiary) & "'"
+        To:         strAppend = strAppend + " AND Subsidiary = '" & Trim(cboSubsidiary) & "'"
+3374    Ins: Dim TotBTBGAmt As Variant
+3364 Change:     cmd.CommandText = "ClaimBordxModule"
+        To:     cmd.CommandText = "ClaimBordxModule2"
+3398 Change:                 If Len(rst2!BordxRefNo) Then
+        To:                 If Len(rst2!Bordxrefno) Then
+3399 Change:                     Record.SubItems(1) = Trim(rst2!BordxRefNo)
+        To:                     Record.SubItems(1) = Trim(rst2!Bordxrefno)
+3483    Ins:                 If Len(rst2!CLMBTBGAmt) Then
+3484    Ins:                     Record.SubItems(10) = Format(rst2!CLMBTBGAmt, "#,##0.00")
+3485    Ins:                 Else
+3486    Ins:                     Record.SubItems(10) = "0.00"
+3487    Ins:                 End If
+3449    Del:                 
+3480 Change:                     Record.SubItems(10) = Format(rst2!ClmNonGPFee, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(11) = Format(rst2!ClmNonGPFee, "#,##0.00;(#,##0.00)")
+3482 Change:                     Record.SubItems(10) = "0.00"
+        To:                     Record.SubItems(11) = "0.00"
+3486 Change:                     Record.SubItems(11) = Format(rst2!CLMMCOProcFee, "#,##0.00;(#,##0.00)")
+        To:                     Record.SubItems(12) = Format(rst2!CLMMCOProcFee, "#,##0.00;(#,##0.00)")
+3488 Change:                     Record.SubItems(11) = "0.00"
+        To:                     Record.SubItems(12) = "0.00"
+3492 Change:                     Record.SubItems(12) = Format(rst2!RegisterDate, "dd/mm/yyyy")
+        To:                     Record.SubItems(13) = Format(rst2!RegisterDate, "dd/mm/yyyy")
+3496 Change:                     Record.SubItems(13) = Format(rst2!DateVisit, "dd/mm/yyyy")
+        To:                     Record.SubItems(14) = Format(rst2!DateVisit, "dd/mm/yyyy")
+3500 Change:                     Record.SubItems(14) = "1"
+        To:                     Record.SubItems(15) = "1"
+3502 Change:                     Record.SubItems(14) = rst2!NoofDays
+        To:                     Record.SubItems(15) = rst2!NoofDays
+3506 Change:                     Record.SubItems(15) = rst2!INVPayee
+        To:                     Record.SubItems(16) = rst2!INVPayee
+3511 Change:                         Record.SubItems(16) = Trim(rst2!CLNName)
+        To:                         Record.SubItems(17) = Trim(rst2!CLNName)
+3516 Change:                         Record.SubItems(16) = Trim(rst2!NPClinic)
+        To:                         Record.SubItems(17) = Trim(rst2!NPClinic)
+3522 Change:                     Record.SubItems(17) = Trim(rst2!CLNType)
+        To:                     Record.SubItems(18) = Trim(rst2!CLNType)
+3526 Change:                     Record.SubItems(18) = Trim(rst2!MBMNumber)
+        To:                     Record.SubItems(19) = Trim(rst2!MBMNumber)
+3530 Change:                     Record.SubItems(19) = Trim(rst2!PatientName)
+        To:                     Record.SubItems(20) = Trim(rst2!PatientName)
+3534 Change:                     Record.SubItems(20) = Trim(rst2!PLNCode)
+        To:                     Record.SubItems(21) = Trim(rst2!PLNCode)
+3538 Change:                     Record.SubItems(21) = Trim(rst2!INSCode)
+        To:                     Record.SubItems(22) = Trim(rst2!INSCode)
+3542 Change:                     Record.SubItems(22) = Trim(rst2!MBMGroupCompany)
+        To:                     Record.SubItems(23) = Trim(rst2!MBMGroupCompany)
+3546 Change:                     Record.SubItems(23) = Format(rst2!INVEnteredDate, "dd/mm/yyyy")
+        To:                     Record.SubItems(24) = Format(rst2!INVEnteredDate, "dd/mm/yyyy")
+3550 Change:                     Record.SubItems(24) = Trim(rst2!INVEnteredBy)
+        To:                     Record.SubItems(25) = Trim(rst2!INVEnteredBy)
+3554 Change:                     Record.SubItems(25) = Trim(rst2!OPBatchNo)
+        To:                     Record.SubItems(26) = Trim(rst2!OPBatchNo)
+3558 Change:                     Record.SubItems(26) = Trim(rst2!CASStatus)
+        To:                     Record.SubItems(27) = Trim(rst2!CASStatus)
+3562 Change:                     Record.SubItems(27) = Trim(rst2!Claimability)
+        To:                     Record.SubItems(28) = Trim(rst2!Claimability)
+3566 Change:                     Record.SubItems(28) = Trim(rst2!ClaimBordxStatus)
+        To:                     Record.SubItems(29) = Trim(rst2!ClaimBordxStatus)
+3570 Change:                 '    Record.SubItems(29) = Trim(rst2!ReasonDesc)
+        To:                 '    Record.SubItems(30) = Trim(rst2!ReasonDesc)
+3574 Change:                     Record.SubItems(30) = rst2!AccPeriodMonth & "/" & rst2!AccPeriodYear
+        To:                     Record.SubItems(31) = rst2!AccPeriodMonth & "/" & rst2!AccPeriodYear
+3578 Change:                     Record.SubItems(31) = Trim(rst2!MCDays)
+        To:                     Record.SubItems(32) = Trim(rst2!MCDays)
+3582 Change:                     Record.SubItems(32) = Trim(rst2!ReasonDesc1)
+        To:                     Record.SubItems(33) = Trim(rst2!ReasonDesc1)
+3586 Change:                     Record.SubItems(33) = Trim(rst2!ReasonDesc2)
+        To:                     Record.SubItems(34) = Trim(rst2!ReasonDesc2)
+3590 Change:                     Record.SubItems(34) = Trim(rst2!ReasonDesc3)
+        To:                     Record.SubItems(35) = Trim(rst2!ReasonDesc3)
+3594 Change:                     Record.SubItems(35) = Trim(rst2!ReasonDesc4)
+        To:                     Record.SubItems(36) = Trim(rst2!ReasonDesc4)
+3600 Change:                         Record.SubItems(36) = Trim(rst2!ReasonDesc5)
+        To:                         Record.SubItems(37) = Trim(rst2!ReasonDesc5)
+3603 Change:                         Record.SubItems(36) = Trim(rst2!CASDiagnosis5)
+        To:                         Record.SubItems(37) = Trim(rst2!CASDiagnosis5)
+3607 Change:                 Record.SubItems(37) = IIf(Len(rst2!OPNoEnterUser), rst2!OPNoEnterUser, "")
+        To:                 Record.SubItems(38) = IIf(Len(rst2!OPNoEnterUser), rst2!OPNoEnterUser, "")
+3609 Change:                 Record.SubItems(38) = IIf(Len(rst2!CLNFFSStatus), rst2!CLNFFSStatus, "")
+        To:                 Record.SubItems(39) = IIf(Len(rst2!CLNFFSStatus), rst2!CLNFFSStatus, "")
+3611 Change:                 Record.SubItems(39) = IIf(Len(rst2!Subsidiary), rst2!Subsidiary, "")
+        To:                 Record.SubItems(40) = IIf(Len(rst2!Subsidiary), rst2!Subsidiary, "")
+3613 Change:                 Record.SubItems(40) = IIf(Len(rst2!ClaimLastUpdateUser), rst2!ClaimLastUpdateUser, "")
+        To:                 Record.SubItems(41) = IIf(Len(rst2!ClaimLastUpdateUser), rst2!ClaimLastUpdateUser, "")
+3615 Change:                 Record.SubItems(41) = IIf(Len(rst2!ClaimLastUpdateDate), rst2!ClaimLastUpdateDate, "")
+        To:                 Record.SubItems(42) = IIf(Len(rst2!ClaimLastUpdateDate), rst2!ClaimLastUpdateDate, "")
+3617 Change:                 Record.SubItems(42) = IIf(Len(tmpPVNo), tmpPVNo, "")
+        To:                 Record.SubItems(43) = IIf(Len(tmpPVNo), tmpPVNo, "")
+3619 Change:                 Record.SubItems(43) = IIf(Len(tmpPVDate), Format(tmpPVDate, "dd/mm/yyyy"), "")
+        To:                 Record.SubItems(44) = IIf(Len(tmpPVDate), Format(tmpPVDate, "dd/mm/yyyy"), "")
+3621 Change:                 Record.SubItems(44) = IIf(Len(tmpChqNo), tmpChqNo, "")
+        To:                 Record.SubItems(45) = IIf(Len(tmpChqNo), tmpChqNo, "")
+3623 Change:                 Record.SubItems(45) = IIf(Len(tmpChqDate), Format(tmpChqDate, "dd/mm/yyyy"), "")
+        To:                 Record.SubItems(46) = IIf(Len(tmpChqDate), Format(tmpChqDate, "dd/mm/yyyy"), "")
+3626 Change:                 Record.SubItems(46) = IIf(Len(rst2!OMNIRefNo), rst2!OMNIRefNo, "")
+        To:                 Record.SubItems(47) = IIf(Len(rst2!OMNIRefNo), rst2!OMNIRefNo, "")
+3628 Change:                 '    Record.SubItems(46) = IIf(Len(rst2!MBMAXANumber), rst2!MBMAXANumber, "")
+        To:                 '    Record.SubItems(47) = IIf(Len(rst2!MBMAXANumber), rst2!MBMAXANumber, "")
+3631 Change:                 Record.SubItems(47) = IIf(Len(rst2!MedInjType1), rst2!MedInjType1, "")
+        To:                 Record.SubItems(48) = IIf(Len(rst2!MedInjType1), rst2!MedInjType1, "")
+3632 Change:                 Record.SubItems(48) = IIf(Len(rst2!MedInjType2), rst2!MedInjType2, "")
+        To:                 Record.SubItems(49) = IIf(Len(rst2!MedInjType2), rst2!MedInjType2, "")
+3633 Change:                 Record.SubItems(49) = IIf(Len(rst2!MedInjType3), rst2!MedInjType3, "")
+        To:                 Record.SubItems(50) = IIf(Len(rst2!MedInjType3), rst2!MedInjType3, "")
+3634 Change:                 Record.SubItems(50) = IIf(Len(rst2!MedInjType4), rst2!MedInjType4, "")
+        To:                 Record.SubItems(51) = IIf(Len(rst2!MedInjType4), rst2!MedInjType4, "")
+3635 Change:                 Record.SubItems(51) = IIf(Len(rst2!MedInjType5), rst2!MedInjType5, "")
+        To:                 Record.SubItems(52) = IIf(Len(rst2!MedInjType5), rst2!MedInjType5, "")
+3636 Change:                 Record.SubItems(52) = IIf(Len(rst2!MedInjType6), rst2!MedInjType6, "")
+        To:                 Record.SubItems(53) = IIf(Len(rst2!MedInjType6), rst2!MedInjType6, "")
+3637 Change:                 Record.SubItems(53) = IIf(Len(rst2!MedInjType7), rst2!MedInjType7, "")
+        To:                 Record.SubItems(54) = IIf(Len(rst2!MedInjType7), rst2!MedInjType7, "")
+3639 Change:                 Record.SubItems(54) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+        To:                 Record.SubItems(55) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+3640 Change:                 Record.SubItems(55) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+        To:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+3641 Change:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+        To:                 Record.SubItems(57) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+3642 Change:                 Record.SubItems(57) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+        To:                 Record.SubItems(58) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+3643 Change:                 Record.SubItems(58) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+        To:                 Record.SubItems(59) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+3645 Change:                 Record.SubItems(59) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+        To:                 Record.SubItems(60) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+3646 Change:                 Record.SubItems(60) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+        To:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+3647 Change:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty3), rst2!MedInjQty3, "")
+        To:                 Record.SubItems(62) = IIf(Len(rst2!MedInjQty3), rst2!MedInjQty3, "")
+3648 Change:                 Record.SubItems(62) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+        To:                 Record.SubItems(63) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+3649 Change:                 Record.SubItems(63) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+        To:                 Record.SubItems(64) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+3659 Change:                 Record.SubItems(64) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+        To:                 Record.SubItems(65) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+3660 Change:                 Record.SubItems(65) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+        To:                 Record.SubItems(66) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+3661 Change:                 Record.SubItems(66) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+        To:                 Record.SubItems(67) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+3662 Change:                 Record.SubItems(67) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+        To:                 Record.SubItems(68) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+3663 Change:                 Record.SubItems(68) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+        To:                 Record.SubItems(69) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+3664 Change:                 Record.SubItems(69) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+        To:                 Record.SubItems(70) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+3665 Change:                 Record.SubItems(70) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+        To:                 Record.SubItems(71) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+3725    Ins:                 If Len(rst2!CLMBTBGAmt) Then
+3726    Ins:                     TotBTBGAmt = TotBTBGAmt + rst2!CLMBTBGAmt
+3727    Ins:                 End If
+3728    Ins:                 txtTotalBTBGAmt.Text = Format(TotBTBGAmt, "#,##0.00")
+3773 Change:     If InStr(CboPayto.Text, "null") Then
+        To:     If InStr(CboPayTo.Text, "null") Then
+3774 Change:        CboPayto.Enabled = False
+        To:        CboPayTo.Enabled = False
+3819 Change:     If InStr(cboClaimability.Text, "null") Then
+        To:     If InStr(CboClaimability.Text, "null") Then
+3820 Change:        cboClaimability.Enabled = False
+        To:        CboClaimability.Enabled = False
+3830 Change:     NewText = LCase(Left(cboClaimability.Text, cboClaimability.SelStart) + Chr(KeyAscii) + Mid(cboClaimability.Text, cboClaimability.SelStart + cboClaimability.SelLength + 1))
+        To:     NewText = LCase(Left(CboClaimability.Text, CboClaimability.SelStart) + Chr(KeyAscii) + Mid(CboClaimability.Text, CboClaimability.SelStart + CboClaimability.SelLength + 1))
+3835 Change:     For i = 0 To cboClaimability.ListCount - 1
+        To:     For i = 0 To CboClaimability.ListCount - 1
+3837 Change:         If NewText = LCase(Left(cboClaimability.List(i), Len(NewText))) Then
+        To:         If NewText = LCase(Left(CboClaimability.List(i), Len(NewText))) Then
+3839 Change:                 ValidValue = cboClaimability.List(i)
+        To:                 ValidValue = CboClaimability.List(i)
+3844 Change:                 cboClaimability.Text = ValidValue
+        To:                 CboClaimability.Text = ValidValue
+3845 Change:                 cboClaimability.SelStart = 0
+        To:                 CboClaimability.SelStart = 0
+3846 Change:                 cboClaimability.SelLength = Len(ValidValue)
+        To:                 CboClaimability.SelLength = Len(ValidValue)
+3951 Change:     If InStr(CboPayto.Text, "null") Then
+        To:     If InStr(CboPayTo.Text, "null") Then
+3952 Change:        CboPayto.Enabled = False
+        To:        CboPayTo.Enabled = False
+3962 Change:     NewText = LCase(Left(CboPayto.Text, CboPayto.SelStart) + Chr(KeyAscii) + Mid(CboPayto.Text, CboPayto.SelStart + CboPayto.SelLength + 1))
+        To:     NewText = LCase(Left(CboPayTo.Text, CboPayTo.SelStart) + Chr(KeyAscii) + Mid(CboPayTo.Text, CboPayTo.SelStart + CboPayTo.SelLength + 1))
+3967 Change:     For i = 0 To CboPayto.ListCount - 1
+        To:     For i = 0 To CboPayTo.ListCount - 1
+3969 Change:         If NewText = LCase(Left(CboPayto.List(i), Len(NewText))) Then
+        To:         If NewText = LCase(Left(CboPayTo.List(i), Len(NewText))) Then
+3971 Change:                 ValidValue = CboPayto.List(i)
+        To:                 ValidValue = CboPayTo.List(i)
+3976 Change:                 CboPayto.Text = ValidValue
+        To:                 CboPayTo.Text = ValidValue
+3977 Change:                 CboPayto.SelStart = 0
+        To:                 CboPayTo.SelStart = 0
+3978 Change:                 CboPayto.SelLength = Len(ValidValue)
+        To:                 CboPayTo.SelLength = Len(ValidValue)
+
+
+*****************  Version 9  *****************
+User: Admin           Date: 17/06/18  Time:  6:10p
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+1879 Change:       NumItems        =   69
+        To:       NumItems        =   71
+2163 Change:          Text            =   "Med Days 1"
+        To:          Text            =   "Medication 6"
+2168 Change:          Text            =   "Med Days 2"
+        To:          Text            =   "Medication 7"
+2173 Change:          Text            =   "Med Days 3"
+        To:          Text            =   "Med Days 1"
+2178 Change:          Text            =   "Med Days 4"
+        To:          Text            =   "Med Days 2"
+2183 Change:          Text            =   "Med Days 5"
+        To:          Text            =   "Med Days 3"
+2188 Change:          Text            =   "Med Qty 1"
+        To:          Text            =   "Med Days 4"
+2193 Change:          Text            =   "Med Qty 2"
+        To:          Text            =   "Med Days 5"
+2198 Change:          Text            =   "Med Qty 3"
+        To:          Text            =   "Med Qty 1"
+2203 Change:          Text            =   "Med Qty 4"
+        To:          Text            =   "Med Qty 2"
+2208 Change:          Text            =   "Med Qty 5"
+        To:          Text            =   "Med Qty 3"
+2213 Change:          Text            =   "Consultation Fee"
+        To:          Text            =   "Med Qty 4"
+2218 Change:          Text            =   "Medication Fee"
+        To:          Text            =   "Med Qty 5"
+2223 Change:          Text            =   "Injection Fee"
+        To:          Text            =   "Consultation Fee"
+2228 Change:          Text            =   "OMNI Sent"
+        To:          Text            =   "Medication Fee"
+2233 Change:          Text            =   "CAS Mgmt Notes"
+        To:          Text            =   "Injection Fee"
+2238 Change:          Text            =   "Cas Remark"
+        To:          Text            =   "OMNI Sent"
+2243    Ins:          Text            =   "CAS Mgmt Notes"
+2244    Ins:          Object.Width           =   2540
+2245    Ins:       EndProperty
+2246    Ins:       BeginProperty ColumnHeader(70) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2247    Ins:          SubItemIndex    =   69
+2248    Ins:          Text            =   "Cas Remark"
+2249    Ins:          Object.Width           =   2540
+2250    Ins:       EndProperty
+2251    Ins:       BeginProperty ColumnHeader(71) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2252    Ins:          SubItemIndex    =   70
+2522 Change: Private m_blnDirection(1 To 69) As Boolean
+        To: Private m_blnDirection(1 To 71) As Boolean
+2545 Change:     cboSubsidiary.Clear
+        To:     cbosubsidiary.Clear
+2548 Change:             cboSubsidiary.AddItem IIf(Len(Trim(!MBMGRPSubsidiary)), Trim(!MBMGRPSubsidiary), "")
+        To:             cbosubsidiary.AddItem IIf(Len(Trim(!MBMGRPSubsidiary)), Trim(!MBMGRPSubsidiary), "")
+2860    Ins:     Case 53
+2861    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(53)
+2862    Ins:     Case 54
+2863    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(54)
+2864    Ins:     Case 55
+2865    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(55)
+2866    Ins:     Case 56
+2867    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(56)
+2868    Ins:     Case 57
+2869    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(57)
+2870    Ins:     Case 58
+2871    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(58)
+2872    Ins:     Case 59
+2873    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(59)
+2874    Ins:     Case 60
+2875    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(60)
+2876    Ins:     Case 61
+2877    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(61)
+2878    Ins:     Case 62
+2879    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(62)
+2880    Ins:     Case 63
+2881    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(63)
+2882    Ins:     Case 64
+2883    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(64)
+2884    Ins:     Case 65
+2885    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(65)
+2886    Ins:     Case 66
+2887    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(66)
+2888    Ins:     Case 67
+2889    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(67)
+2890    Ins:     Case 68
+2891    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(68)
+2892    Ins:     Case 69
+2893    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(69)
+2894    Ins:     Case 70
+2895    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(70)
+2896    Ins:     Case 71
+2897    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(71)
+3242 Change:     If Len(Trim(cboSubsidiary)) Then
+        To:     If Len(Trim(cbosubsidiary)) Then
+3243 Change:         strAppend = strAppend + " AND Subsidiary = '" & Trim(cboSubsidiary) & "'"
+        To:         strAppend = strAppend + " AND Subsidiary = '" & Trim(cbosubsidiary) & "'"
+3636    Ins:                 Record.SubItems(52) = IIf(Len(rst2!MedInjType6), rst2!MedInjType6, "")
+3637    Ins:                 Record.SubItems(53) = IIf(Len(rst2!MedInjType7), rst2!MedInjType7, "")
+3589 Change:                 Record.SubItems(52) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+        To:                 Record.SubItems(54) = IIf(Len(rst2!MedInjDays1), rst2!MedInjDays1, "")
+3590 Change:                 Record.SubItems(53) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+        To:                 Record.SubItems(55) = IIf(Len(rst2!MedInjDays2), rst2!MedInjDays2, "")
+3591 Change:                 Record.SubItems(54) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+        To:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays3), rst2!MedInjDays3, "")
+3592 Change:                 Record.SubItems(55) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+        To:                 Record.SubItems(57) = IIf(Len(rst2!MedInjDays4), rst2!MedInjDays4, "")
+3593 Change:                 Record.SubItems(56) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+        To:                 Record.SubItems(58) = IIf(Len(rst2!MedInjDays5), rst2!MedInjDays5, "")
+3595 Change:                 Record.SubItems(57) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+        To:                 Record.SubItems(59) = IIf(Len(rst2!MedInjQty1), rst2!MedInjQty1, "")
+3596 Change:                 Record.SubItems(58) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+        To:                 Record.SubItems(60) = IIf(Len(rst2!MedInjQty2), rst2!MedInjQty2, "")
+3597 Change:                 Record.SubItems(59) = IIf(Len(rst2!MedInjQty3), rst2!MedInjQty3, "")
+        To:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty3), rst2!MedInjQty3, "")
+3598 Change:                 Record.SubItems(60) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+        To:                 Record.SubItems(62) = IIf(Len(rst2!MedInjQty4), rst2!MedInjQty4, "")
+3599 Change:                 Record.SubItems(61) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+        To:                 Record.SubItems(63) = IIf(Len(rst2!MedInjQty5), rst2!MedInjQty5, "")
+3609 Change:                 Record.SubItems(62) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+        To:                 Record.SubItems(64) = CDbl(tmpGPFee) + CDbl(tmpSPFee)
+3610 Change:                 Record.SubItems(63) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+        To:                 Record.SubItems(65) = CDbl(tmpGPLTMed) + CDbl(tmpSPLTMed) + CDbl(tmpGPMed) + CDbl(tmpSPMed)
+3611 Change:                 Record.SubItems(64) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+        To:                 Record.SubItems(66) = CDbl(tmpGPInj) + CDbl(tmpSPInj)
+3612 Change:                 Record.SubItems(65) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+        To:                 Record.SubItems(67) = IIf(Len(rst2!CLMOMNISent), rst2!CLMOMNISent, "")
+3613 Change:                 Record.SubItems(66) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+        To:                 Record.SubItems(68) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+3614 Change:                 Record.SubItems(67) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+        To:                 Record.SubItems(69) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+3615 Change:                 Record.SubItems(68) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+        To:                 Record.SubItems(70) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+3666    Ins:                               
+
+
+*****************  Version 8  *****************
+User: Admin           Date: 15/03/18  Time: 10:55a
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+  2    Del: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+  3    Ins: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+2542 Change:     sql2 = "Exec SearchSubsidiary '" & Trim(CboGrpCom) & "'"
+        To:     sql2 = "Exec SearchSubsidiary '" & Trim(Replace(CboGrpCom, "'", "''")) & "'"
+2556 Change:         sql2 = "Exec SearchDepartment  '" & Trim(CboGrpCom) & "'"
+        To:         sql2 = "Exec SearchDepartment  '" & Trim(Replace(CboGrpCom, "'", "''")) & "'"
+2860 Change:     With CboPayTo
+        To:     With CboPayto
+2865 Change:     With CboClaimability
+        To:     With cboClaimability
+2945 Change:     If Len(Trim(CboPayTo)) Then
+        To:     If Len(Trim(CboPayto)) Then
+2946 Change:         strAppend = strAppend + " AND INVPayTo = '" & Trim(Mid(CboPayTo, 1, IIf(InStr(1, CboPayTo, "-") = 0, 4, InStr(1, CboPayTo, "-") - 1))) & "'"
+        To:         strAppend = strAppend + " AND INVPayTo = '" & Trim(Mid(CboPayto, 1, IIf(InStr(1, CboPayto, "-") = 0, 4, InStr(1, CboPayto, "-") - 1))) & "'"
+2988 Change:     If Len(Trim(CboGrpCom)) Then
+        To:     If Len(Trim(Replace(CboGrpCom, "'", "''"))) Then
+2996 Change:     If Len(Trim(TxtPatientName)) Then
+        To:     If Len(Trim(txtPatientName)) Then
+2997 Change:        strAppend = strAppend + " And PatientName = '" & Trim(TxtPatientName) & "'"
+        To:        strAppend = strAppend + " And PatientName = '" & Trim(txtPatientName) & "'"
+3006 Change:     If Len(Trim(TxtMBMNo1)) Then
+        To:     If Len(Trim(txtMBMNo1)) Then
+3007 Change:         strAppend = strAppend + " AND MBMNumber >= '" & Trim(TxtMBMNo1) & "'"
+        To:         strAppend = strAppend + " AND MBMNumber >= '" & Trim(txtMBMNo1) & "'"
+3020 Change:     If Len(Trim(TxtInvNo1)) Then
+        To:     If Len(Trim(txtInvNo1)) Then
+3021 Change:         strAppend = strAppend + " AND BillNo >= '" & Trim(TxtInvNo1) & "'"
+        To:         strAppend = strAppend + " AND BillNo >= '" & Trim(txtInvNo1) & "'"
+3024 Change:     If Len(Trim(TxtInvNo2)) Then
+        To:     If Len(Trim(txtInvNo2)) Then
+3025 Change:         strAppend = strAppend + " AND BillNo <= '" & Trim(TxtInvNo2) & "'"
+        To:         strAppend = strAppend + " AND BillNo <= '" & Trim(txtInvNo2) & "'"
+3056 Change:     If Mid(CboClaimability, 1, 1) = "R" Then
+        To:     If Mid(cboClaimability, 1, 1) = "R" Then
+3058 Change:     ElseIf Mid(CboClaimability, 1, 1) = "A" Then
+        To:     ElseIf Mid(cboClaimability, 1, 1) = "A" Then
+3160 Change:     If Len(Trim(txtINVAmtFr)) Then
+        To:     If Len(Trim(txtInvAmtfr)) Then
+3161 Change:         strAppend = strAppend + " AND INVAmount >= " & Trim(txtINVAmtFr) & ""
+        To:         strAppend = strAppend + " AND INVAmount >= " & Trim(txtInvAmtfr) & ""
+3164 Change:     If Len(Trim(txtINVAmtTo)) Then
+        To:     If Len(Trim(TxtInvAmtTo)) Then
+3165 Change:         strAppend = strAppend + " AND INVAmount <= " & Trim(txtINVAmtTo) & ""
+        To:         strAppend = strAppend + " AND INVAmount <= " & Trim(TxtInvAmtTo) & ""
+3210 Change:     If Len(Trim(TxtOPBatchNo1)) Then
+        To:     If Len(Trim(txtOPBatchNo1)) Then
+3211 Change:         strAppend = strAppend + " AND OPBatchNo >= '" & Trim(TxtOPBatchNo1) & "'"
+        To:         strAppend = strAppend + " AND OPBatchNo >= '" & Trim(txtOPBatchNo1) & "'"
+3214 Change:     If Len(Trim(TxtOPBatchNo2)) Then
+        To:     If Len(Trim(txtOPBatchNo2)) Then
+3215 Change:         strAppend = strAppend + " AND OPBatchNo <= '" & Trim(TxtOPBatchNo2) & "'"
+        To:         strAppend = strAppend + " AND OPBatchNo <= '" & Trim(txtOPBatchNo2) & "'"
+3722 Change:     If InStr(CboPayTo.Text, "null") Then
+        To:     If InStr(CboPayto.Text, "null") Then
+3723 Change:        CboPayTo.Enabled = False
+        To:        CboPayto.Enabled = False
+3768 Change:     If InStr(CboClaimability.Text, "null") Then
+        To:     If InStr(cboClaimability.Text, "null") Then
+3769 Change:        CboClaimability.Enabled = False
+        To:        cboClaimability.Enabled = False
+3779 Change:     NewText = LCase(Left(CboClaimability.Text, CboClaimability.SelStart) + Chr(KeyAscii) + Mid(CboClaimability.Text, CboClaimability.SelStart + CboClaimability.SelLength + 1))
+        To:     NewText = LCase(Left(cboClaimability.Text, cboClaimability.SelStart) + Chr(KeyAscii) + Mid(cboClaimability.Text, cboClaimability.SelStart + cboClaimability.SelLength + 1))
+3784 Change:     For i = 0 To CboClaimability.ListCount - 1
+        To:     For i = 0 To cboClaimability.ListCount - 1
+3786 Change:         If NewText = LCase(Left(CboClaimability.List(i), Len(NewText))) Then
+        To:         If NewText = LCase(Left(cboClaimability.List(i), Len(NewText))) Then
+3788 Change:                 ValidValue = CboClaimability.List(i)
+        To:                 ValidValue = cboClaimability.List(i)
+3793 Change:                 CboClaimability.Text = ValidValue
+        To:                 cboClaimability.Text = ValidValue
+3794 Change:                 CboClaimability.SelStart = 0
+        To:                 cboClaimability.SelStart = 0
+3795 Change:                 CboClaimability.SelLength = Len(ValidValue)
+        To:                 cboClaimability.SelLength = Len(ValidValue)
+3900 Change:     If InStr(CboPayTo.Text, "null") Then
+        To:     If InStr(CboPayto.Text, "null") Then
+3901 Change:        CboPayTo.Enabled = False
+        To:        CboPayto.Enabled = False
+3911 Change:     NewText = LCase(Left(CboPayTo.Text, CboPayTo.SelStart) + Chr(KeyAscii) + Mid(CboPayTo.Text, CboPayTo.SelStart + CboPayTo.SelLength + 1))
+        To:     NewText = LCase(Left(CboPayto.Text, CboPayto.SelStart) + Chr(KeyAscii) + Mid(CboPayto.Text, CboPayto.SelStart + CboPayto.SelLength + 1))
+3916 Change:     For i = 0 To CboPayTo.ListCount - 1
+        To:     For i = 0 To CboPayto.ListCount - 1
+3918 Change:         If NewText = LCase(Left(CboPayTo.List(i), Len(NewText))) Then
+        To:         If NewText = LCase(Left(CboPayto.List(i), Len(NewText))) Then
+3920 Change:                 ValidValue = CboPayTo.List(i)
+        To:                 ValidValue = CboPayto.List(i)
+3925 Change:                 CboPayTo.Text = ValidValue
+        To:                 CboPayto.Text = ValidValue
+3926 Change:                 CboPayTo.SelStart = 0
+        To:                 CboPayto.SelStart = 0
+3927 Change:                 CboPayTo.SelLength = Len(ValidValue)
+        To:                 CboPayto.SelLength = Len(ValidValue)
+
+
+*****************  Version 7  *****************
+User: Admin           Date: 24/08/17  Time: 10:36a
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+  2    Del: Object = "{C932BA88-4374-101B-A56C-00AA003668DC}#1.1#0"; "MSMASK32.OCX"
+  3    Ins: Object = "{C932BA88-4374-101B-A56C-00AA003668DC}#1.1#0"; "MSMASK32.OCX"
+1879 Change:       NumItems        =   68
+        To:       NumItems        =   69
+2241    Ins:       BeginProperty ColumnHeader(69) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2242    Ins:          SubItemIndex    =   68
+2243    Ins:          Text            =   "Doctor Name"
+2244    Ins:          Object.Width           =   2540
+2245    Ins:       EndProperty
+2517 Change: Private m_blnDirection(1 To 68) As Boolean
+        To: Private m_blnDirection(1 To 69) As Boolean
+2848    Ins:     Case 52
+2849    Ins:         SortListView lstInvoiceTrackList, ColumnHeader.Index, ldtString, m_blnDirection(52)
+3615    Ins:                 Record.SubItems(68) = IIf(Len(rst2!DoctorName), rst2!DoctorName, "")
+
+
+*****************  Version 6  *****************
+User: Admin           Date: 27/02/17  Time:  2:37p
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+1879 Change:       NumItems        =   66
+        To:       NumItems        =   68
+2231    Ins:       BeginProperty ColumnHeader(67) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2232    Ins:          SubItemIndex    =   66
+2233    Ins:          Text            =   "CAS Mgmt Notes"
+2234    Ins:          Object.Width           =   2540
+2235    Ins:       EndProperty
+2236    Ins:       BeginProperty ColumnHeader(68) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+2237    Ins:          SubItemIndex    =   67
+2238    Ins:          Text            =   "Cas Remark"
+2239    Ins:          Object.Width           =   2540
+2240    Ins:       EndProperty
+2507 Change: Private m_blnDirection(1 To 51) As Boolean
+        To: Private m_blnDirection(1 To 68) As Boolean
+3606    Ins:                 Record.SubItems(66) = IIf(Len(rst2!CASMgmtNotes), rst2!CASMgmtNotes, "")
+3607    Ins:                 Record.SubItems(67) = IIf(Len(rst2!CasRemark), rst2!CasRemark, "")
+
+
+*****************  Version 5  *****************
+User: Admin           Date: 19/01/17  Time:  9:37a
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+3040 Change:         strAppend = strAppend + " Or CASClaimability = 'R'"
+        To:         strAppend = strAppend + " Or Claimability = 'R'"
+3042 Change:         strAppend = strAppend + " Or CASClaimability = 'A'"
+        To:         strAppend = strAppend + " Or Claimability = 'A'"
+
+
+*****************  Version 4  *****************
+User: Admin           Date:  9/11/16  Time:  2:17p
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+2514    Ins: Const METHOD_NAME = "CboGrpCom_LostFocus"
+2515    Ins: On Error GoTo debugs
+2551 Change: 
+        To: debugs:
+2554    Ins: If Err.Description <> "" Then
+2555    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+2556    Ins: End If
+2898    Ins: Const METHOD_NAME = "SearchRecord"
+2899    Ins: On Error GoTo debugs
+3249 Change: 
+        To: debugs:
+3257    Ins: If Err.Description <> "" Then
+3258    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+3259    Ins: End If
+3266    Ins: Const METHOD_NAME = "InvoiceTrackingListing"
+3267    Ins: On Error GoTo debugs
+3641    Ins: debugs:
+3642    Ins: If Err.Description <> "" Then
+3643    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+3644    Ins: End If
+3645    Ins: 
+3646    Ins:     
+3651    Ins: Const METHOD_NAME = "PaymentInfo"
+3652    Ins: On Error GoTo debugs
+3656    Ins: 
+3693    Ins: debugs:
+3694    Ins: If Err.Description <> "" Then
+3695    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+3696    Ins: End If
+4165    Ins: Const METHOD_NAME = "ChkClinic2_Click"
+4166    Ins: On Error GoTo debugs
+4194    Ins: debugs:
+4195    Ins: If Err.Description <> "" Then
+4196    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+4197    Ins: End If
+4202    Ins: Const METHOD_NAME = "ChkGrpCom2_Click"
+4203    Ins: On Error GoTo debugs
+4233    Ins: debugs:
+4234    Ins: If Err.Description <> "" Then
+4235    Ins:     Call ErrorLog(Me.Caption, METHOD_NAME, Err.Description)
+4236    Ins: End If
+
+
+*****************  Version 3  *****************
+User: Admin           Date: 25/10/16  Time:  9:49a
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+  3 Change: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+        To: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
+ 19 Change:       TabIndex        =   73
+        To:       TabIndex        =   71
+ 28 Change:          TabIndex        =   138
+        To:          TabIndex        =   135
+ 35 Change:          TabIndex        =   124
+        To:          TabIndex        =   121
+ 42 Change:          TabIndex        =   114
+        To:          TabIndex        =   112
+876 Change:          TabIndex        =   118
+        To:          TabIndex        =   115
+885 Change:          TabIndex        =   120
+        To:          TabIndex        =   117
+895 Change:          TabIndex        =   122
+        To:          TabIndex        =   119
+912 Change:          TabIndex        =   125
+        To:          TabIndex        =   122
+929 Change:          TabIndex        =   126
+        To:          TabIndex        =   123
+938 Change:          TabIndex        =   129
+        To:          TabIndex        =   126
+945 Change:          TabIndex        =   131
+        To:          TabIndex        =   128
+967 Change:          TabIndex        =   132
+        To:          TabIndex        =   129
+991 Change:          TabIndex        =   135
+        To:          TabIndex        =   132
+1008 Change:          TabIndex        =   137
+        To:          TabIndex        =   134
+1026 Change:          TabIndex        =   136
+        To:          TabIndex        =   133
+1044 Change:          TabIndex        =   134
+        To:          TabIndex        =   131
+1063 Change:          TabIndex        =   133
+        To:          TabIndex        =   130
+1081 Change:          TabIndex        =   130
+        To:          TabIndex        =   127
+1099 Change:          TabIndex        =   128
+        To:          TabIndex        =   125
+1117 Change:          TabIndex        =   127
+        To:          TabIndex        =   124
+1134 Change:          TabIndex        =   123
+        To:          TabIndex        =   120
+1152 Change:          TabIndex        =   121
+        To:          TabIndex        =   118
+1169 Change:          TabIndex        =   119
+        To:          TabIndex        =   116
+1187 Change:          TabIndex        =   113
+        To:          TabIndex        =   111
+1204 Change:          TabIndex        =   112
+        To:          TabIndex        =   110
+1221 Change:          TabIndex        =   111
+        To:          TabIndex        =   109
+1239 Change:          TabIndex        =   109
+        To:          TabIndex        =   107
+1256 Change:          TabIndex        =   108
+        To:          TabIndex        =   106
+1273 Change:          TabIndex        =   107
+        To:          TabIndex        =   105
+1290 Change:          TabIndex        =   106
+        To:          TabIndex        =   104
+1307 Change:          TabIndex        =   105
+        To:          TabIndex        =   103
+1324 Change:          TabIndex        =   104
+        To:          TabIndex        =   102
+1341 Change:          TabIndex        =   103
+        To:          TabIndex        =   101
+1358 Change:          TabIndex        =   102
+        To:          TabIndex        =   100
+1376 Change:          TabIndex        =   101
+        To:          TabIndex        =   99
+1393 Change:          TabIndex        =   100
+        To:          TabIndex        =   98
+1410 Change:          TabIndex        =   99
+        To:          TabIndex        =   97
+1428 Change:          TabIndex        =   98
+        To:          TabIndex        =   96
+1446 Change:          TabIndex        =   97
+        To:          TabIndex        =   95
+1463 Change:          TabIndex        =   96
+        To:          TabIndex        =   94
+1480 Change:          TabIndex        =   95
+        To:          TabIndex        =   93
+1497 Change:          TabIndex        =   94
+        To:          TabIndex        =   92
+1514 Change:          TabIndex        =   93
+        To:          TabIndex        =   91
+1531 Change:          TabIndex        =   92
+        To:          TabIndex        =   90
+1548 Change:          TabIndex        =   91
+        To:          TabIndex        =   89
+1565 Change:          TabIndex        =   90
+        To:          TabIndex        =   88
+1583 Change:          TabIndex        =   89
+        To:          TabIndex        =   87
+1600 Change:          TabIndex        =   88
+        To:          TabIndex        =   86
+1619 Change:          TabIndex        =   87
+        To:          TabIndex        =   85
+1637 Change:          TabIndex        =   86
+        To:          TabIndex        =   84
+1654 Change:          TabIndex        =   85
+        To:          TabIndex        =   83
+1671 Change:          TabIndex        =   84
+        To:          TabIndex        =   82
+1688 Change:          TabIndex        =   83
+        To:          TabIndex        =   81
+1705 Change:          TabIndex        =   82
+        To:          TabIndex        =   80
+1722 Change:          TabIndex        =   81
+        To:          TabIndex        =   79
+1739 Change:          TabIndex        =   80
+        To:          TabIndex        =   78
+1757 Change:          TabIndex        =   79
+        To:          TabIndex        =   77
+1774 Change:          TabIndex        =   78
+        To:          TabIndex        =   76
+1791 Change:          TabIndex        =   77
+        To:          TabIndex        =   75
+1809 Change:          TabIndex        =   76
+        To:          TabIndex        =   74
+1827 Change:          TabIndex        =   75
+        To:          TabIndex        =   73
+1844 Change:          TabIndex        =   74
+        To:          TabIndex        =   72
+1852 Change:       TabIndex        =   72
+        To:       TabIndex        =   70
+2238    Ins:       Begin VB.TextBox lblCurrent 
+2239    Ins:          Height          =   285
+2240    Ins:          Left            =   120
+2241    Ins:          TabIndex        =   138
+2242    Ins:          Top             =   195
+2243    Ins:          Width           =   1095
+2244    Ins:       End
+2245    Ins:       Begin VB.TextBox LblAppAmt 
+2246    Ins:          Height          =   285
+2247    Ins:          Left            =   3480
+2248    Ins:          TabIndex        =   137
+2249    Ins:          Top             =   195
+2250    Ins:          Width           =   1095
+2251    Ins:       End
+2252    Ins:       Begin VB.TextBox LblTotalAmt 
+2253    Ins:          Height          =   285
+2254    Ins:          Left            =   5880
+2255    Ins:          TabIndex        =   136
+2256    Ins:          Top             =   195
+2257    Ins:          Width           =   1215
+2258    Ins:       End
+2367    Del:       Begin VB.Label LblTotalAmt 
+2368    Del:          Alignment       =   1  'Right Justify
+2369    Del:          BackColor       =   &H80000009&
+2370    Del:          BeginProperty Font 
+2371    Del:             Name            =   "Tahoma"
+2372    Del:             Size            =   8.25
+2373    Del:             Charset         =   0
+2374    Del:             Weight          =   400
+2375    Del:             Underline       =   0   'False
+2376    Del:             Italic          =   0   'False
+2377    Del:             Strikethrough   =   0   'False
+2378    Del:          EndProperty
+2379    Del:          Height          =   255
+2380    Del:          Left            =   5760
+2381    Del:          TabIndex        =   68
+2382    Del:          Top             =   195
+2383    Del:          Width           =   1215
+2384    Del:       End
+2385    Del:       Begin VB.Label LblAppAmt 
+2386    Del:          Alignment       =   1  'Right Justify
+2387    Del:          BackColor       =   &H80000009&
+2388    Del:          BeginProperty Font 
+2389    Del:             Name            =   "Tahoma"
+2390    Del:             Size            =   8.25
+2391    Del:             Charset         =   0
+2392    Del:             Weight          =   400
+2393    Del:             Underline       =   0   'False
+2394    Del:             Italic          =   0   'False
+2395    Del:             Strikethrough   =   0   'False
+2396    Del:          EndProperty
+2397    Del:          Height          =   255
+2398    Del:          Left            =   3480
+2399    Del:          TabIndex        =   117
+2400    Del:          Top             =   195
+2401    Del:          Width           =   1095
+2402    Del:       End
+2417 Change:          TabIndex        =   116
+        To:          TabIndex        =   114
+2421    Del:       Begin VB.Label lblCurrent 
+2422    Del:          Alignment       =   1  'Right Justify
+2423    Del:          BackColor       =   &H80000009&
+2424    Del:          BeginProperty Font 
+2425    Del:             Name            =   "Tahoma"
+2426    Del:             Size            =   8.25
+2427    Del:             Charset         =   0
+2428    Del:             Weight          =   400
+2429    Del:             Underline       =   0   'False
+2430    Del:             Italic          =   0   'False
+2431    Del:             Strikethrough   =   0   'False
+2432    Del:          EndProperty
+2433    Del:          Height          =   255
+2434    Del:          Left            =   240
+2435    Del:          TabIndex        =   71
+2436    Del:          Top             =   195
+2437    Del:          Width           =   1215
+2438    Del:       End
+2443 Change:          TabIndex        =   70
+        To:          TabIndex        =   69
+2462 Change:          TabIndex        =   69
+        To:          TabIndex        =   68
+2508 Change:       TabIndex        =   115
+        To:       TabIndex        =   113
+2529 Change:       TabIndex        =   110
+        To:       TabIndex        =   108
+2715    Ins: 
+2716    Ins: 
+
+
+*****************  Version 2  *****************
+User: Admin           Date: 11/12/15  Time:  2:54p
+Checked in $/MEDIXCIS
+Comment:
+  
+Changes:
+  2    Del: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+  3    Ins: Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+ 17 Change:       Height          =   4035
+        To:       Height          =   4275
+ 22    Ins:       Begin VB.ComboBox CboDepartment 
+ 23    Ins:          Height          =   315
+ 24    Ins:          ItemData        =   "FrmInvoiceTracking.frx":0000
+ 25    Ins:          Left            =   7560
+ 26    Ins:          List            =   "FrmInvoiceTracking.frx":0002
+ 27    Ins:          Sorted          =   -1  'True
+ 28    Ins:          TabIndex        =   138
+ 29    Ins:          Top             =   3960
+ 30    Ins:          Width           =   3615
+ 31    Ins:       End
+720 Change:          ItemData        =   "FrmInvoiceTracking.frx":0000
+        To:          ItemData        =   "FrmInvoiceTracking.frx":0004
+722 Change:          List            =   "FrmInvoiceTracking.frx":0002
+        To:          List            =   "FrmInvoiceTracking.frx":0006
+738 Change:          ItemData        =   "FrmInvoiceTracking.frx":0004
+        To:          ItemData        =   "FrmInvoiceTracking.frx":0008
+740 Change:          List            =   "FrmInvoiceTracking.frx":0006
+        To:          List            =   "FrmInvoiceTracking.frx":000A
+794 Change:          ItemData        =   "FrmInvoiceTracking.frx":0008
+        To:          ItemData        =   "FrmInvoiceTracking.frx":000C
+796 Change:          List            =   "FrmInvoiceTracking.frx":000A
+        To:          List            =   "FrmInvoiceTracking.frx":000E
+812 Change:          ItemData        =   "FrmInvoiceTracking.frx":000C
+        To:          ItemData        =   "FrmInvoiceTracking.frx":0010
+814 Change:          List            =   "FrmInvoiceTracking.frx":000E
+        To:          List            =   "FrmInvoiceTracking.frx":0012
+872 Change:          ItemData        =   "FrmInvoiceTracking.frx":0010
+        To:          ItemData        =   "FrmInvoiceTracking.frx":0014
+874 Change:          List            =   "FrmInvoiceTracking.frx":0020
+        To:          List            =   "FrmInvoiceTracking.frx":0024
+881 Change:          ItemData        =   "FrmInvoiceTracking.frx":0064
+        To:          ItemData        =   "FrmInvoiceTracking.frx":0068
+883 Change:          List            =   "FrmInvoiceTracking.frx":0066
+        To:          List            =   "FrmInvoiceTracking.frx":006A
+925 Change:          ItemData        =   "FrmInvoiceTracking.frx":0068
+        To:          ItemData        =   "FrmInvoiceTracking.frx":006C
+927 Change:          List            =   "FrmInvoiceTracking.frx":0078
+        To:          List            =   "FrmInvoiceTracking.frx":007C
+978 Change:          ItemData        =   "FrmInvoiceTracking.frx":00BC
+        To:          ItemData        =   "FrmInvoiceTracking.frx":00C0
+980 Change:          List            =   "FrmInvoiceTracking.frx":00CC
+        To:          List            =   "FrmInvoiceTracking.frx":00D0
+995    Ins:       Begin VB.Label lblDepartment 
+996    Ins:          Caption         =   "Department"
+997    Ins:          BeginProperty Font 
+998    Ins:             Name            =   "Tahoma"
+999    Ins:             Size            =   8.25
+1000    Ins:             Charset         =   0
+1001    Ins:             Weight          =   400
+1002    Ins:             Underline       =   0   'False
+1003    Ins:             Italic          =   0   'False
+1004    Ins:             Strikethrough   =   0   'False
+1005    Ins:          EndProperty
+1006    Ins:          Height          =   255
+1007    Ins:          Left            =   6360
+1008    Ins:          TabIndex        =   137
+1009    Ins:          Top             =   3960
+1010    Ins:          Width           =   975
+1011    Ins:       End
+1823 Change:       Height          =   2505
+        To:       Height          =   2265
+1826 Change:       Top             =   4320
+        To:       Top             =   4560
+1829 Change:       _ExtentY        =   4419
+        To:       _ExtentY        =   3995
+2570    Ins:     '=Run Sp=================================================
+2571    Ins:     sql2 = ""
+2572    Ins:         sql2 = "Exec SearchDepartment  '" & Trim(CboGrpCom) & "'"
+2573    Ins:         rst3.Open sql2, medixmasterconn, adOpenForwardOnly, adLockBatchOptimistic
+2574    Ins:     '===================================================
+2575    Ins:     CboDepartment.Clear
+2576    Ins:     Do Until rst3.EOF
+2577    Ins:         With rst3
+2578    Ins:         CboDepartment.AddItem IIf(Len(Trim(!MBMDepartment)), Trim(!MBMDepartment), "")
+2579    Ins:         rst3.MoveNext
+2580    Ins:         End With
+2581    Ins:         Loop
+2582    Ins:         rst3.Close
+2583    Ins:         Set rst3 = Nothing
+3253    Ins:     If Len(Trim(CboDepartment)) Then
+3254    Ins:         strAppend = strAppend + " AND MBMDepartment = '" & Trim(CboDepartment) & "'"
+3255    Ins:     End If
+
+
+*****************  Version 1  *****************
+User: Admin           Date: 24/11/15  Time:  5:47p
+Created FrmInvoiceTracking.frm
+Comment:
+  
+

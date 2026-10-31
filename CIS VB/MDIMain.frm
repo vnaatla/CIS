@@ -1,0 +1,2906 @@
+VERSION 5.00
+Begin VB.MDIForm MDIMain 
+   BackColor       =   &H8000000C&
+   ClientHeight    =   3195
+   ClientLeft      =   225
+   ClientTop       =   1755
+   ClientWidth     =   4680
+   LinkTopic       =   "MDIForm1"
+   StartUpPosition =   3  'Windows Default
+   WindowState     =   2  'Maximized
+   Begin VB.Menu mnuFile 
+      Caption         =   "&File"
+      Begin VB.Menu mnuPageSetup 
+         Caption         =   "Page &Setup"
+      End
+      Begin VB.Menu mnuPrint 
+         Caption         =   "&Print"
+      End
+   End
+   Begin VB.Menu Membership 
+      Caption         =   "&Membership"
+      Begin VB.Menu MBMAdjustment 
+         Caption         =   "MBM Adjustment"
+      End
+      Begin VB.Menu MBMEnquiry 
+         Caption         =   "MBM Enquiry"
+      End
+      Begin VB.Menu mnMBMTopup 
+         Caption         =   "MBM Topup Adj"
+      End
+      Begin VB.Menu mnuMBMTracking 
+         Caption         =   "MBM Tracking"
+      End
+      Begin VB.Menu MBMTrackingSimple 
+         Caption         =   "MBM Tracking (Simple)"
+      End
+      Begin VB.Menu mnuMBMTracking2 
+         Caption         =   "MBM Tracking (Jupiter)"
+      End
+      Begin VB.Menu MBMTrackingJupSimple 
+         Caption         =   "MBM Tracking (Jupiter - Simple)"
+      End
+   End
+   Begin VB.Menu mnuMCOFee 
+      Caption         =   "&MCOFees"
+      Begin VB.Menu mnuMCOInvoice 
+         Caption         =   "MCO Invoice"
+      End
+      Begin VB.Menu GSTInvoice 
+         Caption         =   "MCO Invoice GST"
+      End
+      Begin VB.Menu mnuMCOFeeGSTZeroised 
+         Caption         =   "MCO Invoice GST Zeroised"
+      End
+      Begin VB.Menu mnuFeeListing 
+         Caption         =   "Fee Listing"
+      End
+      Begin VB.Menu mnuFeeRefund 
+         Caption         =   "Refund Listing"
+      End
+   End
+   Begin VB.Menu mnuInvoice 
+      Caption         =   "&Invoice"
+      Begin VB.Menu mnuINVControlEntry 
+         Caption         =   "Invoice Control"
+      End
+      Begin VB.Menu mnClinic 
+         Caption         =   "&Clinic"
+         Begin VB.Menu mnuInvProcess 
+            Caption         =   "&Clinic"
+         End
+         Begin VB.Menu mnuInvMember 
+            Caption         =   "&Member"
+         End
+         Begin VB.Menu mnuINVAdjProc 
+            Caption         =   "&Adjustment"
+         End
+         Begin VB.Menu mnuINVAdjProcAfter 
+            Caption         =   "A&djustment (After Posting)"
+         End
+         Begin VB.Menu mnInvEnquiry 
+            Caption         =   "&Enquiry"
+         End
+         Begin VB.Menu mnBatchUpd 
+            Caption         =   "&Batch Transfer"
+         End
+         Begin VB.Menu mnuINVAdjAfterBordx 
+            Caption         =   "Adjustment(After Bordx)"
+         End
+      End
+      Begin VB.Menu mnuEmail 
+         Caption         =   "Email Notification (Payment)"
+      End
+      Begin VB.Menu mnuEmailProvider 
+         Caption         =   "Email Notification (Providers)"
+      End
+      Begin VB.Menu mnuEmaiReject 
+         Caption         =   "Email Notification (Rejection)"
+      End
+      Begin VB.Menu mnuGeneralExclusions 
+         Caption         =   "General Exclusions"
+      End
+      Begin VB.Menu mnuGeneralExclusionsEnq 
+         Caption         =   "General Exclusions (Enquiry)"
+      End
+      Begin VB.Menu mnuGenerateClaimASCII 
+         Caption         =   "Claim ASCII (Bintulu)"
+      End
+      Begin VB.Menu mnuClaimASCIIToshiba 
+         Caption         =   "Claim ASCII(Toshiba)"
+      End
+      Begin VB.Menu mnuClaimASCIISinger 
+         Caption         =   "Claim ASCII(Singer)"
+      End
+      Begin VB.Menu mnuClaimASCIIUtusan 
+         Caption         =   "Claim ASCII(Utusan Melayu)"
+      End
+      Begin VB.Menu mnuClaimASCIIOMNI 
+         Caption         =   "Claim ASCII(OMNI)"
+      End
+      Begin VB.Menu mnuCLaimASCIITIMS 
+         Caption         =   "Claim ASCII(TIMS)"
+      End
+      Begin VB.Menu mnuClaimASCIICIMB 
+         Caption         =   "Claim ASCII(CIMB)"
+      End
+      Begin VB.Menu mnDental 
+         Caption         =   "&Dental"
+         Visible         =   0   'False
+         Begin VB.Menu mnDentInvoice 
+            Caption         =   "&Dental"
+         End
+         Begin VB.Menu mnDentMBM 
+            Caption         =   "&Member"
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnDentalAdj 
+            Caption         =   "&Adjustment"
+         End
+      End
+      Begin VB.Menu InvoiceUpdate 
+         Caption         =   "Invoice Update"
+         Visible         =   0   'False
+      End
+      Begin VB.Menu OPBatchUpdate 
+         Caption         =   "OP Batch/Invoice"
+      End
+      Begin VB.Menu mnuCaseTransfer 
+         Caption         =   "Case Transfer"
+      End
+      Begin VB.Menu mnuINVTracking 
+         Caption         =   "Tracking"
+      End
+      Begin VB.Menu mnuINVTracking2 
+         Caption         =   "Tracking (Jupiter)"
+      End
+      Begin VB.Menu mnuMMACPT 
+         Caption         =   "MMA/CPT"
+      End
+   End
+   Begin VB.Menu mnuCLaim 
+      Caption         =   "&Claim"
+      Begin VB.Menu mnuPass2Claim 
+         Caption         =   "Pass to Claim"
+      End
+   End
+   Begin VB.Menu mnuClaimBordx 
+      Caption         =   "Claim &Bordx"
+      Begin VB.Menu mnuWSSelection 
+         Caption         =   "&Worksheet"
+         Begin VB.Menu mnuGenerateBordx 
+            Caption         =   "&Insert Worksheet"
+         End
+         Begin VB.Menu mnuGenerateInvBordx 
+            Caption         =   "Insert In&voice"
+            Enabled         =   0   'False
+         End
+         Begin VB.Menu mnuBordxRevise 
+            Caption         =   "&Remove Worksheet"
+         End
+      End
+      Begin VB.Menu mnuUpdCLMData 
+         Caption         =   "Update Claims Data"
+      End
+      Begin VB.Menu mnuPrintBordx 
+         Caption         =   "&Print Bordx"
+         Visible         =   0   'False
+      End
+      Begin VB.Menu mnuPrintBordxExcel 
+         Caption         =   "&Print Bordx"
+      End
+      Begin VB.Menu mnuPrintBordxIBM 
+         Caption         =   "Print Bordx (SEB/INDAH WATER)"
+      End
+      Begin VB.Menu mnuPrintBordxSPNB 
+         Caption         =   "Print Bordx (Prasarana)"
+      End
+      Begin VB.Menu mnuPrintBordxCoke 
+         Caption         =   "Print Bordx (AXA Affin)"
+      End
+      Begin VB.Menu mnuPrintBordxTime 
+         Caption         =   "Print Bordx (Time Dotcom)"
+      End
+      Begin VB.Menu mnuPrintBordxBSN 
+         Caption         =   "Print Bordx (BSN)"
+      End
+      Begin VB.Menu mnuBSNPrintSummary 
+         Caption         =   "BSN-PrintSummary"
+      End
+      Begin VB.Menu mnuPrintBordxBSI 
+         Caption         =   "Print Bordx (Berjaya Sompo)"
+      End
+      Begin VB.Menu mnuBordxDelivery 
+         Caption         =   "Bordx &Delivery"
+         Begin VB.Menu mnuToPayor 
+            Caption         =   "Send to &Grp. Company"
+         End
+         Begin VB.Menu mnuFrPayor 
+            Caption         =   "&Returned Fr Grp. Company"
+         End
+         Begin VB.Menu mnuSentAC 
+            Caption         =   "Send to &A/C"
+         End
+      End
+      Begin VB.Menu mnuBorAccPeriod 
+         Caption         =   "Bor Acc P&eriod"
+      End
+      Begin VB.Menu mnsBordxTrack 
+         Caption         =   "Moni&toring"
+         Begin VB.Menu mnuBordxCtrl 
+            Caption         =   "Bordx &Control"
+         End
+         Begin VB.Menu mnuOSBordx 
+            Caption         =   "&Outstanding Bordx"
+         End
+         Begin VB.Menu mnuBordxTracking 
+            Caption         =   "&Bordx && Worksheet"
+         End
+      End
+      Begin VB.Menu mnuClaimTrack 
+         Caption         =   "Claim &Tracking"
+      End
+      Begin VB.Menu mnuClaimTrackingSimple 
+         Caption         =   "Claim Tracking (Simple)"
+      End
+      Begin VB.Menu mnuClaimTrack2 
+         Caption         =   "Claim Tracking 2"
+      End
+      Begin VB.Menu mnuClaimTrack3 
+         Caption         =   "Claim &Tracking (Jupiter)"
+      End
+      Begin VB.Menu ClaimTrackingJupSimple 
+         Caption         =   "Claim Tracking (Jupiter - Simple)"
+      End
+      Begin VB.Menu mnuClaimTrack4 
+         Caption         =   "Claim &Tracking 2 (Jupiter)"
+      End
+      Begin VB.Menu mnuCLMTracking 
+         Caption         =   "Claim Tracking (SUN System)"
+      End
+      Begin VB.Menu cmdClaimBordxDate 
+         Caption         =   "ClaimBordxDate"
+      End
+   End
+   Begin VB.Menu mnuLG 
+      Caption         =   "&LG"
+      Begin VB.Menu mnuGenLG 
+         Caption         =   "&Generate LG"
+      End
+   End
+   Begin VB.Menu mnuAuditreview 
+      Caption         =   "&Audit review"
+      Begin VB.Menu mnuAudit 
+         Caption         =   "&Audit review"
+      End
+      Begin VB.Menu mnuAudittracking 
+         Caption         =   "Audit Tracking"
+      End
+   End
+   Begin VB.Menu mnuPayment 
+      Caption         =   "&Payment"
+      Begin VB.Menu mnuPaymentCLN 
+         Caption         =   "To &Clinic"
+      End
+      Begin VB.Menu mnuPAYCLNBatch 
+         Caption         =   "To Clinic - Invoice"
+      End
+      Begin VB.Menu mnuPaymentMBM 
+         Caption         =   "To &Member"
+      End
+      Begin VB.Menu mnuPAYMBMBatch 
+         Caption         =   "To Member - Batch"
+         Visible         =   0   'False
+      End
+      Begin VB.Menu mnuPaymentTracking 
+         Caption         =   "Tracking"
+      End
+      Begin VB.Menu mnuPaymentTracking2 
+         Caption         =   "Tracking (Jupiter)"
+      End
+      Begin VB.Menu mnuPaymentFFS 
+         Caption         =   "FFS Payment"
+      End
+   End
+   Begin VB.Menu mnuReceipt 
+      Caption         =   "&Receipt"
+      Begin VB.Menu mnuReceiptMBM 
+         Caption         =   "Fr &Member"
+      End
+      Begin VB.Menu mnuReceiptPayor 
+         Caption         =   "Fr &Grp Company"
+      End
+      Begin VB.Menu mnuReceiptFFS 
+         Caption         =   "Fr &FFS"
+      End
+      Begin VB.Menu mnuUploadReceipt 
+         Caption         =   "Upload Receipt"
+      End
+      Begin VB.Menu mnuUploadMultipleRec 
+         Caption         =   "Upload Receipt (Multiple Receipts)"
+      End
+   End
+   Begin VB.Menu mnuACExport 
+      Caption         =   "A/C Export"
+      Begin VB.Menu mnuInvoicePost 
+         Caption         =   "Invoice"
+         Begin VB.Menu PostingInvCLN 
+            Caption         =   "Clinic "
+         End
+         Begin VB.Menu PostingInvCLNGST 
+            Caption         =   "Clinic(GST)"
+         End
+         Begin VB.Menu PostingInvCLNGST2017 
+            Caption         =   "Clinic(GST-2017)"
+         End
+         Begin VB.Menu PostingInvMBM 
+            Caption         =   "Member"
+         End
+      End
+      Begin VB.Menu PaymentPosting 
+         Caption         =   "Payment"
+         Begin VB.Menu ClinicPaymentPost 
+            Caption         =   "Clinic"
+         End
+         Begin VB.Menu MemberPaymentPost 
+            Caption         =   "Member"
+         End
+      End
+      Begin VB.Menu mnuBordxPosting 
+         Caption         =   "Bordx"
+         Begin VB.Menu mnuPostBordxGrpCompany 
+            Caption         =   "Grp Company"
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnuPostBordxGrpGST 
+            Caption         =   "Grp COmpany (GST)"
+         End
+      End
+      Begin VB.Menu mnuReceiptPosting 
+         Caption         =   "Receipt"
+         Begin VB.Menu mnuPostRecGrpCompany 
+            Caption         =   "Grp Company"
+         End
+      End
+      Begin VB.Menu mnuSUNSysGST 
+         Caption         =   "SUN System GST"
+      End
+      Begin VB.Menu mnuSUNSysRpt 
+         Caption         =   "SUN System Report"
+      End
+      Begin VB.Menu mnuSUNSysAllo 
+         Caption         =   "SUN System Allocation"
+      End
+   End
+   Begin VB.Menu mnuTracking 
+      Caption         =   "&Tracking"
+      Begin VB.Menu mnuClinic 
+         Caption         =   "&Clinic"
+      End
+      Begin VB.Menu mnuGrpComCLN 
+         Caption         =   "&Grp. Com. Clinic"
+      End
+   End
+   Begin VB.Menu mnuMaintenance 
+      Caption         =   "&Maintenance"
+      Begin VB.Menu mnuEntity 
+         Caption         =   "Entity"
+      End
+      Begin VB.Menu mnuPlan 
+         Caption         =   "Plan"
+      End
+      Begin VB.Menu MaintenanceOthers 
+         Caption         =   "Case"
+      End
+      Begin VB.Menu mnuCalculation 
+         Caption         =   "Calculation"
+      End
+      Begin VB.Menu frmLgMaintainace 
+         Caption         =   "LGMaintenance"
+      End
+      Begin VB.Menu mnuBenefit 
+         Caption         =   "Benefit"
+         Begin VB.Menu mnuMember 
+            Caption         =   "&Member"
+         End
+         Begin VB.Menu mnuBnfClinic 
+            Caption         =   "&Clinic"
+         End
+         Begin VB.Menu mnuBnfDental 
+            Caption         =   "&Dental"
+         End
+      End
+      Begin VB.Menu mnuCheckItem 
+         Caption         =   "Check Item"
+      End
+      Begin VB.Menu mnLine 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnDataTransfer 
+         Caption         =   "DataTransfer"
+      End
+      Begin VB.Menu TestFormByIT 
+         Caption         =   "&Test Form"
+      End
+   End
+   Begin VB.Menu mnuWindows 
+      Caption         =   "Windows"
+      WindowList      =   -1  'True
+   End
+   Begin VB.Menu mnuExit 
+      Caption         =   "&Exit"
+      Begin VB.Menu Logout 
+         Caption         =   "&Logout"
+      End
+      Begin VB.Menu mnuCloseConnection 
+         Caption         =   "&Close Connection"
+      End
+   End
+End
+Attribute VB_Name = "MDIMain"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = True
+Attribute VB_Exposed = False
+Option Explicit
+Private Declare Function SendMessage Lib "user32" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Any) As Long
+Const EM_UNDO = &HC7
+
+Private Sub ClinicInvoice_Click()
+End Sub
+
+Private Sub ClaimTrackingJupSimple_Click()
+On Error GoTo errOpen
+    If CheckAccess(163) = True Then 'Claim Tracking - Jupiter
+        If FormLoadedByName("frmNewClaimRptSimpleJup") = True Then
+        
+            frmNewClaimRptSimpleJup.SetFocus
+        Else
+            frmNewClaimRptSimpleJup.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub ClinicPaymentPost_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting Pay 2 Clinic
+        If FormLoadedByName("FrmPostingPay2Cln") = True Then
+            FrmPostingPay2Cln.SetFocus
+        Else
+            FrmPostingPay2Cln.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub cmdClaimBordxDate_Click()
+On Error GoTo errOpen
+   If (Trim(Logon) = "FOO" Or Trim(Logon) = "SARAH" Or Trim(Logon) = "MURALI") Then
+        If CheckAccess(122) = True Then 'Plan
+            If FormLoadedByName("FrmBordxDate") = True Then
+                FrmBordxDate.SetFocus
+            Else
+                FrmBordxDate.Show
+            End If
+        Else
+           MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+        End If
+  Else
+       MsgBox "Module is Restricted. Only Ms.Foo & Sarah can Access!", vbOKOnly + vbCritical, DialogBoxTitle
+  End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub frmLgMaintainace_Click()
+On Error GoTo errOpen
+    If CheckAccess(138) = True Then 'Plan
+        If FormLoadedByName("frmLGMaintenance") = True Then
+            frmLGMaintenance.SetFocus
+        Else
+            frmLGMaintenance.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+
+Private Sub GSTInvoice_Click()
+On Error GoTo errOpen
+    If CheckAccess(115) = True Then 'MCO Invoice
+        If FormLoadedByName("frmMCOFeeGST") = True Then
+            frmMCOFeeGST.SetFocus
+        Else
+            frmMCOFeeGST.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub InvoiceUpdate_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmUpdateCLNInvoice") = True Then
+            frmUpdateCLNInvoice.SetFocus
+        Else
+            frmUpdateCLNInvoice.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub MBMAdjustment_Click()
+On Error GoTo errOpen
+    If CheckAccess(113) = True Then 'MBM Enquiry
+        If FormLoadedByName("FrmMBMCLNAdj") = True Then
+            FrmMBMCLNAdj.SetFocus
+        Else
+            FrmMBMCLNAdj.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub MBMTrackingJupSimple_Click()
+On Error GoTo errOpen
+    If CheckAccess(160) = True Then 'MBM Tracking 2
+        If FormLoadedByName("FrmNewMBMTrackingRepSimple") = True Then
+            frmNewMBMTrackingRepSimple.SetFocus
+        Else
+            frmNewMBMTrackingRepSimple.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub MBMTrackingSimple_Click()
+On Error GoTo errOpen
+    If CheckAccess(114) = True Then 'MBM Tracking
+        If FormLoadedByName("FrmNewMBMTrackingSimple") = True Then
+            frmNewMBMTrackingSimple.SetFocus
+        Else
+            frmNewMBMTrackingSimple.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub MemberPaymentPost_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting Pay 2 Clinic
+        If FormLoadedByName("FrmPostingPay2MBM") = True Then
+            FrmPostingPay2MBM.SetFocus
+        Else
+            FrmPostingPay2MBM.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnBatchUpd_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'Batch
+        If FormLoadedByName("FrmInvoiceBatchNoUpd") = True Then
+            FrmInvoiceBatchNoUpd.SetFocus
+        Else
+            FrmInvoiceBatchNoUpd.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnInvEnquiry_Click()
+On Error GoTo errOpen
+'    If CheckAccess(119) = True Then 'Invoice Enquiry
+        If FormLoadedByName("FrmInvoiceEnq") = True Then
+            FrmInvoiceEnq.SetFocus
+        Else
+            FrmInvoiceEnq.Show
+        End If
+'    Else
+'       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+'    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnMBMTopup_Click()
+On Error GoTo errOpen
+    If CheckAccess(117) = True Or CheckAccess(113) = True Then 'Member topup limit and adjustment
+        If FormLoadedByName("FrmMBMTopupLmt") = True Then
+            FrmMBMTopupLmt.SetFocus
+        Else
+            FrmMBMTopupLmt.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuAudit_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmAuditInvoice") = True Then
+            'frmClaimsdata.SetFocus
+            frmAuditInvoice.SetFocus
+        Else
+            frmAuditInvoice.Show
+      End If
+    Else
+      MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuAudittracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'Invoice Tracking
+        If FormLoadedByName("FrmAuditInvoiceTracking") = True Then
+            FrmAuditInvoiceTracking.SetFocus
+        Else
+            FrmAuditInvoiceTracking.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    frmWorksheet.INVCLNForm = 3
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuBSNPrintSummary_Click()
+'On Error GoTo errOpen
+ '   If CheckAccess(124) = True Then
+  '      If FormLoadedByName("frmBSNPrintSummary") = True Then
+   '         frmBSNPrintSummary.SetFocus
+    '    Else
+     '       frmBSNPrintSummary.Show
+      '  End If
+    'Else
+     '  MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+ '   If Err.Number = 7 Then
+  '      MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+   ' Else
+   '     MsgBox Err.Description
+'    End If
+End Sub
+
+Private Sub mnuCaseTransfer_Click()
+On Error GoTo errOpen
+    If CheckAccess(162) = True Then 'Invoice Tracking 2
+        If FormLoadedByName("frmMembershipTransfer") = True Then
+            frmMembershipTransfer.SetFocus
+        Else
+            frmMembershipTransfer.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimASCIICIMB_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimASCIICIMB") = True Then
+            frmClaimASCIICIMB.SetFocus
+        Else
+            frmClaimASCIICIMB.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimASCIIOMNI_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimDataOMNI") = True Then
+            frmClaimDataOMNI.SetFocus
+        Else
+            frmClaimDataOMNI.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimASCIISinger_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimASCIISinger") = True Then
+            frmClaimASCIISinger.SetFocus
+        Else
+            frmClaimASCIISinger.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuCLaimASCIITIMS_Click()
+
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimASCIITIMS") = True Then
+            frmClaimASCIITIMS.SetFocus
+        Else
+            frmClaimASCIITIMS.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuClaimASCIIToshiba_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimASCIIToshiba") = True Then
+            frmClaimASCIIToshiba.SetFocus
+        Else
+            frmClaimASCIIToshiba.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuClaimASCIIUtusan_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmClaimASCIIUtusan") = True Then
+            frmClaimASCIIUtusan.SetFocus
+        Else
+            frmClaimASCIIUtusan.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimTrackingSimple_Click()
+On Error GoTo errOpen
+    If CheckAccess(132) = True Then 'Claim Tracking Simple
+        If FormLoadedByName("frmClaimRptSimple") = True Then
+            frmClaimRptSimple.SetFocus
+        Else
+            frmClaimRptSimple.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuBnfDental_Click()
+On Error GoTo errOpen
+    If CheckAccess(141) = True Then 'Dental Benefit
+        If FormLoadedByName("frmMaintenanceBNFDental") = True Then
+            frmMaintenanceBNFDental.SetFocus
+        Else
+            frmMaintenanceBNFDental.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimTrack2_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Claim Tracking 2
+        If FormLoadedByName("frmClaimRpt2") = True Then
+            FrmClaimRpt2.SetFocus
+        Else
+            FrmClaimRpt2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimTrack3_Click()
+On Error GoTo errOpen
+    If CheckAccess(163) = True Then 'Claim Tracking - Jupiter
+        If FormLoadedByName("frmNewClaimRpt") = True Then
+            frmNewClaimRpt.SetFocus
+        Else
+            frmNewClaimRpt.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimTrack4_Click()
+On Error GoTo errOpen
+    If CheckAccess(164) = True Then 'Claim Tracking 2 - Jupiter
+        If FormLoadedByName("frmNewClaimRpt2") = True Then
+            FrmNewClaimRpt2.SetFocus
+        Else
+            FrmNewClaimRpt2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClinic_Click()
+On Error GoTo errOpen
+    If CheckAccess(144) = True Then 'Clinic Traqcking
+        If FormLoadedByName("FrmTracking") = True Then
+            FrmTracking.SetFocus
+        Else
+            FrmTracking.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuCLMTracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(132) = True Then 'Claim Tracking
+        If FormLoadedByName("frmClaimRptSUN") = True Then
+            frmClaimRptSUN.SetFocus
+        Else
+            frmClaimRptSUN.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuEmail_Click()
+
+On Error GoTo errOpen
+    If CheckAccess(117) = True Then 'Invoice Entry
+        If FormLoadedByName("frmEmailNotification") = True Then
+            frmEmailNotification.SetFocus
+        Else
+            frmEmailNotification.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 1
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuEmailProvider_Click()
+On Error GoTo errOpen
+    If CheckAccess(117) = True Then 'Invoice Entry
+        If FormLoadedByName("frmEmailNotificationProvider") = True Then
+            frmEmailNotificationProvider.SetFocus
+        Else
+            frmEmailNotificationProvider.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 1
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuEmaiReject_Click()
+On Error GoTo errOpen
+    If CheckAccess(117) = True Then 'Invoice Entry
+        If FormLoadedByName("frmEmailRejectedClaim") = True Then
+            frmEmailRejectedClaim.SetFocus
+        Else
+            frmEmailRejectedClaim.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 1
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuEntity_Click()
+On Error GoTo errOpen
+    If CheckAccess(137) = True Then 'Plan
+        If FormLoadedByName("frmMaintenanceEntity") = True Then
+            frmMaintenanceEntity.SetFocus
+        Else
+            frmMaintenanceEntity.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuFeeRefund_Click()
+On Error GoTo errOpen
+    If CheckAccess(116) = True Then 'Refund Listing
+        If FormLoadedByName("frmMCORefundListing") = True Then
+            frmMCORefundListing.SetFocus
+        Else
+            frmMCORefundListing.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+
+'Private Sub mnuFrmPendingForm_Click()
+'On Error GoTo errOpen
+'    If CheckAccess(143) = True Then 'Check Item
+'        If FormLoadedByName("FrmPendingForm") = True Then
+'            FrmPendingForm.SetFocus
+'        Else
+'            FrmPendingForm.Show
+'        End If
+'    Else
+'       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+'    End If
+'    Exit Sub
+'errOpen:
+'    If Err.Number = 7 Then
+'        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+'    Else
+'        MsgBox Err.Description
+'    End If
+'
+'End Sub
+
+Private Sub mnuGenerateClaimASCII_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'Invoice Entry
+        If FormLoadedByName("frmClaimDetailsASCII") = True Then
+            frmClaimDetailsASCII.SetFocus
+        Else
+            frmClaimDetailsASCII.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuGenerateInvBordx_Click()
+On Error GoTo errOpen
+    If CheckAccess(122) = True Then 'Select Wks For Bordx
+        If FormLoadedByName("frmWSBordx2") = True Then
+            frmWSBordx2.SetFocus
+        Else
+            frmWSBordx2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+'Private Sub mnuGenExportclaim_Click()
+'On Error GoTo errOpen
+ '   If CheckAccess(119) = True Then
+  '      If FormLoadedByName("frmClaimsdata") = True Then
+   '         frmClaimsdata.SetFocus
+    '    Else
+     '       frmClaimsdata.Show
+      '  End If
+    'Else
+     '  MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+ '   If Err.Number = 7 Then
+  '      MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+   ' Else
+    '    MsgBox Err.Description
+    'End If
+'End Sub
+
+Private Sub mnuGenLG_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'MDI LG Generation
+        If FormLoadedByName("frmLGGeneration") = True Then
+            frmLGGeneration.SetFocus
+        Else
+            frmLGGeneration.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuGrpComCLN_Click()
+On Error GoTo errOpen
+    If CheckAccess(144) = True Then 'Grp. Company Clinic Traqcking
+        If FormLoadedByName("FrmTracking2") = True Then
+            FrmTracking2.SetFocus
+        Else
+            FrmTracking2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuINVAdjAfterBordx_Click()
+On Error GoTo errOpen
+    If CheckAccess(179) = True Then     'Invoice Entry
+        If FormLoadedByName("frmInvoiceAdjAftBordx") = True Then
+            frmInvoiceAdjAftBordx.SetFocus
+        Else
+            frmInvoiceAdjAftBordx.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuINVAdjProc_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'Invoice Entry
+        If FormLoadedByName("frmInvoiceAdj") = True Then
+            frmInvoiceAdj.SetFocus
+        Else
+            frmInvoiceAdj.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 3
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuINVAdjProcAfter_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then 'Invoice Entry
+        If FormLoadedByName("frmInvoiceAdjAfterPost") = True Then
+            frmInvoiceAdjAfterPost.SetFocus
+        Else
+            frmInvoiceAdjAfterPost.Show
+            Call Mailnotifications
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+Public Sub Mailnotifications()
+Const cdoSendUsingPickup = 1
+Const cdoSendUsingPort = 2
+Const cdoAnonymous = 0
+Const cdoBasic = 1
+Const cdoNTLM = 2
+Dim objMessage As Object
+On Error GoTo debugs
+Set objMessage = CreateObject("CDO.Message")
+objMessage.Subject = "Notification of Invoice Adj After Post accessed user name : " & Logon & " "
+objMessage.From = "notifications@medix.com.my"
+objMessage.To = "murali@medix.com.my;srinivas@medix.com.my"
+objMessage.TextBody = "Please check subject"
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "mail.mediexpress.com.my"
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = cdoBasic
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "autoemail@mediexpress.com.my"
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "Medix@123"
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = False
+objMessage.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpconnectiontimeout") = 60
+objMessage.Configuration.Fields.update
+objMessage.Send
+debugs:
+If Err.Description <> "" Then
+    MsgBox Err.Description
+End If
+End Sub
+
+Private Sub mnuInvMember_Click()
+On Error GoTo errOpen
+    If CheckAccess(118) = True Then 'Invoice Entry
+        If FormLoadedByName("frmInvoiceMBM") = True Then
+            frmInvoiceMBM.SetFocus
+        Else
+            frmInvoiceMBM.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 2
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuInvProcess_Click()
+On Error GoTo errOpen
+    If CheckAccess(117) = True Then 'Invoice Entry
+        If FormLoadedByName("frmInvoice") = True Then
+            frmInvoice.SetFocus
+        Else
+            frmInvoice.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    'frmWorksheet.INVCLNForm = 1
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+    
+End Sub
+
+
+Private Sub Logout_Click()
+Dim MyTime, MyUser, MyDate
+Dim StrSql As String
+Dim USR As New ADODB.Recordset
+
+    StrSql = "Update USR set CIScnt=CIScnt-1 Where USRCode ='" & Trim(Logon) & "' And USRStatus ='A'"
+    USR.Open StrSql, medixmasterconnMaint, adOpenKeyset, adLockOptimistic
+    
+  
+    MyUser = Logon
+        
+    medixmasterconnA.Close
+    medixmasterconn.Close
+    medixmasterconnWS.Close
+    medixmasterconnPayment.Close
+    medixmasterconnMaint.Close
+    MediConnCISWS.Close
+    MediConnCISPayment.Close
+    MediConnCISDB.Close
+
+    Set medixmasterconnA = Nothing
+    Set medixmasterconn = Nothing
+    Set medixmasterconnWS = Nothing
+    Set medixmasterconnPayment = Nothing
+    Set medixmasterconnMaint = Nothing
+    Set MediConnCISWS = Nothing
+    Set MediConnCISPayment = Nothing
+    Set MediConnCISDB = Nothing
+
+    If Dir("\\svr-doc\FileLogin\LoginCIS.txt") = "LoginCIS.txt" Then
+        Open "\\svr-doc\FileLogin\LoginCIS.txt" For Append As #1
+        Write #1, "Logout";
+        Write #1, MyUser;
+        Write #1, Date;
+        Write #1, Format(Now, "hh:mm:ss am/pm");
+        Write #1,
+        Close #1
+    End If
+    Unload Me
+    frmLogin.Show
+
+End Sub
+
+
+Private Sub MaintenanceOthers_Click()
+On Error GoTo errOpen
+    If CheckAccess(139) = True Then 'Case
+        If FormLoadedByName("frmMaintenanceOthers") = True Then
+            frmMaintenanceOthers.SetFocus
+        Else
+            frmMaintenanceOthers.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub MBMEnquiry_Click()
+On Error GoTo errOpen
+    If CheckAccess(113) = True Then 'MBM Enquiry
+        If FormLoadedByName("FrmMBMCLNEnq") = True Then
+            FrmMBMCLNEnq.SetFocus
+        Else
+            FrmMBMCLNEnq.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub MDIForm_Load()
+    Call ActionLogUpdate(12, "MDIMain")
+    Dim hSysMenu As Long
+    hSysMenu = GetSystemMenu(hwnd, False)
+    RemoveMenu hSysMenu, SC_CLOSE, MF_BYCOMMAND
+    Me.Caption = Version
+    Me.Width = Screen.Width
+    Me.Height = Screen.Height
+    Me.Caption = DialogBoxTitle & " - " & "Main Menu"
+
+End Sub
+
+
+Private Sub mnuBnfClinic_Click()
+On Error GoTo errOpen
+    If CheckAccess(142) = True Then 'Benefit
+        If FormLoadedByName("frmMaintenanceBenefitsCln") = True Then
+            frmMaintenanceBenefitsCln.SetFocus
+        Else
+            frmMaintenanceBenefitsCln.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuBorAccPeriod_Click()
+On Error GoTo errOpen
+    If CheckAccess(128) = True Then 'Bordx A/C Period
+        If FormLoadedByName("FrmACPeriod") = True Then
+            FrmACPeriod.SetFocus
+        Else
+            FrmACPeriod.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuBordxCtrl_Click()
+On Error GoTo errOpen
+    If CheckAccess(129) = True Then 'Bordx Control
+        If FormLoadedByName("FrmBordxControl") = True Then
+            FrmBordxControl.SetFocus
+        Else
+            FrmBordxControl.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuBordxRevise_Click()
+On Error GoTo errOpen
+    If CheckAccess(123) = True Then 'Remove Wks From Bordx
+        If FormLoadedByName("FrmBordxRevise") = True Then
+            FrmBordxRevise.SetFocus
+        Else
+            FrmBordxRevise.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuBordxTracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(131) = True Then 'Bordx & Wks
+        If FormLoadedByName("FrmBordxWks") = True Then
+            FrmBordxWks.SetFocus
+        Else
+            FrmBordxWks.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuCalculation_Click()
+On Error GoTo errOpen
+    If CheckAccess(140) = True Then 'Calculation
+        If FormLoadedByName("frmMaintenanceCal") = True Then
+            frmMaintenanceCal.SetFocus
+        Else
+            frmMaintenanceCal.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuCheckItem_Click()
+On Error GoTo errOpen
+    If CheckAccess(143) = True Then 'Check Item
+        If FormLoadedByName("frmCheckingItems") = True Then
+            frmCheckingItems.SetFocus
+        Else
+            frmCheckingItems.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuClaimTrack_Click()
+On Error GoTo errOpen
+    If CheckAccess(132) = True Then 'Claim Tracking
+        If FormLoadedByName("frmClaimRpt") = True Then
+            frmClaimRpt.SetFocus
+        Else
+            frmClaimRpt.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuCloseConnection_Click()
+On Error Resume Next
+Dim MyTime, MyUser, MyDate
+Dim i As Integer
+Dim StrSql As String
+Dim USR As New ADODB.Recordset
+    
+    StrSql = "Update USR set CIScnt=CIScnt-1 Where USRCode ='" & Trim(Logon) & "' And USRStatus ='A'"
+    USR.Open StrSql, medixmasterconnMaint, adOpenKeyset, adLockOptimistic
+
+    
+    
+    
+    medixmasterconnA.Close
+    medixmasterconn.Close
+    medixmasterconnWS.Close
+    medixmasterconnPayment.Close
+    medixmasterconnMaint.Close
+    MediConnCISWS.Close
+    MediConnCISPayment.Close
+    MediConnCISDB.Close
+
+    Set medixmasterconnA = Nothing
+    Set medixmasterconn = Nothing
+    Set medixmasterconnWS = Nothing
+    Set medixmasterconnPayment = Nothing
+    Set medixmasterconnMaint = Nothing
+    Set MediConnCISWS = Nothing
+    Set MediConnCISPayment = Nothing
+    Set MediConnCISDB = Nothing
+    
+    MyUser = Logon
+        
+    'If Dir("\\svr-super\FileLogin\Login.txt") = "Login.txt" Then
+    If Dir(DocPath & "FileLogin\LoginCIS.txt") = "LoginCIS.txt" Then
+        'Open "\\svr-super\FileLogin\Login.txt" For Append As #1
+        Open DocPath & "FileLogin\LoginCIS.txt" For Append As #1
+        Write #1, "Logout";
+        Write #1, MyUser;
+        Write #1, Date;
+        Write #1, Format(Now, "hh:mm:ss am/pm");
+        Write #1,
+        Close #1
+    End If
+
+
+   ' Loop through the forms collection and unload
+   ' each form.
+   
+   For i = (Forms.Count) To 0 Step -1
+      Unload Forms(i)
+      Set Forms(i) = Nothing
+   Next
+   
+End Sub
+
+
+
+Private Sub mnuFeeListing_Click()
+On Error GoTo errOpen
+    If CheckAccess(116) = True Then 'MCO Fee Listing
+        If FormLoadedByName("frmMCOFeeListNew") = True Then
+            frmMCOFeeListNew.SetFocus
+        Else
+            frmMCOFeeListNew.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuFrPayor_Click()
+On Error GoTo errOpen
+    If CheckAccess(126) = True Then 'Bordx Return From Payor
+        If FormLoadedByName("frmReturnPayor") = True Then
+            FrmReturnPayor.SetFocus
+        Else
+            FrmReturnPayor.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuGenerateBordx_Click()
+On Error GoTo errOpen
+    If CheckAccess(122) = True Then 'Select Wks For Bordx
+        If FormLoadedByName("frmWSBordx") = True Then
+            frmWSBordx.SetFocus
+        Else
+            frmWSBordx.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuINVTracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(161) = True Then 'Invoice Tracking
+        If FormLoadedByName("frmInvoiceTracking") = True Then
+            FrmInvoiceTracking.SetFocus
+        Else
+            FrmInvoiceTracking.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    frmWorksheet.INVCLNForm = 3
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuINVTracking2_Click()
+On Error GoTo errOpen
+    If CheckAccess(162) = True Then 'Invoice Tracking 2
+        If FormLoadedByName("frmInvoiceTracking2") = True Then
+            FrmInvoiceTracking2.SetFocus
+        Else
+            FrmInvoiceTracking2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    frmWorksheet.INVCLNForm = 3
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuMBMTracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(114) = True Then 'MBM Tracking
+        If FormLoadedByName("FrmNewMBMTracking") = True Then
+            FrmNewMBMTracking.SetFocus
+        Else
+            FrmNewMBMTracking.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuMBMTracking2_Click()
+On Error GoTo errOpen
+    If CheckAccess(160) = True Then 'MBM Tracking 2
+        If FormLoadedByName("FrmNewMBMTracking2") = True Then
+            FrmNewMBMTracking2.SetFocus
+        Else
+            FrmNewMBMTracking2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+Private Sub mnuMCOFeeGSTZeroised_Click()
+    On Error GoTo errOpen
+        If CheckAccess(115) = True Then 'MCO Invoice
+            If FormLoadedByName("frmMCOFeeGSTZeroised") = True Then
+                frmMCOFeeGSTZeroised.SetFocus
+            Else
+                frmMCOFeeGSTZeroised.Show
+            End If
+        Else
+           MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+        End If
+        Exit Sub
+errOpen:
+        If Err.Number = 7 Then
+            MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+        Else
+            MsgBox Err.Description
+        End If
+End Sub
+
+Private Sub mnuMCOInvoice_Click()
+On Error GoTo errOpen
+    If CheckAccess(115) = True Then 'MCO Invoice
+        If FormLoadedByName("frmMCOInvoiceNew") = True Then
+            frmMCOInvoiceNew.SetFocus
+        Else
+            frmMCOInvoiceNew.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuMedProvidersOMNI_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmMedProviderOMNI") = True Then
+            frmMedProviderOMNI.SetFocus
+        Else
+            frmMedProviderOMNI.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuMember_Click()
+On Error GoTo errOpen
+    If CheckAccess(141) = True Then 'Benefit
+        If FormLoadedByName("frmMaintenanceBenefits") = True Then
+            frmMaintenanceBenefits.SetFocus
+        Else
+            frmMaintenanceBenefits.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuMMACPT_Click()
+On Error GoTo errOpen
+    If CheckAccess(150) = True Then 'MMA Schedule
+        If FormLoadedByName("frmMMASchedule") = True Then
+            frmMMASchedule.SetFocus
+        Else
+            frmMMASchedule.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuOSBordx_Click()
+On Error GoTo errOpen
+    If CheckAccess(130) = True Then 'O/S Bordx
+        If FormLoadedByName("FrmOSBordx") = True Then
+            FrmOSBordx.SetFocus
+        Else
+            FrmOSBordx.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+Private Sub mnuPass2Claim_Click()
+On Error GoTo errOpen
+    If CheckAccess(163) = True Then     'Claim
+        If FormLoadedByName("frmPass2Claim") = True Then
+            frmPass2Claim.SetFocus
+        Else
+            frmPass2Claim.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPAYCLNBatch_Click()
+On Error GoTo errOpen
+    If CheckAccess(121) = True Then 'Payment to Clinic - Invoice
+        If FormLoadedByName("frmPaymentCLNInvoice") = True Then
+            frmPaymentCLNInvoice.SetFocus
+        Else
+            frmPaymentCLNInvoice.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+
+Private Sub mnuPaymentCLN_Click()
+On Error GoTo errOpen
+    If CheckAccess(133) = True Then 'Payment to Clinic
+        If FormLoadedByName("frmPaymentClinic") = True Then
+            frmPaymentClinic.SetFocus
+        Else
+            frmPaymentClinic.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPaymentFFS_Click()
+On Error GoTo errOpen
+    If CheckAccess(121) = True Then 'FFS Payment
+        If FormLoadedByName("FrmPaymentFFS") = True Then
+            FrmPaymentFFS.SetFocus
+        Else
+            FrmPaymentFFS.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPaymentMBM_Click()
+On Error GoTo errOpen
+    If CheckAccess(134) = True Then 'Payment to Member
+        If FormLoadedByName("frmPaymentMemberAuto08") = True Then
+            frmPaymentMemberAuto08.SetFocus
+        Else
+            frmPaymentMemberAuto08.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub mnuPaymentTracking_Click()
+On Error GoTo errOpen
+    If CheckAccess(165) = True Then 'Payment Tracking
+        If FormLoadedByName("frmPayment") = True Then
+            FrmPayment.SetFocus
+        Else
+            FrmPayment.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPaymentTracking2_Click()
+On Error GoTo errOpen
+    If CheckAccess(167) = True Then 'Payment Tracking - Jupiter
+        If FormLoadedByName("frmPayment2") = True Then
+            frmPayment2.SetFocus
+        Else
+            frmPayment2.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPlan_Click()
+On Error GoTo errOpen
+    If CheckAccess(138) = True Then 'Plan
+        If FormLoadedByName("frmMaintenancePlan") = True Then
+            frmMaintenancePlan.SetFocus
+        Else
+            frmMaintenancePlan.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+Private Sub mnuPostBordxGrpCompany_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Claim Tracking 2
+        If FormLoadedByName("frmPostingBordxtoGrpComp") = True Then
+            frmPostingBordxtoGrpComp.SetFocus
+        Else
+            frmPostingBordxtoGrpComp.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPostBordxGrpGST_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Claim Tracking 2
+        If FormLoadedByName("frmPostingBordxtoGrpGST") = True Then
+            frmPostingBordxtoGrpGST.SetFocus
+        Else
+            frmPostingBordxtoGrpGST.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPostRecGrpCompany_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Claim Tracking 2
+        If FormLoadedByName("frmPostingRecGrpCompany") = True Then
+            frmPostingRecGrpCompany.SetFocus
+        Else
+            frmPostingRecGrpCompany.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrint_Click()
+    'On Error Resume Next
+    'If ActiveForm Is Nothing Then Exit Sub
+
+    'With dlgCommonDialog
+    '    .DialogTitle = "Print Form"
+    '    .CancelError = True
+    '    .Flags = cdlPDNoSelection + cdlPDNoPageNums
+    '    '.Flags = cdlPDSelection + cdlPDNoPageNums
+        
+    '    .ShowPrinter
+    '
+    '    If Err <> MSComDlg.cdlCancel Then
+    '        ActiveForm.PrintForm
+    '    End If
+    'End With
+
+End Sub
+
+Private Sub mnuPrintBordx_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordx") = True Then
+            frmPrintBordx.SetFocus
+        Else
+            frmPrintBordx.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxBSI_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxBSI") = True Then
+            frmPrintBordxBSI.SetFocus
+        Else
+            frmPrintBordxBSI.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxBSN_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxBSN") = True Then
+            frmPrintBordxBSN.SetFocus
+        Else
+            frmPrintBordxBSN.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxCoke_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxAXAAffin") = True Then
+            frmPrintBordxAXAAffin.SetFocus
+        Else
+            frmPrintBordxAXAAffin.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxExcel_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxExcel") = True Then
+            frmPrintBordxExcel.SetFocus
+        Else
+            frmPrintBordxExcel.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxIBM_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxIBM") = True Then
+            frmPrintBordxIBM.SetFocus
+        Else
+            frmPrintBordxIBM.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxSPNB_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxSPNB") = True Then
+            frmPrintBordxSPNB.SetFocus
+        Else
+            frmPrintBordxSPNB.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuPrintBordxTime_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmPrintBordxTimeDotcom") = True Then
+            frmPrintBordxTimeDotcom.SetFocus
+        Else
+            frmPrintBordxTimeDotcom.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuReceiptFFS_Click()
+On Error GoTo errOpen
+    If CheckAccess(121) = True Then 'FFS Payment
+        If FormLoadedByName("FrmReceiptFFS") = True Then
+            FrmReceiptFFS.SetFocus
+        Else
+            FrmReceiptFFS.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuReceiptMBM_Click()
+On Error GoTo errOpen
+    If CheckAccess(135) = True Then 'Receipt From Member
+        If FormLoadedByName("FrmReceiptMember") = True Then
+            FrmReceiptMember.SetFocus
+        Else
+            FrmReceiptMember.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+'Private Sub mnuReceiptMNRB_Click()
+'On Error GoTo errOpen
+    'If CheckAccess(113) = True Then 'Receipt From MNRB
+        'If FormLoadedByName("FrmReceiptMNRB") = True Then
+            'FrmReceiptMNRB.SetFocus
+        'Else
+            'FrmReceiptMNRB.Show
+        'End If
+    'Else
+       'MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+    'If Err.Number = 7 Then
+        'MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    'Else
+        'MsgBox Err.Description
+    'End If
+'End Sub
+
+Private Sub mnuReceiptPayor_Click()
+On Error GoTo errOpen
+    If CheckAccess(136) = True Then 'Receipt From Payor
+        If FormLoadedByName("FrmReceiptPayor") = True Then
+            FrmReceiptPayor.SetFocus
+        Else
+            FrmReceiptPayor.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuSentAC_Click()
+On Error GoTo errOpen
+    If CheckAccess(127) = True Then 'Bordx Send to A/C
+        If FormLoadedByName("FrmSendtoAC") = True Then
+            FrmSendtoAC.SetFocus
+        Else
+            FrmSendtoAC.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuSUNSysAllo_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmSUNSystemAllocation") = True Then
+            frmSUNSystemAllocation.SetFocus
+        Else
+            frmSUNSystemAllocation.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+'Private Sub mnuSUNSysAllonew_Click()
+'On Error GoTo errOpen
+    'If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        'If FormLoadedByName("frmSUNSystemAllocation_New") = True Then
+        '    frmSUNSystemAllocation_New.SetFocus
+       ' Else
+      '      frmSUNSystemAllocation_New.Show
+     '   End If
+    'Else
+   '    MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+  '  End If
+ '   Exit Sub
+'errOpen:
+    'If Err.Number = 7 Then
+    '    MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+   ' Else
+  '      MsgBox Err.Description
+ '   End If
+'End Sub
+
+Private Sub mnuSUNSysGST_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmSUNGSTRpt") = True Then
+            frmSUNGSTRpt.SetFocus
+        Else
+            frmSUNGSTRpt.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuSUNSysRpt_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmSUNSystem") = True Then
+            frmSUNSystem.SetFocus
+        Else
+            frmSUNSystem.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+'Private Sub mnuToMNRB_Click()
+'On Error GoTo errOpen
+    'If CheckAccess(105) = True Then 'Bordx Send to MNRB
+        'If FormLoadedByName("FrmSendtoMNRB") = True Then
+            'FrmSendtoMNRB.SetFocus
+        'Else
+            'FrmSendtoMNRB.Show
+        'End If
+    'Else
+       'MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+    'If Err.Number = 7 Then
+        'MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    'Else
+        'MsgBox Err.Description
+    'End If
+'End Sub
+
+Private Sub mnuToPayor_Click()
+On Error GoTo errOpen
+    If CheckAccess(125) = True Then 'Bordx Send to Payor
+        If FormLoadedByName("FrmSendtoPayor") = True Then
+            FrmSendtoPayor.SetFocus
+        Else
+            FrmSendtoPayor.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuUpdCLMData_Click()
+On Error GoTo errOpen
+    If CheckAccess(124) = True Then 'Print Bordx
+        If FormLoadedByName("frmUpdateClaimsData") = True Then
+            frmUpdateClaimsData.SetFocus
+        Else
+            frmUpdateClaimsData.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuUploadMultipleRec_Click()
+On Error GoTo errOpen
+    If CheckAccess(136) = True Then 'Receipt From Payor
+        If FormLoadedByName("frmReceiptUpMultiple") = True Then
+            frmReceiptUpMultiple.SetFocus
+        Else
+            frmReceiptUpMultiple.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuUploadReceipt_Click()
+On Error GoTo errOpen
+    If CheckAccess(136) = True Then 'Receipt From Payor
+        If FormLoadedByName("frmReceiptUpload") = True Then
+            frmReceiptUpload.SetFocus
+        Else
+            frmReceiptUpload.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+'Private Sub mnuWSAdj_Click()
+'On Error GoTo errOpen
+    
+    'If CheckAccess(121) = True Then 'Wks Adjustment
+        'If FormLoadedByName("frmNewWSAjd") = True Then
+            'frmNewWSAjd.SetFocus
+        'Else
+            'frmNewWSAjd.Show
+        'End If
+    'Else
+       'MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+    'If Err.Number = 7 Then
+        'MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    'Else
+        'MsgBox Err.Description
+    'End If
+
+'End Sub
+
+'Private Sub mnuWSReg_Click()
+'On Error GoTo errOpen
+    
+    'If CheckAccess(120) = True Then 'Wks Registration
+        'If FormLoadedByName("frmWorksheet") = True Then
+            'frmWorksheet.SetFocus
+        'Else
+            'frmWorksheet.Show
+        'End If
+    'Else
+       'MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+    'If Err.Number = 7 Then
+        'MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    'Else
+        'MsgBox Err.Description
+    'End If
+'End Sub
+Private Sub mnuWindows_Click()
+
+End Sub
+
+Private Sub OPBatchUpdate_Click()
+On Error GoTo errOpen
+    If CheckAccess(119) = True Then
+        If FormLoadedByName("frmUpdateInvoiceBatch") = True Then
+            frmUpdateInvoiceBatch.SetFocus
+        Else
+            frmUpdateInvoiceBatch.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub PostingInvCLN_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmPostingInvoiceCln") = True Then
+            frmPostingInvoiceCln.SetFocus
+        Else
+            frmPostingInvoiceCln.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+
+Private Sub PostingInvCLNGST_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmPostingInvoiceClnGST") = True Then
+            frmPostingInvoiceClnGST.SetFocus
+        Else
+            frmPostingInvoiceClnGST.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub PostingInvCLNGST2017_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Cln
+        If FormLoadedByName("frmPostingInvClnGST2017") = True Then
+            frmPostingInvClnGST2017.SetFocus
+        Else
+            frmPostingInvClnGST2017.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+'Private Sub PostingInvCLNGSTZeroised_Click()
+'On Error GoTo errOpen
+ '   If CheckAccess(120) = True Then 'Posting - Invoice Cln
+  '      If FormLoadedByName("frmPostingInvClnGST2017Zeroised") = True Then
+   '         frmPostingInvClnGST2017Zeroised.SetFocus
+    '    Else
+     '       frmPostingInvClnGST2017Zeroised.Show
+        'End If
+   ' Else
+    '   MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    'End If
+    'Exit Sub
+'errOpen:
+ '   If Err.Number = 7 Then
+  '      MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+   ' Else
+    '    MsgBox Err.Description
+ '   End If
+'End Sub
+
+Private Sub PostingInvMBM_Click()
+On Error GoTo errOpen
+    If CheckAccess(120) = True Then 'Posting - Invoice Member
+        If FormLoadedByName("frmPostingInvoiceMember") = True Then
+            frmPostingInvoiceMember.SetFocus
+        Else
+            frmPostingInvoiceMember.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+
+End Sub
+Private Sub mnuGeneralExclusions_Click()
+On Error GoTo errOpen
+    If CheckAccess(133) = True Then 'MBM Enquiry
+        If FormLoadedByName("frmGeneralBenefitExclusion") = True Then
+            frmGeneralBenefitExclusion.SetFocus
+        Else
+            frmGeneralBenefitExclusion.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+Private Sub mnuGeneralExclusionsEnq_Click()
+On Error GoTo errOpen
+    If CheckAccess(113) = True Then 'MBM Enquiry
+        If FormLoadedByName("frmGeneralBenefitExclusion") = True Then
+            frmGeneralBenefitExcEnq.SetFocus
+        Else
+            frmGeneralBenefitExcEnq.Show
+        End If
+    Else
+       MsgBox "Access Denied!", vbOKOnly + vbCritical, DialogBoxTitle
+    End If
+    Exit Sub
+errOpen:
+    If Err.Number = 7 Then
+        MsgBox "Out Of Memory! Please close some of your forms! ", vbCritical
+    Else
+        MsgBox Err.Description
+    End If
+End Sub
+
+
+Private Sub TestFormByIT_Click()
+    frmTest.Show
+End Sub

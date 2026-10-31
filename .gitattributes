@@ -1,0 +1,29 @@
+# VB6 requires CRLF line endings in its text files
+*.frm  text eol=crlf
+*.bas  text eol=crlf
+*.cls  text eol=crlf
+*.ctl  text eol=crlf
+*.vbp  text eol=crlf
+*.vbw  text eol=crlf
+*.Dsr  text eol=crlf
+*.dsr  text eol=crlf
+*.ini  text eol=crlf
+*.ps1  text eol=crlf
+*.md   text eol=crlf
+
+# Binary companions (form resources, designer caches, UTF-16 UDLs)
+*.frx  binary
+*.ctx  binary
+*.dsx  binary
+*.DCA  binary
+*.dca  binary
+*.UDL  binary
+*.udl  binary
+*.res  binary
+*.rpt  binary
+*.xlt  binary
+*.xls  binary
+*.ico  binary
+*.bmp  binary
+*.jpg  binary
+*.gif  binary
