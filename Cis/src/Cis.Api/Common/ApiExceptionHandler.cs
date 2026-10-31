@@ -22,6 +22,7 @@ public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> log, IProbl
         NotFoundException => (StatusCodes.Status404NotFound, "Not found", exception.Message),
         ConflictException => (StatusCodes.Status409Conflict, "Conflict", exception.Message),
         UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message),
+        ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden", exception.Message),
         BusinessRuleException => (StatusCodes.Status400BadRequest, "Business rule", exception.Message),
         NotConfiguredException => (StatusCodes.Status503ServiceUnavailable, "Not configured", exception.Message),
         SqlException e when SqlErrorNumbers.IsTruncation(e.Number) =>

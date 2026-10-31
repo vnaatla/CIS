@@ -18,6 +18,10 @@ public static class DependencyInjection
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IActionLogService, ActionLogService>();
         services.AddScoped<ILookupService, LookupService>();
+
+        // Phase 1: Maintenance
+        services.AddScoped<Maintenance.ListReports.IListReportService, Maintenance.ListReports.ListReportService>();
+        services.AddScoped<Maintenance.CodeTables.ICodeTableService, Maintenance.CodeTables.CodeTableService>();
         return services;
     }
 }

@@ -43,7 +43,9 @@ builder.Services.AddAuthorization(options =>
 var corsOrigins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? [];
 builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.WithOrigins(corsOrigins).AllowAnyHeader().AllowAnyMethod()));
 
-builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>());
+builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>())
+    // Enums travel as their names ("Text", "Number", "Pdf" ...), which is what the Angular app compares against.
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

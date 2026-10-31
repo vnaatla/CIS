@@ -3,6 +3,10 @@ using Cis.Infrastructure.Data;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 
+// The dev PC is short on memory: running the database tests next to the in-memory API hosts made SQL Server stall. The suite is small,
+// so it runs sequentially.
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace Cis.Api.Tests;
 
 /// <summary>A unit of work that touches no database: services can be tested against fake repositories.</summary>
@@ -80,4 +84,11 @@ internal static class RepoPaths
             if (match(d.FullName)) return d.FullName;
         throw new DirectoryNotFoundException("Cis root (sql/main) not found above " + AppContext.BaseDirectory);
     }
+}
+
+/// <summary>Database test classes run one after another (they share the dev databases and roll back their own transactions).</summary>
+[CollectionDefinition(Name, DisableParallelization = true)]
+public sealed class DatabaseCollection
+{
+    public const string Name = "Database";
 }

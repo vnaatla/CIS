@@ -12,6 +12,9 @@ public class NotFoundException(string message) : BusinessRuleException(message);
 /// <summary>The request clashes with the current data, for example adding a record that already exists (HTTP 409).</summary>
 public class ConflictException(string message) : BusinessRuleException(message);
 
+/// <summary>The user lacks the menu right for this action (the desktop's "Access Denied!"): HTTP 403.</summary>
+public class ForbiddenException(string message = "Access Denied!") : BusinessRuleException(message);
+
 /// <summary>The caller is not who they claim to be (wrong user name or password): HTTP 401.</summary>
 public class UnauthorizedException(string message) : BusinessRuleException(message);
 

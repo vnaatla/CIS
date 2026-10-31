@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router'
 import { authGuard, guestGuard } from './core/auth/guards'
+import { maintenanceRoutes } from './features/maintenance/maintenance.routes'
 
 /**
  * Each migration phase adds its screens here as lazy routes under the module path, guarded by `accessGuard` with
@@ -14,6 +15,7 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/app-layout.component').then((m) => m.AppLayoutComponent),
     children: [
       { path: '', pathMatch: 'full', loadComponent: () => import('./pages/home.page').then((m) => m.HomePage), title: 'CIS' },
+      ...maintenanceRoutes,
       {
         path: ':module',
         children: [

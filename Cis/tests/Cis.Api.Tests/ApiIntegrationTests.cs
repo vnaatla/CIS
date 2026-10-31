@@ -89,6 +89,20 @@ public class ApiIntegrationTests(ApiFactory factory) : IClassFixture<ApiFactory>
     }
 
     [Fact]
+    public async Task Enums_are_sent_as_names_the_ui_understands()
+    {
+        var client = factory.CreateClient();
+        var login = await (await client.PostAsJsonAsync("/api/auth/login", new { userCode = "TESTER", password = "x" })).Content.ReadFromJsonAsync<SessionResult>(Json);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login!.Token);
+        // TESTER's access is "1" (position 1 only), so a maintenance table is refused before any database call; use the 403 body shape instead.
+        var response = await client.GetAsync("/api/maintenance/code-tables/check-items");
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        var json = System.Text.Json.JsonSerializer.Serialize(Cis.Application.Maintenance.CodeTables.FieldKind.Number,
+            factory.Services.GetRequiredService<Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Mvc.JsonOptions>>().Value.JsonSerializerOptions);
+        Assert.Equal("\"Number\"", json);
+    }
+
+    [Fact]
     public async Task Swagger_documents_the_api()
     {
         var json = await factory.CreateClient().GetStringAsync("/swagger/v1/swagger.json");

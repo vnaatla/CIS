@@ -1,0 +1,40 @@
+# Maintenance code tables → `/maintenance/check-item`, `/maintenance/calculation`, `/maintenance/case`
+
+Phase 1. Source: `frmCheckingItems`, `frmMaintenanceCal`, `frmMaintenanceOthers` (+ the category tabs of `frmMaintenanceBNFDental` /
+`frmMaintenanceBenefits`, which use the same engine and go live with those screens). API: `api/maintenance/code-tables/{key}`,
+`api/maintenance/list-reports/{key}`. Definitions: `Cis.Application/Maintenance/CodeTables/CodeTableCatalog.cs`.
+
+## Behaviour checklist (all tabs)
+
+| Desktop | Web | ✓ |
+|---|---|---|
+| Search: strAppend on the searchable boxes (`Code = Trim(Mid(x,1,3))`, `= x`, `Like '%x%'`), no value = whole table, "Record not found!" | same matches (`SearchMatch`), toast when empty | ✓ |
+| ListView + TOTAL RECORDS, ColumnClick sort | `app-data-grid` (sortable) + TOTAL RECORDS | ✓ |
+| Click a row → boxes filled, disabled; Edit → code disabled | same (`selected` / `edit` modes) | ✓ |
+| Save checks in form order with the MsgBox texts ("Please Enter Category Code", "… must be 3 integer!", …) | `CodeTableService.Validate`, same texts and order | ✓ |
+| Add: duplicate check on the code → "Record Duplicated! Please Change The Corresponding Field" | same (409) | ✓ |
+| "Do you want to save the record?" / "Do you want to delete this record?" | `ask()` confirmations | ✓ |
+| Saves `…LastUpdateUser = Logon`, `…LastUpdateDate = Date` | user code + today's date | ✓ |
+| "Record Saved..." / "Record Updated..." / "Record Deleted... ", list refreshed | same | ✓ |
+| Delete without a searched row → "Please search the record" | same | ✓ |
+| Drug Value stored as `Format(x, "#,##0.00")` text | same | ✓ |
+| KeyNumber on numeric boxes, MaxLength on every box | input filter + max length (client and server) | ✓ |
+| Print → DataReport (RptCheckList, RptCoPaymentList, RptFeeList, RptReasonList, rptProcedureslist, rptDruglist, rptDiagnosisList, rptRepudiationList) | PDF from `cis.ListReport_*` with the report's title and columns | ✓ |
+
+## Known desktop issues (reproduced, for the business to decide)
+
+- Codes are not unique in the data (e.g. CheckItems has three `BILL` rows). Edit updates the **first** row with the code; Delete removes
+  **every** row with the code; Diagnosis Not Payable checks duplicates and deletes by **Plan Code only** (one diagnosis per plan through
+  the screen, delete removes all of a plan's diagnoses).
+- New codes must have 3 characters ("must be 3 integer!" — letters are accepted) although existing data has 4-character codes.
+- Procedures / Drug search compare only the first 3 characters of the typed code (Procedure codes are up to 4).
+- Tooth Reference stores only the first character of the chosen category although category codes can have 2.
+
+## Deliberate differences
+
+- **Print works.** The DataReports read from `DataEnvironment1`, which is not in `medixcis.vbp`, so the desktop's Print buttons could not
+  run. RptAnnualList also sorted on `VisitIndex`, a column its view does not have; the web sorts on `AnnualIndex`.
+- **FEE audit columns.** The desktop wrote FEE's user / date into `COPLastUpdateUser` / `COPLastUpdateDate` (not FEE columns, silently
+  skipped); the web fills `FeeLastUpdateUser` / `FeeLastUpdateDate`.
+- The list is ordered by code (the desktop showed rows in table order).
+- One engine serves all simple tables: SQL is built only from catalog identifiers (checked, bracket-quoted) with parameterised values.

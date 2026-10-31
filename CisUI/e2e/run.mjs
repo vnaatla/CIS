@@ -65,7 +65,17 @@ try {
   await page.goto(`${base}/maintenance/no-such-screen`, { waitUntil: 'networkidle0' })
   check(page.url().endsWith('/maintenance'), 'unknown screens inside a module show the module overview')
 
-  // 5. Logout.
+  // 5. Phase 1: Maintenance > Check Item (search all rows) and Case (five tabs).
+  await page.goto(`${base}/maintenance/check-item`, { waitUntil: 'networkidle0' })
+  await page.waitForSelector('app-code-table-panel fieldset input')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-data-grid tbody tr:not(.empty-row)').length > 0, { timeout: 30000 })
+  check((await page.$$eval('app-data-grid tbody tr:not(.empty-row)', (r) => r.length)) > 0, 'Check Item search lists the CheckItems rows')
+  await page.goto(`${base}/maintenance/case`, { waitUntil: 'networkidle0' })
+  await page.waitForSelector('.tabs button')
+  check((await page.$$('.tabs button')).length === 5, 'Case shows the desktop\'s five tabs')
+
+  // 6. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

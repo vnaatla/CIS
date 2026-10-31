@@ -13,6 +13,7 @@ namespace Cis.Api.Tests;
 /// Real procedures against the local databases, each in a transaction that is rolled back (nothing is kept). Skipped when CIS_TEST_DB is
 /// not set; see AGENTS.md for the connection string.
 /// </summary>
+[Collection(DatabaseCollection.Name)]
 public class DatabaseTests
 {
     private const string DevUser = "DEVADMIN";

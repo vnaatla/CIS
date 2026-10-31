@@ -9,6 +9,9 @@ public abstract class ApiControllerBase : ControllerBase
     /// <summary>USR.USRCode of the caller.</summary>
     protected string UserCode => User.Identity?.Name ?? "";
 
+    /// <summary>USR.USRAccess of the caller (from the token), for services that check a right per record type.</summary>
+    protected string? UserAccess => User.FindFirst(Auth.TokenService.AccessClaim)?.Value;
+
     /// <summary>Remote address of the caller, for logs.</summary>
     protected string? RemoteIp => HttpContext.Connection.RemoteIpAddress?.ToString();
 }
