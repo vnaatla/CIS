@@ -87,3 +87,20 @@ Opened from the clinic invoice (Phase 3). Until then test it through the API (`/
 | E2 | `1MILLENNIUM INTERNATIONAL SDN BHD` → Search | Dental and Optical ticked, Dermatitis not; remarks start `PAYOR : ST` |
 | E3 | `ZZ NO COMPANY` → Search | every box unticked, remarks empty, no message |
 | E4 | Benifit Schedule tab | the company's policy wording files, or the "not configured" notice when `Files:Folders:PolicyWording` is empty (local default) |
+
+## 6. MBM Adjustment — `/membership/adjustment` (FrmMBMCLNAdj, right 113)
+
+| # | Action | Expected |
+|---|---|---|
+| A1 | Show with an empty member | `Please Enter Membership No` |
+| A2 | `DCHC9086608` → Show | principal NUR RABIZAH BINTI ADENI, H / S079, limit status `Share Limit For Family`, annual limit 7,500.00; Edit enabled |
+| A3 | Supplementary tab | covers 01–03 (JAYA AFFANDI BINTI ZAINI …) |
+| A4 | Adjustment History / MBM History tabs | the member's amendments / memberships of the same IC |
+| A5 | Edit → Save without dates | `Please Enter Endt. Bordx Date!` / `Please Enter Endt. Effective Date!` |
+| A6 | Edit → Endorse `Y` on an active member | warning `No Re-Activate allowed ! ` (not blocking) |
+| A7 | Edit → `A`, change Eff. Date | premium / MCO recalculated; MCO differs → ` Do you want to change member's MCO Fee?` |
+| A8 | Edit → `C` on a member with an open case | `There is at least an outstanding case under this member!` |
+| A9 | Amendment save | locally fails on the HISDB master key (encryption triggers); on a server: `Updated Successfully` |
+
+Clean-up after a test endorsement: delete the MBMCISAmendHistory / MBMCISRefund rows of the member created by DEVADMIN today and restore
+the MBMCLNOthers / MBMCoveredPersonsCLN status columns (note them before testing).

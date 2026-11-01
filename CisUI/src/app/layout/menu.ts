@@ -43,7 +43,7 @@ export const MENU: MenuModule[] = [
     icon: 'users',
     path: '/membership',
     items: [
-      { label: 'MBM Adjustment', path: '/membership/adjustment', access: Access.MbmAdjustment, form: 'FrmMBMCLNAdj', phase: 2 },
+      { label: 'MBM Adjustment', path: '/membership/adjustment', access: Access.MbmAdjustment, form: 'FrmMBMCLNAdj', phase: 2, migrated: true },
       { label: 'MBM Enquiry', path: '/membership/enquiry', access: Access.MbmEnquiry, form: 'FrmMBMCLNEnq, FrmMBMAccount', phase: 2 },
       { label: 'MBM Topup Adj', path: '/membership/topup', access: Access.MbmTopup, form: 'FrmMBMTopupLmt', phase: 2, migrated: true },
       { label: 'MBM Tracking', path: '/membership/tracking', access: Access.MbmTracking, form: 'FrmNewMBMTracking', group: 'Tracking', phase: 10 },

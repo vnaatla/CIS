@@ -280,7 +280,17 @@ try {
   const dental = await page.$eval('input[name=Dental]', (i) => i.checked)
   check(dental, 'General Exclusions Enquiry shows 1MILLENNIUM INTERNATIONAL SDN BHD (Dental excluded, remarks)')
 
-  // 15. Logout.
+  // 15. Membership > MBM Adjustment: Show loads the member; the Supplementary tab lists its three covers.
+  await page.goto(`${base}/membership/adjustment`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=member]')
+  await page.type('input[name=member]', 'DCHC9086608')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name=name]')?.value === 'NUR RABIZAH BINTI ADENI', { timeout: 90000 })
+  await page.evaluate(() => [...document.querySelectorAll('.tabs button')].find((b) => b.textContent.trim() === 'Supplementary').click())
+  await page.waitForFunction(() => document.querySelectorAll('app-data-grid tbody tr:not(.empty-row)').length === 3, { timeout: 60000 })
+  check(true, 'MBM Adjustment shows DCHC9086608 and its 3 covered persons')
+
+  // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

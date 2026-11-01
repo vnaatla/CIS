@@ -96,3 +96,22 @@ would reach outside the policy wording folder is refused.
 **General Exclusions (frmGeneralBenefitExclusion, right 133) cannot be migrated:** the menu opens a form that is not in the source folder
 or in `medixcis.vbp`, so the desktop build cannot open it either. The menu item stays "not migrated" until the form (or its rules) is
 supplied; the Enquiry above shows the same data read-only.
+
+## MBM Adjustment — FrmMBMCLNAdj (`/membership/adjustment`, right 113, `api/membership/adjustment`)
+
+| Item | Behaviour |
+|---|---|
+| Show | Member No empty → `Please Enter Membership No`; 8–9 characters → frmSearchMBM05; HISDB `SearchCISMemberProc` (principal; F / H covers); none → `No record found!`. Deleted → `Membership has been deleted. No further changes are allowed!` (no Edit); cancelled → `Membership has been canceled. No further changes are allowed!` (Edit stays for Re-Activate); suspended → `Membership has been Suspended. No further changes are allowed!` (no Edit). Prev / Next, Search (frmSearchMBM). |
+| Principal tab | name, IC, policy no, payor, insured type, plan, group company / department, status, exp. / data status, eff / exp date, DOB + age band, card type (CheckItems CSMD), limit status text (AnnualLimit.SuppLimitStatus: `Share Limit For Family` …), e-mail, mobile, bank, exclusion, remarks, CIS remarks; premium, MCO, accum., annual / balance / visit limit (`FULL` when unlimited), MEP / dental / spectacles limits. |
+| Supplementary tab | I / G → `This Plan does not have supplementary`; covers with their plan, card type, premium, MCO, refunds (cancelled memberships, MBMCISRefund), limits, age band. Update (A): `Please select covered persons to update !`, `Please Enter Covered Person Identification`, `Are you sure?`; Cancel Supp (K): `Please Choose a Record`, `Are you sure?`. |
+| History tabs | Adjustment History (CISDB MBMCISAmendHistory), MBM History (HISDB `SearchCISMBMHistory` by IC). |
+| Edit / Endorse Status | A Amendment · C Cancellation · K Cancel Supplementary · X Suspend · Y Re-Activate · D Delete Policy; `No Re-Activate allowed ! ` / `Only Re-Activate allow ! ` are warnings only, as in the desktop. Changing the policy dates recalculates premium / MCO (GetPremium, GetMCO, InsertMCOFees) and asks ` Do you want to change member's MCO Fee?`. |
+| Save | `Please select a record to edit!`, `Please Enter Endt. Bordx Date!`, `Please Enter Endt. Effective Date!`, `Are you sure?`. C: an outstanding case → `There is at least an outstanding case under this member!`; else history + status C + covers C + refunds (MBMCISRefund) → `This Membership has been cancelled successfully`. K: refunds + status C for the flagged covers → `Supplementary has been cancelled successfully`. X → `Record is Suspended`; Y → `Record is Activated`; D → `Policy Deleted Successfully`; A: history + MBMCLNOthers, MBMTwo, MBMOthersTwo, covers → `Updated Successfully`. History = MBMCISAmendHistory row + MBMCLNOthers last endorsement, status, endt dates and MBMCancelDate (= endt. eff date, also for A, as the desktop). |
+
+Deliberate differences:
+- One transaction for CISDB and HISDB per save; the status of a deleted / suspended membership is also refused by the API.
+- A cover's premium is saved as its premium; the desktop wrote the annual-limit column into MBMCCLNPrem.
+- Cover refunds store the MCO refund in MCO Refund (the desktop showed the effective MCO in both columns).
+
+Local environment: MBMTwo (`trgMbmContactEncrypt`), MBMOthersTwo (`trgBankAcEncrypt`) and MBM have encryption triggers that need the
+HISDB database master key, which the restored local copy lacks, so Amendment saves fail here; the other endorsements do not touch them.
