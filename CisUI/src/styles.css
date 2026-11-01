@@ -383,3 +383,9 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .screen-form fieldset > .entry-table { grid-column: 1 / -1; }
 .entry-table td input { width: 100%; box-sizing: border-box; }
 .entry-table th:first-child, .entry-table td:first-child { width: 140px; }
+
+/* Shared grid pager (data-grid pageSize). */
+.grid-pager { display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding: 6px 4px; font-size: 13px; color: #475569; }
+.grid-pager button.link { font-size: 16px; padding: 0 4px; }
+.grid-pager button.link:disabled { opacity: 0.35; cursor: default; }
+.grid-pager select { margin-left: 6px; }

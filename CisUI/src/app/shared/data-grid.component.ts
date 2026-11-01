@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, input, linkedSignal, output, signal } from '@angular/core'
 
 export interface GridColumn<T> {
   key: string
@@ -51,7 +51,7 @@ const compare = (a: string | number, b: string | number) =>
           </tr>
         </thead>
         <tbody>
-          @for (row of sorted(); track rowKey()(row)) {
+          @for (row of paged(); track rowKey()(row)) {
             <tr
               [class.clickable]="selectable()"
               [class.selected]="selectedKey() !== null && rowKey()(row) === selectedKey()"
@@ -77,6 +77,23 @@ const compare = (a: string | number, b: string | number) =>
         </tbody>
       </table>
     </div>
+    @if (pageSize() > 0 && rows().length > size()) {
+      <nav class="grid-pager" [attr.aria-label]="caption() + ' pages'">
+        <span>Rows {{ first() + 1 }}–{{ last() }} of {{ rows().length }}</span>
+        <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(0)" aria-label="First page">«</button>
+        <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(page() - 1)" aria-label="Previous page">‹</button>
+        <span>Page {{ page() + 1 }} of {{ pages() }}</span>
+        <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(page() + 1)" aria-label="Next page">›</button>
+        <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(pages() - 1)" aria-label="Last page">»</button>
+        <label>Rows per page
+          <select [value]="size()" (change)="setSize($any($event.target).value)">
+            @for (n of sizes; track n) {
+              <option [value]="n" [selected]="n === size()">{{ n }}</option>
+            }
+          </select>
+        </label>
+      </nav>
+    }
   `,
 })
 export class DataGridComponent<T extends object> {
@@ -92,6 +109,8 @@ export class DataGridComponent<T extends object> {
   readonly checkable = input(false)
   readonly checked = input<ReadonlySet<string>>(new Set())
   readonly tall = input(false)
+  /** Rows per page (0 = no paging). Sorting, TOTAL RECORDS and exports still use every row. */
+  readonly pageSize = input(50)
 
   readonly rowSelected = output<T>()
   readonly checkedChange = output<Set<string>>()
@@ -105,6 +124,20 @@ export class DataGridComponent<T extends object> {
     const by = (r: T) => (col.sortBy ? col.sortBy(r) : (this.raw(col, r) ?? ''))
     return [...this.rows()].sort((a, b) => (s.dir === 'asc' ? 1 : -1) * compare(by(a), by(b)))
   })
+
+  protected readonly sizes = [25, 50, 100, 200]
+  private readonly chosenSize = signal<number | null>(null)
+  protected readonly size = computed(() => this.chosenSize() ?? this.pageSize())
+  /** Back to the first page whenever the rows or the sort change. */
+  protected readonly page = linkedSignal<unknown, number>({ source: () => [this.rows(), this.sort(), this.size()], computation: () => 0 })
+  protected readonly pages = computed(() => Math.max(1, Math.ceil(this.rows().length / Math.max(1, this.size()))))
+  protected readonly first = computed(() => this.page() * this.size())
+  protected readonly last = computed(() => Math.min(this.rows().length, this.first() + this.size()))
+  protected readonly paged = computed(() => (this.pageSize() > 0 ? this.sorted().slice(this.first(), this.last()) : this.sorted()))
+
+  protected setSize(value: string): void {
+    this.chosenSize.set(Number(value))
+  }
 
   private readonly checkedCount = computed(() => this.rows().filter((r) => this.checked().has(this.rowKey()(r))).length)
   protected readonly allChecked = computed(() => this.rows().length > 0 && this.checkedCount() === this.rows().length)
