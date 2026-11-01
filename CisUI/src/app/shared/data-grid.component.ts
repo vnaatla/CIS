@@ -77,23 +77,23 @@ const compare = (a: string | number, b: string | number) =>
         </tbody>
       </table>
     </div>
-    @if (pageSize() > 0 && rows().length > size()) {
+    @if (pageSize() > 0 && total() > size()) {
       <nav class="grid-pager" [attr.aria-label]="caption() + ' pages'">
-        <span>Rows {{ first() + 1 }}–{{ last() }} of {{ rows().length }}</span>
+        <span>Rows {{ first() + 1 }}–{{ last() }} of {{ total() }}</span>
         <ul class="pagination">
-          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="page.set(0)" aria-label="First page">First</button></li>
-          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="page.set(page() - 1)">Previous</button></li>
+          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="goto(0)" aria-label="First page">First</button></li>
+          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="goto(page() - 1)">Previous</button></li>
           @for (n of pageList(); track $index) {
             @if (n < 0) {
               <li class="disabled"><span class="page-btn" aria-hidden="true">…</span></li>
             } @else {
               <li [class.active]="n === page()">
-                <button type="button" class="page-btn" [attr.aria-current]="n === page() ? 'page' : null" (click)="page.set(n)">{{ n + 1 }}</button>
+                <button type="button" class="page-btn" [attr.aria-current]="n === page() ? 'page' : null" (click)="goto(n)">{{ n + 1 }}</button>
               </li>
             }
           }
-          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="page.set(page() + 1)">Next</button></li>
-          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="page.set(pages() - 1)" aria-label="Last page">Last</button></li>
+          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="goto(page() + 1)">Next</button></li>
+          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="goto(pages() - 1)" aria-label="Last page">Last</button></li>
         </ul>
         <label>Rows per page
           <select [value]="size()" (change)="setSize($any($event.target).value)">
@@ -121,6 +121,9 @@ export class DataGridComponent<T extends object> {
   readonly tall = input(false)
   /** Rows per page (0 = no paging). Sorting, TOTAL RECORDS and exports still use every row. */
   readonly pageSize = input(50)
+  /** Server paging: rows() is one page from the API, serverTotal() all matching rows; page / sort changes go out through pageRequest. */
+  readonly serverTotal = input<number | null>(null)
+  readonly pageRequest = output<{ page: number; pageSize: number; sortKey: string | null; sortDir: 'asc' | 'desc' }>()
 
   readonly rowSelected = output<T>()
   readonly checkedChange = output<Set<string>>()
@@ -130,7 +133,7 @@ export class DataGridComponent<T extends object> {
   protected readonly sorted = computed(() => {
     const s = this.sort()
     const col = s && this.columns().find((c) => c.key === s.key)
-    if (!s || !col) return this.rows()
+    if (!s || !col || this.serverTotal() !== null) return this.rows()
     const by = (r: T) => (col.sortBy ? col.sortBy(r) : (this.raw(col, r) ?? ''))
     return [...this.rows()].sort((a, b) => (s.dir === 'asc' ? 1 : -1) * compare(by(a), by(b)))
   })
@@ -139,11 +142,30 @@ export class DataGridComponent<T extends object> {
   private readonly chosenSize = signal<number | null>(null)
   protected readonly size = computed(() => this.chosenSize() ?? this.pageSize())
   /** Back to the first page whenever the rows or the sort change. */
-  protected readonly page = linkedSignal<unknown, number>({ source: () => [this.rows(), this.sort(), this.size()], computation: () => 0 })
-  protected readonly pages = computed(() => Math.max(1, Math.ceil(this.rows().length / Math.max(1, this.size()))))
+  protected readonly page = linkedSignal<unknown, number>({
+    source: () => (this.serverTotal() !== null ? [this.sort(), this.size()] : [this.rows(), this.sort(), this.size()]),
+    computation: () => 0,
+  })
+  /** Matching rows: the API's total in server mode, else the rows given. */
+  protected readonly total = computed(() => this.serverTotal() ?? this.rows().length)
+  protected readonly pages = computed(() => Math.max(1, Math.ceil(this.total() / Math.max(1, this.size()))))
   protected readonly first = computed(() => this.page() * this.size())
-  protected readonly last = computed(() => Math.min(this.rows().length, this.first() + this.size()))
-  protected readonly paged = computed(() => (this.pageSize() > 0 ? this.sorted().slice(this.first(), this.last()) : this.sorted()))
+  protected readonly last = computed(() => Math.min(this.total(), this.first() + this.size()))
+  protected readonly paged = computed(() =>
+    this.serverTotal() !== null || this.pageSize() <= 0 ? this.sorted() : this.sorted().slice(this.first(), this.last()),
+  )
+
+  /** Shows page n; in server mode asks the screen to load it. */
+  protected goto(n: number): void {
+    this.page.set(n)
+    this.request()
+  }
+
+  private request(): void {
+    if (this.serverTotal() === null) return
+    const s = this.sort()
+    this.pageRequest.emit({ page: this.page(), pageSize: this.size(), sortKey: s?.key ?? null, sortDir: s?.dir ?? 'asc' })
+  }
 
   /** Page numbers to show: first, last and two either side of the current one; -1 = a gap (…). */
   protected readonly pageList = computed(() => {
@@ -155,6 +177,7 @@ export class DataGridComponent<T extends object> {
 
   protected setSize(value: string): void {
     this.chosenSize.set(Number(value))
+    this.request()
   }
 
   private readonly checkedCount = computed(() => this.rows().filter((r) => this.checked().has(this.rowKey()(r))).length)
@@ -163,6 +186,7 @@ export class DataGridComponent<T extends object> {
 
   protected toggleSort(key: string): void {
     this.sort.update((s) => (s?.key !== key ? { key, dir: 'asc' } : s.dir === 'asc' ? { key, dir: 'desc' } : null))
+    this.request()
   }
 
   protected toggleRow(key: string): void {
