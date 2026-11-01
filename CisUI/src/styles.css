@@ -398,3 +398,8 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .grid-pager li.disabled .page-btn { color: #adb5bd; background: #fff; cursor: default; pointer-events: none; }
 .grid-pager label { display: flex; align-items: center; gap: 6px; }
 .grid-pager select { padding: 5px 8px; border: 1px solid #dee2e6; border-radius: 6px; font: inherit; }
+/* Pager layout: "Rows x–y of N · Rows per page" on the left, page buttons on the right. */
+.grid-pager { justify-content: flex-start; gap: 16px; }
+.grid-pager > span { order: 1; white-space: nowrap; }
+.grid-pager > label { order: 2; margin-right: auto; padding-left: 16px; border-left: 1px solid #dee2e6; white-space: nowrap; }
+.grid-pager > .pagination { order: 3; }
