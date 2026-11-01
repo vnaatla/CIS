@@ -403,3 +403,4 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .grid-pager > span { order: 1; white-space: nowrap; }
 .grid-pager > label { order: 2; margin-right: auto; padding-left: 16px; border-left: 1px solid #dee2e6; white-space: nowrap; }
 .grid-pager > .pagination { order: 3; }
+.screen-form fieldset > .radio-row { grid-column: 1 / -1; flex-wrap: wrap; }

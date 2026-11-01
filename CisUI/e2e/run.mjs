@@ -241,7 +241,24 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('app-code-table-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
   check(true, 'Co-Payment (MBM) search lists the plan co-payments')
 
-  // 12. Logout.
+  // 12. Membership > MBM Topup Adj: Go shows the member and the GP balance; the member search pop-up finds by name and loads the pick.
+  await page.goto(`${base}/membership/topup`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=member]')
+  await page.type('input[name=member]', 'DCHC9086608')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name=name]')?.value.length > 0, { timeout: 60000 })
+  const balance = await page.$eval('input[name=balance]', (i) => i.value)
+  check(balance === '3,129.00', `Topup Go loads member DCHC9086608 with GP balance ${balance}`)
+  await page.evaluate(() => [...document.querySelectorAll('app-action-bar button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForSelector('app-member-search-modal input[name=memberSearchText]')
+  await page.type('app-member-search-modal input[name=memberSearchText]', 'NUR RABIZAH BINTI ADENI')
+  await page.click('app-member-search-modal app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-member-search-modal tbody tr:not(.empty-row)').length > 0, { timeout: 90000 })
+  await page.click('app-member-search-modal tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => !document.querySelector('app-member-search-modal') && document.querySelector('input[name=name]')?.value.length > 0, { timeout: 60000 })
+  check((await page.$eval('input[name=member]', (i) => i.value)).startsWith('DCHC9086608-'), 'Member search by name lists the member and a click loads it into Topup')
+
+  // 13. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

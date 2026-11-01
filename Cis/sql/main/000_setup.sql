@@ -57,7 +57,16 @@ FROM (VALUES
     (N'Maint_CTY', @MaintenanceDb, N'CTY'),
     (N'Maint_CLNSeq', @MaintenanceDb, N'CLNSeq'),
     (N'Hdb_CLNAccessControl', @HisDb, N'CLNAccessControl'),
-    (N'Hdb_MBMCLNOthers', @HisDb, N'MBMCLNOthers')) v (s, d, t)
+    (N'Hdb_MBMCLNOthers', @HisDb, N'MBMCLNOthers'),
+    (N'Maint_MBMCrossReference', @MaintenanceDb, N'MBMCrossReference'),
+    (N'Hdb_MBM', @HisDb, N'MBM'),
+    (N'Hdb_MBMOthers', @HisDb, N'MBMOthers'),
+    (N'Hdb_MBMCoveredPersons', @HisDb, N'MBMCoveredPersons'),
+    (N'Hdb_Search_CISMBM_05', @HisDb, N'Search_CISMBM_05'),
+    (N'Hdb_Search_CISMBMSupp05', @HisDb, N'Search_CISMBMSupp05'),
+    (N'Hdb_SearchCISMemberProc', @HisDb, N'SearchCISMemberProc'),
+    (N'Hdb_AnnualLimitType', @HisDb, N'AnnualLimitType'),
+    (N'Hdb_MBMCoveredPersonsCLN', @HisDb, N'MBMCoveredPersonsCLN')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
