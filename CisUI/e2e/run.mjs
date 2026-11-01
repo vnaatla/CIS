@@ -75,7 +75,27 @@ try {
   await page.waitForSelector('.tabs button')
   check((await page.$$('.tabs button')).length === 5, 'Case shows the desktop\'s five tabs')
 
-  // 6. Logout.
+  // 6. LG Maintenance > GL Template Binding: the drop-downs load, a group company fills its plans, Search lists its bindings.
+  await page.goto(`${base}/maintenance/lg`, { waitUntil: 'domcontentloaded' })
+  await page.waitForFunction(() => document.querySelectorAll('app-lg-binding-panel select[name=groupCode] option').length > 1, { timeout: 60000 })
+  const counts = await page.$$eval('app-lg-binding-panel select', (s) => s.map((e) => `${e.name}:${e.options.length - 1}`))
+  check(['groupCode', 'glType', 'template', 'lgFormat'].every((n) => !counts.includes(`${n}:0`)), `LG drop-downs load (${counts.join(' ')})`)
+  const group = await page.evaluate(async () => {
+    const t = JSON.parse(sessionStorage.getItem('cis.session') ?? localStorage.getItem('cis.session') ?? '{}').token
+    const rows = await (await fetch('/api/maintenance/lg-binding?groupName=%25', { headers: { Authorization: `Bearer ${t}` } })).json()
+    const names = Array.isArray(rows) ? rows.map((r) => (r.groupCompany ?? '').trim()) : []
+    const opt = [...document.querySelectorAll('app-lg-binding-panel select[name=groupCode] option')].find((o) => o.value && names.includes((o.textContent.split('-')[1] ?? '').trim()))
+    return opt?.value ?? ''
+  })
+  if (group) {
+    await page.select('app-lg-binding-panel select[name=groupCode]', group)
+    await page.waitForFunction(() => document.querySelectorAll('app-lg-binding-panel select[name=planCode] option').length > 1, { timeout: 60000 })
+    await page.click('app-lg-binding-panel app-action-bar button.primary')
+    await page.waitForFunction(() => document.querySelectorAll('app-lg-binding-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  }
+  check(!!group && (await page.$$eval('app-lg-binding-panel tbody tr:not(.empty-row)', (r) => r.length)) > 0, `LG group company ${group} fills its plans and Search lists its bindings`)
+
+  // 7. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

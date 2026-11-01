@@ -18,6 +18,13 @@ export const maintenanceRoutes: Routes = [
     { label: 'Co-Payment Cal.', key: 'co-payment' },
     { label: 'Fee Payable 2 Clinic', key: 'fee' },
   ]),
+  {
+    path: 'maintenance/lg',
+    title: 'CIS - LG Maintenance',
+    canActivate: [accessGuard],
+    data: { access: Access.MaintenanceLg, legacyForm: 'frmLGMaintenance' },
+    loadComponent: () => import('./lg-maintenance.page').then((m) => m.LgMaintenancePage),
+  },
   codeTables('maintenance/case', 'Case', 'frmMaintenanceOthers', Access.MaintenanceCase, [
     { label: 'Treatment Reason', key: 'treatment-reason' },
     { label: 'Procedures', key: 'procedures' },

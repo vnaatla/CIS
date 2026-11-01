@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 3 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 4 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -23,8 +23,8 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
-| [Maintenance](#maintenance) | 11 | 3 | 1 |
-| **Total** | **119** | **3** | **20** |
+| [Maintenance](#maintenance) | 11 | 4 | 1 |
+| **Total** | **119** | **4** | **20** |
 
 ## Membership
 
@@ -219,7 +219,7 @@ Module page: `/maintenance`
 |  | Plan | frmMaintenancePlan | 138 |  | 1 | Pending | `/maintenance/plan` |
 |  | Case | frmMaintenanceOthers | 139 |  | 1 | **Migrated** | `/maintenance/case` |
 |  | Calculation | frmMaintenanceCal | 140 |  | 1 | **Migrated** | `/maintenance/calculation` |
-|  | LG Maintenance | frmLGMaintenance | 138 |  | 1 | Pending | `/maintenance/lg` |
+|  | LG Maintenance | frmLGMaintenance | 138 |  | 1 | **Migrated** | `/maintenance/lg` |
 | Benefit | Member | frmMaintenanceBenefits | 141 |  | 1 | Pending | `/maintenance/benefit/member` |
 | Benefit | Clinic | frmMaintenanceBenefitsCln | 142 |  | 1 | Pending | `/maintenance/benefit/clinic` |
 | Benefit | Clinic (new) | frmMaintenanceBenefitsClnNew | 142 | Never opened | 1 | Pending | `/maintenance/benefit/clinic-new` |

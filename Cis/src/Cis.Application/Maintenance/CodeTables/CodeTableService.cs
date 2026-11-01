@@ -35,7 +35,9 @@ public record CodeFieldView(string Column, string Label, int MaxLength, bool Req
 /// <param name="Tab">Tab caption.</param>
 /// <param name="ListReportKey">Print key (null = no Print button).</param>
 /// <param name="Fields">Fields in order.</param>
-public record CodeTableView(string Key, string LegacyForm, string Tab, string? ListReportKey, IReadOnlyList<CodeFieldView> Fields);
+/// <param name="IdentityKey">The key is numbered by the database (not typed on Add).</param>
+/// <param name="AllowDelete">The tab has a Delete button.</param>
+public record CodeTableView(string Key, string LegacyForm, string Tab, string? ListReportKey, IReadOnlyList<CodeFieldView> Fields, bool IdentityKey, bool AllowDelete);
 
 /// <summary>Result of a save / delete: the desktop's confirmation text.</summary>
 /// <param name="Message">e.g. "Record Saved...".</param>
@@ -100,7 +102,8 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
     {
         var table = Table(key, userAccess);
         return new CodeTableView(table.Key, table.LegacyForm, table.Tab, table.ListReportKey,
-            table.Fields.Select(f => new CodeFieldView(f.Column, f.Label, f.MaxLength, f.Required is not null, f.Kind, f.Search != SearchMatch.None, f.IsKey, f.Choices is not null)).ToList());
+            table.Fields.Select(f => new CodeFieldView(f.Column, f.Label, f.MaxLength, f.Required is not null, f.Kind, f.Search != SearchMatch.None, f.IsKey, f.Choices is not null)).ToList(),
+            table.IdentityKey, table.AllowDelete);
     }
 
     /// <inheritdoc />
@@ -139,10 +142,10 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
         var table = Table(key, userAccess);
         var values = Validate(table, request.Values, editing: false);
         await using var session = await sessions.BeginAsync();
-        if (await repository.ExistsAsync(session, table, values[table.KeyField.Column]!)) throw new ConflictException(Duplicated);
+        if (table.CheckDuplicate && await repository.ExistsAsync(session, table, values[table.KeyField.Column]!)) throw new ConflictException(Duplicated);
         await repository.InsertAsync(session, table, values, userCode, Today());
         await session.CommitAsync();
-        return new CodeTableResult(Saved);
+        return new CodeTableResult(table.SavedMessage);
     }
 
     /// <inheritdoc />
@@ -154,13 +157,14 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
         await using var session = await sessions.BeginAsync();
         if (await repository.UpdateFirstAsync(session, table, code.Trim(), values, userCode, Today()) == 0) throw new NotFoundException(SearchFirst);
         await session.CommitAsync();
-        return new CodeTableResult(Updated);
+        return new CodeTableResult(table.UpdatedMessage);
     }
 
     /// <inheritdoc />
     public async Task<CodeTableResult> DeleteAsync(string key, string code, string? userAccess)
     {
         var table = Table(key, userAccess);
+        if (!table.AllowDelete) throw new BusinessRuleException($"{table.Tab} has no Delete in the desktop.");
         if (string.IsNullOrWhiteSpace(code)) throw new BusinessRuleException(table.KeyField.Required ?? SearchFirst);
         await using var session = await sessions.BeginAsync();
         if (await repository.DeleteAsync(session, table, code.Trim()) == 0) throw new NotFoundException(SearchFirst);
@@ -172,7 +176,7 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
     public static Dictionary<string, string?> Validate(CodeTableDefinition table, IReadOnlyDictionary<string, string?> input, bool editing)
     {
         var values = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
-        foreach (var field in table.Fields)
+        foreach (var field in table.Fields.Where(f => !(f.IsKey && table.IdentityKey && !editing)))
         {
             var raw = input.FirstOrDefault(kv => string.Equals(kv.Key, field.Column, StringComparison.OrdinalIgnoreCase)).Value?.Trim() ?? "";
             if (raw.Length == 0)

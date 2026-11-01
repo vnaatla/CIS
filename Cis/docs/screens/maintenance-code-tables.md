@@ -38,3 +38,20 @@ Phase 1. Source: `frmCheckingItems`, `frmMaintenanceCal`, `frmMaintenanceOthers`
   skipped); the web fills `FeeLastUpdateUser` / `FeeLastUpdateDate`.
 - The list is ordered by code (the desktop showed rows in table order).
 - One engine serves all simple tables: SQL is built only from catalog identifiers (checked, bracket-quoted) with parameterised values.
+
+## LG Maintenance (frmLGMaintenance)
+
+GL Type / Template Name / Decline Reason run on the engine (IDENTITY key, no Delete, no duplicate or required check, "New Record Inserted
+Successfully.." / "Record Updated Successfully.."). GL Template Binding (Tbl_OPGLMaster) is its own panel (`cis.LgBinding_*`).
+
+Known desktop issues (reproduced):
+- Edit of a binding updates **every** Tbl_OPGLMaster row of the plan code, not only the selected one.
+- GRPCompnay is the text between the first and second "-" of "CODE - NAME", so names with "-" are stored cut (e.g. "…SDN BHD-1" → "…SDN BHD").
+- Search needs a group company ("Plese Select Group Company to Search", spelling kept); nothing is validated on Save.
+
+Deliberate differences:
+- Edit always writes the GL type name and Y/N VIP. The desktop's Edit cut the first 4 characters off the GL type unless it was re-picked
+  (`Mid(cmbGLType, 5)` on a name) and failed on a re-picked VIP ("N-No" into char(1)), i.e. it corrupted or lost the save.
+- Clear also empties the grid on all four tabs. The desktop's LG Clear kept the list (unlike the other Maintenance screens); after Save
+  the grid is refilled by the same search as in the desktop.
+- The drop-down lists retry once and offer "Reload lists" if the database does not answer.

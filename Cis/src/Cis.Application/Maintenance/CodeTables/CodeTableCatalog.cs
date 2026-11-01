@@ -59,15 +59,30 @@ public record CodeField(string Column, string Label, int MaxLength, string? Requ
 /// <param name="Tab">Tab caption (or the form caption when it has no tabs).</param>
 /// <param name="Access">USRAccess position of the screen.</param>
 /// <param name="Table">Table in CISDB.</param>
-/// <param name="AuditUserColumn">Column that receives the user code (<c>Logon</c>).</param>
-/// <param name="AuditDateColumn">Column that receives the date (<c>Date</c>).</param>
+/// <param name="AuditUserColumn">Column that receives the user code (<c>Logon</c>); null = the desktop wrote none.</param>
+/// <param name="AuditDateColumn">Column that receives the date (<c>Date</c>); null = the desktop wrote none.</param>
 /// <param name="Fields">Fields in the form's order (validation order).</param>
 /// <param name="ListReportKey">List print-out of the tab (null = none).</param>
-public record CodeTableDefinition(string Key, string LegacyForm, string Tab, int Access, string Table, string AuditUserColumn, string AuditDateColumn,
+public record CodeTableDefinition(string Key, string LegacyForm, string Tab, int Access, string Table, string? AuditUserColumn, string? AuditDateColumn,
     IReadOnlyList<CodeField> Fields, string? ListReportKey)
 {
     /// <summary>The key field.</summary>
     public CodeField KeyField => Fields.Single(f => f.IsKey);
+
+    /// <summary>The key is an IDENTITY column: not typed on Add, shown read-only (frmLGMaintenance GL ID / Template ID / Decline ID).</summary>
+    public bool IdentityKey { get; init; }
+
+    /// <summary>Add checks that the code is not used yet ("Record Duplicated! ...").</summary>
+    public bool CheckDuplicate { get; init; } = true;
+
+    /// <summary>The tab has a Delete button.</summary>
+    public bool AllowDelete { get; init; } = true;
+
+    /// <summary>Text after Add + Save.</summary>
+    public string SavedMessage { get; init; } = "Record Saved...";
+
+    /// <summary>Text after Edit + Save.</summary>
+    public string UpdatedMessage { get; init; } = "Record Updated...";
 }
 
 /// <summary>
@@ -158,7 +173,31 @@ public static class CodeTableCatalog
             new("BNFCATCode", "Category Code", 3, "Please Enter Code", 3, "Category Code must be 3 integer!", Search: SearchMatch.EqualsValue, IsKey: true),
             new("BNFCATDescription", "Description", 255, Desc),
         ], "benefit-category"),
+
+        // frmLGMaintenance: SaveGLType / SaveTemplate / SaveDecline insert without an ID (IDENTITY), update by ID, check nothing (the
+        // captions carry * but no rule exists), never delete, and answer their own texts. No audit columns.
+        new("gl-type", "frmLGMaintenance", "GL Type Binding", AccessRight.MaintenanceLg, "Tbl_GLType", null, null,
+        [
+            new("GLID", "GL ID", 15, IsKey: true),
+            new("GLType", "GL TYPE", 50, Search: SearchMatch.Contains),
+            new("GLDesc", "GL DESCRIPTION", 50),
+        ], null) { IdentityKey = true, CheckDuplicate = false, AllowDelete = false, SavedMessage = LgSaved, UpdatedMessage = LgUpdated },
+        new("gl-template-name", "frmLGMaintenance", "Template Name Binding", AccessRight.MaintenanceLg, "Tbl_GLTemplates", null, null,
+        [
+            new("GLTemplateID", "GL Template ID", 15, IsKey: true),
+            new("GLTemplateName", "GL Template Name", 50, Search: SearchMatch.Contains),
+            new("GLTemplateDesc", "Template Decription", 50),
+            new("TmpRemarks", "Template Remarks", 2000),
+        ], null) { IdentityKey = true, CheckDuplicate = false, AllowDelete = false, SavedMessage = LgSaved, UpdatedMessage = LgUpdated },
+        new("decline-reason", "frmLGMaintenance", "Decline Reason", AccessRight.MaintenanceLg, "Tbl_DeclineReason", null, null,
+        [
+            new("ID", "Decline ID", 15, IsKey: true),
+            new("DeclineReason", "Decline Reason", 200, Search: SearchMatch.Contains),
+            new("Remarks", "Decline Remarks", 50),
+        ], null) { IdentityKey = true, CheckDuplicate = false, AllowDelete = false, SavedMessage = LgSaved, UpdatedMessage = LgUpdated },
     ];
+
+    private const string LgSaved = "New Record Inserted Successfully..", LgUpdated = "Record Updated Successfully..";
 
     /// <summary>The code table with <paramref name="key"/>, or null.</summary>
     public static CodeTableDefinition? Find(string key) => All.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));

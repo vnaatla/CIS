@@ -29,6 +29,8 @@ export interface CodeTableView {
   tab: string
   listReportKey: string | null
   fields: CodeFieldView[]
+  identityKey: boolean
+  allowDelete: boolean
 }
 
 type Row = Record<string, unknown> & { _id: string }
@@ -77,7 +79,9 @@ type Mode = 'search' | 'selected' | 'add' | 'edit'
           <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
           <button appButton (click)="add()">Add</button>
           <button appButton [disabled]="mode() !== 'selected'" (click)="edit()">Edit</button>
-          <button appButton variant="danger" [disabled]="mode() !== 'selected'" (click)="remove()">Delete</button>
+          @if (v.allowDelete) {
+            <button appButton variant="danger" [disabled]="mode() !== 'selected'" (click)="remove()">Delete</button>
+          }
           <button appButton [disabled]="mode() !== 'add' && mode() !== 'edit'" [busy]="busy()" (click)="save()">Save</button>
           <button appButton variant="ghost" (click)="clear()">Clear</button>
           @if (v.listReportKey) {
@@ -144,6 +148,7 @@ export class CodeTablePanelComponent implements OnInit {
   /** Key read-only while editing; everything read-only when a list row is shown. */
   protected enabled(f: CodeFieldView): boolean {
     const m = this.mode()
+    if (f.isKey && this.view()?.identityKey) return false
     return m === 'search' || m === 'add' || (m === 'edit' && !f.isKey)
   }
 

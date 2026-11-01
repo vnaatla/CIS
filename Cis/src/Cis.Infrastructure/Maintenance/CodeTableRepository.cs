@@ -54,19 +54,16 @@ public sealed partial class CodeTableRepository : ICodeTableRepository
     /// <inheritdoc />
     public Task InsertAsync(IDbSession session, CodeTableDefinition table, IReadOnlyDictionary<string, string?> values, string userCode, DateTime date)
     {
-        var columns = table.Fields.Select(f => f.Column).Append(table.AuditUserColumn).Append(table.AuditDateColumn).ToList();
+        var (columns, p) = Assignments(table, values, userCode, date, includeKey: !table.IdentityKey);
         var sql = $"INSERT INTO dbo.{Q(table.Table)} ({string.Join(", ", columns.Select(Q))}) VALUES ({string.Join(", ", columns.Select((_, n) => "@p" + n))})";
-        return session.Sql().Connection.ExecuteAsync(sql, Parameters(table, values, userCode, date), session.Sql().Transaction);
+        return session.Sql().Connection.ExecuteAsync(sql, p, session.Sql().Transaction);
     }
 
     /// <inheritdoc />
     public Task<int> UpdateFirstAsync(IDbSession session, CodeTableDefinition table, string code, IReadOnlyDictionary<string, string?> values, string userCode, DateTime date)
     {
-        var columns = table.Fields.Select(f => f.Column).Append(table.AuditUserColumn).Append(table.AuditDateColumn).ToList();
-        var sets = columns.Select((c, n) => (c, n)).Where(x => !string.Equals(x.c, table.KeyField.Column, StringComparison.OrdinalIgnoreCase))
-            .Select(x => $"{Q(x.c)} = @p{x.n}");
-        var sql = $"UPDATE TOP (1) dbo.{Q(table.Table)} SET {string.Join(", ", sets)} WHERE {Q(table.KeyField.Column)} = @code";
-        var p = Parameters(table, values, userCode, date);
+        var (columns, p) = Assignments(table, values, userCode, date, includeKey: false);
+        var sql = $"UPDATE TOP (1) dbo.{Q(table.Table)} SET {string.Join(", ", columns.Select((c, n) => $"{Q(c)} = @p{n}"))} WHERE {Q(table.KeyField.Column)} = @code";
         p.Add("code", code);
         return session.Sql().Connection.ExecuteAsync(sql, p, session.Sql().Transaction);
     }
@@ -81,14 +78,21 @@ public sealed partial class CodeTableRepository : ICodeTableRepository
             $"SELECT RTRIM({Q(source.CodeColumn)}) AS Code, ISNULL(RTRIM({Q(source.NameColumn)}), N'') AS Name FROM dbo.{Q(source.Table)} ORDER BY {Q(source.CodeColumn)}",
             transaction: session.Sql().Transaction)).ToList();
 
-    private static DynamicParameters Parameters(CodeTableDefinition table, IReadOnlyDictionary<string, string?> values, string userCode, DateTime date)
+    /// <summary>Columns written and their values (@p0..): the fields (key only when asked), then the audit columns the table has.</summary>
+    private static (List<string> Columns, DynamicParameters Parameters) Assignments(CodeTableDefinition table, IReadOnlyDictionary<string, string?> values,
+        string userCode, DateTime date, bool includeKey)
     {
+        var columns = new List<string>();
         var p = new DynamicParameters();
-        var n = 0;
-        foreach (var field in table.Fields) p.Add("p" + n++, values.TryGetValue(field.Column, out var v) ? v : null);
-        p.Add("p" + n++, userCode);
-        p.Add("p" + n, date);
-        return p;
+        void Add(string column, object? value)
+        {
+            p.Add("p" + columns.Count, value);
+            columns.Add(column);
+        }
+        foreach (var field in table.Fields.Where(f => includeKey || !f.IsKey)) Add(field.Column, values.TryGetValue(field.Column, out var v) ? v : null);
+        if (table.AuditUserColumn is not null) Add(table.AuditUserColumn, userCode);
+        if (table.AuditDateColumn is not null) Add(table.AuditDateColumn, date);
+        return (columns, p);
     }
 
     private static string Q(string name) =>

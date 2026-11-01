@@ -54,12 +54,20 @@ public class CodeTableRuleTests
     }
 
     [Fact]
+    public void Identity_key_tables_do_not_ask_for_the_key_on_add()
+    {
+        var values = CodeTableService.Validate(T("decline-reason"), V(("DeclineReason", "Not covered"), ("Remarks", "")), false);
+        Assert.False(values.ContainsKey("ID"));
+        Assert.Equal("Not covered", values["DeclineReason"]);
+    }
+
+    [Fact]
     public void Catalog_identifiers_are_safe_and_every_table_has_one_key()
     {
         foreach (var t in CodeTableCatalog.All)
         {
             Assert.Single(t.Fields, f => f.IsKey);
-            foreach (var name in t.Fields.Select(f => f.Column).Append(t.Table).Append(t.AuditUserColumn).Append(t.AuditDateColumn))
+            foreach (var name in t.Fields.Select(f => f.Column).Append(t.Table).Append(t.AuditUserColumn).Append(t.AuditDateColumn).OfType<string>())
                 Assert.Matches(CodeTableRepository.SafeName(), name);
             if (t.ListReportKey is not null) Assert.NotNull(ListReportCatalog.Find(t.ListReportKey));
         }
@@ -194,7 +202,7 @@ public class MaintenanceDatabaseTests
         await using var s = await TestDb.Sessions().OpenAsync();
         var conn = s.Sql().Connection;
         foreach (var t in CodeTableCatalog.All)
-            foreach (var column in t.Fields.Select(f => f.Column).Append(t.AuditUserColumn).Append(t.AuditDateColumn))
+            foreach (var column in t.Fields.Select(f => f.Column).Append(t.AuditUserColumn).Append(t.AuditDateColumn).OfType<string>())
                 Assert.True(await conn.ExecuteScalarAsync<int>("SELECT COUNT(*) FROM sys.columns WHERE object_id = OBJECT_ID(@t) AND name = @c", new { t = "dbo." + t.Table, c = column }) == 1,
                     $"{t.Table}.{column} does not exist");
 
