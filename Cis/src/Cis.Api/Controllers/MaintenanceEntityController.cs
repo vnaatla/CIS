@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Entity (frmMaintenanceEntity): Clinic Group and Doctor tabs.</summary>
+/// <summary>Maintenance > Entity (frmMaintenanceEntity): Clinic Group, Doctor and Clinic Info tabs.</summary>
 [Route("api/maintenance/entity")]
 [RequireAccess(AccessRight.MaintenanceEntity)]
-public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity) : ApiControllerBase
+public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity, IEntityClinicService clinics) : ApiControllerBase
 {
     /// <summary>Clinic groups (code / name contain).</summary>
     [HttpGet("groups")]
@@ -46,4 +46,40 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
     /// <summary>Delete.</summary>
     [HttpDelete("doctors/{code}")]
     public async Task<object> DeleteDoctor(string code) => new { message = await entity.DeleteDoctorAsync(code) };
+
+    /// <summary>Clinic Info combos.</summary>
+    [HttpGet("clinics/setup")]
+    public Task<ClinicSetup> ClinicSetup() => clinics.SetupAsync();
+
+    /// <summary>Clinic Info search (the boxes are the filters).</summary>
+    [HttpPost("clinics/search")]
+    public Task<List<Dictionary<string, object?>>> Clinics(ClinicRequest request) => clinics.SearchAsync(request.Clinic);
+
+    /// <summary>Clinic Info print: the list as Excel.</summary>
+    [HttpPost("clinics/export")]
+    public async Task<FileContentResult> ExportClinics(ClinicRequest request)
+    {
+        var file = await clinics.ExportAsync(request.Clinic);
+        return File(file.Content, file.ContentType, file.FileName);
+    }
+
+    /// <summary>Add + Save (code generated).</summary>
+    [HttpPost("clinics")]
+    public async Task<object> CreateClinic(ClinicRequest request)
+    {
+        var (message, code) = await clinics.SaveAsync(request.Clinic, false, UserCode);
+        return new { message, code };
+    }
+
+    /// <summary>Edit + Save.</summary>
+    [HttpPut("clinics")]
+    public async Task<object> UpdateClinic(ClinicRequest request)
+    {
+        var (message, code) = await clinics.SaveAsync(request.Clinic, true, UserCode);
+        return new { message, code };
+    }
+
+    /// <summary>Delete (name as on screen, for the desktop's first check).</summary>
+    [HttpDelete("clinics/{code}")]
+    public async Task<object> DeleteClinic(string code, [FromQuery] string? name) => new { message = await clinics.DeleteAsync(code, name) };
 }

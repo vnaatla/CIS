@@ -1,7 +1,7 @@
 # frmMaintenanceEntity (Maintenance > Entity) + frmSearchCLN
 
 Route `/maintenance/entity`, access 137 (MaintenanceEntity). Tabs in desktop order: Clinic Group · Doctor · Clinic Info · Group Company
-Clinic · Clinic Access. Status: Clinic Group and Doctor migrated; Clinic Info, Group Company Clinic and Clinic Access still to do (the
+Clinic · Clinic Access. Status: Clinic Group, Doctor and Clinic Info migrated; Group Company Clinic and Clinic Access still to do (the
 menu item stays "not migrated" until all five are done).
 
 ## Clinic Group (GRPClinic, `cis.EntityGroup_*`)
@@ -22,10 +22,26 @@ menu item stays "not migrated" until all five are done).
   letter of the name + next DOCSeq number ("00000"), name upper-cased; Edit locks code and name (only the audit columns change, as in
   the desktop); Delete: "Please Enter Doctor Code" …; Print: RptDoctorList.
 
+## Clinic Info (HISDB CLN, `cis.EntityClinic_*`)
+
+- Combos: clinic groups (HISDB ClinicGrp, which mirrors CISDB GRPClinic), cities (HISMaintenance CTY), states (HISDB STA) and the fixed
+  lists (Type G/S, Benefit Type 1/2/3 defaulting to 1 - Standard, Panel Y/N/D/C, X-Ray / 24 Hours / FFS / Online Y/N, GL Format M/H).
+- Search: code =, initial / name / state / city / post code LIKE %x% (upper-cased), panel / type / 24 hours / FFS =, group prefix LIKE,
+  Online Y vs. N-or-empty, GL format M vs. H; the 38-column list; "Record not found"; the boxes are cleared after a search. View / Back
+  hides the boxes to show the list larger. Print exports the list to Excel ("Report cannot be printed without any record.").
+- Save: the 15 desktop checks in order ("Please Enter Clinic Name" … " Please Operating hours", leading spaces kept); Add refuses an
+  Address 1 already used ("Duplicate Record!"); "Do you want to save the record?"; code from HISMaintenance CLNSeq (first letter of the
+  Clinic Initial + seq "000"); text upper-cased (ChkStr, "" when empty); the group's first 5 characters; combos as one letter; FFS %
+  rounded into numeric(18,0) → "Record Saved..." / "Record Updated...", then a search on the saved boxes. Edit locks code and name.
+- Delete: "Please Enter Clinic Name", "Please search the record", "There are case(s) register under this Clinic !" (CISDB CISCAS),
+  "Do you want to delete the record?" → "Record Deleted... "; boxes and list cleared.
+
 ## Known desktop issues (reproduced)
 
 - Edit of a doctor cannot change anything but the audit columns (both boxes are locked).
 - The Add duplicate check of Clinic Group looks up the (still empty) code, so it never finds a duplicate.
+- Clinic Info: Pay. Post Code / City / State are shown from the clinic but never saved (the web shows them read-only). A letter with no
+  CLNSeq row gets a doubled code (e.g. "ZZ001"). The duplicate check compares Address 1 exactly as typed.
 
 ## Deliberate differences
 
@@ -35,4 +51,7 @@ menu item stays "not migrated" until all five are done).
   (CLN.CLNDocName is free text), so it is deleted. *To confirm with the business.*
 - **Generated codes skip numbers already used.** GRPClnSeq / DOCSeq can lag behind the data (locally B is at 0001 while B0080 exists), so
   the desktop's next code hit the primary key and the save failed silently; the web takes the next free number and moves the counter.
+- Clinic Info: an empty FFS % is saved as NULL (the desktop assigned "" to the numeric column and the save failed, so it only saved with a
+  percentage). " Please Enter FFS Percentage" fires whenever FFS is Y (the desktop compared the combo text "Y - Yes" with "Y", so the
+  check only ran after a list click). The clinic code box is not typed on Add (the desktop enabled it but ignored it).
 - Save / Delete are transactions; the counter update and the insert commit together.

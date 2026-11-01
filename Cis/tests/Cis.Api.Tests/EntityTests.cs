@@ -41,6 +41,40 @@ public class EntityGroupDoctorServiceTests
     }
 }
 
+public class EntityClinicServiceTests
+{
+    internal static readonly ClinicDto Valid = new(null, "Klinik Web", "zk", "A0001 - AMAR", "G", "1", "Jalan ZZ 1", "", null, "50000",
+        "Kuala Lumpur", "W.P. Kuala Lumpur", "01/02/2020", "Y", "N", null, "2", "0312", null, null, null, null, null, null, null, null, null,
+        "Y", null, "N", "", "Jalan", "9-5", null, null, null, null, "", null, "R1");
+
+    private readonly EntityClinicService _service = new(new FakeSessions(), null!, null!, new FixedClock(new DateTime(2026, 11, 1)));
+
+    [Fact]
+    public async Task Save_checks_run_in_the_desktop_order()
+    {
+        var empty = new ClinicDto(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        Assert.Equal("Please Enter Clinic Name", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(empty, false, "DEV"))).Message);
+        Assert.Equal(" Please Enter FFS Percentage", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(Valid with { Ffs = "Y", FfsPerc = "0" }, false, "DEV"))).Message);
+        Assert.Equal(" Please Operating hours", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(Valid with { OperatingHr = "" }, false, "DEV"))).Message);
+        Assert.Equal("Please Enter Received Date!", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(Valid with { ReceivedDate = "__/__/____" }, false, "DEV"))).Message);
+    }
+
+    [Fact]
+    public void Values_and_filters_follow_the_desktop()
+    {
+        var c = EntityClinicService.Clean(Valid with { Code = "Z123" });
+        Assert.Equal(("KLINIK WEB", "A0001", "G", "1", "", "KUALA LUMPUR", "2020-02-01", "2", null, "", "R1"),
+            (c.Name, c.GroupCode, c.Type, c.BnfType, c.Add2, c.City, c.ReceivedDate, c.NoOfDoc, c.FfsPerc, c.Online, c.RegNo));
+        var f = EntityClinicService.ReduceFilters(Valid);
+        Assert.Equal(("ZK", "KLINIK WEB", "A0001", "Y", null), (f.Initial, f.Name, f.GroupCode, f.Panel, f.Add1));
+    }
+
+    [Fact]
+    public async Task Delete_checks_name_then_selection() =>
+        Assert.Equal("Please Enter Clinic Name", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.DeleteAsync(null, ""))).Message);
+}
+
 /// <summary>Clinic Group / Doctor procedures against the real CISDB (skipped without CIS_TEST_DB); writes are rolled back.</summary>
 [Collection(DatabaseCollection.Name)]
 public class EntityDatabaseTests
@@ -79,5 +113,29 @@ public class EntityDatabaseTests
         Assert.True(await repo.DoctorNameExistsAsync(s, "ZZ CIS WEB DOCTOR"));
         Assert.Contains(await repo.SearchDoctorsAsync(s, code, null), r => r.Name == "ZZ CIS WEB DOCTOR");
         Assert.Equal(1, await repo.DeleteDoctorAsync(s, code));
+    }
+
+    [Fact]
+    public async Task Clinic_code_is_generated_saved_found_and_deleted()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        await using var s = await TestDb.Sessions().BeginAsync();
+        var repo = new EntityClinicRepository();
+        var setup = await repo.SetupAsync(s);
+        Assert.NotEmpty(setup.Groups);
+        Assert.NotEmpty(setup.States);
+        var code = await repo.NextCodeAsync(s, "Z");
+        Assert.StartsWith("Z", code);
+        Assert.Empty(await repo.SearchAsync(s, EntityClinicService.ReduceFilters(EntityClinicServiceTests.Valid with { Code = code, Initial = null, Name = null,
+            State = null, City = null, PostCode = null, Panel = null, GroupCode = null, Type = null, Hrs24 = null, Ffs = null })));
+        Assert.False(await repo.AddressExistsAsync(s, "JALAN ZZ CIS WEB 1"));
+        var row = EntityClinicService.Clean(EntityClinicServiceTests.Valid with { Code = code, Add1 = "Jalan ZZ CIS WEB 1", Ffs = "Y", FfsPerc = "12.6" });
+        Assert.Equal(1, await repo.SaveAsync(s, true, row, "CISTEST", new DateTime(2026, 11, 1)));
+        Assert.True(await repo.AddressExistsAsync(s, "JALAN ZZ CIS WEB 1"));
+        var found = Assert.Single(await repo.SearchAsync(s, EntityClinicService.ReduceFilters(EntityClinicServiceTests.Valid with { Code = code, Ffs = "Y" })));
+        Assert.Equal(("KLINIK WEB", 13m), ((string)found["CLNName"]!, (decimal)found["CLNMCOProcfeePerc"]!));
+        Assert.False(await repo.HasCasesAsync(s, code));
+        Assert.Equal(1, await repo.DeleteAsync(s, code));
     }
 }

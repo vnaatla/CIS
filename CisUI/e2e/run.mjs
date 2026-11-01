@@ -151,6 +151,14 @@ try {
   await page.click('app-entity-group-panel tbody tr:not(.empty-row)')
   await page.waitForFunction(() => { const i = document.querySelector('app-entity-group-panel input[name=name]'); return i?.disabled && i.value.includes('KLINIK') }, { timeout: 60000 })
   check(true, 'Clinic Group search lists groups and a row opens read-only')
+  await (await page.$$('.tabs button'))[2].click()
+  await page.waitForSelector('app-entity-clinic-panel input[name=name]')
+  await page.type('app-entity-clinic-panel input[name=name]', 'KLINIK')
+  await page.click('app-entity-clinic-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-entity-clinic-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-entity-clinic-panel tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => { const i = document.querySelector('app-entity-clinic-panel input[name=name]'); return i?.disabled && i.value.includes('KLINIK') }, { timeout: 60000 })
+  check(true, 'Clinic Info search by name lists HISDB clinics and a row opens read-only')
 
   // 11. Logout.
   await page.click('header.topbar button.link:last-of-type')
