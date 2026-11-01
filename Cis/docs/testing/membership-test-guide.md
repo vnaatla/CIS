@@ -78,3 +78,12 @@ Opened from the clinic invoice (Phase 3). Until then test it through the API (`/
 | R5 | `GET departments?text=` | `Please enter Department! ` |
 | R6 | `POST` with each required field empty in turn | the 11 messages in order (section above) |
 | R7 | `POST` complete | locally: fails on the MBM encryption trigger (no master key); on a server with the key: `Membership Generated, Your Membership Number is : DCG…` |
+
+## 5. General Exclusions (Enquiry) — `/invoice/general-exclusions/enquiry` (right 113)
+
+| # | Action | Expected |
+|---|---|---|
+| E1 | Search without a group company | `Please Select Group Company!` |
+| E2 | `1MILLENNIUM INTERNATIONAL SDN BHD` → Search | Dental and Optical ticked, Dermatitis not; remarks start `PAYOR : ST` |
+| E3 | `ZZ NO COMPANY` → Search | every box unticked, remarks empty, no message |
+| E4 | Benifit Schedule tab | the company's policy wording files, or the "not configured" notice when `Files:Folders:PolicyWording` is empty (local default) |

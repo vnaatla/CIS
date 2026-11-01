@@ -11,4 +11,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.CaseTransfer, legacyForm: 'frmMembershipTransfer' },
     loadComponent: () => import('./case-transfer.page').then((m) => m.CaseTransferPage),
   },
+  {
+    path: 'invoice/general-exclusions/enquiry',
+    title: 'CIS - General Exclusions (Enquiry)',
+    canActivate: [accessGuard],
+    data: { access: Access.GeneralExclusionsEnquiry, legacyForm: 'frmGeneralBenefitExcEnq' },
+    loadComponent: () => import('./general-exclusions-enquiry.page').then((m) => m.GeneralExclusionsEnquiryPage),
+  },
 ]

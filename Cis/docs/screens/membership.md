@@ -81,3 +81,18 @@ Deliberate differences:
 
 Local environment: the MBM insert fires `trgICEncrypt` (symmetric key), which fails on the restored HISDB without a database master key,
 so Register cannot complete locally (the test accepts that error); it works where the key exists.
+
+## General Exclusions (Enquiry) — frmGeneralBenefitExcEnq (`/invoice/general-exclusions/enquiry`, right 113)
+
+| Item | Behaviour |
+|---|---|
+| Group Company | type-ahead of GRPCompany names; Search without one → `Please Select Group Company!` |
+| Remarks tab | the 24 exclusion check boxes (desktop captions, e.g. `Dermatitis/Skin Disorder`, `Tyroid Disorder`, `Prenancy Related/Test`) ticked where CISDB GeneralExclusions has `Y`, and the remarks; read-only. A company without a row shows everything unticked (no message, as the desktop). |
+| Benifit Schedule tab | files of `SRVPath\CLNPolicyWording\<group company>` with the desktop's extensions (jpg, tif, gif, pdf, txt, xlsx, docx); a click opens the file. Server folder = `Files:Folders:PolicyWording`; not configured → a notice. |
+
+Deliberate differences: the hidden Update button (which would add / overwrite the company's row) is not offered; a group company name that
+would reach outside the policy wording folder is refused.
+
+**General Exclusions (frmGeneralBenefitExclusion, right 133) cannot be migrated:** the menu opens a form that is not in the source folder
+or in `medixcis.vbp`, so the desktop build cannot open it either. The menu item stays "not migrated" until the form (or its rules) is
+supplied; the Enquiry above shows the same data read-only.

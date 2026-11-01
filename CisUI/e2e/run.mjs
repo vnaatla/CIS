@@ -271,7 +271,16 @@ try {
   const transferEnabled = await page.evaluate(() => ![...document.querySelectorAll('app-action-bar button')].find((b) => b.textContent.trim() === 'Transfer').disabled)
   check(transferEnabled, 'Case Transfer: Go shows case K001596118 (DCGB3518731) and Search enables Transfer for DCHC9086608-00')
 
-  // 14. Logout.
+  // 14. Invoice > General Exclusions (Enquiry): a company's flags and remarks.
+  await page.goto(`${base}/invoice/general-exclusions/enquiry`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=groupCompany]')
+  await page.type('input[name=groupCompany]', '1MILLENNIUM INTERNATIONAL SDN BHD')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('textarea[name=remarks]')?.value.startsWith('PAYOR : ST'), { timeout: 60000 })
+  const dental = await page.$eval('input[name=Dental]', (i) => i.checked)
+  check(dental, 'General Exclusions Enquiry shows 1MILLENNIUM INTERNATIONAL SDN BHD (Dental excluded, remarks)')
+
+  // 15. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

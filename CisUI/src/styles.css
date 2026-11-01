@@ -405,3 +405,4 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .grid-pager > .pagination { order: 3; }
 .screen-form fieldset > .radio-row { grid-column: 1 / -1; flex-wrap: wrap; }
 .screen-form > .notice { margin: 0; padding: 8px 12px; border-left: 4px solid var(--accent); background: var(--accent-soft, #f9ecf7); font-size: 13px; }
+.file-list { margin: 0; padding-left: 18px; display: grid; gap: 6px; }

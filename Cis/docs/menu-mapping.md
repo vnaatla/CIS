@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 12 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 13 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 1 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 0 | 0 |
-| [Invoice](#invoice) | 30 | 1 | 6 |
+| [Invoice](#invoice) | 30 | 2 | 6 |
 | [Claim](#claim) | 1 | 0 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 0 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 0 | 0 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **12** | **20** |
+| **Total** | **119** | **13** | **20** |
 
 ## Membership
 
@@ -71,7 +71,7 @@ Module page: `/invoice`
 | Email Notification | Email Notification (Providers) | frmEmailNotificationProvider | 117 |  | 10 | Pending | `/invoice/email/providers` |
 | Email Notification | Email Notification (Rejection) | frmEmailRejectedClaim | 117 |  | 10 | Pending | `/invoice/email/rejection` |
 | General Exclusions | General Exclusions | frmGeneralBenefitExclusion | 133 |  | 2 | Pending | `/invoice/general-exclusions` |
-| General Exclusions | General Exclusions (Enquiry) | frmGeneralBenefitExcEnq | 113 |  | 2 | Pending | `/invoice/general-exclusions/enquiry` |
+| General Exclusions | General Exclusions (Enquiry) | frmGeneralBenefitExcEnq | 113 |  | 2 | **Migrated** | `/invoice/general-exclusions/enquiry` |
 | Claim ASCII | Claim ASCII (Bintulu) | frmClaimDetailsASCII | 119 |  | 10 | Pending | `/invoice/claim-ascii/bintulu` |
 | Claim ASCII | Claim ASCII (Toshiba) | frmClaimASCIIToshiba | 119 |  | 10 | Pending | `/invoice/claim-ascii/toshiba` |
 | Claim ASCII | Claim ASCII (Singer) | frmClaimASCIISinger | 119 |  | 10 | Pending | `/invoice/claim-ascii/singer` |
