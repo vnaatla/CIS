@@ -8,6 +8,15 @@ using FluentValidation;
 
 namespace Cis.Application.Maintenance.BenefitMember;
 
+/// <summary>Which Benefit Entry grid: Member (frmMaintenanceBenefits: BNFNew over BNFCategoryNew) or Dental (frmMaintenanceBNFDental: DentalBNF over DentalBNFCategory).</summary>
+public enum BenefitScheme
+{
+    /// <summary>BNFNew / BNFCategoryNew.</summary>
+    Member,
+    /// <summary>DentalBNF / DentalBNFCategory.</summary>
+    Dental,
+}
+
 /// <summary>A row of the Benefit Entry grid (FGrid: Cat Code, Calculation, No of Visit Per day / Per Annum, RM Per Visit, Percentage).</summary>
 /// <param name="BnfCode">Category code (BNFCode).</param>
 /// <param name="Calculation">1 - Lower of Limit or % · 2 - Higher of Limit or % · 3 - Ascharge · 4 - BNF Limit.</param>
@@ -98,35 +107,35 @@ public sealed class BenefitListingRequestValidator : RequestValidator<BenefitLis
 public interface IBenefitMemberRepository
 {
     /// <summary>INS, PLN, categories.</summary>
-    Task<(List<LookupOption> Insured, List<LookupOption> Plans, List<LookupOption> Categories)> EntrySetupAsync(IDbSession session);
+    Task<(List<LookupOption> Insured, List<LookupOption> Plans, List<LookupOption> Categories)> EntrySetupAsync(IDbSession session, BenefitScheme scheme);
 
     /// <summary>Listing combos.</summary>
     Task<BenefitListingSetup> ListingSetupAsync(IDbSession session);
 
     /// <summary>BNFNew rows of the key.</summary>
-    Task<List<BenefitEntryRow>> EntrySearchAsync(IDbSession session, string plnCode, string insCode, string hltCode, DateTime effDate);
+    Task<List<BenefitEntryRow>> EntrySearchAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, string hltCode, DateTime effDate);
 
     /// <summary>True when plan + insured type + date already has rows.</summary>
-    Task<bool> EntryExistsAsync(IDbSession session, string plnCode, string insCode, DateTime effDate);
+    Task<bool> EntryExistsAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, DateTime effDate);
 
     /// <summary>Inserts one BNFNew row.</summary>
-    Task EntryInsertAsync(IDbSession session, string plnCode, string insCode, string hltCode, DateTime effDate, BenefitEntryRow row, string userCode, DateTime today);
+    Task EntryInsertAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, string hltCode, DateTime effDate, BenefitEntryRow row, string userCode, DateTime today);
 
     /// <summary>VIEW_CISBNF_PLN_SubCat rows of the filters (already reduced to the desktop's SQL values).</summary>
     Task<List<Dictionary<string, object?>>> ListingAsync(IDbSession session, BenefitListingRequest filters, DateTime? effDate);
 }
 
-/// <summary>Maintenance > Benefit > Member, Benefit Entry and Benefit Listing tabs.</summary>
+/// <summary>Maintenance > Benefit > Member (Benefit Entry, Benefit Listing) and Dental (Benefit Entry).</summary>
 public interface IBenefitMemberService
 {
     /// <summary>BNFcombolisting.</summary>
-    Task<BenefitEntrySetup> EntrySetupAsync();
+    Task<BenefitEntrySetup> EntrySetupAsync(BenefitScheme scheme);
 
     /// <summary>searchtBNF: all four keys needed; returns the saved rows (none = empty grid, no message, as in the desktop).</summary>
-    Task<List<BenefitEntryRow>> EntrySearchAsync(BenefitEntryKey key);
+    Task<List<BenefitEntryRow>> EntrySearchAsync(BenefitScheme scheme, BenefitEntryKey key);
 
     /// <summary>SaveBNF → "Record Saved...".</summary>
-    Task<string> EntrySaveAsync(BenefitEntrySaveRequest request, string userCode);
+    Task<string> EntrySaveAsync(BenefitScheme scheme, BenefitEntrySaveRequest request, string userCode);
 
     /// <summary>BNFCombolisting2.</summary>
     Task<BenefitListingSetup> ListingSetupAsync();
@@ -159,15 +168,15 @@ public sealed class BenefitMemberService(IDbSessions sessions, IBenefitMemberRep
     ];
 
     /// <inheritdoc />
-    public async Task<BenefitEntrySetup> EntrySetupAsync()
+    public async Task<BenefitEntrySetup> EntrySetupAsync(BenefitScheme scheme)
     {
         await using var s = await sessions.OpenAsync();
-        var (insured, plans, categories) = await repository.EntrySetupAsync(s);
+        var (insured, plans, categories) = await repository.EntrySetupAsync(s, scheme);
         return new BenefitEntrySetup([new("S", "Sihat"), new("N", "Non-Sihat")], insured, plans, categories);
     }
 
     /// <inheritdoc />
-    public async Task<List<BenefitEntryRow>> EntrySearchAsync(BenefitEntryKey key)
+    public async Task<List<BenefitEntryRow>> EntrySearchAsync(BenefitScheme scheme, BenefitEntryKey key)
     {
         if (Blank(key.HealthType)) throw new BusinessRuleException(SearchHealth);
         if (Blank(key.InsuredType)) throw new BusinessRuleException(SearchInsured);
@@ -175,11 +184,11 @@ public sealed class BenefitMemberService(IDbSessions sessions, IBenefitMemberRep
         if (Blank(key.EffDate)) throw new BusinessRuleException(SearchDate);
         var date = ParseDate(key.EffDate) ?? throw new BusinessRuleException(SearchValidDate);
         await using var s = await sessions.OpenAsync();
-        return await repository.EntrySearchAsync(s, Plan(key.PlanCode), First(key.InsuredType), First(key.HealthType), date);
+        return await repository.EntrySearchAsync(s, scheme, Plan(key.PlanCode), First(key.InsuredType), First(key.HealthType), date);
     }
 
     /// <inheritdoc />
-    public async Task<string> EntrySaveAsync(BenefitEntrySaveRequest request, string userCode)
+    public async Task<string> EntrySaveAsync(BenefitScheme scheme, BenefitEntrySaveRequest request, string userCode)
     {
         if (Blank(request.HealthType)) throw new BusinessRuleException(SaveHealth);
         if (Blank(request.InsuredType)) throw new BusinessRuleException(SaveInsured);
@@ -187,10 +196,10 @@ public sealed class BenefitMemberService(IDbSessions sessions, IBenefitMemberRep
         var date = ParseDate(request.EffDate) ?? throw new BusinessRuleException(SaveDate);
         var (pln, ins, hlt) = (Plan(request.PlanCode), First(request.InsuredType), First(request.HealthType));
         await using var s = await sessions.BeginAsync();
-        if (await repository.EntryExistsAsync(s, pln, ins, date)) throw new ConflictException(Duplicated);
+        if (await repository.EntryExistsAsync(s, scheme, pln, ins, date)) throw new ConflictException(Duplicated);
         var today = clock.GetLocalNow().Date;
         foreach (var row in (request.Rows ?? []).Select(Clean).Where(Qualifies))
-            await repository.EntryInsertAsync(s, pln, ins, hlt, date, row, userCode, today);
+            await repository.EntryInsertAsync(s, scheme, pln, ins, hlt, date, row, userCode, today);
         await s.CommitAsync();
         return Saved;
     }

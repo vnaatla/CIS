@@ -13,15 +13,15 @@ public sealed class MaintenanceBenefitMemberController(IBenefitMemberService ben
 {
     /// <summary>Benefit Entry combos and grid rows.</summary>
     [HttpGet("entry/setup")]
-    public Task<BenefitEntrySetup> EntrySetup() => benefits.EntrySetupAsync();
+    public Task<BenefitEntrySetup> EntrySetup() => benefits.EntrySetupAsync(BenefitScheme.Member);
 
     /// <summary>Benefit Entry search.</summary>
     [HttpGet("entry")]
-    public Task<List<BenefitEntryRow>> EntrySearch([FromQuery] BenefitEntryKey key) => benefits.EntrySearchAsync(key);
+    public Task<List<BenefitEntryRow>> EntrySearch([FromQuery] BenefitEntryKey key) => benefits.EntrySearchAsync(BenefitScheme.Member, key);
 
     /// <summary>Benefit Entry save.</summary>
     [HttpPost("entry")]
-    public async Task<object> EntrySave(BenefitEntrySaveRequest request) => new { message = await benefits.EntrySaveAsync(request, UserCode) };
+    public async Task<object> EntrySave(BenefitEntrySaveRequest request) => new { message = await benefits.EntrySaveAsync(BenefitScheme.Member, request, UserCode) };
 
     /// <summary>Benefit Listing combos.</summary>
     [HttpGet("listing/setup")]

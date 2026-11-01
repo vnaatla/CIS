@@ -5,13 +5,13 @@ using Cis.Infrastructure.Data;
 
 namespace Cis.Infrastructure.Maintenance;
 
-/// <summary><see cref="IBenefitMemberRepository"/> on the <c>cis.BenefitMember_*</c> procedures.</summary>
+/// <summary><see cref="IBenefitMemberRepository"/> on the <c>cis.BenefitMember_*</c> / <c>cis.BenefitDental_*</c> procedures.</summary>
 public sealed class BenefitMemberRepository : IBenefitMemberRepository
 {
     /// <inheritdoc />
-    public async Task<(List<LookupOption> Insured, List<LookupOption> Plans, List<LookupOption> Categories)> EntrySetupAsync(IDbSession session)
+    public async Task<(List<LookupOption> Insured, List<LookupOption> Plans, List<LookupOption> Categories)> EntrySetupAsync(IDbSession session, BenefitScheme scheme)
     {
-        using var grid = await session.MultipleAsync("cis.BenefitMember_EntrySetup");
+        using var grid = await session.MultipleAsync(Proc(scheme, "EntrySetup"));
         return ((await grid.ReadAsync<LookupOption>()).ToList(), (await grid.ReadAsync<LookupOption>()).ToList(), (await grid.ReadAsync<LookupOption>()).ToList());
     }
 
@@ -24,17 +24,17 @@ public sealed class BenefitMemberRepository : IBenefitMemberRepository
     }
 
     /// <inheritdoc />
-    public Task<List<BenefitEntryRow>> EntrySearchAsync(IDbSession session, string plnCode, string insCode, string hltCode, DateTime effDate) =>
-        session.QueryAsync<BenefitEntryRow>("cis.BenefitMember_EntrySearch", new { plnCode, insCode, hltCode, effDate });
+    public Task<List<BenefitEntryRow>> EntrySearchAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, string hltCode, DateTime effDate) =>
+        session.QueryAsync<BenefitEntryRow>(Proc(scheme, "EntrySearch"), new { plnCode, insCode, hltCode, effDate });
 
     /// <inheritdoc />
-    public Task<bool> EntryExistsAsync(IDbSession session, string plnCode, string insCode, DateTime effDate) =>
-        session.ScalarAsync<bool>("cis.BenefitMember_EntryExists", new { plnCode, insCode, effDate });
+    public Task<bool> EntryExistsAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, DateTime effDate) =>
+        session.ScalarAsync<bool>(Proc(scheme, "EntryExists"), new { plnCode, insCode, effDate });
 
     /// <inheritdoc />
-    public Task EntryInsertAsync(IDbSession session, string plnCode, string insCode, string hltCode, DateTime effDate, BenefitEntryRow row, string userCode,
+    public Task EntryInsertAsync(IDbSession session, BenefitScheme scheme, string plnCode, string insCode, string hltCode, DateTime effDate, BenefitEntryRow row, string userCode,
         DateTime today) =>
-        session.ExecAsync("cis.BenefitMember_EntryInsert", new
+        session.ExecAsync(Proc(scheme, "EntryInsert"), new
         {
             plnCode, insCode, hltCode, effDate, bnfCode = row.BnfCode, calculation = row.Calculation, noOfDays = SmallInt(row.NoOfDays),
             noOfAnn = SmallInt(row.NoOfAnn), rmPerVisit = row.RmPerVisit, percentage = row.Percentage, user = userCode, today,
@@ -48,6 +48,9 @@ public sealed class BenefitMemberRepository : IBenefitMemberRepository
             grpCompany = f.GroupCompany, calculation = f.Calculation, noOfDays = f.NoOfDays, rmPerVisit = f.RmPerVisit, noOfAnn = f.NoOfAnn,
             percentage = f.Percentage,
         });
+
+    /// <summary>cis.BenefitMember_* or cis.BenefitDental_* (fixed names, no user input).</summary>
+    private static string Proc(BenefitScheme scheme, string name) => (scheme == BenefitScheme.Dental ? "cis.BenefitDental_" : "cis.BenefitMember_") + name;
 
     private static short? SmallInt(string? v) => short.TryParse(v, out var n) ? n : null;
 }

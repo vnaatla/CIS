@@ -242,7 +242,7 @@ export const MENU: MenuModule[] = [
       { label: 'Member', path: '/maintenance/benefit/member', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBenefits', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Clinic', path: '/maintenance/benefit/clinic', access: Access.MaintenanceBenefitClinic, form: 'frmMaintenanceBenefitsCln', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Clinic (new)', path: '/maintenance/benefit/clinic-new', access: Access.MaintenanceBenefitClinic, form: 'frmMaintenanceBenefitsClnNew', group: 'Benefit', desktop: 'never-opened', phase: 1, migrated: true },
-      { label: 'Dental', path: '/maintenance/benefit/dental', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBNFDental', group: 'Benefit', phase: 1 },
+      { label: 'Dental', path: '/maintenance/benefit/dental', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBNFDental', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Check Item', path: '/maintenance/check-item', access: Access.MaintenanceCheckItem, form: 'frmCheckingItems', group: 'Other', phase: 1, migrated: true },
       { label: 'DataTransfer', path: '/maintenance/data-transfer', access: Access.MaintenanceCheckItem, form: '—', group: 'Other', desktop: 'nothing', phase: 1 },
       { label: 'Test Form', path: '/maintenance/test-form', access: Access.MaintenanceCheckItem, form: 'frmTest', group: 'Other', phase: 11 },

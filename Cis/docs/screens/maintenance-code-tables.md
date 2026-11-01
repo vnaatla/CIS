@@ -107,3 +107,16 @@ Deliberate differences:
 - Save is one transaction; No of Visit Per day / Per Annum must be whole numbers (smallint): the desktop accepted any number in the grid
   and the insert then failed half-way.
 - Plan Code and Group Company are type-ahead boxes (2,797 plans / 2,320 group companies) instead of long combos.
+
+## Benefit Dental (frmMaintenanceBNFDental)
+
+Tabs Tooth Category, Tooth Reference, Benefit Category (engine) and Benefit Entry. Benefit Entry is the Member tab's screen and rules on
+DentalBNF over the 12 DentalBNFCategory rows (`cis.BenefitDental_*`, the service's `BenefitScheme.Dental`): same keys, messages, duplicate
+rule (plan + insured type + date), per-row save rules and "Record Saved...". Refresh reloads the combos and the grid rows; Print gives
+RptDentalBNFEntry ("DENTAL BENEFIT ENTRY LISTING"). MDIMain opens the form with the Benefit Member right (141).
+
+Known desktop issues (reproduced): no Edit / Delete of saved entries; the duplicate check ignores the health type; TOTAL RECORDS stays 0.
+The form's BNFListing routine (reading the medical VIEW_CISBNF_PLN_SubCat) is never called.
+
+Deliberate differences: as for Member (one transaction, whole-number visit counts). ClearGrid cleared rows 1–12, which covers all 12
+dental categories, so there is no leftover-row difference here.

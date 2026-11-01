@@ -126,7 +126,22 @@ try {
   const firstListed = await page.$eval('app-benefit-listing-panel tbody tr td:nth-child(5)', (td) => td.textContent.trim())
   check(firstListed === 'A001', `Benefit Listing search by plan lists A001 rows (${firstListed})`)
 
-  // 9. Logout.
+  // 9. Benefit > Dental: four tabs; Benefit Entry search (01 / I / S / 24/09/2003 has 3 saved rows locally).
+  await page.goto(`${base}/maintenance/benefit/dental`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('.tabs button')
+  const dentalTabs = await page.$$('.tabs button')
+  check(dentalTabs.length === 4, 'Benefit Dental shows the desktop\'s four tabs')
+  await dentalTabs[3].click()
+  await page.waitForFunction(() => document.querySelectorAll('app-benefit-entry-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.select('app-benefit-entry-panel select[name=health]', 'S')
+  await page.select('app-benefit-entry-panel select[name=insured]', 'I')
+  await page.type('app-benefit-entry-panel input[name=plan]', '01')
+  await page.type('app-benefit-entry-panel app-date-input input:not([type=date])', '24092003')
+  await page.click('app-benefit-entry-panel app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-benefit-entry-panel tbody input')].some((i) => i.value !== ''), { timeout: 60000 })
+  check(true, 'Dental Benefit Entry search fills the saved grid')
+
+  // 10. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

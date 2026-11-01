@@ -1,5 +1,5 @@
 import { HttpClient, HttpResponse } from '@angular/common/http'
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
@@ -9,7 +9,7 @@ import type { LookupOption } from '../../shared/code-select.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
 import { FieldComponent } from '../../shared/field.component'
-import { fileNameFromDisposition, saveBlob } from '../../shared/lib/download'
+import { fileNameFromDisposition, openBlob, saveBlob } from '../../shared/lib/download'
 import { formatDate } from '../../shared/lib/format'
 import { parseDmy } from '../../shared/lib/masks'
 import { ActionBarComponent, PageShellComponent, StatComponent } from '../../shared/screen.components'
@@ -28,7 +28,10 @@ interface EntryRow {
 }
 type EntryColumn = Exclude<keyof EntryRow, 'bnfCode'>
 
-/** frmMaintenanceBenefits tab 1 "Benefit Entry": Health / Insured Type, Plan Code, Eff Date and the BNFNew grid (one row per category). */
+/**
+ * Benefit Entry tab of frmMaintenanceBenefits (BNFNew over BNFCategoryNew) and frmMaintenanceBNFDental (DentalBNF over DentalBNFCategory):
+ * Health / Insured Type, Plan Code, Eff Date and one grid row per category. Inputs: the API base and the tab's list print-out (Member: none).
+ */
 @Component({
   selector: 'app-benefit-entry-panel',
   imports: [FormsModule, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, StatComponent],
@@ -54,8 +57,8 @@ type EntryColumn = Exclude<keyof EntryRow, 'bnfCode'>
           </select>
         </app-field>
         <app-field label="Plan Code" [required]="true" hint="Searchable">
-          <input name="plan" list="bnf-entry-plans" maxlength="10" [(ngModel)]="plan" />
-          <datalist id="bnf-entry-plans">
+          <input name="plan" [attr.list]="api() + '-plans'" maxlength="10" [(ngModel)]="plan" />
+          <datalist [id]="api() + '-plans'">
             @for (o of plans(); track o.code) {
               <option [value]="o.code"></option>
             }
@@ -72,6 +75,12 @@ type EntryColumn = Exclude<keyof EntryRow, 'bnfCode'>
         <button appButton (click)="add()">Add</button>
         <button appButton [busy]="busy()" (click)="save()">Save</button>
         <button appButton variant="ghost" (click)="clear()">Clear</button>
+        @if (showRefresh()) {
+          <button appButton variant="ghost" (click)="refresh()">Refresh</button>
+        }
+        @if (printReport()) {
+          <button appButton variant="ghost" (click)="print()">Print</button>
+        }
         <span class="spacer"></span>
         <app-stat label="TOTAL RECORDS" [value]="0" />
       </app-action-bar>
@@ -110,6 +119,11 @@ type EntryColumn = Exclude<keyof EntryRow, 'bnfCode'>
   `,
 })
 export class BenefitEntryPanelComponent implements OnInit {
+  readonly api = input('/api/maintenance/benefit-member')
+  readonly printReport = input<string | null>(null)
+  /** Member tab 1 disables Refresh; Dental tab 3 enables it. */
+  readonly showRefresh = input(false)
+
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
 
@@ -132,9 +146,14 @@ export class BenefitEntryPanelComponent implements OnInit {
   protected effDate = ''
 
   async ngOnInit(): Promise<void> {
+    await this.refresh()
+  }
+
+  /** Tab click / CmdRefresh_Click → BNFcombolisting. */
+  protected async refresh(): Promise<void> {
     try {
       const s = await firstValueFrom(
-        this.http.get<{ healthTypes: LookupOption[]; insuredTypes: LookupOption[]; plans: LookupOption[]; categories: LookupOption[] }>(`${BASE}/entry/setup`),
+        this.http.get<{ healthTypes: LookupOption[]; insuredTypes: LookupOption[]; plans: LookupOption[]; categories: LookupOption[] }>(`${this.api()}/entry/setup`),
       )
       this.healthTypes.set(s.healthTypes)
       this.insuredTypes.set(s.insuredTypes)
@@ -167,12 +186,21 @@ export class BenefitEntryPanelComponent implements OnInit {
     this.busy.set(true)
     this.grid.set({})
     try {
-      const rows = (await firstValueFrom(this.http.get<EntryRow[] | null>(`${BASE}/entry`, { params: this.key() }))) ?? []
+      const rows = (await firstValueFrom(this.http.get<EntryRow[] | null>(`${this.api()}/entry`, { params: this.key() }))) ?? []
       this.grid.set(Object.fromEntries(rows.map((r) => [r.bnfCode, r])))
     } catch (e) {
       this.notify.notify(errorMessage(e), 'warn')
     } finally {
       this.busy.set(false)
+    }
+  }
+
+  /** CmdPrint_Click (Dental tab 3) → RptDentalBNFEntry. */
+  protected async print(): Promise<void> {
+    try {
+      openBlob(await firstValueFrom(this.http.get(`/api/maintenance/list-reports/${this.printReport()}`, { responseType: 'blob' })))
+    } catch (e) {
+      this.notify.notify(await blobErrorMessage(e), 'error')
     }
   }
 
@@ -202,7 +230,7 @@ export class BenefitEntryPanelComponent implements OnInit {
     const rows = this.categories().map((c) => ({ bnfCode: c.code, ...this.grid()[c.code] }))
     this.busy.set(true)
     try {
-      const answer = await firstValueFrom(this.http.post<{ message: string }>(`${BASE}/entry`, { ...this.key(), rows }))
+      const answer = await firstValueFrom(this.http.post<{ message: string }>(`${this.api()}/entry`, { ...this.key(), rows }))
       this.notify.notify(answer.message, 'success')
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')

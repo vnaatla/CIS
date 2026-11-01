@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 7 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 8 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -23,8 +23,8 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
-| [Maintenance](#maintenance) | 11 | 7 | 1 |
-| **Total** | **119** | **7** | **20** |
+| [Maintenance](#maintenance) | 11 | 8 | 1 |
+| **Total** | **119** | **8** | **20** |
 
 ## Membership
 
@@ -223,7 +223,7 @@ Module page: `/maintenance`
 | Benefit | Member | frmMaintenanceBenefits | 141 |  | 1 | **Migrated** | `/maintenance/benefit/member` |
 | Benefit | Clinic | frmMaintenanceBenefitsCln | 142 |  | 1 | **Migrated** | `/maintenance/benefit/clinic` |
 | Benefit | Clinic (new) | frmMaintenanceBenefitsClnNew | 142 | Never opened | 1 | **Migrated** | `/maintenance/benefit/clinic-new` |
-| Benefit | Dental | frmMaintenanceBNFDental | 141 |  | 1 | Pending | `/maintenance/benefit/dental` |
+| Benefit | Dental | frmMaintenanceBNFDental | 141 |  | 1 | **Migrated** | `/maintenance/benefit/dental` |
 | Other | Check Item | frmCheckingItems | 143 |  | 1 | **Migrated** | `/maintenance/check-item` |
 | Other | DataTransfer | — | 143 | No handler, no form | 1 | Nothing to build | `/maintenance/data-transfer` |
 | Other | Test Form | frmTest | 143 |  | 11 | Pending | `/maintenance/test-form` |
