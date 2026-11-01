@@ -23,13 +23,9 @@ import { PlanVisitPanelComponent } from './plan-visit.panel'
         <ng-template appTab="Annual Limit"><app-plan-annual-panel /></ng-template>
         <ng-template appTab="Visit Limit"><app-plan-visit-panel /></ng-template>
         <ng-template appTab="MCO Fee"><app-plan-mco-panel /></ng-template>
-        @for (t of pending; track t) {
-          <ng-template [appTab]="t"><p class="muted">{{ t }}: not migrated yet.</p></ng-template>
-        }
+        <ng-template appTab="Co-Payment (MBM)"><app-code-table-panel tableKey="co-payment-mbm" /></ng-template>
       </app-tabs>
     </app-page-shell>
   `,
 })
-export class PlanPage {
-  protected readonly pending = ['Co-Payment (MBM)']
-}
+export class PlanPage {}

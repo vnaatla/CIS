@@ -1,8 +1,7 @@
 # frmMaintenancePlan (Maintenance > Plan)
 
 Route `/maintenance/plan`, access 138 (MaintenancePlan). Tabs in desktop order: HealthType · Insured Type · Plan Code · Premium · Annual
-Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium, Annual Limit and Visit Limit and MCO Fee migrated; Co-Payment (MBM) still to do (the
-menu item stays "not migrated" until all eight are done).
+Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: all eight tabs migrated.
 
 ## HealthType (HLT) / Insured Type (INS) — code-table engine (`health-type`, `insured-type`)
 
@@ -68,6 +67,12 @@ menu item stays "not migrated" until all eight are done).
   date + type exists ("Record Not Save for Insured Type 'X! Please Change The Corresponding Field", the others still saved) → "Record
   Saved ! ". Print: RptMCOList.
 
+## Co-Payment (MBM) (CISDB COPaymentMBM) — code-table engine (`co-payment-mbm`)
+
+- Health Type (HLT, one letter), Plan Code (key, 4), Amount; Search: health type / plan =; "Please Enter Health Type", "Please Enter
+  Plan Code ", "Please Enter Amount "; Add refuses a plan already listed; Edit / Delete by plan code ("Please Enter Plan Code");
+  Print: RptCOPayMBM.
+
 ## Known desktop issues (reproduced)
 
 - Plan Code has no Edit. Save writes N for the ten dental / spec / MEP indicators whatever is chosen; the Diag combo is not saved (not
@@ -87,6 +92,9 @@ menu item stays "not migrated" until all eight are done).
   and an empty one crashed the save (no B / C rows exist locally). Edit is not offered: the desktop's Edit re-opened the row and saved
   nothing. The membership check on Delete reads MBM only where CISDB has it (it does not locally, where the desktop's Delete failed).
   The seven rows of one Save are one transaction.
+- **Co-Payment (MBM) Save works.** SaveCoMBM compared Len(...) with "" (a type mismatch at run time), so it never saved; the web
+  applies the intended checks. Its duplicate check compared the whole "CODE - DESC" combo text, so duplicates slipped through; the web
+  refuses a plan that already has a row. CoLastUpdateDate is char(10), so only CoLastUpdateUser is written.
 - **MCO Fee Delete works.** The desktop's DELETE named a column MCO does not have (MCOcode) and its member check compared INSCode with
   the health type and a date with the supplementary amount, so it could not delete; the web deletes the selected row ("Please Enter
   Health Type", "Please search the record", "Do you want to delete the record?" → "Record Deleted..."). One Save is one transaction.

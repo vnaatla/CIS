@@ -222,6 +222,19 @@ public static class CodeTableCatalog
             DeleteChecks = [new("MBM", "HLTCode", InUse("Member")), new("PLN", "HLTCode", InUse("Plan")), new("AGE", "HLTCode", InUse("Age")),
                 new("MCO", "HLTCode", InUse("MCO")), new("PRM", "HLTCode", InUse("Premium"))],
         },
+        // frmMaintenancePlan tab Co-Payment (MBM): SaveCoMBM / DeleteCoMBM (keyed by plan code). CoLastUpdateDate is char(10), so only the user is written.
+        new("co-payment-mbm", "frmMaintenancePlan", "Co-Payment (MBM)", AccessRight.MaintenancePlan, "COPaymentMBM", "CoLastUpdateUser", null,
+        [
+            new("HLTType", "Health Type", 1, "Please Enter Health Type", Kind: FieldKind.ChoiceFirstChar, Search: SearchMatch.EqualsValue)
+            {
+                Choices = new ChoiceSource("HLT", "HLTCode", "HLTDesc"),
+            },
+            new("PLNCode", "Plan Code", 4, "Please Enter Plan Code ", Search: SearchMatch.EqualsValue, IsKey: true),
+            new("CoAmount", "Amount", 10, "Please Enter Amount ", Kind: FieldKind.Number),
+        ], "co-payment-member")
+        {
+            DeleteCodeMessage = "Please Enter Plan Code",
+        },
         new("insured-type", "frmMaintenancePlan", "Insured Type", AccessRight.MaintenancePlan, "INS", "INSLastUpdateUser", "INSLastUpdateDate",
         [
             new("INSCode", "Insured Type", 1, "Please Enter Insured Type", Search: SearchMatch.EqualsValue, IsKey: true),

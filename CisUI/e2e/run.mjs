@@ -225,6 +225,11 @@ try {
   await page.click('app-plan-mco-panel app-data-grid tbody tr:not(.empty-row)')
   await page.waitForFunction(() => document.querySelector('app-plan-mco-panel input[name=plnCode]')?.disabled, { timeout: 60000 })
   check(true, 'MCO Fee search by plan lists its fees and a row opens read-only')
+  await (await page.$$('.tabs button'))[7].click()
+  await page.waitForFunction(() => document.querySelector('app-code-table-panel legend')?.textContent.includes('Co-Payment'), { timeout: 60000 })
+  await page.click('app-code-table-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-code-table-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  check(true, 'Co-Payment (MBM) search lists the plan co-payments')
 
   // 12. Logout.
   await page.click('header.topbar button.link:last-of-type')

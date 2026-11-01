@@ -235,7 +235,7 @@ export const MENU: MenuModule[] = [
     path: '/maintenance',
     items: [
       { label: 'Entity', path: '/maintenance/entity', access: Access.MaintenanceEntity, form: 'frmMaintenanceEntity, frmSearchCLN', phase: 1, migrated: true },
-      { label: 'Plan', path: '/maintenance/plan', access: Access.MaintenancePlan, form: 'frmMaintenancePlan', phase: 1 },
+      { label: 'Plan', path: '/maintenance/plan', access: Access.MaintenancePlan, form: 'frmMaintenancePlan', phase: 1, migrated: true },
       { label: 'Case', path: '/maintenance/case', access: Access.MaintenanceCase, form: 'frmMaintenanceOthers', phase: 1, migrated: true },
       { label: 'Calculation', path: '/maintenance/calculation', access: Access.MaintenanceCalculation, form: 'frmMaintenanceCal', phase: 1, migrated: true },
       { label: 'LG Maintenance', path: '/maintenance/lg', access: Access.MaintenanceLg, form: 'frmLGMaintenance', phase: 1, migrated: true },
