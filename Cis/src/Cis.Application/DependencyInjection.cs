@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<Maintenance.LgTemplates.ILgBindingService, Maintenance.LgTemplates.LgBindingService>();
         services.AddScoped<Maintenance.BenefitClinic.IBenefitClinicService, Maintenance.BenefitClinic.BenefitClinicService>();
         services.AddScoped<Maintenance.BenefitMember.IBenefitMemberService, Maintenance.BenefitMember.BenefitMemberService>();
+        services.AddScoped<Maintenance.Entity.IEntityGroupDoctorService, Maintenance.Entity.EntityGroupDoctorService>();
         return services;
     }
 }

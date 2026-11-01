@@ -141,7 +141,18 @@ try {
   await page.waitForFunction(() => [...document.querySelectorAll('app-benefit-entry-panel tbody input')].some((i) => i.value !== ''), { timeout: 60000 })
   check(true, 'Dental Benefit Entry search fills the saved grid')
 
-  // 10. Logout.
+  // 10. Entity: five tabs; Clinic Group search by name lists GRPClinic rows and a row opens read-only.
+  await page.goto(`${base}/maintenance/entity`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('app-entity-group-panel input[name=name]')
+  check((await page.$$('.tabs button')).length === 5, 'Entity shows the desktop\'s five tabs')
+  await page.type('app-entity-group-panel input[name=name]', 'KLINIK')
+  await page.click('app-entity-group-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-entity-group-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-entity-group-panel tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => { const i = document.querySelector('app-entity-group-panel input[name=name]'); return i?.disabled && i.value.includes('KLINIK') }, { timeout: 60000 })
+  check(true, 'Clinic Group search lists groups and a row opens read-only')
+
+  // 11. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')
