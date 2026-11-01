@@ -58,3 +58,26 @@ Deliberate differences:
   be moved. The web Search runs the hidden button's logic; Save checks the case and member again and asks for confirmation.
 - The Current / Transfer frames' Dept Code, Cost Center, Dept Name, Subsidiary, Company Name boxes and "If Data Correct" ticks are not
   shown: the desktop never fills or reads them.
+
+## Clinic member registration — frmMemberRegistrationCLN (`app-member-registration-modal`, `api/membership/registration`)
+
+Pop-up of the clinic invoice (rights 117 / 118); built in Phase 2, opened from the invoice in Phase 3.
+
+| Item | Behaviour |
+|---|---|
+| Lists | Race (HISDB `SearchRace`), Gender M / F, Staff Category (CISDB WebCategory → plan + insured type), Group Company (GRPCompany names); Department: type part of a name → Search (GroupCompanyDept of G001; empty → `Please enter Department! `) |
+| Search MBM | HISDB `SP_SearchCISMBM_IC` by the IC: fills name, race, gender, DOB, department, group company, employee no.; a policy still in force also fills the dates, Staff Category `CREW`, shows the member number and disables Register; none → `No record found!` |
+| Effective Date | Expiry = 31/12 of that year; limits (CallCLNLimit) and age band (CLNMemberCallAge); invalid → `Invalid Date Format! ` |
+| Limits | Annual: PLN.ANNLmtInd N → 0, else the latest AnnualLimit (health N); Visit: PLN.VISLmtInd N → 0, the DC plan row with N → `FULL`, else the latest VisitLimit |
+| Age | Medix.bas GetAge, reproduced as written: up to 17 years the age is `-1D` / `0Y` / `-1Y`; a later birth day counts one year less even when the birth month has passed (15/06/1982 at 01/11/2026 = 43Y); band from HISDB AGE, band 01 = child (C), else adult (A) |
+| Register | Checks in order: `Please enter IC No! ` · `Please enter Member Name! ` · `Please enter Race Code! ` · `Please enter Gender! ` · `Please enter Staff Category! ` · `Please enter Employee No! ` · `Please enter Effective Date! ` · `Please enter Expiry Date! ` · `Please enter Birth Date! ` · `Please enter Group Company! ` · `Please enter Department! `. Number = `DC` + insured type + MBMSEQ (letter + 5 digits) + MBMCheckDigits (2 digits); inserts MBM, MBMTwo, MBMOthers, MBMOthersTwo, MBMCrossReference, MBMCLNOthers → `Membership Generated, Your Membership Number is : …`; clicking the number returns it to the invoice. |
+
+Deliberate differences:
+- Number generation and the six inserts are one transaction with locks on MBMSEQ / MBMCheckDigits (the desktop took the numbers before
+  its transaction, so a failed save used them up, and two users could get the same number).
+- Limits are written as numbers: the desktop put the formatted annual limit (`1,000.00`) and a visit limit of `FULL` straight into the
+  INSERT text, which failed for annual limits of 1,000 or more and for unlimited plans; `FULL` is stored as 0.
+- The server recomputes plan, limits and age band at Register instead of trusting the labels.
+
+Local environment: the MBM insert fires `trgICEncrypt` (symmetric key), which fails on the restored HISDB without a database master key,
+so Register cannot complete locally (the test accepts that error); it works where the key exists.

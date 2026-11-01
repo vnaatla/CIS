@@ -64,3 +64,17 @@ Test case **K001596118** (member DCGB3518731, cover 00, SHER BAHADUR TAMANG, vis
 | C7 | Transfer → Yes | `Record Updated!`; CISCAS row now DCHC9086608 / 00 |
 
 Clean-up after C7: `UPDATE CISDB.dbo.CISCAS SET MBMnumber = 'DCGB3518731', CoverID = '00' WHERE CASNumber = 'K001596118';`
+
+## 4. Clinic member registration (frmMemberRegistrationCLN)
+
+Opened from the clinic invoice (Phase 3). Until then test it through the API (`/swagger` › MemberRegistration):
+
+| # | Call | Expected |
+|---|---|---|
+| R1 | `GET setup` | races C / I / M / O, staff categories (Crew = G007 / G, Management Family = G001 / H …), group companies |
+| R2 | `GET member?ic=820615136152` | NUR RABIZAH BINTI ADENI, `active: false` (policy ended 31/12/2021) |
+| R3 | `GET age?effDate=01/11/2026&dob=15/06/1982` | `43Y`, band `02 - …`, adult `A` (desktop GetAge quirk) |
+| R4 | `GET limits?staffCategory=Crew&effDate=01/11/2026` | annual / visit limit of plan G007 |
+| R5 | `GET departments?text=` | `Please enter Department! ` |
+| R6 | `POST` with each required field empty in turn | the 11 messages in order (section above) |
+| R7 | `POST` complete | locally: fails on the MBM encryption trigger (no master key); on a server with the key: `Membership Generated, Your Membership Number is : DCG…` |

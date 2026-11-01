@@ -66,7 +66,14 @@ FROM (VALUES
     (N'Hdb_Search_CISMBMSupp05', @HisDb, N'Search_CISMBMSupp05'),
     (N'Hdb_SearchCISMemberProc', @HisDb, N'SearchCISMemberProc'),
     (N'Hdb_AnnualLimitType', @HisDb, N'AnnualLimitType'),
-    (N'Hdb_MBMCoveredPersonsCLN', @HisDb, N'MBMCoveredPersonsCLN')) v (s, d, t)
+    (N'Hdb_MBMCoveredPersonsCLN', @HisDb, N'MBMCoveredPersonsCLN'),
+    (N'Hdb_SP_SearchCISMBM_IC', @HisDb, N'SP_SearchCISMBM_IC'),
+    (N'Hdb_SearchRace', @HisDb, N'SearchRace'),
+    (N'Maint_MBMSEQ', @MaintenanceDb, N'MBMSEQ'),
+    (N'Hdb_MBMCheckDigits', @HisDb, N'MBMCheckDigits'),
+    (N'Hdb_AGE', @HisDb, N'AGE'),
+    (N'Hdb_MBMTwo', @HisDb, N'MBMTwo'),
+    (N'Hdb_MBMOthersTwo', @HisDb, N'MBMOthersTwo')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
