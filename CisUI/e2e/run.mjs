@@ -179,7 +179,23 @@ try {
   await page.waitForFunction(() => document.querySelector('app-entity-access-panel input[name=clinicCode]')?.value !== '', { timeout: 30000 })
   check(true, 'Clinic Access lists the latest rows and the clinic look-up fills the code')
 
-  // 11. Logout.
+  // 11. Plan: eight tabs; HealthType lists HLT; Plan Code search by code lists A001 and a row opens read-only.
+  await page.goto(`${base}/maintenance/plan`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('app-code-table-panel app-action-bar button.primary')
+  check((await page.$$('.tabs button')).length === 8, 'Plan shows the desktop\'s eight tabs')
+  await page.click('app-code-table-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-code-table-panel tbody tr:not(.empty-row)').length >= 2, { timeout: 60000 })
+  check(true, 'HealthType search lists the health types')
+  await (await page.$$('.tabs button'))[2].click()
+  await page.waitForSelector('app-plan-code-panel input[name=plan0]')
+  await page.type('app-plan-code-panel input[name=plan0]', 'A001')
+  await page.click('app-plan-code-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-plan-code-panel app-data-grid tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-plan-code-panel app-data-grid tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => { const i = document.querySelector('app-plan-code-panel input[name=plan0]'); return i?.disabled && i.value === 'A001' }, { timeout: 60000 })
+  check(true, 'Plan Code search lists plan A001 and a row opens read-only')
+
+  // 12. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')

@@ -56,7 +56,8 @@ FROM (VALUES
     (N'Hdb_STA', @HisDb, N'STA'),
     (N'Maint_CTY', @MaintenanceDb, N'CTY'),
     (N'Maint_CLNSeq', @MaintenanceDb, N'CLNSeq'),
-    (N'Hdb_CLNAccessControl', @HisDb, N'CLNAccessControl')) v (s, d, t)
+    (N'Hdb_CLNAccessControl', @HisDb, N'CLNAccessControl'),
+    (N'Hdb_MBMCLNOthers', @HisDb, N'MBMCLNOthers')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

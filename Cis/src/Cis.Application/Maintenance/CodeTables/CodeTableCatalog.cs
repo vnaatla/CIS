@@ -83,7 +83,22 @@ public record CodeTableDefinition(string Key, string LegacyForm, string Tab, int
 
     /// <summary>Text after Edit + Save.</summary>
     public string UpdatedMessage { get; init; } = "Record Updated...";
+
+    /// <summary>Values and search filters are upper-cased (the desktop's ChkStr).</summary>
+    public bool UpperCase { get; init; }
+
+    /// <summary>Delete with an empty code (null = the key field's Required text).</summary>
+    public string? DeleteCodeMessage { get; init; }
+
+    /// <summary>Tables checked in order before Delete; the first that uses the code refuses it with its message.</summary>
+    public IReadOnlyList<UsageCheck> DeleteChecks { get; init; } = [];
 }
+
+/// <summary>A Delete guard: <paramref name="Table"/>.<paramref name="Column"/> = code → refused with <paramref name="Message"/>.</summary>
+/// <param name="Table">Table in CISDB (skipped when it does not exist, see the screen doc).</param>
+/// <param name="Column">Column holding the code.</param>
+/// <param name="Message">Desktop text.</param>
+public record UsageCheck(string Table, string Column, string Message);
 
 /// <summary>
 /// The simple code tables of the maintenance forms, transcribed from their Save / Search / Delete routines (frmCheckingItems,
@@ -195,9 +210,32 @@ public static class CodeTableCatalog
             new("DeclineReason", "Decline Reason", 200, Search: SearchMatch.Contains),
             new("Remarks", "Decline Remarks", 50),
         ], null) { IdentityKey = true, CheckDuplicate = false, AllowDelete = false, SavedMessage = LgSaved, UpdatedMessage = LgUpdated },
+
+        // frmMaintenancePlan tabs HealthType / Insured Type: SaveHLT / SaveINS (ChkStr), DeleteHLT / DeleteINS usage checks in order.
+        new("health-type", "frmMaintenancePlan", "HealthType", AccessRight.MaintenancePlan, "HLT", "HLTLastUpdateUser", "HLTLastUpdateDate",
+        [
+            new("HLTCode", "Health Type", 1, "Please Enter Health Type", Search: SearchMatch.EqualsValue, IsKey: true),
+            new("HLTDesc", "Description", 100, "Please Enter Health Description"),
+        ], "health-type")
+        {
+            UpperCase = true, DeleteCodeMessage = "Please Enter Health Code",
+            DeleteChecks = [new("MBM", "HLTCode", InUse("Member")), new("PLN", "HLTCode", InUse("Plan")), new("AGE", "HLTCode", InUse("Age")),
+                new("MCO", "HLTCode", InUse("MCO")), new("PRM", "HLTCode", InUse("Premium"))],
+        },
+        new("insured-type", "frmMaintenancePlan", "Insured Type", AccessRight.MaintenancePlan, "INS", "INSLastUpdateUser", "INSLastUpdateDate",
+        [
+            new("INSCode", "Insured Type", 1, "Please Enter Insured Type", Search: SearchMatch.EqualsValue, IsKey: true),
+            new("INSDesc", "Description", 100, "Please Enter Insured Type Description"),
+        ], "insured-type")
+        {
+            UpperCase = true,
+            DeleteChecks = [new("BNF", "INSCode", InUse("Benefit")), new("MBM", "INSCode", InUse("MBM")), new("PRM", "INSCode", InUse("PRM"))],
+        },
     ];
 
     private const string LgSaved = "New Record Inserted Successfully..", LgUpdated = "Record Updated Successfully..";
+
+    private static string InUse(string what) => $"This record cannot be deleted because it is used in {what} table!";
 
     /// <summary>The code table with <paramref name="key"/>, or null.</summary>
     public static CodeTableDefinition? Find(string key) => All.FirstOrDefault(t => string.Equals(t.Key, key, StringComparison.OrdinalIgnoreCase));

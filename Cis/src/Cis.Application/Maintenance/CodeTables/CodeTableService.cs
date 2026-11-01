@@ -61,6 +61,9 @@ public interface ICodeTableRepository
     /// <summary>Deletes every row with the code; returns the rows deleted.</summary>
     Task<int> DeleteAsync(IDbSession session, CodeTableDefinition table, string code);
 
+    /// <summary>True when <paramref name="check"/>.Table uses the code (false when that table does not exist).</summary>
+    Task<bool> UsedAsync(IDbSession session, UsageCheck check, string code);
+
     /// <summary>Options of a choice field.</summary>
     Task<List<Lookups.LookupOption>> ChoicesAsync(IDbSession session, ChoiceSource source);
 }
@@ -115,6 +118,7 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
         {
             var value = filters.FirstOrDefault(kv => string.Equals(kv.Key, field.Column, StringComparison.OrdinalIgnoreCase)).Value?.Trim();
             if (string.IsNullOrEmpty(value)) continue;
+            if (table.UpperCase) value = value.ToUpperInvariant();
             used[field.Column] = field.Search switch
             {
                 SearchMatch.EqualsFirst3 => value.Length > 3 ? value[..3].Trim() : value,
@@ -165,8 +169,10 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
     {
         var table = Table(key, userAccess);
         if (!table.AllowDelete) throw new BusinessRuleException($"{table.Tab} has no Delete in the desktop.");
-        if (string.IsNullOrWhiteSpace(code)) throw new BusinessRuleException(table.KeyField.Required ?? SearchFirst);
+        if (string.IsNullOrWhiteSpace(code)) throw new BusinessRuleException(table.DeleteCodeMessage ?? table.KeyField.Required ?? SearchFirst);
         await using var session = await sessions.BeginAsync();
+        foreach (var check in table.DeleteChecks)
+            if (await repository.UsedAsync(session, check, code.Trim())) throw new ConflictException(check.Message);
         if (await repository.DeleteAsync(session, table, code.Trim()) == 0) throw new NotFoundException(SearchFirst);
         await session.CommitAsync();
         return new CodeTableResult(Deleted);
@@ -194,6 +200,7 @@ public sealed class CodeTableService(IDbSessions sessions, ICodeTableRepository 
                     throw new BusinessRuleException(field.Required ?? $"{field.Label} must be a number."),
                 FieldKind.MoneyText => decimal.Parse(raw, NumberStyles.Number, CultureInfo.InvariantCulture).ToString("#,##0.00", CultureInfo.InvariantCulture),
                 FieldKind.ChoiceFirstChar => raw[..1],
+                _ when table.UpperCase => raw.ToUpperInvariant(),
                 _ => raw,
             };
         }

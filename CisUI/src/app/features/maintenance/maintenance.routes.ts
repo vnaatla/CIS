@@ -26,6 +26,13 @@ export const maintenanceRoutes: Routes = [
     loadComponent: () => import('./lg-maintenance.page').then((m) => m.LgMaintenancePage),
   },
   {
+    path: 'maintenance/plan',
+    title: 'CIS - Plan Maintenance',
+    canActivate: [accessGuard],
+    data: { access: Access.MaintenancePlan, legacyForm: 'frmMaintenancePlan' },
+    loadComponent: () => import('./plan.page').then((m) => m.PlanPage),
+  },
+  {
     path: 'maintenance/entity',
     title: 'CIS - Entity Maintenance',
     canActivate: [accessGuard],

@@ -73,6 +73,12 @@ public sealed partial class CodeTableRepository : ICodeTableRepository
         session.Sql().Connection.ExecuteAsync($"DELETE FROM dbo.{Q(table.Table)} WHERE {Q(table.KeyField.Column)} = @code", new { code }, session.Sql().Transaction);
 
     /// <inheritdoc />
+    public async Task<bool> UsedAsync(IDbSession session, UsageCheck check, string code) =>
+        await session.Sql().Connection.ExecuteScalarAsync<int>(
+            $"IF OBJECT_ID(N'dbo.{Q(check.Table)}') IS NULL SELECT 0 ELSE EXEC sp_executesql N'SELECT CASE WHEN EXISTS (SELECT 1 FROM dbo.{Q(check.Table)} WHERE {Q(check.Column)} = @code) THEN 1 ELSE 0 END', N'@code nvarchar(50)', @code = @code",
+            new { code }, session.Sql().Transaction) == 1;
+
+    /// <inheritdoc />
     public async Task<List<LookupOption>> ChoicesAsync(IDbSession session, ChoiceSource source) =>
         (await session.Sql().Connection.QueryAsync<LookupOption>(
             $"SELECT RTRIM({Q(source.CodeColumn)}) AS Code, ISNULL(RTRIM({Q(source.NameColumn)}), N'') AS Name FROM dbo.{Q(source.Table)} ORDER BY {Q(source.CodeColumn)}",

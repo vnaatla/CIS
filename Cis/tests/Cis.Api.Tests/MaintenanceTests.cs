@@ -67,7 +67,8 @@ public class CodeTableRuleTests
         foreach (var t in CodeTableCatalog.All)
         {
             Assert.Single(t.Fields, f => f.IsKey);
-            foreach (var name in t.Fields.Select(f => f.Column).Append(t.Table).Append(t.AuditUserColumn).Append(t.AuditDateColumn).OfType<string>())
+            foreach (var name in t.Fields.Select(f => f.Column).Append(t.Table).Append(t.AuditUserColumn).Append(t.AuditDateColumn).OfType<string>()
+                         .Concat(t.DeleteChecks.SelectMany(c => new[] { c.Table, c.Column })))
                 Assert.Matches(CodeTableRepository.SafeName(), name);
             if (t.ListReportKey is not null) Assert.NotNull(ListReportCatalog.Find(t.ListReportKey));
         }
@@ -116,6 +117,10 @@ public class CodeTableServiceTests
             Task.FromResult(Rows.RemoveAll(r => r[table.KeyField.Column] == code));
 
         public Task<List<LookupOption>> ChoicesAsync(IDbSession session, ChoiceSource source) => Task.FromResult(new List<LookupOption> { new("A", "Anterior") });
+
+        public HashSet<string> UsedIn { get; } = [];
+
+        public Task<bool> UsedAsync(IDbSession session, UsageCheck check, string code) => Task.FromResult(UsedIn.Contains(check.Table));
     }
 
     private const string AllRights = "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
@@ -126,6 +131,19 @@ public class CodeTableServiceTests
     public CodeTableServiceTests() => _service = new CodeTableService(_sessions, _repository, new FixedClock(new DateTime(2026, 11, 1, 10, 0, 0)));
 
     private static CodeTableSaveRequest R(params (string, string?)[] values) => new(values.ToDictionary(v => v.Item1, v => v.Item2));
+
+    [Fact]
+    public async Task Health_type_is_upper_cased_and_delete_runs_the_usage_checks_in_order()
+    {
+        Assert.Equal("Record Saved...", (await _service.CreateAsync("health-type", R(("HLTCode", "z"), ("HLTDesc", "zz test")), "DEV", AllRights)).Message);
+        Assert.Equal(("Z", "ZZ TEST"), (_repository.Rows[^1]["HLTCode"], _repository.Rows[^1]["HLTDesc"]));
+        Assert.Equal("Please Enter Health Code", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.DeleteAsync("health-type", " ", AllRights))).Message);
+        _repository.UsedIn.UnionWith(["PLN", "PRM"]);
+        Assert.Equal("This record cannot be deleted because it is used in Plan table!",
+            (await Assert.ThrowsAsync<ConflictException>(() => _service.DeleteAsync("health-type", "Z", AllRights))).Message);
+        _repository.UsedIn.Clear();
+        Assert.Equal("Record Deleted... ", (await _service.DeleteAsync("health-type", "Z", AllRights)).Message);
+    }
 
     [Fact]
     public async Task Add_saves_with_the_user_and_date_and_refuses_a_duplicate_code()
@@ -213,6 +231,18 @@ public class MaintenanceDatabaseTests
             if (rows.Count > 0)
                 foreach (var column in report.Columns) Assert.True(rows[0].ContainsKey(column.Key), $"{report.Procedure} has no column {column.Key}");
         }
+    }
+
+    [Fact]
+    public async Task Usage_checks_find_codes_in_use_and_skip_missing_tables()
+    {
+        if (TestDb.Cis is null) return;
+        await using var s = await TestDb.Sessions().OpenAsync();
+        var repo = new CodeTableRepository();
+        var used = await s.Sql().Connection.ExecuteScalarAsync<string>("SELECT TOP 1 RTRIM(HLTCode) FROM dbo.PLN WHERE LEN(HLTCode) > 0");
+        Assert.True(await repo.UsedAsync(s, new UsageCheck("PLN", "HLTCode", "x"), used!));
+        Assert.False(await repo.UsedAsync(s, new UsageCheck("PLN", "HLTCode", "x"), "#"));
+        Assert.False(await repo.UsedAsync(s, new UsageCheck("NoSuchTableZZ", "HLTCode", "x"), used!));
     }
 
     [Fact]

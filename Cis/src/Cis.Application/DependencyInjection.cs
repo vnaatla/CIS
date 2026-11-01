@@ -28,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<Maintenance.Entity.IEntityGroupDoctorService, Maintenance.Entity.EntityGroupDoctorService>();
         services.AddScoped<Maintenance.Entity.IEntityClinicService, Maintenance.Entity.EntityClinicService>();
         services.AddScoped<Maintenance.Entity.IEntityGrpComAccessService, Maintenance.Entity.EntityGrpComAccessService>();
+        services.AddScoped<Maintenance.Plan.IPlanCodeService, Maintenance.Plan.PlanCodeService>();
         return services;
     }
 }

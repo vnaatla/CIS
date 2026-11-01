@@ -171,7 +171,7 @@ public sealed class EntityGroupDoctorService(IDbSessions sessions, IEntityGroupD
         if (editing && string.IsNullOrWhiteSpace(g.Code)) throw new BusinessRuleException(SearchFirst);
 
         await using var s = await sessions.BeginAsync();
-        var code = editing ? g.Code!.Trim() : await repository.NextGroupCodeAsync(s, g.Initial.Trim()[..1].ToUpperInvariant());
+        var code = editing ? g.Code!.Trim() : await repository.NextGroupCodeAsync(s, g.Initial!.Trim()[..1].ToUpperInvariant());
         var row = CleanGroup(g with { Code = code });
         if (await repository.SaveGroupAsync(s, !editing, row, userCode, clock.GetLocalNow().Date) == 0) throw new NotFoundException(SearchFirst);
         await s.CommitAsync();

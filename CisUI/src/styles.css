@@ -315,7 +315,8 @@ abbr.req { color: #b42318; text-decoration: none; margin-left: 3px; }
 .table-wrap.tall { max-height: 60vh; }
 .card-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 14px; align-items: start; }
 .tabbed { display: grid; }
-.screen-form { display: grid; gap: 14px; }
+.screen-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+app-data-grid { display: block; min-width: 0; }
 .registration fieldset:disabled { background: #fafbfc; }
 .registration fieldset:disabled legend { color: #94a3b8; }
 .print-only { display: none; }
@@ -377,3 +378,8 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 /* Editable grid cell (frmMaintenanceBenefitsCln FGrid RM Payable Fee). */
 .grid td .cell-input { width: 100%; min-width: 7rem; box-sizing: border-box; }
 .grid td .cell-input.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* An entry table inside a form fieldset (frmMaintenancePlan plan codes / descriptions) spans the row. */
+.screen-form fieldset > .entry-table { grid-column: 1 / -1; }
+.entry-table td input { width: 100%; box-sizing: border-box; }
+.entry-table th:first-child, .entry-table td:first-child { width: 140px; }
