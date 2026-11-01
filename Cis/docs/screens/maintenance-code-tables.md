@@ -55,3 +55,25 @@ Deliberate differences:
 - Clear also empties the grid on all four tabs. The desktop's LG Clear kept the list (unlike the other Maintenance screens); after Save
   the grid is refilled by the same search as in the desktop.
 - The drop-down lists retry once and offer "Reload lists" if the database does not answer.
+
+## Benefit Clinic (frmMaintenanceBenefitsCln, frmMaintenanceBenefitsClnNew)
+
+One page for both forms (`/maintenance/benefit/clinic`, `/clinic-new`; the second is never opened by MDIMain). Card types Classic /
+Silver / Gold; the grid has every BNFCategoryNew row (Cat Code, Cat Name, RM Payable Fee). Search needs card type and a valid date
+("Please key in BNF Card Type!" / "Please key in Effective Date!" / "Please key in VALID Effective Date!") and fills the fees from
+STDClinicBNFSpe, else "Record not found!". Save checks "Please Enter Plan Code!" (desktop text for the card type) and "Please Enter
+(Valid )effectice Date!", refuses a saved card type + date ("Record Duplicated! ..."), asks "Do you want to save this record?" and inserts
+one row per category (empty fee = NULL, user / date audit columns) → "Record Saved...". Leaving Eff Date warns "Invalid date format!" /
+"Date cannot greater than system date ! " but does not block, as in the desktop. Only numeric fees are kept (FGrid_Click).
+
+Known desktop issues (reproduced):
+- There is no Edit or Delete: a card type + date, once saved, can only be changed in the database.
+- STDClinicBNF (no card type), read by the unused ClinicBNFlisting2, is not used by the screen.
+
+Deliberate differences:
+- Clear / Add / Search empty every fee cell. The desktop's ClearGrid stopped at row 29 while BNFCategoryNew has 31 rows, so the last
+  rows kept the previous values and could be saved under the new card type.
+- Save is one transaction (the desktop inserted row by row; a failure left part of the rows).
+- Print works in both forms (in frmMaintenanceBenefitsClnNew PrintClinicBNF was empty).
+- TOTAL RECORDS shows the rows found by Search (the desktop never updated it: always 0).
+- Grid rows are ordered by category code (the desktop used table order).

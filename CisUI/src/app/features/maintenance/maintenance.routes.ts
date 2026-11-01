@@ -25,6 +25,20 @@ export const maintenanceRoutes: Routes = [
     data: { access: Access.MaintenanceLg, legacyForm: 'frmLGMaintenance' },
     loadComponent: () => import('./lg-maintenance.page').then((m) => m.LgMaintenancePage),
   },
+  {
+    path: 'maintenance/benefit/clinic',
+    title: 'CIS - Clinic Benefits Maintenance',
+    canActivate: [accessGuard],
+    data: { access: Access.MaintenanceBenefitClinic, legacyForm: 'frmMaintenanceBenefitsCln' },
+    loadComponent: () => import('./benefit-clinic.page').then((m) => m.BenefitClinicPage),
+  },
+  {
+    path: 'maintenance/benefit/clinic-new',
+    title: 'CIS - Clinic Benefits Maintenance',
+    canActivate: [accessGuard],
+    data: { access: Access.MaintenanceBenefitClinic, legacyForm: 'frmMaintenanceBenefitsClnNew' },
+    loadComponent: () => import('./benefit-clinic.page').then((m) => m.BenefitClinicPage),
+  },
   codeTables('maintenance/case', 'Case', 'frmMaintenanceOthers', Access.MaintenanceCase, [
     { label: 'Treatment Reason', key: 'treatment-reason' },
     { label: 'Procedures', key: 'procedures' },

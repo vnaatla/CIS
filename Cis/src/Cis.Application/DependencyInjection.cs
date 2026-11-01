@@ -23,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<Maintenance.ListReports.IListReportService, Maintenance.ListReports.ListReportService>();
         services.AddScoped<Maintenance.CodeTables.ICodeTableService, Maintenance.CodeTables.CodeTableService>();
         services.AddScoped<Maintenance.LgTemplates.ILgBindingService, Maintenance.LgTemplates.LgBindingService>();
+        services.AddScoped<Maintenance.BenefitClinic.IBenefitClinicService, Maintenance.BenefitClinic.BenefitClinicService>();
         return services;
     }
 }

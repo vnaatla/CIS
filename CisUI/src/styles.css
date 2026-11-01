@@ -373,3 +373,7 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .home-modules a { display: flex; align-items: center; gap: 10px; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 10px; color: #1f2937; text-decoration: none; }
 .home-modules a:hover { border-color: var(--accent); background: var(--accent-soft); }
 .home-modules .count { margin-left: auto; font-size: 12px; color: #64748b; }
+
+/* Editable grid cell (frmMaintenanceBenefitsCln FGrid RM Payable Fee). */
+.grid td .cell-input { width: 100%; min-width: 7rem; box-sizing: border-box; }
+.grid td .cell-input.num { text-align: right; font-variant-numeric: tabular-nums; }

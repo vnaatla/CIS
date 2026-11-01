@@ -95,7 +95,16 @@ try {
   }
   check(!!group && (await page.$$eval('app-lg-binding-panel tbody tr:not(.empty-row)', (r) => r.length)) > 0, `LG group company ${group} fills its plans and Search lists its bindings`)
 
-  // 7. Logout.
+  // 7. Benefit > Clinic: every category is a grid row; Gold + 01/01/2002 (saved in the local data) fills RM Payable Fees.
+  await page.goto(`${base}/maintenance/benefit/clinic`, { waitUntil: 'domcontentloaded' })
+  await page.waitForFunction(() => document.querySelectorAll('app-benefit-clinic-page tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.select('app-benefit-clinic-page select[name=cardType]', 'Gold')
+  await page.type('app-benefit-clinic-page app-date-input input:not([type=date])', '01012002')
+  await page.click('app-benefit-clinic-page app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-benefit-clinic-page tbody input')].some((i) => i.value !== ''), { timeout: 60000 })
+  check(true, 'Benefit Clinic lists the categories and Search fills the saved Gold fees')
+
+  // 8. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')
