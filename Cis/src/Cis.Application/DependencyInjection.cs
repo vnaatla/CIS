@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<Maintenance.Entity.IEntityGrpComAccessService, Maintenance.Entity.EntityGrpComAccessService>();
         services.AddScoped<Maintenance.Plan.IPlanCodeService, Maintenance.Plan.PlanCodeService>();
         services.AddScoped<Maintenance.Plan.IPlanPremiumService, Maintenance.Plan.PlanPremiumService>();
+        services.AddScoped<Maintenance.Plan.IPlanAnnualLimitService, Maintenance.Plan.PlanAnnualLimitService>();
         return services;
     }
 }

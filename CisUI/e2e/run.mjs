@@ -202,6 +202,14 @@ try {
   await page.click('app-plan-premium-panel app-data-grid tbody tr:not(.empty-row)')
   await page.waitForFunction(() => document.querySelector('app-plan-premium-panel input[name=plnCode]')?.disabled, { timeout: 60000 })
   check(true, 'Premium search by insured type lists PRM rows and a row opens its age bands')
+  await (await page.$$('.tabs button'))[4].click()
+  await page.waitForSelector('app-plan-annual-panel input[name=plnCode]')
+  await page.type('app-plan-annual-panel input[name=plnCode]', 'A001')
+  await page.click('app-plan-annual-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-plan-annual-panel app-data-grid tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-plan-annual-panel app-data-grid tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => document.querySelector('app-plan-annual-panel input[name=annLimit]')?.disabled, { timeout: 60000 })
+  check(true, 'Annual Limit search by plan lists its limits and a row opens read-only')
 
   // 12. Logout.
   await page.click('header.topbar button.link:last-of-type')

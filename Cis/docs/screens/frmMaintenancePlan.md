@@ -1,7 +1,7 @@
 # frmMaintenancePlan (Maintenance > Plan)
 
 Route `/maintenance/plan`, access 138 (MaintenancePlan). Tabs in desktop order: HealthType · Insured Type · Plan Code · Premium · Annual
-Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code and Premium migrated; the other four still to do (the
+Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium and Annual Limit migrated; the other three still to do (the
 menu item stays "not migrated" until all eight are done).
 
 ## HealthType (HLT) / Insured Type (INS) — code-table engine (`health-type`, `insured-type`)
@@ -37,6 +37,17 @@ menu item stays "not migrated" until all eight are done).
   premium gets age code "0n" and its amount, an empty band keeps the Age combo's code and no amount; status, date, version →
   "Record Saved...". Delete removes the selected PRM row ("Please Enter Insured Code", "Please search the record", membership check,
   "Do you want to delete this record?" → "Record Deleted... "). Print: RptPremiumList.
+
+## Annual Limit (CISDB AnnualLimit, VIEW_ANN_PAY_PLN — `cis.PlanAnnual_*`)
+
+- Combos: PLN, HLT, INS, PAY, distinct PLN.GRPCompany; Supplementary A / B / C (default A; Supp Premium Limit only for B / C).
+- Search: plan / health / insured / payor = (code before "-"), group company prefix; 17 columns; "Record not found". A row fills the boxes
+  read-only; Edit works (updates the selected AnnualIndex).
+- Save: the 13 SaveANN checks in order ("Please Enter Plan Code" … "Please Enter Supplementary MEP Annual Limit" for B / C), Add refuses
+  insured + health + plan + version + date already saved ("Record Duplicated! / Please Change The Corresponding Field"), "Do you want
+  to save the record?", supplementary limits written only for B / C (A leaves them as they are) → "Record Saved..." / "Record Updated...".
+- Delete: "Please Enter Insured Code" (desktop text, checked on the plan box), "Please search the record", member check (MBM, only where
+  it exists), "Do you want to delete the record?" → "Record Deleted...", then the whole list. Print: RptAnnualList.
 
 ## Known desktop issues (reproduced)
 

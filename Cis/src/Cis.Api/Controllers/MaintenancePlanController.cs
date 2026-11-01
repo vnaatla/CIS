@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code and Premium tabs (HealthType / Insured Type are code-tables).</summary>
+/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code, Premium and Annual Limit tabs (HealthType / Insured Type are code-tables).</summary>
 [Route("api/maintenance/plan")]
 [RequireAccess(AccessRight.MaintenancePlan)]
-public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums) : ApiControllerBase
+public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums, IPlanAnnualLimitService annual) : ApiControllerBase
 {
     /// <summary>Plan Code combos.</summary>
     [HttpGet("codes/setup")]
@@ -59,4 +59,24 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
     /// <summary>Premium Delete (one PRM row; the keys as shown for the membership check).</summary>
     [HttpPost("premiums/{prmCode:int}/delete")]
     public async Task<object> DeletePremium(int prmCode, PremiumRequest request) => new { message = await premiums.DeleteAsync(prmCode, request.Premium) };
+
+    /// <summary>Annual Limit combos.</summary>
+    [HttpGet("annual-limits/setup")]
+    public Task<AnnualLimitSetup> AnnualSetup() => annual.SetupAsync();
+
+    /// <summary>Annual Limit search.</summary>
+    [HttpPost("annual-limits/search")]
+    public Task<List<Dictionary<string, object?>>> AnnualLimits(AnnualLimitRequest request) => annual.SearchAsync(request.Limit);
+
+    /// <summary>Annual Limit Add + Save.</summary>
+    [HttpPost("annual-limits")]
+    public async Task<object> CreateAnnualLimit(AnnualLimitRequest request) => new { message = await annual.SaveAsync(request.Limit, false, UserCode) };
+
+    /// <summary>Annual Limit Edit + Save (Limit.Index).</summary>
+    [HttpPut("annual-limits")]
+    public async Task<object> UpdateAnnualLimit(AnnualLimitRequest request) => new { message = await annual.SaveAsync(request.Limit, true, UserCode) };
+
+    /// <summary>Annual Limit Delete (Limit.Index; plan as shown for the member check).</summary>
+    [HttpPost("annual-limits/delete")]
+    public async Task<object> DeleteAnnualLimit(AnnualLimitRequest request) => new { message = await annual.DeleteAsync(request.Limit) };
 }
