@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<Membership.ICaseTransferService, Membership.CaseTransferService>();
         services.AddScoped<Membership.IMemberRegistrationService, Membership.MemberRegistrationService>();
         services.AddScoped<Membership.IGeneralExclusionsService, Membership.GeneralExclusionsService>();
+        services.AddScoped<Membership.IMbmAdjustmentService, Membership.MbmAdjustmentService>();
         return services;
     }
 }

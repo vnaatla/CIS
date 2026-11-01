@@ -73,7 +73,9 @@ FROM (VALUES
     (N'Hdb_MBMCheckDigits', @HisDb, N'MBMCheckDigits'),
     (N'Hdb_AGE', @HisDb, N'AGE'),
     (N'Hdb_MBMTwo', @HisDb, N'MBMTwo'),
-    (N'Hdb_MBMOthersTwo', @HisDb, N'MBMOthersTwo')) v (s, d, t)
+    (N'Hdb_MBMOthersTwo', @HisDb, N'MBMOthersTwo'),
+    (N'Hdb_REL', @HisDb, N'REL'),
+    (N'Hdb_SearchCISMBMHistory', @HisDb, N'SearchCISMBMHistory')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
