@@ -22,6 +22,9 @@
 - The `.log` files in the source folder are stale form-load logs from the original developers, not from local runs.
 
 ## New web app (Cis API + CisUI Angular) — migration plan: C:\Users\Naresh\.devin\plans\plan-95d6e07b7f9f86e9.md
+- Copies of the plan are in the repo: `Cis\docs\migration-plan.md` / `.html` — copy both again whenever the plan changes.
+- Manual test script with real local data, exact messages and clean-up SQL: `Cis\docs\testing\maintenance-test-guide.md`
+  (add a section for every newly migrated screen).
 - Layout: `Cis\` (`Cis.sln`, `sql\`, `docs\`), `CisUI\` (Angular 22.2.3). Styles/components mirror GENESIS (`trinath18`).
   Backend is Clean Architecture in 4 projects: `Cis.Domain` ← `Cis.Application` (services, ports, models, validators) ← `Cis.Infrastructure`
   (Dapper repos, SQL sessions, Excel/PDF, mail, files) ← `Cis.Api` (controllers, composition root). ArchitectureTests enforce references.
