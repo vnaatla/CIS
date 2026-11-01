@@ -87,6 +87,8 @@ Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: all eight tabs migr
 - **Search filters work.** VIEW_PLNListing lacks the indicator columns, so any indicator filter made the desktop's search fail; the web
   reads them from PLN (same list columns).
 - Plan codes skip numbers already in PLN; the plans of one Save are one transaction.
+- Plan Code, Annual Limit and MCO Fee lists are paged by the API (one sorted page and the total per request, 50 rows by default); the
+  desktop listed every row. TOTAL RECORDS shows the total.
 - **Premium:** the duplicate check uses the effective date (the desktop formatted the age-01 premium as the date, so it never matched);
   for B / C the supplementary premium of a band is saved (0 when empty) — the desktop's condition was inverted: an entered amount saved 0
   and an empty one crashed the save (no B / C rows exist locally). Edit is not offered: the desktop's Edit re-opened the row and saved

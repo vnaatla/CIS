@@ -101,7 +101,8 @@ raw `@strAppend` into dynamic SQL are reproduced as parameterised procedures. Se
 | Field | `app-field` wrapping the control | GENESIS Field |
 | Date | `app-date-input` (ControlValueAccessor, dd/mm/yyyy + picker) | VB6 MaskEdBox `##/##/####` |
 | Drop-down | `app-code-select` + `LookupsService` | "code - name" combos |
-| Table | `app-data-grid` (sort, select, check-all, empty state) | VB6 ListView + ColumnClick |
+| Table | `app-data-grid` (sort, select, check-all, empty state, pager) | VB6 ListView + ColumnClick |
+| Paging | `app-data-grid` pages in the browser (50 rows, `pageSize`); large searches page on the server: bind `[serverTotal]` / `[serverPage]` / `(pageRequest)` with `shared/lib/server-paging` `ServerPaging`, the API returns `PagedResult<T>` (`Paging.Apply` with `[FromQuery] PageQuery`, or OFFSET / FETCH in SQL for very large views) | the desktop listed everything |
 | Tabs | `app-tabs` + `ng-template[appTab]` | VB6 SSTab |
 | Dialog | `app-modal` (focus trap, Escape) | pop-up forms (frmSearchMBM, frmSearchICD, ...) |
 | Messages | `NotifyService.notify()` / `ask()` | MsgBox / MsgBox vbYesNo |

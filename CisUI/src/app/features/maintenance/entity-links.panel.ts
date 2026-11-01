@@ -76,11 +76,8 @@ type Mode = 'search' | 'selected' | 'add' | 'edit'
         <span class="spacer"></span>
         <app-stat label="TOTAL RECORDS" [value]="total()" />
       </app-action-bar>
-      @if (total() > rows().length) {
-        <p class="muted">Showing the first {{ rows().length }} of {{ total() }} rows; choose a group company or clinic to narrow the list.</p>
-      }
 
-      <app-data-grid caption="Group company clinics" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true"
+      <app-data-grid caption="Group company clinics" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true" [serverTotal]="total()" [serverPage]="pageNo()" (pageRequest)="loadPage($event)"
         [selectedKey]="selected()" (rowSelected)="select($event)" [tall]="true" />
     </div>
   `,
@@ -127,17 +124,28 @@ export class EntityGrpComPanelComponent {
   }
 
   /** SearchGrpComCLN → GRPComCLNListing. */
-  protected async search(groupCompany = this.groupCompany, clinic = this.clinic): Promise<void> {
+  protected readonly pageNo = signal(0)
+  private query = { groupCompany: '', clinic: '', pageSize: 50, sortKey: '', sortDesc: false }
+
+  /** Grid page / sort / size change (server paging). */
+  protected async loadPage(r: { page: number; pageSize: number; sortKey: string | null; sortDir: 'asc' | 'desc' }): Promise<void> {
+    this.query = { ...this.query, pageSize: r.pageSize, sortKey: r.sortKey ?? '', sortDesc: r.sortDir === 'desc' }
+    await this.search(this.query.groupCompany, this.query.clinic, r.page)
+  }
+
+  protected async search(groupCompany = this.groupCompany, clinic = this.clinic, page = 0): Promise<void> {
     this.busy.set(true)
-    this.rows.set([])
-    this.total.set(0)
+    if (page === 0) this.rows.set([])
     this.selected.set(null)
     this.picked = null
+    this.query = { ...this.query, groupCompany, clinic }
     try {
-      const params = new HttpParams({ fromObject: { groupCompany, clinic } })
-      const page = await firstValueFrom(this.http.get<{ rows: Link[]; total: number } | null>(`${BASE}/group-company-clinics`, { params }))
-      this.rows.set(page?.rows ?? [])
-      this.total.set(page?.total ?? 0)
+      const q = this.query
+      const params = new HttpParams({ fromObject: { groupCompany, clinic, page, pageSize: q.pageSize, sortKey: q.sortKey, sortDesc: q.sortDesc } })
+      const result = await firstValueFrom(this.http.get<{ rows: Link[]; total: number } | null>(`${BASE}/group-company-clinics`, { params }))
+      this.rows.set(result?.rows ?? [])
+      this.total.set(result?.total ?? 0)
+      this.pageNo.set(page)
     } catch (e) {
       this.notify.notify(errorMessage(e), 'info')
     } finally {

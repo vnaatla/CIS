@@ -1,5 +1,6 @@
 using Cis.Api.Auth;
 using Cis.Api.Common;
+using Cis.Application.Common;
 using Cis.Application.Lookups;
 using Cis.Application.Maintenance.Plan;
 using Cis.Domain.Security;
@@ -22,7 +23,8 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
 
     /// <summary>Search (the boxes are the filters).</summary>
     [HttpPost("codes/search")]
-    public Task<List<Dictionary<string, object?>>> Search(PlanCodeRequest request) => plans.SearchAsync(request.Plan);
+    public async Task<PagedResult<Dictionary<string, object?>>> Search(PlanCodeRequest request, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await plans.SearchAsync(request.Plan), paging);
 
     /// <summary>One plan.</summary>
     [HttpGet("codes/{code}")]
@@ -66,7 +68,8 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
 
     /// <summary>Annual Limit search.</summary>
     [HttpPost("annual-limits/search")]
-    public Task<List<Dictionary<string, object?>>> AnnualLimits(AnnualLimitRequest request) => annual.SearchAsync(request.Limit);
+    public async Task<PagedResult<Dictionary<string, object?>>> AnnualLimits(AnnualLimitRequest request, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await annual.SearchAsync(request.Limit), paging);
 
     /// <summary>Annual Limit Add + Save.</summary>
     [HttpPost("annual-limits")]
@@ -102,7 +105,8 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
 
     /// <summary>MCO Fee search.</summary>
     [HttpPost("mco/search")]
-    public Task<List<Dictionary<string, object?>>> Mco(McoRequest request) => mcos.SearchAsync(request.Mco);
+    public async Task<PagedResult<Dictionary<string, object?>>> Mco(McoRequest request, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await mcos.SearchAsync(request.Mco), paging);
 
     /// <summary>MCO Fee Add + Save (messages in order: per-type refusals, then the saved text).</summary>
     [HttpPost("mco")]

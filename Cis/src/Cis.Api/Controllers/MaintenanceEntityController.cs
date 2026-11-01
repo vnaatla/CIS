@@ -1,5 +1,6 @@
 using Cis.Api.Auth;
 using Cis.Api.Common;
+using Cis.Application.Common;
 using Cis.Application.Maintenance.Entity;
 using Cis.Domain.Security;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,8 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
 {
     /// <summary>Clinic groups (code / name contain).</summary>
     [HttpGet("groups")]
-    public Task<List<EntityListRow>> Groups([FromQuery] string? code, [FromQuery] string? name) => entity.SearchGroupsAsync(code, name);
+    public async Task<PagedResult<EntityListRow>> Groups([FromQuery] string? code, [FromQuery] string? name, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await entity.SearchGroupsAsync(code, name), paging);
 
     /// <summary>One clinic group.</summary>
     [HttpGet("groups/{code}")]
@@ -33,7 +35,8 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
 
     /// <summary>Doctors (code / name contain).</summary>
     [HttpGet("doctors")]
-    public Task<List<EntityListRow>> Doctors([FromQuery] string? code, [FromQuery] string? name) => entity.SearchDoctorsAsync(code, name);
+    public async Task<PagedResult<EntityListRow>> Doctors([FromQuery] string? code, [FromQuery] string? name, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await entity.SearchDoctorsAsync(code, name), paging);
 
     /// <summary>Add + Save (code generated).</summary>
     [HttpPost("doctors")]
@@ -53,7 +56,8 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
 
     /// <summary>Clinic Info search (the boxes are the filters).</summary>
     [HttpPost("clinics/search")]
-    public Task<List<Dictionary<string, object?>>> Clinics(ClinicRequest request) => clinics.SearchAsync(request.Clinic);
+    public async Task<PagedResult<Dictionary<string, object?>>> Clinics(ClinicRequest request, [FromQuery] PageQuery paging) =>
+        Paging.Apply(await clinics.SearchAsync(request.Clinic), paging);
 
     /// <summary>Clinic Info print: the list as Excel.</summary>
     [HttpPost("clinics/export")]
@@ -89,7 +93,9 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
 
     /// <summary>Group Company Clinic search (= group company / = clinic; capped list + total).</summary>
     [HttpGet("group-company-clinics")]
-    public Task<GroupCompanyClinicPage> GroupCompanyClinics([FromQuery] string? groupCompany, [FromQuery] string? clinic) => links.SearchAsync(groupCompany, clinic);
+    public Task<GroupCompanyClinicPage> GroupCompanyClinics([FromQuery] string? groupCompany, [FromQuery] string? clinic, [FromQuery] int page = 0,
+        [FromQuery] int pageSize = 50, [FromQuery] string? sortKey = null, [FromQuery] bool sortDesc = false) =>
+        links.SearchAsync(groupCompany, clinic, page, pageSize, sortKey, sortDesc);
 
     /// <summary>Add + Save.</summary>
     [HttpPost("group-company-clinics")]

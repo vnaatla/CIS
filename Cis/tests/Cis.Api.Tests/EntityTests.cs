@@ -189,7 +189,7 @@ public class EntityDatabaseTests
         Assert.Equal(1, await repo.SaveAsync(s, false, "ZZGRP", clinic, "ZZGRQ", clinic, "CISTEST", new DateTime(2026, 11, 1)));
         Assert.True(await repo.ExistsAsync(s, "ZZGRQ", clinic));
         Assert.Equal(1, await repo.DeleteAsync(s, "ZZGRQ", clinic));
-        var page = await repo.SearchAsync(s, null, clinic, 5);
+        var page = await repo.SearchAsync(s, null, clinic, 0, 5, null, false);
         Assert.True(page.Rows.Count <= 5 && page.Total >= page.Rows.Count);
 
         Assert.NotNull(await repo.ClinicNameAsync(s, clinic));

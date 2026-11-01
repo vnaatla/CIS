@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { Paged, PageRequest, ServerPaging } from '../../shared/lib/server-paging'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
@@ -108,10 +109,11 @@ const LIST: [string, string, boolean?][] = [
         <button appButton variant="ghost" (click)="refresh()">Refresh</button>
         <button appButton variant="ghost" (click)="print()">Print</button>
         <span class="spacer"></span>
-        <app-stat label="TOTAL RECORDS" [value]="rows().length" />
+        <app-stat label="TOTAL RECORDS" [value]="paging.total()" />
       </app-action-bar>
 
       <app-data-grid caption="Annual limits" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true"
+        [serverTotal]="paging.total()" [serverPage]="paging.page()" (pageRequest)="onPage($event)"
         [selectedKey]="selected()" (rowSelected)="select($event)" [tall]="true" />
     </div>
   `,
@@ -139,6 +141,7 @@ export class PlanAnnualPanelComponent implements OnInit {
   protected readonly rowKey = (r: Row) => r._id
   protected a: Limit = { ...EMPTY }
   private index: number | null = null
+  protected readonly paging = new ServerPaging()
   private lastFilters: unknown = null
 
   async ngOnInit(): Promise<void> {
@@ -174,15 +177,19 @@ export class PlanAnnualPanelComponent implements OnInit {
   }
 
   /** SearchANN → AnnualListing. */
-  protected async search(body: unknown = this.body()): Promise<void> {
+  protected async search(body: unknown = this.body(), page = 0): Promise<void> {
     this.busy.set(true)
-    this.rows.set([])
+    if (page === 0) this.rows.set([])
     this.selected.set(null)
     try {
-      const rows = (await firstValueFrom(this.http.post<Record<string, unknown>[] | null>(`${BASE}/search`, body))) ?? []
-      this.rows.set(rows.map((r, i) => ({ ...r, _id: String(i) })))
+      const result = await firstValueFrom(
+        this.http.post<Paged<Record<string, unknown>> | null>(`${BASE}/search`, body, { params: new HttpParams({ fromObject: this.paging.query(page) }) }),
+      )
+      this.rows.set((result?.rows ?? []).map((r, i) => ({ ...r, _id: String(i) })))
+      this.paging.loaded(page, result?.total ?? 0)
       this.lastFilters = body
     } catch (e) {
+      this.paging.reset()
       this.notify.notify(errorMessage(e), 'info')
     } finally {
       this.busy.set(false)
@@ -210,7 +217,13 @@ export class PlanAnnualPanelComponent implements OnInit {
     this.mode.set('add')
   }
 
+  /** Grid page / sort / size change: the last search, that page. */
+  protected async onPage(r: PageRequest): Promise<void> {
+    await this.search(this.lastFilters ?? this.body(), this.paging.change(r))
+  }
+
   protected clear(): void {
+    this.paging.reset()
     this.reset()
     this.rows.set([])
     this.selected.set(null)

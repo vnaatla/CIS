@@ -910,17 +910,25 @@ BEGIN
 END
 GO
 
--- SearchGrpComCLN → GRPComCLNListing: = group company / = clinic; at most @max rows (the view has ~1.7 million) and the total.
-CREATE OR ALTER PROCEDURE cis.EntityGrpCom_Search @grpCom nvarchar(10) = NULL, @cln nvarchar(10) = NULL, @max int = 1000 AS
+-- SearchGrpComCLN → GRPComCLNListing: = group company / = clinic; one page (sorted by a listed column) and the total (the view has ~1.7 million rows).
+CREATE OR ALTER PROCEDURE cis.EntityGrpCom_Search
+    @grpCom nvarchar(10) = NULL, @cln nvarchar(10) = NULL, @page int = 0, @pageSize int = 50, @sortKey nvarchar(30) = NULL, @sortDesc bit = 0
+AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT TOP (@max) RTRIM(GrpComCode) AS GrpComCode, RTRIM(GRPCoName) AS GRPCoName, RTRIM(GrpComClnCode) AS GrpComClnCode, RTRIM(CLNName) AS CLNName,
+    SELECT RTRIM(GrpComCode) AS GrpComCode, RTRIM(GRPCoName) AS GRPCoName, RTRIM(GrpComClnCode) AS GrpComClnCode, RTRIM(CLNName) AS CLNName,
            RTRIM(ISNULL(CLNAdd1, N'') + ISNULL(CLNAdd2, N'') + ISNULL(CLNAdd3, N'')) AS CLNAddress, RTRIM(CLNPostCode) AS CLNPostCode,
            RTRIM(CLNState) AS CLNState, RTRIM(CLNCity) AS CLNCity, RTRIM(CLNLocation) AS CLNLocation, RTRIM(CLN24Hrs) AS CLN24Hrs,
            RTRIM(CLNPhone) AS CLNPhone, RTRIM(CLNFax) AS CLNFax
     FROM dbo.VIEW_GrpCom_Clinic
     WHERE (@grpCom IS NULL OR GrpComCode = @grpCom) AND (@cln IS NULL OR GrpComClnCode = @cln)
-    ORDER BY GrpComCode, GrpComClnCode;
+    ORDER BY
+        CASE WHEN @sortDesc = 0 THEN CASE @sortKey WHEN N'grpCoName' THEN GRPCoName WHEN N'grpComClnCode' THEN GrpComClnCode WHEN N'clnName' THEN CLNName
+            WHEN N'clnState' THEN CLNState WHEN N'clnCity' THEN CLNCity WHEN N'clnPostCode' THEN CLNPostCode ELSE GrpComCode END END,
+        CASE WHEN @sortDesc = 1 THEN CASE @sortKey WHEN N'grpCoName' THEN GRPCoName WHEN N'grpComClnCode' THEN GrpComClnCode WHEN N'clnName' THEN CLNName
+            WHEN N'clnState' THEN CLNState WHEN N'clnCity' THEN CLNCity WHEN N'clnPostCode' THEN CLNPostCode ELSE GrpComCode END END DESC,
+        GrpComCode, GrpComClnCode
+    OFFSET @page * @pageSize ROWS FETCH NEXT @pageSize ROWS ONLY;
     SELECT COUNT_BIG(*) FROM dbo.VIEW_GrpCom_Clinic WHERE (@grpCom IS NULL OR GrpComCode = @grpCom) AND (@cln IS NULL OR GrpComClnCode = @cln);
 END
 GO

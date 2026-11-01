@@ -75,7 +75,8 @@ Clinic · Clinic Access. Status: all five tabs and frmSearchCLN migrated.
 - Clinic Info: an empty FFS % is saved as NULL (the desktop assigned "" to the numeric column and the save failed, so it only saved with a
   percentage). " Please Enter FFS Percentage" fires whenever FFS is Y (the desktop compared the combo text "Y - Yes" with "Y", so the
   check only ran after a list click). The clinic code box is not typed on Add (the desktop enabled it but ignored it).
-- Group Company Clinic: the list shows at most 1,000 rows with the total ("Showing the first … of …"). The desktop listed the whole view
-  (1,744,655 rows locally) on an empty search and after every Save / Delete.
+- Group Company Clinic: the list is paged in SQL (`cis.EntityGrpCom_Search` returns one sorted page and the total; 50 rows per page by
+  default). The desktop listed the whole view (1,744,655 rows locally) on an empty search and after every Save / Delete.
+- Clinic Group, Doctor and Clinic Info lists are paged by the API (one page and the total per request); TOTAL RECORDS shows the total.
 - Clinic Access: dates outside smalldatetime (after 06/06/2079) are refused as invalid instead of failing the insert.
 - Save / Delete are transactions; the counter update and the insert commit together.

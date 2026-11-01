@@ -16,9 +16,9 @@ public sealed class EntityGrpComAccessRepository : IEntityGrpComAccessRepository
     }
 
     /// <inheritdoc />
-    public async Task<GroupCompanyClinicPage> SearchAsync(IDbSession session, string? grpCom, string? cln, int max)
+    public async Task<GroupCompanyClinicPage> SearchAsync(IDbSession session, string? grpCom, string? cln, int page, int pageSize, string? sortKey, bool sortDesc)
     {
-        using var grid = await session.MultipleAsync("cis.EntityGrpCom_Search", new { grpCom, cln, max });
+        using var grid = await session.MultipleAsync("cis.EntityGrpCom_Search", new { grpCom, cln, page, pageSize, sortKey, sortDesc });
         return new GroupCompanyClinicPage((await grid.ReadAsync<GroupCompanyClinic>()).ToList(), await grid.ReadSingleAsync<long>());
     }
 

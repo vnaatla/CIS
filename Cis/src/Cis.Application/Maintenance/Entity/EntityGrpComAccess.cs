@@ -87,7 +87,7 @@ public interface IEntityGrpComAccessRepository
     Task<GroupCompanyClinicLookups> LookupsAsync(IDbSession session);
 
     /// <summary>Rows (capped) and total.</summary>
-    Task<GroupCompanyClinicPage> SearchAsync(IDbSession session, string? grpCom, string? cln, int max);
+    Task<GroupCompanyClinicPage> SearchAsync(IDbSession session, string? grpCom, string? cln, int page, int pageSize, string? sortKey, bool sortDesc);
 
     /// <summary>True when the pair exists.</summary>
     Task<bool> ExistsAsync(IDbSession session, string grpCom, string cln);
@@ -118,7 +118,7 @@ public interface IEntityGrpComAccessService
     Task<GroupCompanyClinicLookups> LookupsAsync();
 
     /// <summary>SearchGrpComCLN; "Record not found" when empty.</summary>
-    Task<GroupCompanyClinicPage> SearchAsync(string? groupCompany, string? clinic);
+    Task<GroupCompanyClinicPage> SearchAsync(string? groupCompany, string? clinic, int page = 0, int pageSize = 50, string? sortKey = null, bool sortDesc = false);
 
     /// <summary>SaveGrpComClinic.</summary>
     Task<string> SaveAsync(GroupCompanyClinicSaveRequest request, bool editing, string userCode);
@@ -158,11 +158,11 @@ public sealed class EntityGrpComAccessService(IDbSessions sessions, IEntityGrpCo
     }
 
     /// <inheritdoc />
-    public async Task<GroupCompanyClinicPage> SearchAsync(string? groupCompany, string? clinic)
+    public async Task<GroupCompanyClinicPage> SearchAsync(string? groupCompany, string? clinic, int page = 0, int pageSize = 50, string? sortKey = null, bool sortDesc = false)
     {
         await using var s = await sessions.OpenAsync();
-        var page = await repository.SearchAsync(s, CodeOf(groupCompany), CodeOf(clinic), MaxRows);
-        return page.Total == 0 ? throw new NotFoundException(NotFound) : page;
+        var result = await repository.SearchAsync(s, CodeOf(groupCompany), CodeOf(clinic), Math.Max(0, page), Math.Clamp(pageSize, 1, MaxRows), sortKey, sortDesc);
+        return result.Total == 0 ? throw new NotFoundException(NotFound) : result;
     }
 
     /// <inheritdoc />

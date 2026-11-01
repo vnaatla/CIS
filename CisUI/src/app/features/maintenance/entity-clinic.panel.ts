@@ -1,10 +1,11 @@
-import { HttpClient, HttpResponse } from '@angular/common/http'
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { Paged, PageRequest, ServerPaging } from '../../shared/lib/server-paging'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
@@ -153,10 +154,11 @@ const LIST: [string, string][] = [
         <button appButton variant="ghost" [busy]="busy()" (click)="print()">Print</button>
         <button appButton variant="ghost" (click)="viewing.set(!viewing())">{{ viewing() ? 'Back' : 'View' }}</button>
         <span class="spacer"></span>
-        <app-stat label="TOTAL RECORDS" [value]="rows().length" />
+        <app-stat label="TOTAL RECORDS" [value]="paging.total()" />
       </app-action-bar>
 
       <app-data-grid caption="Clinics" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true"
+        [serverTotal]="paging.total()" [serverPage]="paging.page()" (pageRequest)="onPage($event)"
         [selectedKey]="selected()" (rowSelected)="select($event)" [tall]="true" />
     </div>
   `,
@@ -182,6 +184,7 @@ export class EntityClinicPanelComponent implements OnInit {
   protected readonly rowKey = (r: Row) => r._id
   protected readonly digits = digitsOnly
   protected c: Clinic = { ...EMPTY, bnfType: '1' }
+  protected readonly paging = new ServerPaging()
   private lastFilters: Clinic = { ...EMPTY }
 
   async ngOnInit(): Promise<void> {
@@ -224,16 +227,20 @@ export class EntityClinicPanelComponent implements OnInit {
   }
 
   /** SearchCLN → CLNListing; the boxes are cleared afterwards (cmdSearch_Click). */
-  protected async search(filters: Clinic = this.c): Promise<void> {
+  protected async search(filters: Clinic = this.c, page = 0): Promise<void> {
     this.busy.set(true)
-    this.rows.set([])
+    if (page === 0) this.rows.set([])
     this.selected.set(null)
     this.payPlace.set('')
     try {
-      const rows = (await firstValueFrom(this.http.post<Record<string, unknown>[] | null>(`${BASE}/search`, { clinic: filters }))) ?? []
-      this.rows.set(rows.map((r, i) => ({ ...r, _id: String(i) })))
+      const result = await firstValueFrom(
+        this.http.post<Paged<Record<string, unknown>> | null>(`${BASE}/search`, { clinic: filters }, { params: new HttpParams({ fromObject: this.paging.query(page) }) }),
+      )
+      this.rows.set((result?.rows ?? []).map((r, i) => ({ ...r, _id: String(i) })))
+      this.paging.loaded(page, result?.total ?? 0)
       this.lastFilters = { ...filters }
     } catch (e) {
+      this.paging.reset()
       this.notify.notify(errorMessage(e), 'info')
     } finally {
       this.busy.set(false)
@@ -258,7 +265,13 @@ export class EntityClinicPanelComponent implements OnInit {
     this.mode.set('add')
   }
 
+  /** Grid page / sort / size change: the last search, that page. */
+  protected async onPage(r: PageRequest): Promise<void> {
+    await this.search(this.lastFilters, this.paging.change(r))
+  }
+
   protected clear(): void {
+    this.paging.reset()
     this.c = { ...EMPTY }
     this.rows.set([])
     this.selected.set(null)

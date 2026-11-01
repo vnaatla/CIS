@@ -9,6 +9,7 @@ import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
 import { FieldComponent } from '../../shared/field.component'
 import { openBlob } from '../../shared/lib/download'
+import { Paged, PageRequest, ServerPaging } from '../../shared/lib/server-paging'
 import { digitsOnly, parseDmy } from '../../shared/lib/masks'
 import { ActionBarComponent, PageShellComponent, StatComponent } from '../../shared/screen.components'
 import { TabDirective, TabsComponent } from '../../shared/tabs.component'
@@ -33,6 +34,8 @@ abstract class EntityListPanel {
   protected readonly mode = signal<Mode>('search')
   protected readonly busy = signal(false)
   protected readonly rowKey = (r: ListRow) => r.code
+  protected readonly paging = new ServerPaging()
+  private lastQuery: Record<string, string> = {}
   protected abstract readonly path: string
   protected abstract readonly report: string
 
@@ -43,14 +46,19 @@ abstract class EntityListPanel {
   protected abstract code(): string
 
   /** cmdSearch_Click: list, then the boxes are cleared for the next search (as in the desktop). */
-  protected async search(filters = this.filters()): Promise<void> {
+  protected async search(filters = this.filters(), page = 0): Promise<void> {
     this.busy.set(true)
-    this.rows.set([])
+    if (page === 0) this.rows.set([])
     this.selected.set(null)
     try {
-      const params = new HttpParams({ fromObject: filters })
-      this.rows.set((await firstValueFrom(this.http.get<ListRow[] | null>(`${BASE}/${this.path}`, { params }))) ?? [])
+      const params = new HttpParams({ fromObject: { ...filters, ...this.paging.query(page) } })
+      const result = await firstValueFrom(this.http.get<Paged<ListRow> | null>(`${BASE}/${this.path}`, { params }))
+      this.rows.set(result?.rows ?? [])
+      this.paging.loaded(page, result?.total ?? 0)
+      this.lastQuery = filters
     } catch (e) {
+      this.rows.set([])
+      this.paging.reset()
       this.notify.notify(errorMessage(e), 'info')
     } finally {
       this.busy.set(false)
@@ -75,10 +83,16 @@ abstract class EntityListPanel {
     if (this.selected()) this.mode.set('edit')
   }
 
+  /** Grid page / sort / size change: the same search, that page. */
+  protected async onPage(r: PageRequest): Promise<void> {
+    await this.search(this.lastQuery, this.paging.change(r))
+  }
+
   /** cmdClear_Click: boxes, list and TOTAL RECORDS. */
   protected clear(): void {
     this.resetForm()
     this.rows.set([])
+    this.paging.reset()
     this.selected.set(null)
     this.mode.set('search')
   }
@@ -159,9 +173,10 @@ const ACTIONS = `
     <button appButton variant="ghost" (click)="clear()">Refresh</button>
     <button appButton variant="ghost" (click)="print()">Print</button>
     <span class="spacer"></span>
-    <app-stat label="TOTAL RECORDS" [value]="rows().length" />
+    <app-stat label="TOTAL RECORDS" [value]="paging.total()" />
   </app-action-bar>
   <app-data-grid [caption]="label" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true"
+    [serverTotal]="paging.total()" [serverPage]="paging.page()" (pageRequest)="onPage($event)"
     [selectedKey]="selected()" (rowSelected)="select($event)" [tall]="true" />
 `
 

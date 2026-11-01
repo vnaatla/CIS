@@ -123,6 +123,8 @@ export class DataGridComponent<T extends object> {
   readonly pageSize = input(50)
   /** Server paging: rows() is one page from the API, serverTotal() all matching rows; page / sort changes go out through pageRequest. */
   readonly serverTotal = input<number | null>(null)
+  /** Server paging: the page the screen loaded (0-based); a new search sets it back to 0. */
+  readonly serverPage = input<number | null>(null)
   readonly pageRequest = output<{ page: number; pageSize: number; sortKey: string | null; sortDir: 'asc' | 'desc' }>()
 
   readonly rowSelected = output<T>()
@@ -143,8 +145,8 @@ export class DataGridComponent<T extends object> {
   protected readonly size = computed(() => this.chosenSize() ?? this.pageSize())
   /** Back to the first page whenever the rows or the sort change. */
   protected readonly page = linkedSignal<unknown, number>({
-    source: () => (this.serverTotal() !== null ? [this.sort(), this.size()] : [this.rows(), this.sort(), this.size()]),
-    computation: () => 0,
+    source: () => (this.serverTotal() !== null ? [this.sort(), this.size(), this.serverPage()] : [this.rows(), this.sort(), this.size()]),
+    computation: () => (this.serverTotal() !== null ? (this.serverPage() ?? 0) : 0),
   })
   /** Matching rows: the API's total in server mode, else the rows given. */
   protected readonly total = computed(() => this.serverTotal() ?? this.rows().length)
@@ -177,6 +179,7 @@ export class DataGridComponent<T extends object> {
 
   protected setSize(value: string): void {
     this.chosenSize.set(Number(value))
+    this.page.set(0)
     this.request()
   }
 
@@ -186,6 +189,7 @@ export class DataGridComponent<T extends object> {
 
   protected toggleSort(key: string): void {
     this.sort.update((s) => (s?.key !== key ? { key, dir: 'asc' } : s.dir === 'asc' ? { key, dir: 'desc' } : null))
+    this.page.set(0)
     this.request()
   }
 
