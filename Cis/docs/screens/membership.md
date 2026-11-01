@@ -43,3 +43,18 @@ Deliberate differences:
 Local environment: an IC change updates HISDB `MBM`, whose trigger `trgICEncrypt` opens a symmetric key; the restored local HISDB has no
 database master key, so that save fails here (`Please create a master key in the database…`) as it does in the desktop. Top-ups without
 an IC change work.
+
+## Case Transfer — frmMembershipTransfer (`/invoice/case-transfer`, right 162, `api/invoice/case-transfer`)
+
+| Item | Behaviour |
+|---|---|
+| Go | Case No. empty → `Please select Case Number ! `; CISDB `VIEW_CISMBMTransfer` → current Member No., Cov ID, Patient (principal name for cover 00, covered person otherwise), Visit Date; none → `Record not found!` |
+| Search | Member No. empty → `Please enter Member Number! `; Cov ID empty → `Please select Cover ID! `; name from HISDB MBM (cover 00) or MBMCoveredPersons → shown, Transfer enabled; none → `Record not found!` |
+| Transfer | CISCAS.MBMnumber / CoverID of the case → `Record Updated!`; any change to the case or member boxes disables it again |
+
+Deliberate differences:
+- **Transfer works.** In the desktop the visible Search button only ran HISWorkSheet `SP_GETcasetransfer` and discarded the result; the
+  button that fills the name and enables Transfer (`cmdSearch`, ">") is hidden, and every edit disables Transfer, so a case could never
+  be moved. The web Search runs the hidden button's logic; Save checks the case and member again and asks for confirmation.
+- The Current / Transfer frames' Dept Code, Cost Center, Dept Name, Subsidiary, Company Name boxes and "If Data Correct" ticks are not
+  shown: the desktop never fills or reads them.

@@ -48,3 +48,19 @@ UPDATE HISDB.dbo.MBMCLNOthers SET MBMCLNBalLmt = 3129.00 WHERE MBMNumber = 'DCHC
 
 Check `SELECT MBMCLNBalLmt FROM HISDB.dbo.MBMCLNOthers WHERE MBMNumber = 'DCHC9086608'` **before** T8 (3129.00 on 2 Nov 2026) and
 restore that value.
+
+## 3. Case Transfer — `/invoice/case-transfer` (frmMembershipTransfer, right 162)
+
+Test case **K001596118** (member DCGB3518731, cover 00, SHER BAHADUR TAMANG, visit 04/08/2014).
+
+| # | Action | Expected |
+|---|---|---|
+| C1 | Go with Case No. empty | `Please select Case Number ! ` |
+| C2 | `ZZNOCASE` → Go | `Record not found!` |
+| C3 | `K001596118` → Go | Current Member DCGB3518731 / 00 / SHER BAHADUR TAMANG / 04/08/2014; Transfer disabled |
+| C4 | Search with Member No. empty / Cov ID empty | `Please enter Member Number! ` / `Please select Cover ID! ` |
+| C5 | Member `DCHC9086608`, Cov `00` → Search | Patient NUR RABIZAH BINTI ADENI, Transfer enabled; `01` → JAYA AFFANDI BINTI ZAINI |
+| C6 | Change Member No. after Search | Transfer disabled again |
+| C7 | Transfer → Yes | `Record Updated!`; CISCAS row now DCHC9086608 / 00 |
+
+Clean-up after C7: `UPDATE CISDB.dbo.CISCAS SET MBMnumber = 'DCGB3518731', CoverID = '00' WHERE CASNumber = 'K001596118';`

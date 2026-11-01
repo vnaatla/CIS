@@ -35,6 +35,7 @@ public static class DependencyInjection
         services.AddScoped<Maintenance.Plan.IPlanMcoService, Maintenance.Plan.PlanMcoService>();
         services.AddScoped<Membership.IMemberSearchService, Membership.MemberSearchService>();
         services.AddScoped<Membership.IMbmTopupService, Membership.MbmTopupService>();
+        services.AddScoped<Membership.ICaseTransferService, Membership.CaseTransferService>();
         return services;
     }
 }

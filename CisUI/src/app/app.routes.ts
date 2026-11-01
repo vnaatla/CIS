@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router'
 import { authGuard, guestGuard } from './core/auth/guards'
 import { maintenanceRoutes } from './features/maintenance/maintenance.routes'
+import { invoiceRoutes } from './features/invoice/invoice.routes'
 import { membershipRoutes } from './features/membership/membership.routes'
 
 /**
@@ -18,6 +19,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', loadComponent: () => import('./pages/home.page').then((m) => m.HomePage), title: 'CIS' },
       ...maintenanceRoutes,
       ...membershipRoutes,
+      ...invoiceRoutes,
       {
         path: ':module',
         children: [

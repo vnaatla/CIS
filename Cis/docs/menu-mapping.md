@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 11 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 12 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 1 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 0 | 0 |
-| [Invoice](#invoice) | 30 | 0 | 6 |
+| [Invoice](#invoice) | 30 | 1 | 6 |
 | [Claim](#claim) | 1 | 0 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 0 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 0 | 0 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **11** | **20** |
+| **Total** | **119** | **12** | **20** |
 
 ## Membership
 
@@ -87,7 +87,7 @@ Module page: `/invoice`
 | Dental | Dental Adjustment | — (no form in the project) | 117 | No handler, no form | 11 | Nothing to build | `/invoice/dental-adjustment` |
 | Other | Invoice Update | frmUpdateCLNInvoice | 119 | Hidden (Visible = 0) | 3 | Pending | `/invoice/update` |
 | Other | OP Batch/Invoice | frmUpdateInvoiceBatch | 119 |  | 3 | Pending | `/invoice/op-batch` |
-| Other | Case Transfer | frmMembershipTransfer | 162 |  | 2 | Pending | `/invoice/case-transfer` |
+| Other | Case Transfer | frmMembershipTransfer | 162 |  | 2 | **Migrated** | `/invoice/case-transfer` |
 | Other | Tracking | FrmInvoiceTracking | 161 |  | 10 | Pending | `/invoice/tracking` |
 | Other | Tracking (Jupiter) | FrmInvoiceTracking2 | 162 |  | 10 | Pending | `/invoice/tracking-jupiter` |
 | Other | MMA/CPT | frmMMASchedule, frmShowInvestigation | 150 |  | 3 | Pending | `/invoice/mma-cpt` |

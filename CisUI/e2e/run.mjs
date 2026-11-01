@@ -258,7 +258,20 @@ try {
   await page.waitForFunction(() => !document.querySelector('app-member-search-modal') && document.querySelector('input[name=name]')?.value.length > 0, { timeout: 60000 })
   check((await page.$eval('input[name=member]', (i) => i.value)).startsWith('DCHC9086608-'), 'Member search by name lists the member and a click loads it into Topup')
 
-  // 13. Logout.
+  // 13. Invoice > Case Transfer: Go shows the case's member; Search finds the transfer member and enables Transfer (not pressed).
+  await page.goto(`${base}/invoice/case-transfer`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=casNumber]')
+  await page.type('input[name=casNumber]', 'K001596118')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name=currentMember]')?.value === 'DCGB3518731', { timeout: 60000 })
+  await page.type('input[name=mbmNumber]', 'DCHC9086608')
+  await page.type('input[name=covId]', '00')
+  await page.evaluate(() => [...document.querySelectorAll('app-action-bar button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelector('input[name=transferPatient]')?.value === 'NUR RABIZAH BINTI ADENI', { timeout: 60000 })
+  const transferEnabled = await page.evaluate(() => ![...document.querySelectorAll('app-action-bar button')].find((b) => b.textContent.trim() === 'Transfer').disabled)
+  check(transferEnabled, 'Case Transfer: Go shows case K001596118 (DCGB3518731) and Search enables Transfer for DCHC9086608-00')
+
+  // 14. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')
