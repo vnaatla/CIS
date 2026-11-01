@@ -1,7 +1,7 @@
 # frmMaintenancePlan (Maintenance > Plan)
 
 Route `/maintenance/plan`, access 138 (MaintenancePlan). Tabs in desktop order: HealthType · Insured Type · Plan Code · Premium · Annual
-Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium and Annual Limit migrated; the other three still to do (the
+Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium, Annual Limit and Visit Limit migrated; MCO Fee and Co-Payment (MBM) still to do (the
 menu item stays "not migrated" until all eight are done).
 
 ## HealthType (HLT) / Insured Type (INS) — code-table engine (`health-type`, `insured-type`)
@@ -48,6 +48,14 @@ menu item stays "not migrated" until all eight are done).
   to save the record?", supplementary limits written only for B / C (A leaves them as they are) → "Record Saved..." / "Record Updated...".
 - Delete: "Please Enter Insured Code" (desktop text, checked on the plan box), "Please search the record", member check (MBM, only where
   it exists), "Do you want to delete the record?" → "Record Deleted...", then the whole list. Print: RptAnnualList.
+
+## Visit Limit (CISDB VisitLimit, VIEW_VISIT_PAY_PLN — `cis.PlanVisit_*`)
+
+- Same combos and search as Annual Limit (11 columns). Save: "Please Enter Plan Code", "Please Enter Health Code", "Please Enter Insured
+  Code", "Please Enter Visit Limit", "Please Enter Visit Limit Effective Date", "Please Enter Visit Limit Version", "Please Enter Supp
+  Visit Limit" (B / C); Add refuses insured + health + plan + version + date already saved; Supp. Visit Lmt written only for B / C →
+  "Record Saved..." / "Record Updated...". Edit works (selected VisitIndex). Delete as Annual Limit (member check where MBM exists,
+  "Record Deleted...", whole list). Print: RptVisitList.
 
 ## Known desktop issues (reproduced)
 

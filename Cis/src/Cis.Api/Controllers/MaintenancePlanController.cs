@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code, Premium and Annual Limit tabs (HealthType / Insured Type are code-tables).</summary>
+/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code, Premium, Annual Limit and Visit Limit tabs (HealthType / Insured Type are code-tables).</summary>
 [Route("api/maintenance/plan")]
 [RequireAccess(AccessRight.MaintenancePlan)]
-public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums, IPlanAnnualLimitService annual) : ApiControllerBase
+public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums, IPlanAnnualLimitService annual, IPlanVisitLimitService visits) : ApiControllerBase
 {
     /// <summary>Plan Code combos.</summary>
     [HttpGet("codes/setup")]
@@ -79,4 +79,20 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
     /// <summary>Annual Limit Delete (Limit.Index; plan as shown for the member check).</summary>
     [HttpPost("annual-limits/delete")]
     public async Task<object> DeleteAnnualLimit(AnnualLimitRequest request) => new { message = await annual.DeleteAsync(request.Limit) };
+
+    /// <summary>Visit Limit search (combos: annual-limits/setup).</summary>
+    [HttpPost("visit-limits/search")]
+    public Task<List<Dictionary<string, object?>>> VisitLimits(VisitLimitRequest request) => visits.SearchAsync(request.Limit);
+
+    /// <summary>Visit Limit Add + Save.</summary>
+    [HttpPost("visit-limits")]
+    public async Task<object> CreateVisitLimit(VisitLimitRequest request) => new { message = await visits.SaveAsync(request.Limit, false, UserCode) };
+
+    /// <summary>Visit Limit Edit + Save (Limit.Index).</summary>
+    [HttpPut("visit-limits")]
+    public async Task<object> UpdateVisitLimit(VisitLimitRequest request) => new { message = await visits.SaveAsync(request.Limit, true, UserCode) };
+
+    /// <summary>Visit Limit Delete (Limit.Index; plan as shown for the member check).</summary>
+    [HttpPost("visit-limits/delete")]
+    public async Task<object> DeleteVisitLimit(VisitLimitRequest request) => new { message = await visits.DeleteAsync(request.Limit) };
 }
