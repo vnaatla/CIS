@@ -163,7 +163,8 @@ public sealed class EntityGroupDoctorService(IDbSessions sessions, IEntityGroupD
     public async Task<string> SaveGroupAsync(ClinicGroupSaveRequest request, bool editing, string userCode)
     {
         var g = request.Group;
-        if (string.IsNullOrEmpty(g.Initial)) throw new BusinessRuleException(GroupName);
+        // The Initial Group Name only builds the code on Add; on Edit its box is locked and existing groups may have none (none locally).
+        if (!editing && string.IsNullOrEmpty(g.Initial)) throw new BusinessRuleException(GroupName);
         if (string.IsNullOrEmpty(g.Name)) throw new BusinessRuleException(GroupName);
         if (string.IsNullOrEmpty(g.Add1)) throw new BusinessRuleException(GroupAddress);
         if (string.IsNullOrWhiteSpace(g.EffDate) || g.EffDate.Trim() == "__/__/____") throw new BusinessRuleException(GroupEffDate);

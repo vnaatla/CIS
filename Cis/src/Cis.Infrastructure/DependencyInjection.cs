@@ -57,6 +57,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Maintenance.BenefitMember.IBenefitMemberRepository, Maintenance.BenefitMemberRepository>();
         services.AddScoped<Application.Maintenance.Entity.IEntityGroupDoctorRepository, Maintenance.EntityGroupDoctorRepository>();
         services.AddScoped<Application.Maintenance.Entity.IEntityClinicRepository, Maintenance.EntityClinicRepository>();
+        services.AddScoped<Application.Maintenance.Entity.IEntityGrpComAccessRepository, Maintenance.EntityGrpComAccessRepository>();
 
         // PDFsharp needs a font source on hosts where it cannot find fonts by itself.
         GlobalFontSettings.FontResolver ??= new PdfFontResolver();

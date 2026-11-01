@@ -24,6 +24,13 @@ public class EntityGroupDoctorServiceTests
     }
 
     [Fact]
+    public async Task Group_edit_does_not_need_the_locked_initial()
+    {
+        var ex = await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveGroupAsync(new(Valid with { Initial = null, Add1 = "" }), true, "DEV"));
+        Assert.Equal(EntityGroupDoctorService.GroupAddress, ex.Message);
+    }
+
+    [Fact]
     public void Group_values_are_written_like_SaveClinicGrp()
     {
         var c = EntityGroupDoctorService.CleanGroup(Valid with { Code = "K0001" });
@@ -73,6 +80,34 @@ public class EntityClinicServiceTests
     [Fact]
     public async Task Delete_checks_name_then_selection() =>
         Assert.Equal("Please Enter Clinic Name", (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.DeleteAsync(null, ""))).Message);
+}
+
+public class EntityGrpComAccessServiceTests
+{
+    private readonly EntityGrpComAccessService _service = new(new FakeSessions(), null!, new FixedClock(new DateTime(2026, 11, 1)));
+
+    [Theory]
+    [InlineData("B006 - BANK SIMPANAN", "B006")]
+    [InlineData("A001X1234567", "A001X12345")]
+    [InlineData(" ", null)]
+    public void Combo_codes_are_cut_like_the_desktop(string text, string? code) => Assert.Equal(code, EntityGrpComAccessService.CodeOf(text));
+
+    [Theory]
+    [InlineData("", "01/01/2026", "31/12/2026", EntityGrpComAccessService.ClinicFirst)]
+    [InlineData("A001", "__/__/____", "31/12/2026", EntityGrpComAccessService.FromInvalid)]
+    [InlineData("A001", "01/01/2026", "", EntityGrpComAccessService.ToInvalid)]
+    [InlineData("A001", "01/02/2026", "01/01/2026", EntityGrpComAccessService.FromAfterTo)]
+    [InlineData("A001", "01/01/2026", "01/01/2099", EntityGrpComAccessService.ToInvalid)]
+    public async Task Access_save_checks_in_the_desktop_order(string code, string from, string to, string message) =>
+        Assert.Equal(message, (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAccessAsync(new(code, from, to), "DEV"))).Message);
+
+    [Fact]
+    public async Task Group_company_clinic_and_clinic_search_need_their_boxes()
+    {
+        Assert.Equal(EntityGrpComAccessService.GroupCompanyFirst, (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(new("", "A001", null, null), false, "DEV"))).Message);
+        Assert.Equal(EntityGrpComAccessService.ClinicFirst, (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.SaveAsync(new("B006", "", null, null), false, "DEV"))).Message);
+        Assert.Equal(EntityGrpComAccessService.NameToSearch, (await Assert.ThrowsAsync<BusinessRuleException>(() => _service.FindClinicsAsync(""))).Message);
+    }
 }
 
 /// <summary>Clinic Group / Doctor procedures against the real CISDB (skipped without CIS_TEST_DB); writes are rolled back.</summary>
@@ -137,5 +172,31 @@ public class EntityDatabaseTests
         Assert.Equal(("KLINIK WEB", 13m), ((string)found["CLNName"]!, (decimal)found["CLNMCOProcfeePerc"]!));
         Assert.False(await repo.HasCasesAsync(s, code));
         Assert.Equal(1, await repo.DeleteAsync(s, code));
+    }
+
+    [Fact]
+    public async Task Group_company_clinic_and_clinic_access_rows_are_saved_found_and_removed()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        await using var s = await TestDb.Sessions().BeginAsync();
+        var repo = new EntityGrpComAccessRepository();
+        var lookups = await repo.LookupsAsync(s);
+        Assert.NotEmpty(lookups.GroupCompanies);
+        var clinic = lookups.Clinics[0].Code;
+        Assert.False(await repo.ExistsAsync(s, "ZZGRP", clinic));
+        Assert.Equal(1, await repo.SaveAsync(s, true, null, null, "ZZGRP", clinic, "CISTEST", new DateTime(2026, 11, 1)));
+        Assert.Equal(1, await repo.SaveAsync(s, false, "ZZGRP", clinic, "ZZGRQ", clinic, "CISTEST", new DateTime(2026, 11, 1)));
+        Assert.True(await repo.ExistsAsync(s, "ZZGRQ", clinic));
+        Assert.Equal(1, await repo.DeleteAsync(s, "ZZGRQ", clinic));
+        var page = await repo.SearchAsync(s, null, clinic, 5);
+        Assert.True(page.Rows.Count <= 5 && page.Total >= page.Rows.Count);
+
+        Assert.NotNull(await repo.ClinicNameAsync(s, clinic));
+        Assert.Null(await repo.ClinicNameAsync(s, "ZZ#99"));
+        var now = new DateTime(2078, 1, 1, 10, 0, 0);
+        await repo.InsertAccessAsync(s, clinic, new DateTime(2078, 1, 1), new DateTime(2078, 12, 31), "CISTEST", now);
+        Assert.Equal("CISTEST", (await repo.AccessListAsync(s))[0].CreatedBy);
+        Assert.NotEmpty(await repo.FindClinicsAsync(s, "KLINIK"));
     }
 }

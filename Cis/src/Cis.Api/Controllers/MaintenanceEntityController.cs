@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Entity (frmMaintenanceEntity): Clinic Group, Doctor and Clinic Info tabs.</summary>
+/// <summary>Maintenance > Entity (frmMaintenanceEntity): all five tabs and frmSearchCLN.</summary>
 [Route("api/maintenance/entity")]
 [RequireAccess(AccessRight.MaintenanceEntity)]
-public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity, IEntityClinicService clinics) : ApiControllerBase
+public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity, IEntityClinicService clinics, IEntityGrpComAccessService links) : ApiControllerBase
 {
     /// <summary>Clinic groups (code / name contain).</summary>
     [HttpGet("groups")]
@@ -82,4 +82,37 @@ public sealed class MaintenanceEntityController(IEntityGroupDoctorService entity
     /// <summary>Delete (name as on screen, for the desktop's first check).</summary>
     [HttpDelete("clinics/{code}")]
     public async Task<object> DeleteClinic(string code, [FromQuery] string? name) => new { message = await clinics.DeleteAsync(code, name) };
+
+    /// <summary>Group Company Clinic combos (Check1).</summary>
+    [HttpGet("group-company-clinics/lookups")]
+    public Task<GroupCompanyClinicLookups> GroupCompanyClinicLookups() => links.LookupsAsync();
+
+    /// <summary>Group Company Clinic search (= group company / = clinic; capped list + total).</summary>
+    [HttpGet("group-company-clinics")]
+    public Task<GroupCompanyClinicPage> GroupCompanyClinics([FromQuery] string? groupCompany, [FromQuery] string? clinic) => links.SearchAsync(groupCompany, clinic);
+
+    /// <summary>Add + Save.</summary>
+    [HttpPost("group-company-clinics")]
+    public async Task<object> CreateGroupCompanyClinic(GroupCompanyClinicSaveRequest request) => new { message = await links.SaveAsync(request, false, UserCode) };
+
+    /// <summary>Edit + Save (the selected pair in Old*).</summary>
+    [HttpPut("group-company-clinics")]
+    public async Task<object> UpdateGroupCompanyClinic(GroupCompanyClinicSaveRequest request) => new { message = await links.SaveAsync(request, true, UserCode) };
+
+    /// <summary>Delete the selected pair.</summary>
+    [HttpDelete("group-company-clinics")]
+    public async Task<object> DeleteGroupCompanyClinic([FromQuery] string? groupCompany, [FromQuery] string? clinic) =>
+        new { message = await links.DeleteAsync(groupCompany, clinic) };
+
+    /// <summary>Clinic Access: the latest 100 rows.</summary>
+    [HttpGet("clinic-access")]
+    public Task<List<ClinicAccess>> ClinicAccessList() => links.AccessListAsync();
+
+    /// <summary>Clinic Access: Add + Save.</summary>
+    [HttpPost("clinic-access")]
+    public async Task<object> CreateClinicAccess(ClinicAccessSaveRequest request) => new { message = await links.SaveAccessAsync(request, UserCode) };
+
+    /// <summary>frmSearchCLN: clinics whose name contains the text.</summary>
+    [HttpGet("clinic-search")]
+    public Task<List<ClinicFound>> FindClinics([FromQuery] string? name) => links.FindClinicsAsync(name);
 }

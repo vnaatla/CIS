@@ -13,6 +13,7 @@ import { digitsOnly, parseDmy } from '../../shared/lib/masks'
 import { ActionBarComponent, PageShellComponent, StatComponent } from '../../shared/screen.components'
 import { TabDirective, TabsComponent } from '../../shared/tabs.component'
 import { EntityClinicPanelComponent } from './entity-clinic.panel'
+import { EntityAccessPanelComponent, EntityGrpComPanelComponent } from './entity-links.panel'
 
 const BASE = '/api/maintenance/entity'
 
@@ -322,7 +323,7 @@ export class EntityDoctorPanelComponent extends EntityListPanel {
 /** Maintenance > Entity (frmMaintenanceEntity): the desktop's five tabs. */
 @Component({
   selector: 'app-entity-page',
-  imports: [PageShellComponent, TabsComponent, TabDirective, EntityGroupPanelComponent, EntityDoctorPanelComponent, EntityClinicPanelComponent],
+  imports: [PageShellComponent, TabsComponent, TabDirective, EntityGroupPanelComponent, EntityDoctorPanelComponent, EntityClinicPanelComponent, EntityGrpComPanelComponent, EntityAccessPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-shell title="Entity Maintenance" subtitle="Replaces frmMaintenanceEntity">
@@ -330,8 +331,8 @@ export class EntityDoctorPanelComponent extends EntityListPanel {
         <ng-template appTab="Clinic Group"><app-entity-group-panel /></ng-template>
         <ng-template appTab="Doctor"><app-entity-doctor-panel /></ng-template>
         <ng-template appTab="Clinic Info"><app-entity-clinic-panel /></ng-template>
-        <ng-template appTab="Group Company Clinic"><p class="muted">Group Company Clinic: not migrated yet.</p></ng-template>
-        <ng-template appTab="Clinic Access"><p class="muted">Clinic Access: not migrated yet.</p></ng-template>
+        <ng-template appTab="Group Company Clinic"><app-entity-grpcom-panel /></ng-template>
+        <ng-template appTab="Clinic Access"><app-entity-access-panel /></ng-template>
       </app-tabs>
     </app-page-shell>
   `,

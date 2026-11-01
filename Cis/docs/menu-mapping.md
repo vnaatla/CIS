@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 8 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 9 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -23,8 +23,8 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
-| [Maintenance](#maintenance) | 11 | 8 | 1 |
-| **Total** | **119** | **8** | **20** |
+| [Maintenance](#maintenance) | 11 | 9 | 1 |
+| **Total** | **119** | **9** | **20** |
 
 ## Membership
 
@@ -215,7 +215,7 @@ Module page: `/maintenance`
 
 | Sub-menu | Menu item | VB6 form(s) | Access | Desktop | Phase | Status | Web route |
 |---|---|---|---:|---|---:|---|---|
-|  | Entity | frmMaintenanceEntity, frmSearchCLN | 137 |  | 1 | Pending | `/maintenance/entity` |
+|  | Entity | frmMaintenanceEntity, frmSearchCLN | 137 |  | 1 | **Migrated** | `/maintenance/entity` |
 |  | Plan | frmMaintenancePlan | 138 |  | 1 | Pending | `/maintenance/plan` |
 |  | Case | frmMaintenanceOthers | 139 |  | 1 | **Migrated** | `/maintenance/case` |
 |  | Calculation | frmMaintenanceCal | 140 |  | 1 | **Migrated** | `/maintenance/calculation` |
