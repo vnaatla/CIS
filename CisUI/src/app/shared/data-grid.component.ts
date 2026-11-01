@@ -80,17 +80,21 @@ const compare = (a: string | number, b: string | number) =>
     @if (pageSize() > 0 && rows().length > size()) {
       <nav class="grid-pager" [attr.aria-label]="caption() + ' pages'">
         <span>Rows {{ first() + 1 }}–{{ last() }} of {{ rows().length }}</span>
-        <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(0)" aria-label="First page">«</button>
-        <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(page() - 1)" aria-label="Previous page">‹</button>
-        @for (n of pageList(); track $index) {
-          @if (n < 0) {
-            <span aria-hidden="true">…</span>
-          } @else {
-            <button type="button" class="page-no" [class.current]="n === page()" [attr.aria-current]="n === page() ? 'page' : null" (click)="page.set(n)">{{ n + 1 }}</button>
+        <ul class="pagination">
+          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="page.set(0)" aria-label="First page">First</button></li>
+          <li [class.disabled]="page() === 0"><button type="button" class="page-btn" [disabled]="page() === 0" (click)="page.set(page() - 1)">Previous</button></li>
+          @for (n of pageList(); track $index) {
+            @if (n < 0) {
+              <li class="disabled"><span class="page-btn" aria-hidden="true">…</span></li>
+            } @else {
+              <li [class.active]="n === page()">
+                <button type="button" class="page-btn" [attr.aria-current]="n === page() ? 'page' : null" (click)="page.set(n)">{{ n + 1 }}</button>
+              </li>
+            }
           }
-        }
-        <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(page() + 1)" aria-label="Next page">›</button>
-        <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(pages() - 1)" aria-label="Last page">»</button>
+          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="page.set(page() + 1)">Next</button></li>
+          <li [class.disabled]="page() >= pages() - 1"><button type="button" class="page-btn" [disabled]="page() >= pages() - 1" (click)="page.set(pages() - 1)" aria-label="Last page">Last</button></li>
+        </ul>
         <label>Rows per page
           <select [value]="size()" (change)="setSize($any($event.target).value)">
             @for (n of sizes; track n) {
