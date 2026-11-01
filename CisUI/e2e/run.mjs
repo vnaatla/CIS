@@ -194,6 +194,14 @@ try {
   await page.click('app-plan-code-panel app-data-grid tbody tr:not(.empty-row)')
   await page.waitForFunction(() => { const i = document.querySelector('app-plan-code-panel input[name=plan0]'); return i?.disabled && i.value === 'A001' }, { timeout: 60000 })
   check(true, 'Plan Code search lists plan A001 and a row opens read-only')
+  await (await page.$$('.tabs button'))[3].click()
+  await page.waitForSelector('app-plan-premium-panel select[name=insCode] option[value=H]')
+  await page.select('app-plan-premium-panel select[name=insCode]', 'H')
+  await page.click('app-plan-premium-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-plan-premium-panel app-data-grid tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-plan-premium-panel app-data-grid tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => document.querySelector('app-plan-premium-panel input[name=plnCode]')?.disabled, { timeout: 60000 })
+  check(true, 'Premium search by insured type lists PRM rows and a row opens its age bands')
 
   // 12. Logout.
   await page.click('header.topbar button.link:last-of-type')

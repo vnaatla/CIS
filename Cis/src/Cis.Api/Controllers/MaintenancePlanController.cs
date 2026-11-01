@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code tab (HealthType / Insured Type are code-tables).</summary>
+/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code and Premium tabs (HealthType / Insured Type are code-tables).</summary>
 [Route("api/maintenance/plan")]
 [RequireAccess(AccessRight.MaintenancePlan)]
-public sealed class MaintenancePlanController(IPlanCodeService plans) : ApiControllerBase
+public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums) : ApiControllerBase
 {
     /// <summary>Plan Code combos.</summary>
     [HttpGet("codes/setup")]
@@ -39,4 +39,24 @@ public sealed class MaintenancePlanController(IPlanCodeService plans) : ApiContr
     /// <summary>Delete.</summary>
     [HttpDelete("codes/{code}")]
     public async Task<object> Delete(string code) => new { message = await plans.DeleteAsync(code) };
+
+    /// <summary>Premium combos.</summary>
+    [HttpGet("premiums/setup")]
+    public Task<PremiumSetup> PremiumSetup() => premiums.SetupAsync();
+
+    /// <summary>Premium search.</summary>
+    [HttpPost("premiums/search")]
+    public Task<List<Dictionary<string, object?>>> Premiums(PremiumRequest request) => premiums.SearchAsync(request.Premium);
+
+    /// <summary>Band amounts of insured type + plan (row click).</summary>
+    [HttpGet("premiums/bands")]
+    public Task<List<PremiumBand>> PremiumBands([FromQuery] string? insCode, [FromQuery] string? plnCode) => premiums.BandsAsync(insCode, plnCode);
+
+    /// <summary>Premium Add + Save (seven age-band rows).</summary>
+    [HttpPost("premiums")]
+    public async Task<object> CreatePremium(PremiumRequest request) => new { message = await premiums.SaveAsync(request.Premium, UserCode) };
+
+    /// <summary>Premium Delete (one PRM row; the keys as shown for the membership check).</summary>
+    [HttpPost("premiums/{prmCode:int}/delete")]
+    public async Task<object> DeletePremium(int prmCode, PremiumRequest request) => new { message = await premiums.DeleteAsync(prmCode, request.Premium) };
 }

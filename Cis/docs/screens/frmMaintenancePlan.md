@@ -1,7 +1,7 @@
 # frmMaintenancePlan (Maintenance > Plan)
 
 Route `/maintenance/plan`, access 138 (MaintenancePlan). Tabs in desktop order: HealthType · Insured Type · Plan Code · Premium · Annual
-Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type and Plan Code migrated; the other five still to do (the
+Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code and Premium migrated; the other four still to do (the
 menu item stays "not migrated" until all eight are done).
 
 ## HealthType (HLT) / Insured Type (INS) — code-table engine (`health-type`, `insured-type`)
@@ -26,6 +26,18 @@ menu item stays "not migrated" until all eight are done).
 - Delete: "Please search the record", "This record cannot be deleted because it is used in Membership table!" (HISDB MBMCLNOthers.PLNType),
   "Do you want to delete this record?" → "Record Deleted... ", list again. Print: RptPlanList.
 
+## Premium (CISDB PRM — `cis.PlanPremium_*`)
+
+- Combos: INS, HLT, PAY (reloaded for the health type), AGE, PLN; Supplementary A - Share Limit for Family (default) / B - Share Limit for
+  Supplementary / C - Separate Limit for Supplementary; age bands 01–07 with premium and supplementary premium (supplementary only for B / C).
+- Search: insured / payor / health / age = (code before "-"), plan = (code before "-", else its first 2 characters); 11 columns; "Record
+  not found". A row shows its keys and the band amounts of insured type + plan, read-only.
+- Save: "Please Enter Insured Code", "Please Enter Health Code", "Please Enter Plan Code", "Please validate your Premium Effective date",
+  duplicate check, "Do you want to save this record?", then seven PRM rows: codes ChkStr(Mid(…, 1, 2)) (plan before "-"), a band with a
+  premium gets age code "0n" and its amount, an empty band keeps the Age combo's code and no amount; status, date, version →
+  "Record Saved...". Delete removes the selected PRM row ("Please Enter Insured Code", "Please search the record", membership check,
+  "Do you want to delete this record?" → "Record Deleted... "). Print: RptPremiumList.
+
 ## Known desktop issues (reproduced)
 
 - Plan Code has no Edit. Save writes N for the ten dental / spec / MEP indicators whatever is chosen; the Diag combo is not saved (not
@@ -40,3 +52,8 @@ menu item stays "not migrated" until all eight are done).
 - **Search filters work.** VIEW_PLNListing lacks the indicator columns, so any indicator filter made the desktop's search fail; the web
   reads them from PLN (same list columns).
 - Plan codes skip numbers already in PLN; the plans of one Save are one transaction.
+- **Premium:** the duplicate check uses the effective date (the desktop formatted the age-01 premium as the date, so it never matched);
+  for B / C the supplementary premium of a band is saved (0 when empty) — the desktop's condition was inverted: an entered amount saved 0
+  and an empty one crashed the save (no B / C rows exist locally). Edit is not offered: the desktop's Edit re-opened the row and saved
+  nothing. The membership check on Delete reads MBM only where CISDB has it (it does not locally, where the desktop's Delete failed).
+  The seven rows of one Save are one transaction.
