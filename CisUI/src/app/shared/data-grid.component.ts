@@ -82,7 +82,13 @@ const compare = (a: string | number, b: string | number) =>
         <span>Rows {{ first() + 1 }}–{{ last() }} of {{ rows().length }}</span>
         <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(0)" aria-label="First page">«</button>
         <button type="button" class="link" [disabled]="page() === 0" (click)="page.set(page() - 1)" aria-label="Previous page">‹</button>
-        <span>Page {{ page() + 1 }} of {{ pages() }}</span>
+        @for (n of pageList(); track $index) {
+          @if (n < 0) {
+            <span aria-hidden="true">…</span>
+          } @else {
+            <button type="button" class="page-no" [class.current]="n === page()" [attr.aria-current]="n === page() ? 'page' : null" (click)="page.set(n)">{{ n + 1 }}</button>
+          }
+        }
         <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(page() + 1)" aria-label="Next page">›</button>
         <button type="button" class="link" [disabled]="page() >= pages() - 1" (click)="page.set(pages() - 1)" aria-label="Last page">»</button>
         <label>Rows per page
@@ -134,6 +140,14 @@ export class DataGridComponent<T extends object> {
   protected readonly first = computed(() => this.page() * this.size())
   protected readonly last = computed(() => Math.min(this.rows().length, this.first() + this.size()))
   protected readonly paged = computed(() => (this.pageSize() > 0 ? this.sorted().slice(this.first(), this.last()) : this.sorted()))
+
+  /** Page numbers to show: first, last and two either side of the current one; -1 = a gap (…). */
+  protected readonly pageList = computed(() => {
+    const total = this.pages()
+    const cur = this.page()
+    const keep = [...new Set([0, total - 1, cur - 2, cur - 1, cur, cur + 1, cur + 2])].filter((n) => n >= 0 && n < total).sort((a, b) => a - b)
+    return keep.flatMap((n, i) => (i > 0 && n - keep[i - 1] > 1 ? [-1, n] : [n]))
+  })
 
   protected setSize(value: string): void {
     this.chosenSize.set(Number(value))

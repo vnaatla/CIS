@@ -389,3 +389,6 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .grid-pager button.link { font-size: 16px; padding: 0 4px; }
 .grid-pager button.link:disabled { opacity: 0.35; cursor: default; }
 .grid-pager select { margin-left: 6px; }
+.grid-pager .page-no { min-width: 30px; height: 28px; border: 1px solid var(--border); border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; }
+.grid-pager .page-no:hover { border-color: var(--accent); }
+.grid-pager .page-no.current { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
