@@ -224,12 +224,13 @@ export class LgBindingPanelComponent implements OnInit {
 
   private async load(groupName: string): Promise<void> {
     this.busy.set(true)
+    this.rows.set([])
+    this.selected.set(null)
+    this.editing.set(false)
     try {
       const params = new HttpParams({ fromObject: { groupName, payCode: this.form().payCode, planCode: this.form().planCode } })
-      this.rows.set(await firstValueFrom(this.http.get<Binding[]>(this.base, { params })))
+      this.rows.set((await firstValueFrom(this.http.get<Binding[] | null>(this.base, { params }))) ?? [])
       this.lastGroupName = groupName
-      this.selected.set(null)
-      this.editing.set(false)
     } catch (e) {
       this.notify.notify(errorMessage(e), 'warn')
     } finally {

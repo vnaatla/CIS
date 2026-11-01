@@ -168,11 +168,13 @@ export class CodeTablePanelComponent implements OnInit {
 
   private async load(filters: Record<string, string>): Promise<boolean> {
     this.busy.set(true)
+    this.rows.set([])
+    this.selected.set(null)
     try {
-      const rows = await firstValueFrom(this.http.get<Record<string, unknown>[]>(`${this.base}/rows`, { params: new HttpParams({ fromObject: filters }) }))
+      const rows =
+        (await firstValueFrom(this.http.get<Record<string, unknown>[] | null>(`${this.base}/rows`, { params: new HttpParams({ fromObject: filters }) }))) ?? []
       this.lastFilters = filters
       this.rows.set(rows.map((r, i) => ({ ...r, _id: String(i) })))
-      this.selected.set(null)
       if (rows.length === 0) this.notify.notify('Record not found!', 'info')
       return true
     } catch (e) {

@@ -26,6 +26,13 @@ export const maintenanceRoutes: Routes = [
     loadComponent: () => import('./lg-maintenance.page').then((m) => m.LgMaintenancePage),
   },
   {
+    path: 'maintenance/benefit/member',
+    title: 'CIS - Benefits Maintenance',
+    canActivate: [accessGuard],
+    data: { access: Access.MaintenanceBenefitMember, legacyForm: 'frmMaintenanceBenefits' },
+    loadComponent: () => import('./benefit-member.page').then((m) => m.BenefitMemberPage),
+  },
+  {
     path: 'maintenance/benefit/clinic',
     title: 'CIS - Clinic Benefits Maintenance',
     canActivate: [accessGuard],

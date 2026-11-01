@@ -131,7 +131,7 @@ export class BenefitClinicPage implements OnInit {
     this.busy.set(true)
     try {
       const params = new HttpParams({ fromObject: { cardType: this.cardType, effDate: this.effDate } })
-      const rows = await firstValueFrom(this.http.get<{ bnfCode: string; rmPerVisit: string | null }[]>(BASE, { params }))
+      const rows = (await firstValueFrom(this.http.get<{ bnfCode: string; rmPerVisit: string | null }[] | null>(BASE, { params }))) ?? []
       this.fees.set(Object.fromEntries(rows.filter((r) => r.rmPerVisit).map((r) => [r.bnfCode, r.rmPerVisit as string])))
       this.total.set(rows.length)
     } catch (e) {

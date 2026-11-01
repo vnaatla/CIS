@@ -49,7 +49,9 @@ FROM (VALUES
     (N'Maint_USRTrack', @MaintenanceDb, N'Tbl_USRTrack'),
     (N'Maint_ErrorLog', @MaintenanceDb, N'Tbl_ErrorLog'),
     (N'Hdb_ActionLog', @HisDb, N'tblActionLog'),
-    (N'Hdb_CLN', @HisDb, N'CLN')) v (s, d, t)
+    (N'Hdb_CLN', @HisDb, N'CLN'),
+    (N'Hdb_PAY', @HisDb, N'PAY'),
+    (N'Hdb_PLN', @HisDb, N'PLN')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

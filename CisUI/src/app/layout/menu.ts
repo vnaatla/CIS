@@ -239,7 +239,7 @@ export const MENU: MenuModule[] = [
       { label: 'Case', path: '/maintenance/case', access: Access.MaintenanceCase, form: 'frmMaintenanceOthers', phase: 1, migrated: true },
       { label: 'Calculation', path: '/maintenance/calculation', access: Access.MaintenanceCalculation, form: 'frmMaintenanceCal', phase: 1, migrated: true },
       { label: 'LG Maintenance', path: '/maintenance/lg', access: Access.MaintenanceLg, form: 'frmLGMaintenance', phase: 1, migrated: true },
-      { label: 'Member', path: '/maintenance/benefit/member', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBenefits', group: 'Benefit', phase: 1 },
+      { label: 'Member', path: '/maintenance/benefit/member', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBenefits', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Clinic', path: '/maintenance/benefit/clinic', access: Access.MaintenanceBenefitClinic, form: 'frmMaintenanceBenefitsCln', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Clinic (new)', path: '/maintenance/benefit/clinic-new', access: Access.MaintenanceBenefitClinic, form: 'frmMaintenanceBenefitsClnNew', group: 'Benefit', desktop: 'never-opened', phase: 1, migrated: true },
       { label: 'Dental', path: '/maintenance/benefit/dental', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBNFDental', group: 'Benefit', phase: 1 },

@@ -77,3 +77,33 @@ Deliberate differences:
 - Print works in both forms (in frmMaintenanceBenefitsClnNew PrintClinicBNF was empty).
 - TOTAL RECORDS shows the rows found by Search (the desktop never updated it: always 0).
 - Grid rows are ordered by category code (the desktop used table order).
+
+## Benefit Member (frmMaintenanceBenefits)
+
+Tabs Category (engine, `benefit-category`), Benefit Entry and Benefit Listing (`cis.BenefitMember_*`).
+
+Benefit Entry: Health Type (fixed S - Sihat / N - Non-Sihat), Insured Type (INS), Plan Code (PLN), Eff Date and a grid of every
+BNFCategoryNew row with Calculation (1–4), No of Visit Per day / Per Annum, RM Per Visit, Percentage. Search needs all four keys ("Please
+key in Health Type !" … "Please key in VALID Effective Date!") and fills the grid from BNFNew (nothing saved = empty grid, no message).
+Save checks "Please Enter Health Type !" / "Please Enter Insured Type!" / "Please Enter Plan Code!" / "Please Enter (Valid )effectice
+Date!", refuses a saved plan + insured type + date ("Record Duplicated! ..."), asks "Do you want to save this record?" and inserts the
+rows SaveBNF writes: Calculation 1 or 2 with RM Per Visit or Percentage, 3 always, 4 with RM Per Visit (others skipped); RM Per Visit and
+Percentage upper-cased (ChkStr), RM Per Visit "" when empty → "Record Saved...".
+
+Benefit Listing: every filter optional (category before "--", first character of health / insured type, first 4 of the plan, payor and
+group company before "-" else first 4 characters, group company as prefix LIKE), VIEW_CISBNF_PLN_SubCat rows with the 13 ListView
+columns, "Record not found" when empty; selecting a row copies it into the filters; Print exports the list to Excel ("Report cannot be
+printed without any record."). Payors and group companies come from HISDB (medixmasterconn), the rest from CISDB, as in the desktop.
+
+Known desktop issues (reproduced):
+- The duplicate check ignores the health type (plan + insured type + date), while Search uses it.
+- Saved benefit entries cannot be changed or deleted from the screen (the Edit button stays disabled on this tab; its code path would
+  fail on a closed recordset anyway).
+- Picking a Health Type on Benefit Listing (cboBHLTCode_Click) queries PLN with an empty plan code and changes nothing.
+- TOTAL RECORDS stays 0 on Benefit Entry.
+
+Deliberate differences:
+- Clear / Add / Search empty every grid cell (ClearGrid stopped at row 29 of 31 categories, see Benefit Clinic).
+- Save is one transaction; No of Visit Per day / Per Annum must be whole numbers (smallint): the desktop accepted any number in the grid
+  and the insert then failed half-way.
+- Plan Code and Group Company are type-ahead boxes (2,797 plans / 2,320 group companies) instead of long combos.

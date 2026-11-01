@@ -104,7 +104,29 @@ try {
   await page.waitForFunction(() => [...document.querySelectorAll('app-benefit-clinic-page tbody input')].some((i) => i.value !== ''), { timeout: 60000 })
   check(true, 'Benefit Clinic lists the categories and Search fills the saved Gold fees')
 
-  // 8. Logout.
+  // 8. Benefit > Member: Benefit Entry search (A001 / H / N / 01/01/2004 has 29 saved rows locally) and Benefit Listing search by plan.
+  await page.goto(`${base}/maintenance/benefit/member`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('.tabs button')
+  const memberTabs = await page.$$('.tabs button')
+  check(memberTabs.length === 3, 'Benefit Member shows Category, Benefit Entry and Benefit Listing')
+  await memberTabs[1].click()
+  await page.waitForFunction(() => document.querySelectorAll('app-benefit-entry-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.select('app-benefit-entry-panel select[name=health]', 'N')
+  await page.select('app-benefit-entry-panel select[name=insured]', 'H')
+  await page.type('app-benefit-entry-panel input[name=plan]', 'A001')
+  await page.type('app-benefit-entry-panel app-date-input input:not([type=date])', '01012004')
+  await page.click('app-benefit-entry-panel app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-benefit-entry-panel tbody input')].some((i) => i.value !== ''), { timeout: 60000 })
+  check(true, 'Benefit Entry search fills the saved A001 grid')
+  await (await page.$$('.tabs button'))[2].click()
+  await page.waitForSelector('app-benefit-listing-panel input[name=planCode]')
+  await page.type('app-benefit-listing-panel input[name=planCode]', 'A001')
+  await page.click('app-benefit-listing-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-benefit-listing-panel tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  const firstListed = await page.$eval('app-benefit-listing-panel tbody tr td:nth-child(5)', (td) => td.textContent.trim())
+  check(firstListed === 'A001', `Benefit Listing search by plan lists A001 rows (${firstListed})`)
+
+  // 9. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
   check(page.url().endsWith('/login'), 'logout returns to the login page')
