@@ -217,6 +217,14 @@ try {
   await page.click('app-plan-visit-panel app-data-grid tbody tr:not(.empty-row)')
   await page.waitForFunction(() => document.querySelector('app-plan-visit-panel input[name=visitLimit]')?.disabled, { timeout: 60000 })
   check(true, 'Visit Limit search lists the limits and a row opens read-only')
+  await (await page.$$('.tabs button'))[6].click()
+  await page.waitForSelector('app-plan-mco-panel input[name=plnCode]')
+  await page.type('app-plan-mco-panel input[name=plnCode]', 'A001')
+  await page.click('app-plan-mco-panel app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelectorAll('app-plan-mco-panel app-data-grid tbody tr:not(.empty-row)').length > 0, { timeout: 60000 })
+  await page.click('app-plan-mco-panel app-data-grid tbody tr:not(.empty-row)')
+  await page.waitForFunction(() => document.querySelector('app-plan-mco-panel input[name=plnCode]')?.disabled, { timeout: 60000 })
+  check(true, 'MCO Fee search by plan lists its fees and a row opens read-only')
 
   // 12. Logout.
   await page.click('header.topbar button.link:last-of-type')

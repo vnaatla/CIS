@@ -4,13 +4,14 @@ import { TabDirective, TabsComponent } from '../../shared/tabs.component'
 import { CodeTablePanelComponent } from './code-table-panel.component'
 import { PlanCodePanelComponent } from './plan-code.panel'
 import { PlanAnnualPanelComponent } from './plan-annual.panel'
+import { PlanMcoPanelComponent } from './plan-mco.panel'
 import { PlanPremiumPanelComponent } from './plan-premium.panel'
 import { PlanVisitPanelComponent } from './plan-visit.panel'
 
 /** Maintenance > Plan (frmMaintenancePlan): the desktop's eight SSTab tabs in order. */
 @Component({
   selector: 'app-plan-page',
-  imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, PlanCodePanelComponent, PlanPremiumPanelComponent, PlanAnnualPanelComponent, PlanVisitPanelComponent],
+  imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, PlanCodePanelComponent, PlanPremiumPanelComponent, PlanAnnualPanelComponent, PlanVisitPanelComponent, PlanMcoPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-shell title="Plan Maintenance" subtitle="Replaces frmMaintenancePlan">
@@ -21,6 +22,7 @@ import { PlanVisitPanelComponent } from './plan-visit.panel'
         <ng-template appTab="Premium"><app-plan-premium-panel /></ng-template>
         <ng-template appTab="Annual Limit"><app-plan-annual-panel /></ng-template>
         <ng-template appTab="Visit Limit"><app-plan-visit-panel /></ng-template>
+        <ng-template appTab="MCO Fee"><app-plan-mco-panel /></ng-template>
         @for (t of pending; track t) {
           <ng-template [appTab]="t"><p class="muted">{{ t }}: not migrated yet.</p></ng-template>
         }
@@ -29,5 +31,5 @@ import { PlanVisitPanelComponent } from './plan-visit.panel'
   `,
 })
 export class PlanPage {
-  protected readonly pending = ['MCO Fee', 'Co-Payment (MBM)']
+  protected readonly pending = ['Co-Payment (MBM)']
 }

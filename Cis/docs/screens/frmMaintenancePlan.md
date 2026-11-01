@@ -1,7 +1,7 @@
 # frmMaintenancePlan (Maintenance > Plan)
 
 Route `/maintenance/plan`, access 138 (MaintenancePlan). Tabs in desktop order: HealthType · Insured Type · Plan Code · Premium · Annual
-Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium, Annual Limit and Visit Limit migrated; MCO Fee and Co-Payment (MBM) still to do (the
+Limit · Visit Limit · MCO Fee · Co-Payment (MBM). Status: HealthType, Insured Type, Plan Code, Premium, Annual Limit and Visit Limit and MCO Fee migrated; Co-Payment (MBM) still to do (the
 menu item stays "not migrated" until all eight are done).
 
 ## HealthType (HLT) / Insured Type (INS) — code-table engine (`health-type`, `insured-type`)
@@ -57,6 +57,17 @@ menu item stays "not migrated" until all eight are done).
   "Record Saved..." / "Record Updated...". Edit works (selected VisitIndex). Delete as Annual Limit (member check where MBM exists,
   "Record Deleted...", whole list). Print: RptVisitList.
 
+## MCO Fee (CISDB MCO — `cis.PlanMco_*`)
+
+- Combos: HLT, PLN codes, Supp MCO Status A / B / C (supplementary fees of F / H only for B / C). Fees by insured type: I / G adult +
+  child, F / H adult + child + supplementary adult + child.
+- Search: health type (first character) =, plan =, effective date =; 9 columns; "Record not found". A row shows its keys and its insured
+  type's fees, read-only. No Edit (SaveMCO has no update path).
+- Save: "Please Enter Health Code", "Please Enter Plan Code", "Please Enter MCO Fees " (all eight principal boxes empty), "Please validate
+  your MCO Effective date", "Do you want to save the record?"; each insured type with an amount above 0 is written unless plan + health +
+  date + type exists ("Record Not Save for Insured Type 'X! Please Change The Corresponding Field", the others still saved) → "Record
+  Saved ! ". Print: RptMCOList.
+
 ## Known desktop issues (reproduced)
 
 - Plan Code has no Edit. Save writes N for the ten dental / spec / MEP indicators whatever is chosen; the Diag combo is not saved (not
@@ -76,3 +87,6 @@ menu item stays "not migrated" until all eight are done).
   and an empty one crashed the save (no B / C rows exist locally). Edit is not offered: the desktop's Edit re-opened the row and saved
   nothing. The membership check on Delete reads MBM only where CISDB has it (it does not locally, where the desktop's Delete failed).
   The seven rows of one Save are one transaction.
+- **MCO Fee Delete works.** The desktop's DELETE named a column MCO does not have (MCOcode) and its member check compared INSCode with
+  the health type and a date with the supplementary amount, so it could not delete; the web deletes the selected row ("Please Enter
+  Health Type", "Please search the record", "Do you want to delete the record?" → "Record Deleted..."). One Save is one transaction.

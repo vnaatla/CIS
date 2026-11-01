@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cis.Api.Controllers;
 
-/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code, Premium, Annual Limit and Visit Limit tabs (HealthType / Insured Type are code-tables).</summary>
+/// <summary>Maintenance > Plan (frmMaintenancePlan): Plan Code, Premium, Annual Limit, Visit Limit and MCO Fee tabs (HealthType / Insured Type are code-tables).</summary>
 [Route("api/maintenance/plan")]
 [RequireAccess(AccessRight.MaintenancePlan)]
-public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums, IPlanAnnualLimitService annual, IPlanVisitLimitService visits) : ApiControllerBase
+public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremiumService premiums, IPlanAnnualLimitService annual, IPlanVisitLimitService visits, IPlanMcoService mcos) : ApiControllerBase
 {
     /// <summary>Plan Code combos.</summary>
     [HttpGet("codes/setup")]
@@ -95,4 +95,20 @@ public sealed class MaintenancePlanController(IPlanCodeService plans, IPlanPremi
     /// <summary>Visit Limit Delete (Limit.Index; plan as shown for the member check).</summary>
     [HttpPost("visit-limits/delete")]
     public async Task<object> DeleteVisitLimit(VisitLimitRequest request) => new { message = await visits.DeleteAsync(request.Limit) };
+
+    /// <summary>MCO Fee combos.</summary>
+    [HttpGet("mco/setup")]
+    public Task<McoSetup> McoSetup() => mcos.SetupAsync();
+
+    /// <summary>MCO Fee search.</summary>
+    [HttpPost("mco/search")]
+    public Task<List<Dictionary<string, object?>>> Mco(McoRequest request) => mcos.SearchAsync(request.Mco);
+
+    /// <summary>MCO Fee Add + Save (messages in order: per-type refusals, then the saved text).</summary>
+    [HttpPost("mco")]
+    public async Task<object> CreateMco(McoRequest request) => new { messages = await mcos.SaveAsync(request.Mco, UserCode) };
+
+    /// <summary>MCO Fee Delete of the selected row.</summary>
+    [HttpDelete("mco/{index:int}")]
+    public async Task<object> DeleteMco(int index, [FromQuery] string? healthType) => new { message = await mcos.DeleteAsync(index, healthType) };
 }
