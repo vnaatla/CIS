@@ -75,6 +75,60 @@ public class InvoiceAdjustmentDatabaseTests
         Assert.Equal((233m, 23.3m), claim);
     }
 
+    /// <summary>The form of a loaded case (as the page fills it).</summary>
+    private static AdjustmentRequest FromCase(AdjustmentCase c)
+    {
+        string S(string k) => InvoiceAdjustmentService.T(c.Case, k);
+        decimal? N(string k) => ClinicInvoiceRules.NumOrNull(S(k));
+        string[] bCols = ["", "GPFee", "GPLTMed", "GPInj", "GPMed", "SPFee", "SPLTMed", "SPInj", "SPMed"];
+        var aCols = new Dictionary<int, string>
+        {
+            [7] = "CLMDental", [8] = "CLMMaternity", [9] = "CLMPRVCheckup", [10] = "CLMXRay", [11] = "CLMUltraSound", [12] = "CLMECG", [13] = "CLMDressing",
+            [14] = "CLMNebulizer", [15] = "CLMID", [16] = "CLMTSSTO", [17] = "CLMMinorSurgery", [18] = "CLMPOthers", [19] = "CLMBloodDrawing", [20] = "CLMBloodGlucose",
+            [21] = "CLMUrine", [22] = "CLMPapSmear", [23] = "CLMLOthers", [24] = "CLMDTPPolio", [25] = "CLMDTPPolioHIB", [26] = "CLMHepatitisB", [27] = "CLMMMR",
+            [28] = "CLMIOthers", [30] = "CLMVision", [32] = "CLMTyphiadJabNoDed", [33] = "CLMOthersNoDed",
+        };
+        var b = Enumerable.Range(0, 9).Select(i => i == 0 ? null : N(bCols[i])).ToArray();
+        var a = Enumerable.Range(0, 34).Select(i => aCols.TryGetValue(i, out var col) ? N(col) : null).ToArray();
+        var entry = new ClinicInvoiceEntry
+        {
+            MbmNumber = S("MBMnumber"), CoverId = S("CoverID"), ClinicCode = S("ClinicCode"),
+            VisitDate = DateTime.Parse(S("DateVisit"), System.Globalization.CultureInfo.InvariantCulture).ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture),
+            Diagnoses = [S("CASTreatReason1"), S("CASTreatReason2"), S("CASTreatReason3"), S("CASTreatReason4"), S("CASTreatReason5")], B = b, A = a, Ffs = "N",
+        };
+        var total = ClinicInvoiceRules.Total(ClinicInvoiceRules.Amounts(entry));
+        return new AdjustmentRequest(S("CASNumber"), entry with { ClinicBillAmount = total.ToString(System.Globalization.CultureInfo.InvariantCulture) },
+            new AdjustmentExtra { Status = S("CASStatus"), Claimability = S("Claimability"), Pending = S("Pending") is { Length: > 0 } p ? p : "N", PayTo = S("INVPayTo") });
+    }
+
+    [Fact]
+    public async Task After_posting_creates_a_sub_case_only_for_a_posted_case()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        var (service, repo) = Create();
+        var notPosted = await service.LoadAfterPostAsync(Case);
+        Assert.Equal((AdjustmentEditMode.None, InvoiceAdjustmentService.NotPosted), (notPosted.EditMode, notPosted.EditMessage));
+        var loaded = await service.LoadAfterPostAsync("EA12549445");
+        Assert.Equal(AdjustmentEditMode.Full, loaded.EditMode);
+        var request = FromCase(loaded);
+        var wrongBill = await Assert.ThrowsAsync<BusinessRuleException>(() =>
+            service.CreateAfterPostAsync(request with { Entry = request.Entry with { ClinicBillAmount = "1" } }, "devadmin"));
+        Assert.Equal("Please check Bill Amount! ", wrongBill.Message);
+
+        await using var s = await TestDb.Sessions().BeginAsync();
+        var ws = await service.ComputeAsync(request, "devadmin");
+        var a = ClinicInvoiceRules.Amounts(request.Entry);
+        var total = ClinicInvoiceRules.Total(a);
+        var newCase = await new ClinicInvoiceRepository().NextCaseNoAsync(s);
+        await repo.SaveAsync(s, new AdjustmentSave(request, loaded, a, total, 0, ws, "", "DEVADMIN", new DateTime(2026, 11, 2), 0, total, NewCase: newCase));
+        var cas = await s.Sql().Connection.QuerySingleAsync<(string Master, string Clinic)>(
+            "SELECT RTRIM(MasterCASNumber), RTRIM(ClinicCode) FROM dbo.CISCAS WHERE CASNumber = @newCase", new { newCase }, s.Sql().Transaction);
+        Assert.Equal(("EA12549445", "N197"), cas);
+        Assert.Equal(1, await s.Sql().Connection.ExecuteScalarAsync<int>(
+            "SELECT COUNT(*) FROM CISWorksheet.dbo.Claim WHERE CASNumber = @newCase", new { newCase }, s.Sql().Transaction));
+    }
+
     [Fact]
     public async Task After_bordx_saves_only_the_case_and_the_invoice()
     {

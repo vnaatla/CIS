@@ -193,3 +193,16 @@ The Adjustment page in its After Bordx mode (no pending reasons, audit review, v
 Known desktop issues (reproduced): only the case and the invoice are saved — the actual amounts, claim, worksheet tables and member balance keep their previous values; the pending note (AddPendNote) is cleared because the desktop leaves that argument out; the co-pay shown is the claim's CLMCoPayColl.
 
 Deliberate difference: the case is read through SearchCASOP like the Adjustment screen (the desktop read View_INV_Clm, the same case data).
+
+## Invoice adjustment after posting — frmInvoiceAdjAfterPost (`/invoice/adjustment-after-posting`, right 119, `api/invoice/adjustment-after-posting`)
+
+The Adjustment page in its After Posting mode: a case already posted to SUN is never changed; Create makes a new sub-case from it.
+
+| Step | Behaviour |
+|---|---|
+| Go / Edit | not posted to SUN → `This case is not yet POST into SUN System. Changes are not allowed!`; posted → the form is editable. |
+| Create | `Please keyin Member No ! `, `Please Enter Visit Date! `, `Please keyin the Clinic code ! `, NP / NPS clinic names, others diagnosis, `Invalid Clinic Code`, `Please Enter Bill Amount ! `, `Please check Bill Amount! `, referral letter (NPS), `Total Invoice Amount cannot be Zero ! `; `Are you sure ? ` → one transaction: a new case number (WebSearchCASNo_New2013Test), sp_CreateSubCasNum (the loaded case as MasterCASNumber), Save_Invoice, Save_ClaimActual, SaveActualOthers, sp_CreateSubCasNumClaim (total actual from the worksheet), the LG amount, the seven worksheet procedures, the member balance (the master case's approval undone, the new one applied; shared covers use cover 01); ASO → sp_ASOClaimsUtilization → `Record updated ! ` with the new case number. |
+
+Known desktop issues (reproduced): the master case's previous approval is subtracted from the member's accumulated amount and balance although the master case itself is not changed; the pending note, QA and medication charges are not copied to the sub-case.
+
+Deliberate differences: parameters instead of pasted SQL; the member balance in the same transaction.

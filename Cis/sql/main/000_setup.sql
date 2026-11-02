@@ -128,7 +128,8 @@ FROM (VALUES
     (N'Ws_INVAdj_SaveINVMBMLmt', @CisWorksheetDb, N'INVAdj_SaveINVMBMLmt'),
     (N'Ws_CLMMedCharges', @CisWorksheetDb, N'CLMMedCharges'),
     (N'Ws_Claim_BordxSEQ', @CisWorksheetDb, N'Claim_BordxSEQ'),
-    (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting')) v (s, d, t)
+    (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting'),
+    (N'Ws_sp_CreateSubCasNumClaim', @CisWorksheetDb, N'sp_CreateSubCasNumClaim')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

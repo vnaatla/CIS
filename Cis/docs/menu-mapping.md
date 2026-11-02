@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 26 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 27 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 3 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 0 | 0 |
-| [Invoice](#invoice) | 30 | 11 | 6 |
+| [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 1 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 0 | 0 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **26** | **20** |
+| **Total** | **119** | **27** | **20** |
 
 ## Membership
 
@@ -63,7 +63,7 @@ Module page: `/invoice`
 | Clinic | Clinic | frmInvoice, frmWorksheet | 117 |  | 3 | **Migrated** | `/invoice/clinic` |
 | Clinic | Member | frmInvoiceMBM | 118 |  | 3 | **Migrated** | `/invoice/member` |
 | Clinic | Adjustment | frmInvoiceAdj | 119 |  | 3 | **Migrated** | `/invoice/adjustment` |
-| Clinic | Adjustment (After Posting) | frmInvoiceAdjAfterPost | 119 |  | 3 | Pending | `/invoice/adjustment-after-posting` |
+| Clinic | Adjustment (After Posting) | frmInvoiceAdjAfterPost | 119 |  | 3 | **Migrated** | `/invoice/adjustment-after-posting` |
 | Clinic | Enquiry | FrmInvoiceEnq | 119 |  | 3 | **Migrated** | `/invoice/enquiry` |
 | Clinic | Batch Transfer | FrmInvoiceBatchNoUpd | 119 |  | 3 | **Migrated** | `/invoice/batch-transfer` |
 | Clinic | Adjustment (After Bordx) | frmInvoiceAdjAftBordx | 179 |  | 3 | **Migrated** | `/invoice/adjustment-after-bordx` |

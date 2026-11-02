@@ -157,3 +157,14 @@ Clean-up after J6 / J7: restore CISCAS (CasRemark, LastUpdateBy / Date, Audit*),
 | K3 | (writes) Remark changed → Update → Yes | `Record updated ! `; only CISCAS and ClaimInvoice change; CISCAS.AddPendNote becomes NULL |
 
 Clean-up after K3: restore CISCAS (CasRemark, LastUpdateBy / Date, AddPendNote) and ClaimInvoice from a backup taken before.
+
+## 12. Invoice adjustment after posting — `/invoice/adjustment-after-posting` (frmInvoiceAdjAfterPost, right 119)
+
+| # | Action | Expected |
+|---|---|---|
+| P1 | Case `EA12586874` (not posted) → Go → Edit / Create | `This case is not yet POST into SUN System. Changes are not allowed!` |
+| P2 | Case `EA12549445` (posted, clinic N197) → Go → Edit | form editable; Create available |
+| P3 | Bill Amt 1 → Create | `Please check Bill Amount! ` |
+| P4 | (writes) Create → Are you sure ? → Yes | `Record updated ! New Case No : EA…`; new CISCAS row with MasterCASNumber EA12549445, Claim / ClaimInvoice / actuals / CLM*New rows |
+
+Clean-up after P4: delete the new case's rows (CISCAS, CISWorksheet Claim / ClaimInvoice / ClaimInvoiceActualNew / ClaimInvoiceActualOthers / CLM*New) and restore the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt noted before.

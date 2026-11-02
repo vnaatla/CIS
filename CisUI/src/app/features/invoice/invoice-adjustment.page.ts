@@ -61,7 +61,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="afterBordx ? 'Invoice Adjustment (After Bordx)' : 'Invoice Adjustment'" [subtitle]="afterBordx ? 'Replaces frmInvoiceAdjAftBordx' : 'Replaces frmInvoiceAdj, frmCasePending'">
+    <app-page-shell [title]="afterBordx ? 'Invoice Adjustment (After Bordx)' : afterPost ? 'Invoice Adjustment (After Posting)' : 'Invoice Adjustment'" [subtitle]="afterBordx ? 'Replaces frmInvoiceAdjAftBordx' : afterPost ? 'Replaces frmInvoiceAdjAfterPost' : 'Replaces frmInvoiceAdj, frmCasePending'">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>
@@ -86,7 +86,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <app-field label="Pending">
               <select name="pending" [(ngModel)]="xe.pending" (ngModelChange)="pendingChanged()"><option value="Y">Y - Yes</option><option value="N">N - No</option></select>
             </app-field>
-            @if (!afterBordx) {
+            @if (!reduced) {
               <app-action-bar label="Pending actions"><button appButton [disabled]="xe.pending !== 'Y'" (click)="openPending('')">Pending Reasons</button></app-action-bar>
             }
             <app-field label="Pay To">
@@ -155,8 +155,8 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
           <app-action-bar label="Adjustment actions">
             <button appButton variant="primary" [disabled]="editing()" (click)="edit()">Edit</button>
             <button appButton [disabled]="mode() !== 'Full'" [busy]="busy()" (click)="compute()">Compute</button>
-            <button appButton variant="primary" [disabled]="!editing()" [busy]="busy()" (click)="update()">Update</button>
-            @if (!afterBordx) {
+            <button appButton variant="primary" [disabled]="!editing()" [busy]="busy()" (click)="update()">{{ afterPost ? 'Create' : 'Update' }}</button>
+            @if (!reduced) {
               <button appButton [disabled]="!c()" (click)="voidBordx()">Void Bordx</button>
               <button appButton [disabled]="!c()" (click)="claimsApp()">Claims App</button>
             }
@@ -165,7 +165,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <p class="totals" aria-label="Result" data-result>{{ result() }}</p>
           }
 
-          @if (!afterBordx) {
+          @if (!reduced) {
           <fieldset aria-label="Audit review">
             <legend>Audit Review</legend>
             <app-field label="Query" [wide]="true"><input name="auditQuery" [(ngModel)]="audit.query" /></app-field>
@@ -205,7 +205,11 @@ export class InvoiceAdjustmentPage {
   private readonly router = inject(Router)
   /** frmInvoiceAdjAftBordx (route data afterBordx): its own API and no pending / audit / void / claims approval. */
   protected readonly afterBordx = inject(ActivatedRoute).snapshot.data['afterBordx'] === true
-  private readonly base = this.afterBordx ? '/api/invoice/adjustment-after-bordx' : BASE
+  /** frmInvoiceAdjAfterPost (route data afterPost): Create makes a sub-case of a case posted to SUN. */
+  protected readonly afterPost = inject(ActivatedRoute).snapshot.data['afterPost'] === true
+  /** The reduced screens have no pending / audit / void / claims approval. */
+  protected readonly reduced = this.afterBordx || this.afterPost
+  private readonly base = this.afterBordx ? '/api/invoice/adjustment-after-bordx' : this.afterPost ? '/api/invoice/adjustment-after-posting' : BASE
 
   protected readonly money = money
   protected readonly s = s
@@ -374,7 +378,7 @@ export class InvoiceAdjustmentPage {
     if (this.mode() === 'Full' && !(await this.notify.ask('Are you sure ? '))) return
     let notes: string | null = null
     let email: string | null = null
-    const ubbs = !this.afterBordx && /^(UB|BS)/.test(s(x.case['MBMnumber']))
+    const ubbs = !this.reduced && /^(UB|BS)/.test(s(x.case['MBMnumber']))
     const rejection = this.xe.status === 'D' && this.xe.claimability === 'C' && this.xe.pending === 'N'
     const pendingOpen = this.xe.status === 'O' && this.xe.claimability === 'A' && this.xe.pending === 'Y'
     const changed = (rejection && this.xe.repReason.trim() !== s(x.case['RepudiationReason']))
@@ -387,14 +391,15 @@ export class InvoiceAdjustmentPage {
     }
     this.busy.set(true)
     try {
-      const r = await firstValueFrom(this.http.post<{ message: string; opBatchNo: string; warnings: string[] }>(this.base, this.request(notes, email)))
+      const r = await firstValueFrom(this.http.post<{ message: string; opBatchNo: string; warnings: string[]; newCaseNo: string | null }>(this.base, this.request(notes, email)))
       for (const w of r.warnings) this.notify.notify(w, 'info')
-      this.result.set(r.message || 'Diagnosis and remark updated.')
-      this.notify.notify(r.message || 'Diagnosis and remark updated.', 'success')
+      const done = r.newCaseNo ? `${r.message} New Case No : ${r.newCaseNo}` : r.message || 'Diagnosis and remark updated.'
+      this.result.set(done)
+      this.notify.notify(done, 'success')
       this.editing.set(false)
       this.mode.set('View')
       await this.go()
-      this.result.set(r.message || 'Diagnosis and remark updated.')
+      this.result.set(done)
     } catch (err) {
       this.notify.notify(errorMessage(err), 'error')
     } finally {

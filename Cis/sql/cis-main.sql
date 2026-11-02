@@ -135,7 +135,8 @@ FROM (VALUES
     (N'Ws_INVAdj_SaveINVMBMLmt', @CisWorksheetDb, N'INVAdj_SaveINVMBMLmt'),
     (N'Ws_CLMMedCharges', @CisWorksheetDb, N'CLMMedCharges'),
     (N'Ws_Claim_BordxSEQ', @CisWorksheetDb, N'Claim_BordxSEQ'),
-    (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting')) v (s, d, t)
+    (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting'),
+    (N'Ws_sp_CreateSubCasNumClaim', @CisWorksheetDb, N'sp_CreateSubCasNumClaim')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
@@ -3770,6 +3771,16 @@ CREATE OR ALTER PROCEDURE cis.InvAdj_Notify @casNumber nvarchar(20), @notes varc
 BEGIN
     SET NOCOUNT ON;
     EXEC dbo.sp_EmailNotifyPendingReject_LatestModified @Casnumber = @casNumber, @tempReason = @notes, @PendingReason = @pendingReasons, @tempemail = @email;
+END
+GO
+
+-- ===== main/530_invoice_adjustment_after_post.sql =====
+-- Invoice > Clinic > Adjustment (After Posting) (frmInvoiceAdjAfterPost): a case already posted to SUN is not changed; a sub-case is created
+-- (sp_CreateSubCasNum / sp_CreateSubCasNumClaim with the master case number). Its GL amount follows SaveINVClaim.
+CREATE OR ALTER PROCEDURE cis.InvAdj_LgAmount @casNumber nvarchar(20), @glAmount money AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.LG SET GLAmt = @glAmount WHERE LGNo = @casNumber;
 END
 GO
 

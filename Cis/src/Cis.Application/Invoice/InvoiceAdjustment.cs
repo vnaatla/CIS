@@ -156,7 +156,8 @@ public sealed record AdjustmentCase
 /// <param name="Message">The desktop's final message.</param>
 /// <param name="OpBatchNo">OP batch after the update.</param>
 /// <param name="Warnings">Non-blocking messages shown before the save.</param>
-public record AdjustmentResult(string Message, string OpBatchNo, List<string> Warnings);
+/// <param name="NewCaseNo">After Posting: the created sub-case.</param>
+public record AdjustmentResult(string Message, string OpBatchNo, List<string> Warnings, string? NewCaseNo = null);
 
 /// <summary>Values the adjustment save writes.</summary>
 /// <param name="Request">Request.</param>
@@ -171,8 +172,9 @@ public record AdjustmentResult(string Message, string OpBatchNo, List<string> Wa
 /// <param name="McoProcFee">MCO processing fee.</param>
 /// <param name="ClinicBill">lblCLNBillAmt.</param>
 /// <param name="AfterBordx">frmInvoiceAdjAftBordx: only the case (without QA / pending note) and the invoice are saved.</param>
+/// <param name="NewCase">frmInvoiceAdjAfterPost: the sub-case created from the loaded (master) case.</param>
 public record AdjustmentSave(AdjustmentRequest Request, AdjustmentCase Loaded, decimal[] Amounts, decimal Total, decimal ActCoPay, WorksheetResult Worksheet,
-    string RepAction, string UserCode, DateTime Today, decimal McoProcFee, decimal ClinicBill, bool AfterBordx = false);
+    string RepAction, string UserCode, DateTime Today, decimal McoProcFee, decimal ClinicBill, bool AfterBordx = false, string? NewCase = null);
 
 /// <summary>Data access of the adjustment (<c>cis.InvAdj_*</c> and the desktop's INVAdj procedures).</summary>
 public interface IInvoiceAdjustmentRepository
@@ -252,6 +254,12 @@ public interface IInvoiceAdjustmentService
 
     /// <summary>frmInvoiceAdjAftBordx CmdUpdate_Click: the case and its invoice only.</summary>
     Task<AdjustmentResult> UpdateAfterBordxAsync(AdjustmentRequest request, string userCode);
+
+    /// <summary>frmInvoiceAdjAfterPost CmdGo_Click: only a case posted to SUN can get a sub-case.</summary>
+    Task<AdjustmentCase> LoadAfterPostAsync(string? casNumber);
+
+    /// <summary>frmInvoiceAdjAfterPost CmdCreate_Click: the new sub-case number.</summary>
+    Task<AdjustmentResult> CreateAfterPostAsync(AdjustmentRequest request, string userCode);
 }
 
 /// <inheritdoc />
@@ -591,6 +599,67 @@ public sealed class InvoiceAdjustmentService(IDbSessions sessions, IInvoiceAdjus
         await s.CommitAsync();
         return new AdjustmentResult("Record updated ! ", T(loaded.Case, "OPBatchNo"), warnings);
     }
+
+    /// <summary>After Posting's Create message.</summary>
+    public const string NotPosted = "This case is not yet POST into SUN System. Changes are not allowed!";
+
+    /// <inheritdoc />
+    public async Task<AdjustmentCase> LoadAfterPostAsync(string? casNumber) => AfterPost(await LoadAsync(casNumber));
+
+    /// <inheritdoc />
+    public async Task<AdjustmentResult> CreateAfterPostAsync(AdjustmentRequest r, string userCode)
+    {
+        var cas = Case(r.CaseNo);
+        var e = r.Entry;
+        var x = r.Extra;
+        string newCase;
+        bool aso;
+        await using (var s = await sessions.BeginAsync())
+        {
+            var loaded = AfterPost(await Load(s, cas));
+            if (loaded.EditMode == AdjustmentEditMode.None) throw new BusinessRuleException(loaded.EditMessage!);
+            var member = await invoices.MemberAsync(T(loaded.Case, "MBMnumber"), T(loaded.Case, "CoverID"));
+            var line = await Line(s, r, loaded, member, userCode);
+            var clinic = (e.ClinicCode ?? "").Trim().ToUpperInvariant();
+            var clinicName = clinic is "NP" or "NPS" ? "x" : (await clinics.ClinicAsync(s, clinic))?.Name ?? "";
+            var otherDiag = e.Diagnoses.Count > 4 && !string.IsNullOrWhiteSpace(e.Diagnoses[4])
+                && (await clinics.DiagnosisAsync(s, e.Diagnoses[4]!.Trim()))?.OtherIndicator?.Trim() == "Y";
+            var bill = ClinicInvoiceRules.NumOrNull(e.ClinicBillAmount);
+            string? message = null;
+            if (string.IsNullOrWhiteSpace(e.MbmNumber)) message = "Please keyin Member No ! ";
+            else if (string.IsNullOrWhiteSpace(e.VisitDate)) message = "Please Enter Visit Date! ";
+            else if (clinicName.Length == 0) message = "Please keyin the Clinic code ! ";
+            else if (clinic == "NP" && string.IsNullOrWhiteSpace(x.NpClinic)) message = "Please keyin the NP Clinic ! ";
+            else if (clinic == "NPS" && string.IsNullOrWhiteSpace(x.NpClinic)) message = "Please keyin the NPS Clinic ! ";
+            else if (otherDiag && string.IsNullOrWhiteSpace(e.DiagnosisOther)) message = "Please Keyin Others Diagnosis ! ";
+            else if (F(x.PayTo) == "C" && clinic == "NP") message = "Invalid Clinic Code";
+            else if (bill is null && F(x.MemoClaim) == "Y") message = "Please Enter Bill Amount ! ";
+            else if ((bill ?? 0) != line.Total) message = "Please check Bill Amount! ";
+            else if (clinic == "NPS" && string.IsNullOrWhiteSpace(x.RefLetter)) message = "Please enter status for referral letter";
+            else if (line.Total == 0) message = "Total Invoice Amount cannot be Zero ! ";
+            if (message is not null) throw new BusinessRuleException(message);
+            newCase = await clinics.NextCaseNoAsync(s);
+            await repository.SaveAsync(s, line with
+            {
+                Request = r, Loaded = line.Loaded, UserCode = userCode.Trim().ToUpperInvariant(), RepAction = T(loaded.Case, "CASRepAction"), NewCase = newCase,
+            });
+            await s.CommitAsync();
+            aso = member.AsoInd == "Y";
+        }
+        if (aso)
+        {
+            await using var s2 = await sessions.OpenAsync();
+            await clinics.AsoUtilisationAsync(s2, newCase);
+        }
+        return new AdjustmentResult("Record updated ! ", "", [], newCase);
+    }
+
+    /// <summary>After Posting's rule: a sub-case can only be created for a case posted to SUN.</summary>
+    private static AdjustmentCase AfterPost(AdjustmentCase c) => c with
+    {
+        EditMode = c.Posted ? AdjustmentEditMode.Full : AdjustmentEditMode.None,
+        EditMessage = c.Posted ? null : NotPosted,
+    };
 
     /// <summary>After Bordx's Edit rule: everything unless posted to SUN; its co-pay is the claim's CLMCoPayColl.</summary>
     private static AdjustmentCase AfterBordx(AdjustmentCase c) => c with

@@ -455,6 +455,16 @@ try {
   }))
   check(!afterBordxParts.audit && afterBordxParts.title.includes('After Bordx'), 'Invoice adjustment (After Bordx): EA12586874 loads without the audit / pending parts')
 
+  // 26. Invoice > Adjustment (After Posting): posted case EA12549445 loads and Edit enables Create (nothing is created).
+  await page.goto(`${base}/invoice/adjustment-after-posting`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'EA12549445')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinicCode]')?.value === 'N197', { timeout: 120000 })
+  await page.evaluate(() => [...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Edit').click())
+  await page.waitForFunction(() => ![...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Create').disabled)
+  check(true, 'Invoice adjustment (After Posting): posted case EA12549445 loads and Edit enables Create')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

@@ -122,10 +122,13 @@ public sealed class InvoiceAdjustmentRepository : IInvoiceAdjustmentRepository
         var bill = ClinicInvoiceRules.Num(e.ClinicBillAmount);
         var m = x.Loaded.Member?.Member;
         var bordxFees = ClinicInvoiceRules.NumOrNull(m?.BordxFees);
+        // After posting a new sub-case is written; the loaded case is its master.
+        var post = x.NewCase is not null;
+        var target = x.NewCase ?? cas;
 
         var c = new DynamicParameters(new
         {
-            CASNumber = cas, CASStatus = F(o.Status), Claimability = F(o.Claimability), Pending = F(o.Pending), LastUpdateDate = x.Today, LastUpdateBy = x.UserCode,
+            CASNumber = target, CASStatus = F(o.Status), Claimability = F(o.Claimability), Pending = F(o.Pending), LastUpdateDate = x.Today, LastUpdateBy = x.UserCode,
             ClinicCode = clinic, NPClinic = clinic is "NP" or "NPS" ? S(o.NpClinic).ToUpperInvariant() : "", InvoiceNo = S(e.InvoiceNo), InvoiceDate = invoiceDate,
             DateVisit = visit, MCDays = e.McDays ?? 0, TimeVisit = time, InvoiceReceiptDate = ClinicInvoiceRules.Date(e.ReceiptDate), InvoiceReceiptMode = mode,
             CasRemark = S(e.Remark), CASTreatReason1 = Diag(0), CASTreatReason2 = Diag(1), CASTreatReason3 = Diag(2), CASTreatReason4 = Diag(3), CASTreatReason5 = Diag(4),
@@ -135,28 +138,50 @@ public sealed class InvoiceAdjustmentRepository : IInvoiceAdjustmentRepository
             CASInvMonth = invoiceDate?.ToString("MM", CultureInfo.InvariantCulture) ?? "", CASInvYear = invoiceDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "",
             IsPharmacy = F(o.Pharmacy),
         });
-        // After bordereaux the desktop leaves the pending note out, so the procedure's default (NULL) clears it.
-        c.Add("AddPendNote", x.AfterBordx ? null : S(o.AddPendRemark));
         for (var i = 0; i < 7; i++)
         {
             c.Add($"MedInjType{i + 1}", S(Med(i).Type));
             c.Add($"MedInjDays{i + 1}", S(Med(i).Days));
             c.Add($"MedInjQty{i + 1}", S(Med(i).Qty));
         }
-        await session.ExecAsync("dbo.INVAdj_SaveCase_2013V3", c);
-        if (!x.AfterBordx)
+        if (post)
+        {
+            c.Add("MasterCASNumber", cas);
+            c.Add("MBMnumber", T(x.Loaded.Case, "MBMnumber"));
+            c.Add("CoverID", T(x.Loaded.Case, "CoverID"));
+            await session.ExecAsync("dbo.sp_CreateSubCasNum", c);
+        }
+        else
+        {
+            // After bordereaux the desktop leaves the pending note out, so the procedure's default (NULL) clears it.
+            c.Add("AddPendNote", x.AfterBordx ? null : S(o.AddPendRemark));
+            await session.ExecAsync("dbo.INVAdj_SaveCase_2013V3", c);
+        }
+        if (!x.AfterBordx && !post)
             await session.ExecAsync("cis.InvAdj_SaveExtras", new
             {
                 casNumber = cas, qa = string.Join("|", o.Questions), glAmount = bill, c1 = G(o.MedCharges, 0), c2 = G(o.MedCharges, 1), c3 = G(o.MedCharges, 2),
                 c4 = G(o.MedCharges, 3), c5 = G(o.MedCharges, 4), c6 = G(o.MedCharges, 5), c7 = G(o.MedCharges, 6),
             });
 
-        await session.ExecAsync("cis.Ws_INVAdj_SaveInvoice", new
-        {
-            CasNumber = cas, INVLastUpdateBy = x.UserCode, INVLastUpdateDate = x.Today, BillNo = S(e.BillNo), BillDate = visit, INVAmount = x.Total, INVPayTo = payTo,
-            INVPayee = payTo == "C" ? clinic : "MEMBER", INVBillAmt = bill,
-        });
+        if (post)
+            await session.ExecAsync("cis.Ws_Save_Invoice", new
+            {
+                CasNumber = target, INVEnteredDate = x.Today, INVEnteredBy = x.UserCode, INVLastUpdateBy = x.UserCode, INVLastUpdateDate = x.Today, BillNo = S(e.BillNo),
+                BillDate = visit, INVAmount = x.Total, INVPayTo = payTo, INVPayee = payTo == "C" ? clinic : "MEMBER", INVBillAmt = bill,
+            });
+        else
+            await session.ExecAsync("cis.Ws_INVAdj_SaveInvoice", new
+            {
+                CasNumber = cas, INVLastUpdateBy = x.UserCode, INVLastUpdateDate = x.Today, BillNo = S(e.BillNo), BillDate = visit, INVAmount = x.Total, INVPayTo = payTo,
+                INVPayee = payTo == "C" ? clinic : "MEMBER", INVBillAmt = bill,
+            });
         if (x.AfterBordx) return;
+        if (post)
+        {
+            await CreateSubCaseRestAsync(session, x, target, cas, payTo, R, F, S);
+            return;
+        }
 
         var actual = new DynamicParameters(new
         {
@@ -215,22 +240,82 @@ public sealed class InvoiceAdjustmentRepository : IInvoiceAdjustmentRepository
             await session.ExecAsync(proc, sp);
         }
 
-        if (m is not null && x.Loaded.Member is { } member)
+        await BalanceAsync(session, x, payTo, R);
+    }
+
+    /// <summary>UpdateMBMBalance: the previous approval of the loaded case undone, the new one applied.</summary>
+    private static async Task BalanceAsync(IDbSession session, AdjustmentSave x, string payTo, Func<int, decimal> R)
+    {
+        if (x.Loaded.Member is not { } member) return;
+        var m = member.Member;
+        var a = x.Amounts;
+        var bordxFees = ClinicInvoiceRules.NumOrNull(m.BordxFees);
+        var prevAdj = InvoiceAdjustmentService.N(x.Loaded.Claim, "CLMAdjAnnLmt");
+        var prevFinal = InvoiceAdjustmentService.N(x.Loaded.Claim, "CLMFinalApprove");
+        var approved = payTo == "M" ? (bordxFees is > 0 ? R(160) : R(162)) : R(161);
+        var ded = a[32] + a[33] + a[8];
+        decimal? balance = member.BalanceLimit == "FULL" ? null
+            : payTo == "M" || m.GroupMcoStatus == "F" ? prevFinal - (approved - ded)
+            : m.GrossStatus == "N" ? prevFinal - approved
+            : m.GrossStatus == "Y" ? 0m : null;
+        await session.ExecAsync("cis.InvAdj_Balance", new
         {
-            var prevAdj = InvoiceAdjustmentService.N(x.Loaded.Claim, "CLMAdjAnnLmt");
-            var prevFinal = InvoiceAdjustmentService.N(x.Loaded.Claim, "CLMFinalApprove");
-            var approved = payTo == "M" ? (bordxFees is > 0 ? R(160) : R(162)) : R(161);
-            var ded = a[32] + a[33] + a[8];
-            decimal? balance = member.BalanceLimit == "FULL" ? null
-                : payTo == "M" || grpF ? prevFinal - (approved - ded)
-                : m.GrossStatus == "N" ? prevFinal - approved
-                : m.GrossStatus == "Y" ? 0m : null;
-            await session.ExecAsync("cis.InvAdj_Balance", new
-            {
-                mbmNumber = m.MbmNumber, limitCover = m.CoverId == "00" ? null : m.SuppLimitType is "B" or "D" ? "01" : m.SuppLimitType == "C" ? m.CoverId : null,
-                adjDelta = (e.AdjustedAnnualLimit ?? 0) - prevAdj, accumDelta = approved - prevFinal, balanceDelta = balance,
-            });
+            mbmNumber = m.MbmNumber, limitCover = m.CoverId == "00" ? null : m.SuppLimitType is "B" or "D" ? "01" : m.SuppLimitType == "C" ? m.CoverId : null,
+            adjDelta = (x.Request.Entry.AdjustedAnnualLimit ?? 0) - prevAdj, accumDelta = approved - prevFinal, balanceDelta = balance,
+        });
+    }
+
+    /// <summary>frmInvoiceAdjAfterPost's SaveRecord after the case and invoice: the clinic invoice's actual / others / worksheet procedures for the
+    /// sub-case, sp_CreateSubCasNumClaim (total actual = the worksheet's) and the LG amount, then the member balance.</summary>
+    private static async Task CreateSubCaseRestAsync(IDbSession session, AdjustmentSave x, string target, string master, string payTo, Func<int, decimal> R,
+        Func<string?, string> F, Func<string?, string> S)
+    {
+        var e = x.Request.Entry;
+        var o = x.Request.Extra;
+        var a = x.Amounts;
+        var actual = new DynamicParameters(new
+        {
+            CasNumber = target, CLMPOthersDesc = S(e.POthDesc), CLMLOthersDesc = S(e.LOthDesc), CLMIOthersDesc = S(e.IOthDesc), CLMVision = a[30],
+            CLMTyphiadJabNoDed = a[32], CLMOthersNoDed = a[33],
+        });
+        for (var i = 0; i < ActualParams.Length; i++) actual.Add(ActualParams[i], a[i + 1]);
+        await session.ExecAsync("cis.Ws_Save_ClaimActual", actual);
+        decimal B(int i) => i < e.B.Count ? e.B[i] ?? 0 : 0;
+        await session.ExecAsync("cis.Ws_SaveActualOthers", new
+        {
+            CasNumber = target, GPFee = B(1), GPLTMed = B(2), GPInj = B(3), GPMed = B(4), SPFee = B(5), SPLTMed = B(6), SPInj = B(7), SPMed = B(8),
+        });
+
+        var m = x.Loaded.Member?.Member;
+        var bordxFees = ClinicInvoiceRules.NumOrNull(m?.BordxFees);
+        var nonGp = a[31];
+        decimal payable2C = 0, payable2M = 0, excess = 0;
+        if (payTo == "C")
+        {
+            excess = R(162);
+            payable2C = x.ClinicBill - x.McoProcFee;
         }
+        else payable2M = bordxFees is > 0 ? 0 : R(162);
+        var finalApprove = R(161) != 0 ? R(161) : x.ClinicBill;
+        decimal bordx = payTo == "M"
+            ? bordxFees is null ? (R(161) != 0 ? R(161) + nonGp : payable2M + nonGp) : bordxFees > 0 ? R(161) : R(158) + nonGp
+            : m?.GroupMcoStatus == "F" ? (R(161) != 0 ? R(161) + nonGp : payable2M + nonGp) : R(158) + nonGp;
+        if (bordx == 0) bordx = x.ClinicBill;
+        var month = S(e.ProcessMonth);
+        await session.ExecAsync("cis.Ws_sp_CreateSubCasNumClaim", new
+        {
+            CasNumber = target, ClaimCloseDate = x.Today, ClaimClosedBy = x.UserCode, ClaimLastUpdateDate = x.Today, ClaimLastUpdateUser = x.UserCode,
+            CLMPayableByMedix2C = payable2C, CLMExcess = excess, CLMMCOProcFee = x.McoProcFee, CLMPayableByMedix2M = payable2M, CLMCLNExcess = R(159),
+            CLMTotalActual = R(160), CLMFinalApprove = finalApprove, CLMBalanceLimit = R(163), CLMPreviousBalance = R(164), CLMPaidBYMedix2M = R(165),
+            CLMPaidBYMedix2C = R(166), CLMAdjAnnLmt = e.AdjustedAnnualLimit ?? 0, ClmNonGPFee = nonGp, CLMCoPayColl = Math.Abs(x.ActCoPay),
+            CLMMCOProcStatus = F(e.Ffs), CLMProcMth = month.Length >= 2 ? month[..2] : month,
+            CLMProcYR = month.Length > 3 ? month.Substring(3, Math.Min(4, month.Length - 3)) : "", CLMCoPayCLNColl = Math.Abs(a[29]), CLMBordxAmt = bordx,
+            CLMBordxMemo = F(o.MemoClaim), CLMRefLetter = F(o.RefLetter), CLMLimitExceeded = e.LimitExceeded ?? 0, CLMTotalExcess = e.Excess ?? 0,
+            MasterCASNumber = master,
+        });
+        await session.ExecAsync("cis.InvAdj_LgAmount", new { casNumber = target, glAmount = R(160) });
+        await ClinicInvoiceRepository.SaveSlotsAsync(session, target, x.Worksheet.RowValues, R(197), R(198));
+        await BalanceAsync(session, x, payTo, R);
     }
 
     /// <inheritdoc />
