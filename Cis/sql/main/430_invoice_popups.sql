@@ -14,19 +14,34 @@ END
 GO
 
 -- frmCasList ListCases: cases of active members (VIEW_Cas_MBM), invoice (C) or dental (D) cases; @by: 1 member no, 2 policy no, 3 name, 4 IC,
--- 5 case no. The clinic name comes from panel clinics (C / Y).
+-- 5 case no. The clinic name comes from panel clinics (C / Y). Each search option is its own statement with OPTION (RECOMPILE): one catch-all
+-- query scanned the 8.5 million cases (about 9 s per search); the member number test (member OR cover number) is two index lookups.
 CREATE OR ALTER PROCEDURE cis.Popup_CaseList @caseType char(1), @by int, @text nvarchar(100) AS
 BEGIN
     SET NOCOUNT ON;
+    DECLARE @keys TABLE (CASNumber nvarchar(20) PRIMARY KEY);
+    IF @by = 1
+    BEGIN
+        INSERT INTO @keys SELECT DISTINCT v.CASNumber FROM dbo.VIEW_Cas_MBM v
+        WHERE v.MBMCLNDataStatus <> 'D' AND v.MBMCLNStatus <> 'D' AND v.HSCLNInd IN ('C', 'M', 'B') AND v.CaseType = @caseType AND v.MBMnumber LIKE @text + '%'
+        OPTION (RECOMPILE);
+        INSERT INTO @keys SELECT DISTINCT v.CASNumber FROM dbo.VIEW_Cas_MBM v
+        WHERE v.MBMCLNDataStatus <> 'D' AND v.MBMCLNStatus <> 'D' AND v.HSCLNInd IN ('C', 'M', 'B') AND v.CaseType = @caseType AND v.MBMCNumber LIKE @text + '%'
+          AND NOT EXISTS (SELECT 1 FROM @keys k WHERE k.CASNumber = v.CASNumber)
+        OPTION (RECOMPILE);
+    END
+    ELSE
+        INSERT INTO @keys SELECT DISTINCT v.CASNumber FROM dbo.VIEW_Cas_MBM v
+        WHERE v.MBMCLNDataStatus <> 'D' AND v.MBMCLNStatus <> 'D' AND v.HSCLNInd IN ('C', 'M', 'B') AND v.CaseType = @caseType
+          AND ((@by = 2 AND v.MBMPolicyNo LIKE @text + '%') OR (@by = 3 AND v.MBMName LIKE '%' + @text + '%')
+               OR (@by = 4 AND v.MBMIcBcPp LIKE @text + '%') OR (@by = 5 AND v.CASNumber LIKE @text + '%'))
+        OPTION (RECOMPILE);
     SELECT v.CASNumber, v.MBMnumber AS MBMNumber, v.CoverID, v.MBMName, v.MBMCName, v.MBMPolicyNo, v.DateVisit, v.CASStatus, v.ClinicCode,
            RTRIM(c.CLNName) AS CLNName, v.MBMIcBcPp
-    FROM dbo.VIEW_Cas_MBM v
+    FROM @keys k
+    INNER JOIN dbo.VIEW_Cas_MBM v ON v.CASNumber = k.CASNumber
     LEFT JOIN cis.Hdb_CLN c ON c.CLNCode = v.ClinicCode AND (c.CLNPanel = 'C' OR c.CLNPanel = 'Y')
     WHERE v.MBMCLNDataStatus <> 'D' AND v.MBMCLNStatus <> 'D' AND v.HSCLNInd IN ('C', 'M', 'B') AND v.CaseType = @caseType
-      AND ((@by = 1 AND (v.MBMnumber LIKE @text + '%' OR v.MBMCNumber LIKE @text + '%'))
-           OR (@by = 2 AND v.MBMPolicyNo LIKE @text + '%')
-           OR (@by = 3 AND v.MBMName LIKE '%' + @text + '%')
-           OR (@by = 4 AND v.MBMIcBcPp LIKE @text + '%')
-           OR (@by = 5 AND v.CASNumber LIKE @text + '%'));
+    OPTION (RECOMPILE);
 END
 GO
