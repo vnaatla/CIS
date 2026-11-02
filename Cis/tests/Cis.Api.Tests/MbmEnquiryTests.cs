@@ -64,7 +64,7 @@ public class MbmEnquiryRulesTests
         Assert.Equal(new EnqBenefit(NA, NA, NA), Vision(F("Y||B|B||"), 12.5m, "500"));
         Assert.Equal(1, DentalSource(F("C||A|A|C|")));
         Assert.Equal(2, DentalSource(F("C||B|B||")));
-        Assert.Equal(0, DentalSource(F("||||||")));
+        Assert.Equal(0, DentalSource(F("|||||")));
         var rows = new List<EnqDentalRow>
         {
             new() { CoverId = "00", TreatmentType = "DENTAL", ClmBordxAmt = 40, BordxDentalAmount = 40, Tp1 = 1 },
@@ -105,6 +105,18 @@ public class MbmEnquiryRulesTests
         Assert.Equal(65m, SuppOptical(F("Y|C|E|A|Y|C"), dental));               // every row in this scenario
         Assert.Equal(new EnqBenefit("300.00", "40.00", "235.00"), SuppDentalLabels(F("Y|Y|D|B|Y|"), "01", 300, (40, 40), 25));
         Assert.Equal(new EnqBenefit(NA, NA, NA), SuppDentalLabels(F("Y|Y|D|B|Y|"), "02", 300, (40, 40), 25));
+    }
+
+    [Fact]
+    public void Ub_notes_follow_MessageDisplay()
+    {
+        var none = UbNotes(F("|||||"), "A", 0, 0, 0, 0, true, (0, 0, 0));
+        Assert.Equal(("Out-Patient Note : Share Limit For Family.\nDental & Optical Note : No Coverage",
+            "Out-Patient Note : Share Limit For Family.\nDental & Optical Note : No Coverage"), none);
+        var (p, d) = UbNotes(F("C||B|B||"), "N", 0, 0, 12.5m, 30m, true, (0, 0, 0));
+        Assert.EndsWith("Principal Utilized :RM12.50", p);
+        Assert.EndsWith("Dependant Utilized :RM30.00", d);
+        Assert.StartsWith("Out-Patient Note : Unlimited Limit.", p);
     }
 
     [Fact]
@@ -166,8 +178,13 @@ public class MbmEnquiryDatabaseTests(ITestOutputHelper output)
         Assert.Equal(new EnqBenefit("5,000.00", "3,901.52", "1,098.48"), b.Covers[0].Gp);
         Assert.Equal("52.30", b.Covers[0].Ffs);
         Assert.All(b.Covers.Skip(1), c => Assert.Equal(new EnqBenefit("0.00", "3,901.52", "0.00"), c.Gp));
-        // UOB FlexCare (cis.MbmEnq_Flex = spGet_UOB_Flex_New_Cal without its OPENROWSET).
-        Assert.True((await service.FindAsync("UBHA0000156*05")).FlexCare);
+        // UOB FlexCare (cis.MbmEnq_Flex = spGet_UOB_Flex_New_Cal without its OPENROWSET); UB category plan → MessageDisplay notes.
+        var ub = await service.FindAsync("UBHA0000156*05");
+        Assert.True(ub.FlexCare);
+        Assert.Equal("", ub.PrincipalNote);                  // PLN.PlncategoryInd is not set for U195
+        var cat = await service.FindAsync("UBHA0002984*05");
+        output.WriteLine(cat.PrincipalNote + " | " + cat.DependantNote);
+        Assert.StartsWith("Out-Patient Note : ", cat.PrincipalNote);
         var flex = await service.FlexAsync("UBHA0000156*05", "00");
         Assert.True(flex.Found);
         Assert.Equal(new EnqFlexRow("Sport equipment", "1,000.00", "0.00", "1,000.00"), flex.CappedItems[0]);

@@ -412,3 +412,4 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .totals { margin: 6px 0 14px; font-size: 13px; }
 .section-title { margin: 12px 0 6px; font-size: 14px; }
 textarea.highlight { background: #fff8c5; }
+.limit-note { white-space: pre-line; }

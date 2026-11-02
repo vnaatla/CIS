@@ -158,3 +158,12 @@ BEGIN
     WHERE c.CASStatus <> 'D' AND c.MBMnumber = @mbmNumber AND ((@coverMode = 2 AND c.CoverID <> '00') OR (@coverMode = 3 AND c.CoverID = @covId));
 END
 GO
+
+-- MessageDisplay (UB plans with PlncategoryInd): CategoryAmountCal (home office limit) and Dental_Utilization_Limit_Sum.
+CREATE OR ALTER PROCEDURE cis.MbmEnq_UbNotes @mbmNumber nvarchar(30) AS
+BEGIN
+    SET NOCOUNT ON;
+    EXEC dbo.CategoryAmountCal @mbmnumber = @mbmNumber;
+    EXEC dbo.Dental_Utilization_Limit_Sum @mbmnumber = @mbmNumber;
+END
+GO

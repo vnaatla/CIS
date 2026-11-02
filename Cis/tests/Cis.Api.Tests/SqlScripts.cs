@@ -71,7 +71,8 @@ public class SqlScriptTests
             var text = File.ReadAllText(file);
             foreach (Match m in Regex.Matches(text, @"CREATE\s+OR\s+ALTER\s+(PROCEDURE|FUNCTION|VIEW)\s+([\w\.\[\]]+)", RegexOptions.IgnoreCase))
                 Assert.StartsWith("cis.", m.Groups[2].Value, StringComparison.OrdinalIgnoreCase);
-            Assert.DoesNotMatch(new Regex(@"\b(ALTER|DROP)\s+TABLE\b|\bTRUNCATE\b", RegexOptions.IgnoreCase), text);
+            // Temp tables (#...) inside copied legacy procedures are allowed; real tables are never altered, dropped or truncated.
+            Assert.DoesNotMatch(new Regex(@"\b(ALTER|DROP)\s+TABLE\s+(?!#)|\bTRUNCATE\b", RegexOptions.IgnoreCase), text);
         }
     }
 

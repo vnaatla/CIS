@@ -133,13 +133,15 @@ public record EnqFLimit(string? AnnLmtIndSupp, decimal? SuppLimit, decimal? Chil
 /// <param name="Covers">Covered persons (F / H).</param>
 /// <param name="FlexCare">The FlexCare / Family Benefits tabs apply.</param>
 /// <param name="Warnings">The desktop's look-up warnings.</param>
+/// <param name="PrincipalNote">MessageDisplay note of the principal (UB category plans; empty otherwise).</param>
+/// <param name="DependantNote">MessageDisplay note of the dependants.</param>
 public record EnqMember(string MbmNumber, string Status, string ExpiryStatus, string DataStatus, string PayCode, string Name, string PolicyNo, string Ic,
     string InsType, string Plan, List<string> Address, string Country, string PostCode, string State, string Subsidiary, string Department, string GroupCompany,
     string Position, string HisRemarks, string SpecialRemark, DateTime? Dob, string AdultChild, DateTime? EffDate, DateTime? ExpDate, string AgeBand, string CardType,
     string Exclusion, string CisRemarks, DateTime? InvoiceDate, string InvoiceNo, decimal Premium, decimal McoFee, string Product, string LimitStatus,
     string LimitStatusText, string TopupAmt, string SpTopupAmt, string FfsAmt, string AccumAmt, string AnnualLimit, string BalanceLimit, string VisitLimit,
     EnqBenefit Gp, EnqBenefit Specialist, EnqBenefit Maternity, EnqBenefit Dental, EnqBenefit Optical, decimal MepLimit, decimal DentalLimit, decimal SpecLimit,
-    decimal DentalExtLimit, decimal FirstSpecLimit, List<EnqCover> Covers, bool FlexCare, List<string> Warnings);
+    decimal DentalExtLimit, decimal FirstSpecLimit, List<EnqCover> Covers, bool FlexCare, List<string> Warnings, string PrincipalNote = "", string DependantNote = "");
 
 /// <summary>A case of the Case tab.</summary>
 /// <param name="CaseNo">Case number.</param>
@@ -227,6 +229,9 @@ public interface IMbmEnquiryRepository
 
     /// <summary>cis.MbmEnq_Flex (spGet_UOB_Flex_New_Cal) rows of the member's family for a policy year.</summary>
     Task<List<Dictionary<string, object?>>> FlexAsync(IDbSession session, string mbmNumber, int policyYear);
+
+    /// <summary>CategoryAmountCal (last row: limit, utilised, balance) and Dental_Utilization_Limit_Sum (principal / dependant sums).</summary>
+    Task<((decimal Limit, decimal Util, decimal Balance)? HomeOffice, decimal Principal, decimal Dependant)> UbNotesAsync(IDbSession session, string mbmNumber);
 
     /// <summary>GP (false) or specialist (true) cases.</summary>
     Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist);
@@ -348,6 +353,14 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         var covers = ins is "F" or "H" ? await Covers(s, rows, p, number, flags, shared, limitStatus, annual, visit, specLimitRaw, claims, pl, warnings) : [];
         var ageBand = eff is null || dob is null ? "" : await AgeBand(s, eff.Value, dob.Value);
 
+        string pNote = "", dNote = "";
+        if (number.StartsWith("UB", StringComparison.Ordinal) && N(p, "PlncategoryInd") != 0)
+        {
+            var (home, priUtil, suppUtil) = await repository.UbNotesAsync(s, number);
+            (pNote, dNote) = UbNotes(flags, pl.AnnualFound ? Blank(pl.SuppLimitStatus, "A") : "N", pl.AnnualFound ? pl.PDentalAnnLimit ?? 0 : 0,
+                pl.AnnualFound ? pl.SDentalAnnLimit ?? 0 : 0, priUtil, suppUtil, true, home ?? (0, 0, 0));
+        }
+
         return new EnqMember(number, T(p, "MBMCLNStatus"), T(p, "MBMCLNExpiryStatus"), T(p, "MBMCLNDataStatus"), pay, T(p, "MBMName"), T(p, "MBMPolicyNo"),
             T(p, "MBMIcBcPp"), ins, plan, [T(p, "MBMAddress1"), T(p, "MBMAddress2"), T(p, "MBMAddress3")], T(p, "CTYCode"), T(p, "MBMPostCode"), T(p, "STACode"),
             T(p, "Subsidiary"), T(p, "MBMDepartment"), T(p, "MBMGroupCompany"), T(p, "MBMPosition"), T(p, "MBMRemarks"), T(p, "PLNSpecialRemark"), dob,
@@ -357,7 +370,7 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
             new EnqBenefit(Money(annLabel), Money(accum), Money(balance)), new EnqBenefit(Money(specLimit), Money(specAccum), Money(specBal)), maternity,
             new EnqBenefit(Money(dental.Limit), Money(dental.Utilised), Money(dental.Balance)),
             new EnqBenefit(Money(vision.Limit), Money(vision.Utilised), Money(vision.Balance)), N(p, "MBMMEPLmt"), N(p, "MBMDentalLmt"), N(p, "MBMSpecLmt"),
-            N(p, "MBMDentalExtLmt"), N(p, "MBMFirstSpecLmt"), covers, exp is not null && pl.FlexCount == 1, warnings);
+            N(p, "MBMDentalExtLmt"), N(p, "MBMFirstSpecLmt"), covers, exp is not null && pl.FlexCount == 1, warnings, pNote, dNote);
     }
 
     /// <inheritdoc />
@@ -651,6 +664,7 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         double d => (decimal)d,
         int i => i,
         long l => l,
+        bool b => b ? 1 : 0,
         short h => h,
         byte b => b,
         _ => 0,

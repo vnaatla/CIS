@@ -99,7 +99,7 @@ public static class MbmEnquiryRules
             "C||B|A||" => Mi(m + t + o, t + o),
             "C||D|B||" => Mi(m + t, m + t),
             "Y|C|A|A||C" => Mi(m + t + u, t + u),
-            "||||||" => Mi(m + t + o, t + o),
+            "|||||" => Mi(m + t + o, t + o),
             "C||A|B||" when f.PdlPositive => Mi(m + t + o, t),
             "C||A|A||C" => Mi(m + t + o, t),
             "Y|C|C|D|Y|" when cov00 => Mi(m + o + t + u, o + t + u),
@@ -143,7 +143,7 @@ public static class MbmEnquiryRules
             "C||B|A||" => accOnly,
             "C||D|B||" => na,
             "Y|C|A|A||C" => accOnly,
-            "||||||" => na,
+            "|||||" => na,
             "C||A|B||" when f.PdlPositive => na,
             "C||A|A||C" or "Y|C|C|D|Y|" or "||A|D|C|" or "||B|A|Y|" or "Y|Y|D|B|Y|" => accOnly,
             "Y|||E|Y|" when f.PdlPositive => limited,
@@ -162,7 +162,7 @@ public static class MbmEnquiryRules
         "Y|Y|B|B||" => 1,
         "Y||A|B||" when f.Pdl == "" => 2,
         "Y||A|B||" or "C||B|A||" or "C||D|B||" or "Y|C|A|A||C" => 1,
-        "||||||" => 0,
+        "|||||" => 0,
         "C||A|B||" when f.PdlPositive => 1,
         "C||A|A||C" or "Y|C|C|D|Y|" => 1,
         "||A|D|C|" or "||B|A|Y|" => 0,
@@ -267,7 +267,7 @@ public static class MbmEnquiryRules
             "Y|Y|B|B||" => new(Money(lim), Money(pri.Last), Money(R2(lim) - R2(pri.Last))),
             "Y||A|B||" when f.Pdl == "" => new(Money(lim), Money(one.Principal), Money(R2(lim) - R2(one.Acc))),
             "Y||A|B||" or "C||B|A||" or "C||D|B||" or "Y|C|A|A||C" => AccOnly(),
-            "||||||" => na,
+            "|||||" => na,
             "C||A|B||" when f.PdlPositive => AccOnly(),
             "C||A|A||C" => AccOnly(),
             "Y|C|C|D|Y|" or "Y|Y|D|B|Y|" => new(Money(lim), Money(pri.Total), Money(R2(lim) - R2(pri.Total) - R2(optical))),
@@ -401,6 +401,65 @@ public static class MbmEnquiryRules
             "Y|Y|D|B|Y|" when coverId == "01" => new(Money(sDentalLimit), Money(d.Last), Money(sDentalLimit - (d.Last + R2(suppOptical)))),
             _ => na,
         };
+    }
+
+    /// <summary>MessageDisplay (UB plans with PlncategoryInd): the principal (lblPLimitStatus) and dependant (lblDLimitStatus) notes.
+    /// <paramref name="statusCode"/> is the AnnualLimit status ("N" without a row); "&amp;&amp;" in the desktop captions shows as "&amp;".</summary>
+    public static (string Principal, string Dependant) UbNotes(EnqFlags f, string statusCode, decimal pDentalLimit, decimal sDentalLimit, decimal priUtil,
+        decimal suppUtil, bool category, (decimal Limit, decimal Util, decimal Balance) homeOffice)
+    {
+        var box = statusCode switch
+        {
+            "N" => "Out-Patient Note : Unlimited Limit.",
+            "A" => "Out-Patient Note : Share Limit For Family.",
+            "B" => "Out-Patient Note : Share Limit For Supplementary.",
+            "C" => "Out-Patient Note : Separate Limit For Supplementary and Principle.",
+            "D" => "Out-Patient Note : Share For Supplementary and Full For Principle.",
+            "E" => "Out-Patient Note : Separate For Supplementary and Full For Principle.",
+            "F" => "Out-Patient Note : Principle-Seperate\nSpouse-Seperate\nChildren-Seperate for each\n",
+            _ => "",
+        };
+        string P = Money(priUtil), S = Money(suppUtil), pd = Money(pDentalLimit), sd = Money(sDentalLimit);
+        (string, string) Both(string text) => (box + "\n" + text, box + "\n" + text);
+        (string, string) Each(string p, string d) => (box + "\n" + p, box + "\n" + d);
+        var result = f.Key switch
+        {
+            "C||A|A|C|" => Each($"Dental & Optical Note : One Limit for whole family, Dental as charge up to OP Limit, Optical capped to :{sd} RM with in OP Limit. Utilized :RM{P}",
+                $"Dental & Optical Note : One Limit for whole family, Dental as charge up to OP Limit, Optical capped to :{sd} RM with in OP Limit. Utilized :RM{S}"),
+            "C||A|B||" when f.PdlBlank => Each($"Dental Only : One Limit for whole family, Dental as charge up to OP Limit. Utilized :RM{P}",
+                $"Dental Only : One Limit for whole family, Dental as charge up to OP Limit. Utilized :RM{S}"),
+            "C||A|C|Y|" => Each($"Dental & Optical Note : One Limit for whole family (with in OP Limit) Dental capped to  :{pd} RM with in OP Limit, applicable for whole family. Optical capped, applicable for principle only. Utilized :RM{P}",
+                $"Dental & Optical Note : One Limit for whole family (with in OP Limit) Dental capped to  :{sd} RM with in OP Limit, applicable for whole family. Optical capped, applicable for principle only. Utilized :RM{S}"),
+            "C||B|A|C|" => Each($"Dental & Optical Note : One Limit for whole family (Seperate Limit, NOT in OP Limit). Principal Utilized :RM{P}",
+                $"Dental & Optical Note : One Limit for whole family (Seperate Limit, NOT in OP Limit). Dependant Utilized :RM{S}"),
+            "Y||B|A|Y|" => Both("Dental & Optical Note : One Limit for Principle (Seperate Limit, NOT in OP Limit). No Dental & Optical Coverage for Dependents"),
+            "C||B|B||" => Each($"Dental Only : One Limit for whole family (Seperate Limit, NOT in OP Limit). Principal Utilized :RM{P}",
+                $"Dental Only : One Limit for whole family (Seperate Limit, NOT in OP Limit). Dependant Utilized :RM{S}"),
+            "Y||B|B||" => Both("Dental Only : One Limit for Principle (Seperate Limit, NOT in OP Limit). No Dental Coverage for Dependents"),
+            "Y|Y|B|B||" => Both("Dental Only : One Limit for Principle (Seperate Limit, NOT in OP Limit). No Optical Coverage"),
+            "Y||A|B||" => Each("Dental Only : One Limit for Principle, No Dental coverage for Dependents. Dental as charge up to OP Limit.",
+                "Dental Only : One Limit for Principle, No Dental coverage for Dependents."),
+            "C||B|A||" or "C||D|B||" => Both("Dental & Optical Note : Unlimited"),
+            "Y|C|A|A||C" => Each($"Dental & Optical Note : One Limit for Principle, One limit for all dependents. Principle Separate limit, All dependents limit capped to  :{sd}  with in OP Limit.",
+                $"Dental & Optical Note : One Limit for Principle, One limit for all dependents. Principle Separate limit, All dependents limit capped to  :{sd}  with in OP Limit. Utilized :RM{S}"),
+            "|||||" => Both("Dental & Optical Note : No Coverage"),
+            "C||A|B||" => Each($"Dental Only : One Limit for whole family, Dental amount  :{Money(f.Pdl)} with in OP Limit. Utilized :RM{P}",
+                $"Dental Only : One Limit for whole family, Dental amount  :{Money(f.Pdl)} with in OP Limit. Utilized :RM{S}"),
+            "C||A|A||C" => Each($"Dental & Optical Note : One Limit for whole family, Dental&Optical as charge up to OP Limit, Utilized Accumulated:RM{P}",
+                $"Dental & Optical Note : One Limit for whole family, Dental&Optical as charge up to OP Limit, Utilized Accumulated:RM{S}"),
+            "Y|C|C|D|Y|" => Each(
+                $"Dental & Optical Note : One Limit for All Dependents,Principal has Separate Limit, All Dependents Limit:{sd}(with in OP Limit, No Separate Limit), Optical coverage for Employee Only."
+                + (category ? $"{box}\nHome Office Note : Home Office Limit  :{Money(homeOffice.Limit)} Utilized :RM{Money(homeOffice.Util)} Balance :RM{Money(homeOffice.Balance)}" : ""),
+                $"Dental & Optical Note : Principal has Separate Limit, All Dependents Limit:{sd}(with in OP Limit, No Separate Limit), Optical coverage for Employee Only. All Dependents Utilized :RM{S}"),
+            "||A|B|Y|" => Each("Optical Only : One Limit for Principle, No Optical coverage for Dependents. Optical as charge up to OP Limit.",
+                "Optical Only : One Limit for Principle, No Optical coverage for Dependents."),
+            "Y|Y|D|B||" => Each($"Dental Only : Dedicated limit for Principal  and Spouse for Dental coverage only and no Dental Coverage for Dependants:Utilized :RM{P}",
+                $"Dental Only : Dedicated limit for Principal  and Spouse for Dental coverage only and no Dental Coverage for Dependants:Utilized :RM{S}"),
+            "Y|Y|D|B|Y|" => Each($"Dental & Optical Note : Dedicated limit for Principal and Spouse for Dental and optical coverage. No Dental & Optical Coverage for Dependants:Utilized :RM{P}",
+                $"Dental & Optical Note : Dedicated limit for Principal and Spouse for Dental and optical coverage. No Dental & Optical Coverage for Dependants:Utilized :RM{S}"),
+            _ => (box, box),
+        };
+        return result;
     }
 
     /// <summary>VB CDbl of a label ("1,234.00" → 1234; non-numeric → 0).</summary>

@@ -85,6 +85,16 @@ public sealed class MbmEnquiryRepository : IMbmEnquiryRepository
         session.RowsAsync("cis.MbmEnq_Flex", new { icno = (string?)null, empno = (string?)null, mbmno = mbmNumber, polYear = policyYear });
 
     /// <inheritdoc />
+    public async Task<((decimal Limit, decimal Util, decimal Balance)? HomeOffice, decimal Principal, decimal Dependant)> UbNotesAsync(IDbSession session, string mbmNumber)
+    {
+        using var grid = await session.MultipleAsync("cis.MbmEnq_UbNotes", new { mbmNumber });
+        var cat = (await grid.ReadAsync<(string? PLNType, int? PlncategoryInd, decimal? PlncategoryLimit, decimal? Util, decimal? Balance)>()).ToList();
+        var util = (await grid.ReadAsync<(decimal? PriBordxamt, decimal? SuppBordxamt, string? MbmType, string? CoverID)>()).ToList();
+        (decimal, decimal, decimal)? home = cat.Count == 0 ? null : (cat[^1].PlncategoryLimit ?? 0, cat[^1].Util ?? 0, cat[^1].Balance ?? 0);
+        return (home, util.Where(u => u.CoverID?.Trim() == "00").Sum(u => u.PriBordxamt ?? 0), util.Where(u => u.CoverID?.Trim() != "00").Sum(u => u.SuppBordxamt ?? 0));
+    }
+
+    /// <inheritdoc />
     public Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist) =>
         session.RowsAsync("cis.MbmEnq_Cases", new { mbmNumber, specialist });
 }

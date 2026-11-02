@@ -2140,6 +2140,15 @@ BEGIN
 END
 GO
 
+-- MessageDisplay (UB plans with PlncategoryInd): CategoryAmountCal (home office limit) and Dental_Utilization_Limit_Sum.
+CREATE OR ALTER PROCEDURE cis.MbmEnq_UbNotes @mbmNumber nvarchar(30) AS
+BEGIN
+    SET NOCOUNT ON;
+    EXEC dbo.CategoryAmountCal @mbmnumber = @mbmNumber;
+    EXEC dbo.Dental_Utilization_Limit_Sum @mbmnumber = @mbmNumber;
+END
+GO
+
 -- ===== main/365_mbm_enquiry_flex.sql =====
 -- Membership > MBM Enquiry FlexCare / Family Benefits: copies of CISDB spCalcFlexUOB and spGet_UOB_Flex_New_Cal (UOB FlexCare figures).
 -- Differences: spGet_UOB_Flex_New_Cal read spCalcFlexUOB through OPENROWSET(SQLNCLI, Server=sqlinstance1) (an ad hoc distributed query to the

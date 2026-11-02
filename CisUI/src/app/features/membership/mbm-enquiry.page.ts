@@ -113,6 +113,8 @@ interface Member {
   covers: Cover[]
   flexCare: boolean
   warnings: string[]
+  principalNote: string
+  dependantNote: string
 }
 interface FlexRow {
   item: string
@@ -184,6 +186,9 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
         @if (m(); as mm) {
           <app-tabs label="MBM Enquiry" [(active)]="tab" (activeChange)="tabChanged($event)">
             <ng-template appTab="Principal Details">
+              @if (mm.principalNote) {
+                <p class="notice limit-note" aria-label="Limit note">{{ mm.principalNote }}</p>
+              }
               <fieldset aria-label="Principal">
                 <legend>Principal</legend>
                 <app-field label="Name"><input name="name" [value]="mm.name" disabled /></app-field>
@@ -231,6 +236,9 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
             </ng-template>
 
             <ng-template appTab="Supplementary">
+              @if (mm.dependantNote) {
+                <p class="notice limit-note" aria-label="Dependant limit note">{{ mm.dependantNote }}</p>
+              }
               <app-data-grid caption="Covered persons" [columns]="coverColumns" [rows]="mm.covers" [rowKey]="coverKey" [pageSize]="0" [selectable]="true"
                 [selectedKey]="cover()?.coverId ?? null" (rowSelected)="pickCover($event)" />
               @if (cover(); as c) {
