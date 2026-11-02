@@ -90,3 +90,25 @@ Deliberate differences: the search is parameterised (with `OPTION (RECOMPILE)` s
 | Print | the rejected rows as CSV. |
 
 **Deliberate difference (agreed 2 Nov 2026):** the desktop's uploads could not work — FFS and Copay read column 2 as both the case number and the amount, Bordx Date used an empty date (always rolled back), Bordx Amt's update was commented out, "Verify Bordx Date" had no code and "Verify Bordx Amt" checked the wrong list (always verified). The web keeps the verification rules and messages and makes the uploads work with the columns each verification checks.
+
+## Worksheet — frmWorksheet (`api/invoice/worksheet/calculate`, rights 117 / 118 / 119 / 179)
+
+The worksheet pop-up does **not** write to the database: on opening it computes a benefit grid from the calling invoice row and copies the results
+back into that row (`SaveCLMActual` … `SaveClaim`); the invoice / adjustment screen saves them. The web port is a pure calculation
+(`WorksheetEngine`, unit-tested) fed by the invoice row (`WorksheetInput`) and `cis.Worksheet_Lookups` (BNFCategoryNew, CLN, STDClinicBNF,
+STDClinicBNFSPE, PLN, BNFNew, CLNRedAmt). Callers: clinic invoice (1), member invoice (2), adjustment (3), after bordx (4), after posting (5).
+
+| Column / line | Rule |
+|---|---|
+| Actual | the item amount (I1–I31: row 15–20, 24–42, 21–23, 101 / 95, 474 / 473, 475); 0 → "-". |
+| Contracted Rate | cashless only. Clinic type 1: the actual. Type 2 (clinic invoice): codes 101–106 from STDClinicBNFSPE of the clinic's card, the rest from STDClinicBNF. Adjustments: the stored rates (row 195–225). |
+| Payable to CLN | type 1: actual; type 2 / 3: GetMin(actual, actual). |
+| Not Payable to CLN | type ≠ 1: rate − actual when the actual is higher (also for reimbursement, where the rate is 0). |
+| Benefit Lmt | invoices: PLN.BNFStatus Y → BNFNew per code: 1 GetMin(% × actual, RM per visit), 2 GetMax (returns the RM per visit — desktop quirk), 3 actual, 4 RM per visit; status N → the actual. Adjustments: stored limits (row 297–327). Display only. |
+| Approved Benefit | GetMin(actual, L) with L = the actual (the desktop sets L = I), i.e. the actual. |
+| Excess | cashless: approved − actual when the actual is higher; reimbursement: the approved amount. |
+| Final payable to CLN | total payable − co-pay collected (only when that minus the reduction is not 0) − reduction (CLNRedAmt: status 1 amount, 2 % of the payable); MCO proc. fee = CLN.CLNMCOProcfeePerc % when the row has MCO status Y and a GP amount. |
+| Final approved | balance = annual indicator off → total approved, else row 70 + adjusted annual limit; visit = indicator off / FULL → total approved, else the visit limit; visit > balance → (approved > balance ? balance : approved) − co-pay collected; else approved − co-pay collected − co-pay. |
+| Row values | 168–198 actual; 211–241, 426–456, 297–327, 254–284 also the actual (desktop copies the Actual column into the contracted-rate, payable, limit and approved slots — reproduced); 383–413 not payable; 340–370 excess; 150–166 claim totals / audit (159 is always 0 — never set by the desktop); 468 MCO fee; member invoice (476) / adjustment pay-to-M (475) override the approved amount when > 0. |
+
+`CalculateReim` / `CalculateCashless` are never called by the desktop and are not migrated. The grid is shown by the invoice screens' worksheet modal (with those screens).

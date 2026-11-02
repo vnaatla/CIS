@@ -75,6 +75,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Invoice.IOpBatchRepository, Invoice.OpBatchRepository>();
         services.AddScoped<Application.Invoice.IInvoicePopupRepository, Invoice.InvoicePopupRepository>();
         services.AddScoped<Application.Invoice.IMmaScheduleRepository, Invoice.MmaScheduleRepository>();
+        services.AddScoped<Application.Invoice.IWorksheetRepository, Invoice.WorksheetRepository>();
         services.AddScoped<Application.Claim.IPassToClaimRepository, Claim.PassToClaimRepository>();
         services.AddScoped<Application.Claim.IUpdateClaimsDataRepository, Claim.UpdateClaimsDataRepository>();
         services.AddSingleton<Application.Documents.ISpreadsheetReader, Documents.SpreadsheetReader>();
