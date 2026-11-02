@@ -328,6 +328,18 @@ try {
   await page.waitForFunction(() => document.querySelector('[aria-label="Family benefits"]')?.textContent.includes('4,722.00'), { timeout: 90000 })
   check(true, 'MBM Enquiry: UBHA0000156*05 FlexCare balance 4,711.42 and family balance 4,722.00 (cover 01)')
 
+  // 16. Invoice > Batch Transfer: both batches show their totals and the final totals (nothing is transferred).
+  await page.goto(`${base}/invoice/batch-transfer`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=batch1]')
+  await page.type('input[name=batch1]', 'opy9978')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinic1]')?.value === 'KLINIK DAN SURGERI HILLTOP', { timeout: 60000 })
+  await page.type('input[name=batch2]', 'OPY9987')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=finalAmt]')?.value === '283.00', { timeout: 60000 })
+  const finalCases = await page.$eval('input[name=finalCases]', (i) => i.value)
+  check(finalCases === '6', `Batch Transfer shows OPY9978 (4 cases, 184.00) + OPY9987 (2 cases, 99.00) = ${finalCases} cases, 283.00`)
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

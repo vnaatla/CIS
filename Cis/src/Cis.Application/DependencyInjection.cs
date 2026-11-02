@@ -40,6 +40,7 @@ public static class DependencyInjection
         services.AddScoped<Membership.IGeneralExclusionsService, Membership.GeneralExclusionsService>();
         services.AddScoped<Membership.IMbmAdjustmentService, Membership.MbmAdjustmentService>();
         services.AddScoped<Membership.IMbmEnquiryService, Membership.MbmEnquiryService>();
+        services.AddScoped<Invoice.IBatchTransferService, Invoice.BatchTransferService>();
         return services;
     }
 }

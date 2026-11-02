@@ -18,4 +18,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.GeneralExclusionsEnquiry, legacyForm: 'frmGeneralBenefitExcEnq' },
     loadComponent: () => import('./general-exclusions-enquiry.page').then((m) => m.GeneralExclusionsEnquiryPage),
   },
+  {
+    path: 'invoice/batch-transfer',
+    title: 'CIS - Batch Transfer',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceAdjustment, legacyForm: 'FrmInvoiceBatchNoUpd' },
+    loadComponent: () => import('./batch-transfer.page').then((m) => m.BatchTransferPage),
+  },
 ]
