@@ -206,3 +206,23 @@ The Adjustment page in its After Posting mode: a case already posted to SUN is n
 Known desktop issues (reproduced): the master case's previous approval is subtracted from the member's accumulated amount and balance although the master case itself is not changed; the pending note, QA and medication charges are not copied to the sub-case.
 
 Deliberate differences: parameters instead of pasted SQL; the member balance in the same transaction.
+
+## Not migrated: Worksheet Registration (frmNewWSReg) and Worksheet Adjustment (frmNewWSAjd)
+
+Both forms are in the VB6 project but the desktop cannot open them: their menu handlers (`mnuWSReg_Click`, `mnuWSAdj_Click` in MDIMain) are
+commented out, and the only other way in was the "LO" scan-login shortcut (`Medix.bas` `SearchForm`, rights 98 / 99), which was deliberately
+left out of Pass to Claim. They belong to an older worksheet design that the current databases no longer have:
+
+| Needed by the forms | State in the restored databases |
+|---|---|
+| `VIEW_MBM_CAS_Claim`, `VIEW_MBM_CAS_Claim_WSAdjusment` (case look-up) | missing |
+| `View_Invoice` (invoice list) | missing |
+| `CAS` table | missing |
+| `CLMLimit`, `CLMActual`, `CLMApp`, `CLMClinic`, `CLMMember`, `CLMCLNLimit` (worksheet save) | missing — replaced by the `CLM…New` tables (about 8.5 million rows) |
+| `Claim.ClmVersion` / `Claim.ClaimStatus` (worksheet versions) | only one of the two columns exists |
+| `dc\CreditNote.xlt`, `dc\DebitNote.xlt` (credit / debit notes) | templates not in the source |
+| `MBM.MBMAvailableLimit` (member limit) | old column; balances today are `MBMCLNOthers` / `MBMCoveredPersonsCLN` |
+
+Their work is done today by the migrated screens: the worksheet engine (frmWorksheet) calculates, the clinic / member invoices save the
+worksheet, and the three Adjustment screens change it, all on the `CLM…New` tables and current member balances. Decision (2 Nov 2026):
+not migrated; the menu items stay "not migrated" (desktop: never opened).

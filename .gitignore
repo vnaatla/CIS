@@ -30,3 +30,6 @@ TestResults/
 *.tmp
 *.bak
 Thumbs.db
+
+# Local Devin CLI permissions
+.devin/config.local.json
