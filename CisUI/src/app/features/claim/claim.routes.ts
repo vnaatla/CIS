@@ -11,4 +11,11 @@ export const claimRoutes: Routes = [
     data: { access: Access.PassToClaim, legacyForm: 'frmPass2Claim' },
     loadComponent: () => import('./pass-to-claim.page').then((m) => m.PassToClaimPage),
   },
+  {
+    path: 'claim-bordx/update-claims-data',
+    title: 'CIS - Update Claims Data',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxPrint, legacyForm: 'frmUpdateClaimsData' },
+    loadComponent: () => import('./update-claims-data.page').then((m) => m.UpdateClaimsDataPage),
+  },
 ]

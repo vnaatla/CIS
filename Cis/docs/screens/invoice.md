@@ -75,3 +75,18 @@ frmShowInvestigation's second use (Source 2, the OPCS of an invoice line via Cas
 | Print | the list as Excel. |
 
 Deliberate differences: the search is parameterised (with `OPTION (RECOMPILE)` so a single case uses the index); after Pass the desktop's unbracketed "AND CASNumber = a OR CASNumber = b" relist could show unrelated cases, the web lists exactly the passed ones; a scan code starting "LO" opened the first legacy screen the user may access (a scan-login shortcut), not migrated.
+
+## Update Claims Data — frmUpdateClaimsData (`/claim-bordx/update-claims-data`, right 124, `api/claim-bordx/update-claims-data`)
+
+| Item | Behaviour |
+|---|---|
+| File | an Excel workbook; the first sheet's rows from row 2 while column A is filled (at most 60,000). No file → `Please select file to upload!`. |
+| Verify FFS | column 1 bordx no. (8 or 10 characters, starting N or S), column 8 approval code (12 characters), column 9 approval date, column 10 amount (numeric). |
+| Verify Copay | column 2 bordx no., column 3 amount, column 20 return date. |
+| Verify Bordx Amt | column 2 bordx no., column 3 amount, column 20 send date. |
+| Verify Bordx Date | column 2 bordx no., column 20 date. |
+| Result | rejected rows (row, bordx no., code, approval date, amount, date) → `Error encoutered. Please check the file!`; none → `File verified successfully!` and the matching upload button is enabled. |
+| Upload | `Do you want to Upload the records?`; the file is verified again, then in one CISWorksheet transaction: FFS → Claim.CLMMCOProcFee of case (column 1) = column 10; Copay → CLMCoPayColl of case (column 2) = column 3; Bordx Amt → CLMBordxAmt of case (column 2) = column 3; Bordx Date → CLMBordxMonth / CLMBordxYear of the claims of bordereaux (column 2) and Bordx.BordxDate = column 20; ClaimLastUpdateDate / User set → `Records have been uploaded!`. |
+| Print | the rejected rows as CSV. |
+
+**Deliberate difference (agreed 2 Nov 2026):** the desktop's uploads could not work — FFS and Copay read column 2 as both the case number and the amount, Bordx Date used an empty date (always rolled back), Bordx Amt's update was commented out, "Verify Bordx Date" had no code and "Verify Bordx Amt" checked the wrong list (always verified). The web keeps the verification rules and messages and makes the uploads work with the columns each verification checks.

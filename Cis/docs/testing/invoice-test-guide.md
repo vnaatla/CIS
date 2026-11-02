@@ -68,3 +68,27 @@ WHERE CASNumber IN ('EA12586874', 'EA12586891');
 | M5 | Print | MMASchedule.xlsx |
 
 Read-only screen: nothing to clean up.
+
+## 5. Pass to Claim — `/claim/pass-to-claim` (frmPass2Claim, right 163)
+
+| # | Action | Expected |
+|---|---|---|
+| P1 | Scan on, Search with an empty case no. | `Please Enter Case No` |
+| P2 | Scan `ea12586874` | one row: Not, KLINIK TAN (TAMAN SETIA INDAH) |
+| P3 | Scan `EA12586874` again | `Data has been uploaded!` |
+| P4 | Scan off, case no. EA1258680–EA1258690 → Search | the cases of that range |
+| P5 | Check a case without register date | `Date of Register is Empty.` |
+| P6 | Check EA12586874 → Pass → Yes | `Record updated...`; the case shows Passed |
+
+Clean-up after P6: `DELETE FROM CISWorksheet.dbo.ClaimFileTransfer WHERE CASNumber = 'EA12586874' AND ClaimPassBy = 'DEVADMIN' AND ClaimPassDate = '<today>';`
+
+## 6. Update Claims Data — `/claim-bordx/update-claims-data` (frmUpdateClaimsData, right 124)
+
+| # | Action | Expected |
+|---|---|---|
+| D1 | Verify without a file | `Please select file to upload!` |
+| D2 | Workbook row 2: A=`N1234567`, H=12-character code, I=date, J=amount → Verify FFS | `File verified successfully!`, FFS enabled |
+| D3 | Same with A=`X1` | `Error encoutered. Please check the file!`; row 2 listed |
+| D4 | Copay file: B=case no. (e.g. a test case starting S / N), C=amount, T=date → Verify Copay → Copay → Yes | `Records have been uploaded!`; Claim.CLMCoPayColl updated |
+
+Clean-up after D4: restore the case's CLMCoPayColl / ClaimLastUpdateDate / ClaimLastUpdateUser to the values noted before.
