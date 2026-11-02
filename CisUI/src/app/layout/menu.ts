@@ -98,7 +98,7 @@ export const MENU: MenuModule[] = [
       { label: 'Dental', path: '/invoice/dental', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
       { label: 'Dental Member', path: '/invoice/dental-member', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
       { label: 'Dental Adjustment', path: '/invoice/dental-adjustment', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
-      { label: 'Invoice Update', path: '/invoice/update', access: Access.InvoiceAdjustment, form: 'frmUpdateCLNInvoice', group: 'Other', desktop: 'hidden', phase: 3 },
+      { label: 'Invoice Update', path: '/invoice/update', access: Access.InvoiceAdjustment, form: 'frmUpdateCLNInvoice', group: 'Other', desktop: 'hidden', phase: 3, migrated: true },
       { label: 'OP Batch/Invoice', path: '/invoice/op-batch', access: Access.InvoiceAdjustment, form: 'frmUpdateInvoiceBatch', group: 'Other', phase: 3 },
       { label: 'Case Transfer', path: '/invoice/case-transfer', access: Access.CaseTransfer, form: 'frmMembershipTransfer', group: 'Other', phase: 2, migrated: true },
       { label: 'Tracking', path: '/invoice/tracking', access: Access.InvoiceTracking, form: 'FrmInvoiceTracking', group: 'Other', phase: 10 },

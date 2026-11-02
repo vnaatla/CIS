@@ -340,6 +340,14 @@ try {
   const finalCases = await page.$eval('input[name=finalCases]', (i) => i.value)
   check(finalCases === '6', `Batch Transfer shows OPY9978 (4 cases, 184.00) + OPY9987 (2 cases, 99.00) = ${finalCases} cases, 283.00`)
 
+  // 17. Invoice > Invoice Update: Search by invoice number lists its cases (nothing is updated).
+  await page.goto(`${base}/invoice/update`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=invoiceNo]')
+  await page.type('input[name=invoiceNo]', 'I00496-ERMA-M813')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-data-grid tbody td')].some((td) => td.textContent.trim() === 'EA12582360'), { timeout: 120000 })
+  check(true, 'Invoice Update finds the cases of invoice I00496-ERMA-M813 (EA12582360)')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

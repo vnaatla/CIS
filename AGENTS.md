@@ -23,8 +23,10 @@
 
 ## New web app (Cis API + CisUI Angular) — migration plan: C:\Users\Naresh\.devin\plans\plan-95d6e07b7f9f86e9.md
 - Copies of the plan are in the repo: `Cis\docs\migration-plan.md` / `.html` — copy both again whenever the plan changes.
-- Manual test script with real local data, exact messages and clean-up SQL: `Cis\docs\testing\maintenance-test-guide.md`
-  (add a section for every newly migrated screen).
+- Manual test scripts with real local data, exact messages and clean-up SQL: `Cis\docs\testing\maintenance-test-guide.md`,
+  `membership-test-guide.md`, `invoice-test-guide.md` (add a section for every newly migrated screen).
+- Copied legacy procedures (e.g. `365_mbm_enquiry_flex.sql`) need `SET QUOTED_IDENTIFIER ON` at the top of the script: sqlcmd creates
+  procedures with it OFF otherwise, and queries on indexed views / XML then fail.
 - Layout: `Cis\` (`Cis.sln`, `sql\`, `docs\`), `CisUI\` (Angular 22.2.3). Styles/components mirror GENESIS (`trinath18`).
   Backend is Clean Architecture in 4 projects: `Cis.Domain` ← `Cis.Application` (services, ports, models, validators) ← `Cis.Infrastructure`
   (Dapper repos, SQL sessions, Excel/PDF, mail, files) ← `Cis.Api` (controllers, composition root). ArchitectureTests enforce references.

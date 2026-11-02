@@ -79,7 +79,8 @@ FROM (VALUES
     (N'Hdb_SearchCISMemberProc_test', @HisDb, N'SearchCISMemberProc_test'),
     (N'Hdb_ASOMemberDetails', @HisDb, N'Tbl_ASOMemberDetails'),
     (N'Ws_Claim', @CisWorksheetDb, N'Claim'),
-    (N'Ws_ClaimInvoiceActualNew', @CisWorksheetDb, N'ClaimInvoiceActualNew')) v (s, d, t)
+    (N'Ws_ClaimInvoiceActualNew', @CisWorksheetDb, N'ClaimInvoiceActualNew'),
+    (N'Ws_VIEW_Invoice_Tracking_2016', @CisWorksheetDb, N'VIEW_Invoice_Tracking_2016')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
