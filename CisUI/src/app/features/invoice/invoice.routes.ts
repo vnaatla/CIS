@@ -60,4 +60,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.InvoiceMember, legacyForm: 'frmInvoiceMBM' },
     loadComponent: () => import('./member-invoice.page').then((m) => m.MemberInvoicePage),
   },
+  {
+    path: 'invoice/enquiry',
+    title: 'CIS - Invoice Enquiry',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceAdjustment, legacyForm: 'FrmInvoiceEnq' },
+    loadComponent: () => import('./invoice-enquiry.page').then((m) => m.InvoiceEnquiryPage),
+  },
 ]

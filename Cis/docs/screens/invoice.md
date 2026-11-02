@@ -152,3 +152,16 @@ Reimbursement claims (pay to M, payee MEMBER). Go, set-up and diagnoses are the 
 | Save | balance numeric and not > 0 (unless amount and balance are both 0) → `No Balance Limit to Register Case. Please Check!!!`; `Are you sure ? `; one transaction: an OC batch (OPBatch letter + 7 digits) for the save, case number, CISCAS (accepted, NP clinic, clinic type, repudiation, pharmacy), ClaimInvoice (amount less co-pay), ClaimInvoiceActualNew (incl. co-payment), ClaimInvoiceActualOthers, Claim (postage 0, bordereaux memo, referral letter), the worksheet slot tables, member balance / accumulated / adjusted annual limit / health limit (PLN health limit Y); ASO → sp_ASOClaimsUtilization. |
 
 Known desktop issues (reproduced): the ChkData duplicate check compares keys in two different formats and never finds a saved case (the Verify same-day check is the effective one); the health-limit block of Add is empty. Deliberate differences: the web saves one line at a time (the desktop could list several before saving); the inserts are parameterised; the SaveINVMBMApp procedure (shared with the clinic invoice) has no Pap Smear column, so that one slot is not stored.
+
+## Invoice enquiry — FrmInvoiceEnq (`/invoice/enquiry`, right 119, `api/invoice/enquiry`)
+
+Read-only view of one case. Go: CISWorksheet SP_INV_CLAIM (`Not Record Found ! `) with the GP / SP fee parts; the member panel (Go of the
+clinic invoice); Prev / Next (VIEW_Cas_MBM clinical cases of active members: `First Record Reached! … Not a valid Case Number! ` /
+`Last Record Reached! `); Search (case list); MBM Info; Exclusions (`Please Check Group Company! ` or the General Exclusions enquiry of the
+case's group company). Tabs: Items (the stored actual amounts), Worksheet (Claim + the seven worksheet tables), Bordx (SP_Claim_Bordx incl. Medix
+payment), Payment (CISPayment Payment2CLN / Payment2MBM and ReceiptFrMBM), Documents (Outpatient folder: Guarantee Letter\<case>,
+SP_ScannedDoc\<case>.pdf / .jpg, OtherScannedDoc\<case>, Reim_ScannedDoc\<case>; files open by download), Medication Request
+(sp_CISMedRequestInfo, sp_CISMedReqDOMedicine; Print exports the requests).
+
+Deliberate difference: the member panel uses the clinic invoice's Go (top-ups included); the desktop's enquiry left top-ups out of the balances
+and only counted specialist claims of the same cover side.

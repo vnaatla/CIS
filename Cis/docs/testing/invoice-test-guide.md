@@ -119,3 +119,16 @@ Clean-up after C7: delete the new case's rows (CISCAS, CISWorksheet Claim / Clai
 | R6 | (data within the policy and 45 days) Verify → Save → Yes | `Record Saved ! ` with case EA…; CISCAS OPBatchNo OC…, ClaimInvoice pay to M |
 
 Clean-up after R6: as C7, plus the member's MBMHealthlimit when the plan has a health limit.
+
+## 9. Invoice enquiry — `/invoice/enquiry` (FrmInvoiceEnq, right 119)
+
+| # | Action | Expected |
+|---|---|---|
+| E1 | Case `ea12586874` → Go | member DCHC… cover, clinic T301 - KLINIK TAN (TAMAN SETIA INDAH), status Open |
+| E2 | Worksheet tab | stored worksheet with Final Approved |
+| E3 | Bordx tab | SP_Claim_Bordx row (status 0, final approve 233.00) |
+| E4 | Next / Prev | the following / preceding clinical case |
+| E5 | Case `ZZNOCASE1` → Go | `Not Record Found ! ` |
+| E6 | Documents tab (Files:Folders:Outpatient configured) | the case's scanned files; click downloads |
+
+Read-only screen: nothing to clean up.

@@ -422,6 +422,16 @@ try {
   await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
   check(true, 'Member invoice: DCHC9086608 reimbursement on 15/08/2021 → line 45.00 with its worksheet')
 
+  // 23. Invoice > Enquiry: case EA12586874 shows its clinic and stored worksheet.
+  await page.goto(`${base}/invoice/enquiry`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'ea12586874')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinic]')?.value.startsWith('T301'), { timeout: 120000 })
+  await page.evaluate(() => [...document.querySelectorAll('app-tabs [role=tab]')].find((t) => t.textContent.trim() === 'Worksheet').click())
+  await page.waitForSelector('table[aria-label=Worksheet] [data-final]', { timeout: 30000 })
+  check(true, 'Invoice enquiry: EA12586874 at T301 with its stored worksheet')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
