@@ -113,7 +113,22 @@ FROM (VALUES
     (N'Ws_CLMLimitNew', @CisWorksheetDb, N'CLMLimitNew'),
     (N'Ws_CLMMemberNew', @CisWorksheetDb, N'CLMMemberNew'),
     (N'Ws_CLMClinicNew', @CisWorksheetDb, N'CLMClinicNew'),
-    (N'Ws_CLMClinicAppNew', @CisWorksheetDb, N'CLMClinicAppNew')) v (s, d, t)
+    (N'Ws_CLMClinicAppNew', @CisWorksheetDb, N'CLMClinicAppNew'),
+    (N'Ws_SearchCASOP', @CisWorksheetDb, N'SearchCASOP'),
+    (N'Ws_INVAdj_SaveInvoice', @CisWorksheetDb, N'INVAdj_SaveInvoice'),
+    (N'Ws_INVAdj_saveActual', @CisWorksheetDb, N'INVAdj_saveActual'),
+    (N'Ws_INVAdj_saveActualOthers', @CisWorksheetDb, N'INVAdj_saveActualOthers'),
+    (N'Ws_INVAdj_SaveINVClaim_2015', @CisWorksheetDb, N'INVAdj_SaveINVClaim_2015'),
+    (N'Ws_INVAdj_SaveINVActual', @CisWorksheetDb, N'INVAdj_SaveINVActual'),
+    (N'Ws_INVAdj_SaveINVCLNApp', @CisWorksheetDb, N'INVAdj_SaveINVCLNApp'),
+    (N'Ws_INVAdj_SaveINVCLNContract', @CisWorksheetDb, N'INVAdj_SaveINVCLNContract'),
+    (N'Ws_INVAdj_SaveINVCLNExcess', @CisWorksheetDb, N'INVAdj_SaveINVCLNExcess'),
+    (N'Ws_INVAdj_SaveINVMBMApp', @CisWorksheetDb, N'INVAdj_SaveINVMBMApp'),
+    (N'Ws_INVAdj_SaveINVMBMExcess', @CisWorksheetDb, N'INVAdj_SaveINVMBMExcess'),
+    (N'Ws_INVAdj_SaveINVMBMLmt', @CisWorksheetDb, N'INVAdj_SaveINVMBMLmt'),
+    (N'Ws_CLMMedCharges', @CisWorksheetDb, N'CLMMedCharges'),
+    (N'Ws_Claim_BordxSEQ', @CisWorksheetDb, N'Claim_BordxSEQ'),
+    (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
