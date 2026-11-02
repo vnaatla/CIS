@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<Invoice.IBatchTransferService, Invoice.BatchTransferService>();
         services.AddScoped<Invoice.IInvoiceUpdateService, Invoice.InvoiceUpdateService>();
         services.AddScoped<Invoice.IOpBatchService, Invoice.OpBatchService>();
+        services.AddScoped<Invoice.IInvoicePopupService, Invoice.InvoicePopupService>();
         return services;
     }
 }

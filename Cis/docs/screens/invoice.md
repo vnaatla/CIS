@@ -43,3 +43,12 @@ Deliberate differences / known desktop issues:
 - All checked cases are saved in one transaction (the desktop committed per case and, for a case with a batch but no invoice no., left a transaction open).
 - The OP batch number is generated inside the save transaction with a lock (the desktop could hand the same number to two users).
 - The "pending state" message after listing can never appear in the desktop (it tests a Pending "Z" value for "Y"); not shown. Double-click to open the case in Adjustment comes with that screen.
+
+## Invoice pop-ups (`api/invoice/popups`, open to rights 117 / 118 / 119 / 179)
+
+| Pop-up | Behaviour |
+|---|---|
+| ICD search — frmSearchICD (`IcdSearchModalComponent`) | Code (starts with), Description (contains), Criteria AND / OR, Description 2 (contains); CISDB TreatmentReason (`cis.Popup_Icd`); none → `Record not found`; a click returns code and description to the calling form's diagnosis field. With OR the desktop's unbracketed SQL applies the code / first description only to the first part; reproduced. |
+| Case list — frmCasList (`CaseListModalComponent`) | at least 3 characters (`Search String must be at least 3 characters!`); search by Member No (member or covered person number, starts with), Policy No, Name (contains, default), IC/BC/PP, Case No; invoice (C) or dental (D) cases of active members in VIEW_Cas_MBM (`cis.Popup_CaseList`); none → `No Record Available`; patient blank → `Member may has been Deleted!`; clinic shown as "code - name" for panel clinics. |
+
+Built with their callers (they read or write the caller's state): case pending (frmCasePending, with Adjustment), member info (FrmINVMBMinfo, uses Medix.bas MemberSuppInfo, with the worksheet / invoice screens), invoice detail (frmInvoiceDetPopup, with its caller).
