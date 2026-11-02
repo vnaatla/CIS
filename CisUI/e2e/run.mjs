@@ -401,6 +401,27 @@ try {
   await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
   check(true, 'Clinic invoice: DCHC9086608 at T301 on 15/08/2021, GP fee 30 + X-Ray 15 → line 45.00 with its worksheet')
 
+  // 22. Invoice > Member: the same case as a reimbursement claim (nothing is saved).
+  await page.goto(`${base}/invoice/member`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=invoiceNo]')
+  await page.type('input[name=invoiceNo]', 'ZZE2E')
+  await page.type('input[aria-label="Invoice Date"]', '31/08/2021')
+  await page.type('input[aria-label="Receipt Date"]', '01/09/2021')
+  await page.evaluate(() => { const s = document.querySelector('select[name=receiptMode]'); s.selectedIndex = 1; s.dispatchEvent(new Event('change')) })
+  await page.type('input[name=clinicCode]', 'T301')
+  await page.type('input[name=totalInvoiceAmount]', '45')
+  await page.type('input[name=mbmNumber]', 'DCHC9086608')
+  await page.keyboard.press('Enter')
+  await page.waitForSelector('input[aria-label="Visit Date"]', { timeout: 120000 })
+  await page.type('input[aria-label="Visit Date"]', '15/08/2021')
+  await page.type('input[name=b1]', '30')
+  await page.type('input[name=a10]', '15')
+  await page.evaluate(() => { const i = document.querySelector('input[name=a29]'); i.value = ''; i.dispatchEvent(new Event('input')) })
+  await page.select('select[name=memoClaim]', 'Y')
+  await page.click('app-action-bar[label="Invoice actions"] button.primary')
+  await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
+  check(true, 'Member invoice: DCHC9086608 reimbursement on 15/08/2021 → line 45.00 with its worksheet')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

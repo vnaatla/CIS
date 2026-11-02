@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { firstValueFrom } from 'rxjs'
@@ -442,7 +442,7 @@ export class ClinicInvoicePage implements OnInit {
     return {
       invoiceNo: '', invoiceDate: '', receiptDate: '', receiptMode: '', clinicCode: '', totalInvoiceAmount: '', mbmNumber: '', coverId: '00',
       visitDate: '', visitTime: '', billNo: '', mcDays: null as number | null, diagnoses: ['', '', '', '', ''], diagnosisDescriptions: ['', '', '', '', ''],
-      diagnosisOther: '', a: new Array<number | null>(34).fill(null), b: new Array<number | null>(9).fill(null), clinicBillAmount: '', ffs: '',
+      diagnosisOther: '', a: Array.from({ length: 34 }, (): number | null => null), b: Array.from({ length: 9 }, (): number | null => null), clinicBillAmount: '', ffs: '',
       processMonth: '', claimability: '', remark: '', adjustedAnnualLimit: null as number | null, excess: null as number | null,
       limitExceeded: null as number | null, pOthDesc: '', lOthDesc: '', iOthDesc: '',
       medications: Array.from({ length: 7 }, () => ({ type: '', days: '', qty: '', rate: '' })),

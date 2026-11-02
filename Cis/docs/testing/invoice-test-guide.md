@@ -106,3 +106,16 @@ Clean-up after D4: restore the case's CLMCoPayColl / ClaimLastUpdateDate / Claim
 | C7 | (data within 45 days only) Verify clean → Save → Are you sure ? → Yes | `Record Saved ! `, new case EA…; CISCAS, Claim, ClaimInvoice*, member balance updated |
 
 Clean-up after C7: delete the new case's rows (CISCAS, CISWorksheet Claim / ClaimInvoice / ClaimInvoiceActual* / ClaimCharges) and restore the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt / MBMCLNMCDaysBal noted before.
+
+## 8. Member invoice — `/invoice/member` (frmInvoiceMBM, right 118)
+
+| # | Action | Expected |
+|---|---|---|
+| R1 | Header as C1 with a Rec Mode, Clinic `T301`, Member `DCHC9086608` → Go | member panel |
+| R2 | Visit 15/08/2021, GP Fee 30, X-Ray 15, co-pay 0, Accepted Y → Add | line 45.00; Verify lists `45 Days LATE ! ` (old data) |
+| R3 | Rec Mode blank → Add | `Please Enter Invoice Receipt Mode ! ` |
+| R4 | Accepted N without reason → Add | `Please Enter Repudiation Reason` |
+| R5 | Clinic `NP` without a name → Add | `Please keyin the NP Clinic ! ` |
+| R6 | (data within the policy and 45 days) Verify → Save → Yes | `Record Saved ! ` with case EA…; CISCAS OPBatchNo OC…, ClaimInvoice pay to M |
+
+Clean-up after R6: as C7, plus the member's MBMHealthlimit when the plan has a health limit.
