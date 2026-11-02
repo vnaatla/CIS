@@ -63,3 +63,15 @@ Built with their callers (they read or write the caller's state): case pending (
 | Print | the list as Excel. |
 
 frmShowInvestigation's second use (Source 2, the OPCS of an invoice line via Case_MMASchedule) comes with the invoice screens.
+
+## Pass to Claim — frmPass2Claim (`/claim/pass-to-claim`, right 163, `api/claim/pass-to-claim`)
+
+| Item | Behaviour |
+|---|---|
+| Search | Scan mode (default): one case number (`Please Enter Case No`; a case already listed → `Data has been uploaded!`; the list shows the scanned case). Otherwise case no. from / to. Filters: case status (0 Open, 1 Delete, 2 Open & Close — default 2), claimability A / R, Pass By (HISDB SearchCASToken), status P passed / N not, empty register / admission / pass date, and their date ranges. CISWorksheet `VIEW_ClaimPass2Claim` grouped (the desktop's ClaimPass2Claim case 1 as `cis.Pass2Claim_Search`); only rows whose cover id equals the member's cover id; None → `No record found!`. |
+| List | Passed / Not, case, member, patient, dates of register / admission / pass, no. of days ("0" shows 1), OP batch, pass by, clinic, claim status. |
+| Check | register date empty → `Date of Register is Empty.`; admission empty → `Date of Admitted is Empty.`; clinic empty → `Clinic Name is Empty.`; claim status 1 → `File has been send out.`. Check (all) checks the rest. |
+| Pass | list empty → `Please select a payor before proceeding!` (desktop text); `Do you want to update the record?`; each checked case: ClaimPass2ClaimUpdate (ClaimFileTransfer row, status P, user, today) in one transaction → `Record updated...` and the list shows the passed cases. |
+| Print | the list as Excel. |
+
+Deliberate differences: the search is parameterised (with `OPTION (RECOMPILE)` so a single case uses the index); after Pass the desktop's unbracketed "AND CASNumber = a OR CASNumber = b" relist could show unrelated cases, the web lists exactly the passed ones; a scan code starting "LO" opened the first legacy screen the user may access (a scan-login shortcut), not migrated.

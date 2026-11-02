@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 19 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 20 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -16,7 +16,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Membership](#membership) | 8 | 3 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 0 | 0 |
 | [Invoice](#invoice) | 30 | 6 | 6 |
-| [Claim](#claim) | 1 | 0 | 0 |
+| [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 0 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 0 | 0 |
 | [Payment](#payment) | 9 | 0 | 3 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **19** | **20** |
+| **Total** | **119** | **20** | **20** |
 
 ## Membership
 
@@ -100,7 +100,7 @@ Module page: `/claim`
 
 | Sub-menu | Menu item | VB6 form(s) | Access | Desktop | Phase | Status | Web route |
 |---|---|---|---:|---|---:|---|---|
-|  | Pass to Claim | frmPass2Claim | 163 |  | 3 | Pending | `/claim/pass-to-claim` |
+|  | Pass to Claim | frmPass2Claim | 163 |  | 3 | **Migrated** | `/claim/pass-to-claim` |
 
 ## Claim Bordx
 

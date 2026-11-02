@@ -113,7 +113,7 @@ export const MENU: MenuModule[] = [
     label: 'Claim',
     icon: 'shield',
     path: '/claim',
-    items: [{ label: 'Pass to Claim', path: '/claim/pass-to-claim', access: Access.PassToClaim, form: 'frmPass2Claim', phase: 3 }],
+    items: [{ label: 'Pass to Claim', path: '/claim/pass-to-claim', access: Access.PassToClaim, form: 'frmPass2Claim', phase: 3, migrated: true }],
   },
   {
     key: 'claim-bordx',

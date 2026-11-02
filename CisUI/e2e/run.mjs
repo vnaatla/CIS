@@ -371,6 +371,14 @@ try {
   await page.click('button[aria-label="Close"]')
   await page.waitForFunction(() => !document.querySelector('input[name=dSurgFee]'), { timeout: 10000 })
 
+  // 20. Claim > Pass to Claim: scanning a case lists it (nothing is passed).
+  await page.goto(`${base}/claim/pass-to-claim`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'ea12586874')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-data-grid tbody td')].some((td) => td.textContent.trim() === 'KLINIK TAN (TAMAN SETIA INDAH)'), { timeout: 60000 })
+  check(true, 'Pass to Claim: scanning EA12586874 lists it (KLINIK TAN (TAMAN SETIA INDAH))')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
