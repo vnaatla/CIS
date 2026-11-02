@@ -74,4 +74,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.InvoiceAdjustment, legacyForm: 'frmInvoiceAdj' },
     loadComponent: () => import('./invoice-adjustment.page').then((m) => m.InvoiceAdjustmentPage),
   },
+  {
+    path: 'invoice/adjustment-after-bordx',
+    title: 'CIS - Invoice Adjustment (After Bordx)',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceAdjustmentAfterBordx, legacyForm: 'frmInvoiceAdjAftBordx', afterBordx: true },
+    loadComponent: () => import('./invoice-adjustment.page').then((m) => m.InvoiceAdjustmentPage),
+  },
 ]

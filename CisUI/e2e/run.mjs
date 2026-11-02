@@ -443,6 +443,18 @@ try {
   await page.waitForFunction(() => ![...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Update').disabled)
   check(totalBill === '233.00', `Invoice adjustment: EA12586874 loads (total ${totalBill}) and Edit enables Update`)
 
+  // 25. Invoice > Adjustment (After Bordx): the same case, without the pending / audit / void parts.
+  await page.goto(`${base}/invoice/adjustment-after-bordx`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'EA12586874')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinicName]')?.value === 'KLINIK TAN (TAMAN SETIA INDAH)', { timeout: 120000 })
+  const afterBordxParts = await page.evaluate(() => ({
+    audit: !!document.querySelector('fieldset[aria-label="Audit review"]'),
+    title: document.querySelector('.page-shell h2, h2')?.textContent ?? '',
+  }))
+  check(!afterBordxParts.audit && afterBordxParts.title.includes('After Bordx'), 'Invoice adjustment (After Bordx): EA12586874 loads without the audit / pending parts')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

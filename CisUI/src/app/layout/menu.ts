@@ -79,7 +79,7 @@ export const MENU: MenuModule[] = [
       { label: 'Adjustment (After Posting)', path: '/invoice/adjustment-after-posting', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdjAfterPost', group: 'Clinic', phase: 3 },
       { label: 'Enquiry', path: '/invoice/enquiry', access: Access.InvoiceAdjustment, form: 'FrmInvoiceEnq', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Batch Transfer', path: '/invoice/batch-transfer', access: Access.InvoiceAdjustment, form: 'FrmInvoiceBatchNoUpd', group: 'Clinic', phase: 3, migrated: true },
-      { label: 'Adjustment (After Bordx)', path: '/invoice/adjustment-after-bordx', access: Access.InvoiceAdjustmentAfterBordx, form: 'frmInvoiceAdjAftBordx', group: 'Clinic', phase: 3 },
+      { label: 'Adjustment (After Bordx)', path: '/invoice/adjustment-after-bordx', access: Access.InvoiceAdjustmentAfterBordx, form: 'frmInvoiceAdjAftBordx', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Email Notification (Payment)', path: '/invoice/email/payment', access: Access.EmailNotification, form: 'frmEmailNotification', group: 'Email Notification', phase: 10 },
       { label: 'Email Notification (Providers)', path: '/invoice/email/providers', access: Access.EmailNotification, form: 'frmEmailNotificationProvider', group: 'Email Notification', phase: 10 },
       { label: 'Email Notification (Rejection)', path: '/invoice/email/rejection', access: Access.EmailNotification, form: 'frmEmailRejectedClaim', group: 'Email Notification', phase: 10 },

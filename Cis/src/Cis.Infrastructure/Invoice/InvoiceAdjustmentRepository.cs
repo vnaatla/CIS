@@ -133,8 +133,10 @@ public sealed class InvoiceAdjustmentRepository : IInvoiceAdjustmentRepository
             NoOfMedication = Enumerable.Range(0, 7).Count(i => S(Med(i).Type).Length > 0), RepudiationReason = S(o.RepReason), CASMgmtNotes = S(o.MgmtNotes),
             CASRepAction = x.RepAction, CASRepAmt = ClinicInvoiceRules.NumOrNull(o.RepAmount) ?? 0,
             CASInvMonth = invoiceDate?.ToString("MM", CultureInfo.InvariantCulture) ?? "", CASInvYear = invoiceDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "",
-            IsPharmacy = F(o.Pharmacy), AddPendNote = S(o.AddPendRemark),
+            IsPharmacy = F(o.Pharmacy),
         });
+        // After bordereaux the desktop leaves the pending note out, so the procedure's default (NULL) clears it.
+        c.Add("AddPendNote", x.AfterBordx ? null : S(o.AddPendRemark));
         for (var i = 0; i < 7; i++)
         {
             c.Add($"MedInjType{i + 1}", S(Med(i).Type));
@@ -142,17 +144,19 @@ public sealed class InvoiceAdjustmentRepository : IInvoiceAdjustmentRepository
             c.Add($"MedInjQty{i + 1}", S(Med(i).Qty));
         }
         await session.ExecAsync("dbo.INVAdj_SaveCase_2013V3", c);
-        await session.ExecAsync("cis.InvAdj_SaveExtras", new
-        {
-            casNumber = cas, qa = string.Join("|", o.Questions), glAmount = bill, c1 = G(o.MedCharges, 0), c2 = G(o.MedCharges, 1), c3 = G(o.MedCharges, 2),
-            c4 = G(o.MedCharges, 3), c5 = G(o.MedCharges, 4), c6 = G(o.MedCharges, 5), c7 = G(o.MedCharges, 6),
-        });
+        if (!x.AfterBordx)
+            await session.ExecAsync("cis.InvAdj_SaveExtras", new
+            {
+                casNumber = cas, qa = string.Join("|", o.Questions), glAmount = bill, c1 = G(o.MedCharges, 0), c2 = G(o.MedCharges, 1), c3 = G(o.MedCharges, 2),
+                c4 = G(o.MedCharges, 3), c5 = G(o.MedCharges, 4), c6 = G(o.MedCharges, 5), c7 = G(o.MedCharges, 6),
+            });
 
         await session.ExecAsync("cis.Ws_INVAdj_SaveInvoice", new
         {
             CasNumber = cas, INVLastUpdateBy = x.UserCode, INVLastUpdateDate = x.Today, BillNo = S(e.BillNo), BillDate = visit, INVAmount = x.Total, INVPayTo = payTo,
             INVPayee = payTo == "C" ? clinic : "MEMBER", INVBillAmt = bill,
         });
+        if (x.AfterBordx) return;
 
         var actual = new DynamicParameters(new
         {

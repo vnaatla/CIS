@@ -179,3 +179,17 @@ and only counted specialist claims of the same cover side.
 Known desktop issues (reproduced): the pending reasons list is empty when the case already has reasons; the reimbursement payable reads the non-GP fee before it is set (payable to member has no non-GP part); a gross-amount status Y on a clinic case leaves the balance unchanged (the formula cancels); "rejection" means status D with claimability C (list positions 3 / 3).
 
 Deliberate differences: parameters instead of pasted SQL (formatted amounts ≥ 1,000 broke it); the member balance is updated in the same transaction (the desktop's HISDB update was outside it); a shared-limit cover updates cover 01 (the desktop took an unordered "top 1" cover); the deferment letter (Word template `HCT_GL_deferment_letter.dot`, not in the source) is not generated; the diagnosis-only update shows a short confirmation (the desktop showed nothing).
+
+
+## Invoice adjustment after bordereaux — frmInvoiceAdjAftBordx (, right 179, )
+
+The Adjustment page in its After Bordx mode (no pending reasons, audit review, void bordereaux or claims approval).
+
+| Step | Behaviour |
+|---|---|
+| Edit | bordered or not, the case is fully editable; posted to SUN → . |
+| Update | , visit date, , NP / NPS clinic names, others diagnosis, , ,  (accepted Y),  (a non-zero bill must equal the total), referral letter (NPS); a negative total only warns ().  → the case (INVAdj_SaveCase_2013V3) and the invoice (INVAdj_SaveInvoice) only → . |
+
+Known desktop issues (reproduced): only the case and the invoice are saved — the actual amounts, claim, worksheet tables and member balance keep their previous values; the pending note (AddPendNote) is cleared because the desktop leaves that argument out; the co-pay shown is the claim's CLMCoPayColl.
+
+Deliberate difference: the case is read through SearchCASOP like the Adjustment screen (the desktop read View_INV_Clm, the same case data).

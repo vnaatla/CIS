@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -61,7 +61,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Adjustment" subtitle="Replaces frmInvoiceAdj, frmCasePending">
+    <app-page-shell [title]="afterBordx ? 'Invoice Adjustment (After Bordx)' : 'Invoice Adjustment'" [subtitle]="afterBordx ? 'Replaces frmInvoiceAdjAftBordx' : 'Replaces frmInvoiceAdj, frmCasePending'">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>
@@ -86,7 +86,9 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <app-field label="Pending">
               <select name="pending" [(ngModel)]="xe.pending" (ngModelChange)="pendingChanged()"><option value="Y">Y - Yes</option><option value="N">N - No</option></select>
             </app-field>
-            <app-action-bar label="Pending actions"><button appButton [disabled]="xe.pending !== 'Y'" (click)="openPending('')">Pending Reasons</button></app-action-bar>
+            @if (!afterBordx) {
+              <app-action-bar label="Pending actions"><button appButton [disabled]="xe.pending !== 'Y'" (click)="openPending('')">Pending Reasons</button></app-action-bar>
+            }
             <app-field label="Pay To">
               <select name="payTo" [(ngModel)]="xe.payTo"><option value="C">C - CLINIC</option><option value="M">M - MEMBER</option></select>
             </app-field>
@@ -154,13 +156,16 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <button appButton variant="primary" [disabled]="editing()" (click)="edit()">Edit</button>
             <button appButton [disabled]="mode() !== 'Full'" [busy]="busy()" (click)="compute()">Compute</button>
             <button appButton variant="primary" [disabled]="!editing()" [busy]="busy()" (click)="update()">Update</button>
-            <button appButton [disabled]="!c()" (click)="voidBordx()">Void Bordx</button>
-            <button appButton [disabled]="!c()" (click)="claimsApp()">Claims App</button>
+            @if (!afterBordx) {
+              <button appButton [disabled]="!c()" (click)="voidBordx()">Void Bordx</button>
+              <button appButton [disabled]="!c()" (click)="claimsApp()">Claims App</button>
+            }
           </app-action-bar>
           @if (result()) {
             <p class="totals" aria-label="Result" data-result>{{ result() }}</p>
           }
 
+          @if (!afterBordx) {
           <fieldset aria-label="Audit review">
             <legend>Audit Review</legend>
             <app-field label="Query" [wide]="true"><input name="auditQuery" [(ngModel)]="audit.query" /></app-field>
@@ -171,6 +176,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <app-field label="Audit Date"><app-date-input name="auditDate" ariaLabel="Audit Date" [(ngModel)]="audit.auditDate" /></app-field>
             <app-action-bar label="Audit actions"><button appButton (click)="saveAudit()">Update Audit</button></app-action-bar>
           </fieldset>
+          }
         }
       </div>
     </app-page-shell>
@@ -197,6 +203,9 @@ export class InvoiceAdjustmentPage {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
   private readonly router = inject(Router)
+  /** frmInvoiceAdjAftBordx (route data afterBordx): its own API and no pending / audit / void / claims approval. */
+  protected readonly afterBordx = inject(ActivatedRoute).snapshot.data['afterBordx'] === true
+  private readonly base = this.afterBordx ? '/api/invoice/adjustment-after-bordx' : BASE
 
   protected readonly money = money
   protected readonly s = s
@@ -243,7 +252,7 @@ export class InvoiceAdjustmentPage {
     this.editing.set(false)
     this.mode.set('View')
     try {
-      const x = await firstValueFrom(this.http.get<AdjustmentCase>(`${BASE}/${encodeURIComponent(this.caseNo)}`))
+      const x = await firstValueFrom(this.http.get<AdjustmentCase>(`${this.base}/${encodeURIComponent(this.caseNo)}`))
       this.fill(x)
       this.c.set(x)
       for (const m of x.messages) this.notify.notify(m, 'info')
@@ -350,7 +359,7 @@ export class InvoiceAdjustmentPage {
   protected async compute(): Promise<void> {
     this.busy.set(true)
     try {
-      this.worksheet.set(await firstValueFrom(this.http.post<WorksheetResult>(`${BASE}/compute`, this.request(null, null))))
+      this.worksheet.set(await firstValueFrom(this.http.post<WorksheetResult>(`${this.base}/compute`, this.request(null, null))))
     } catch (err) {
       this.notify.notify(errorMessage(err), 'error')
     } finally {
@@ -365,7 +374,7 @@ export class InvoiceAdjustmentPage {
     if (this.mode() === 'Full' && !(await this.notify.ask('Are you sure ? '))) return
     let notes: string | null = null
     let email: string | null = null
-    const ubbs = /^(UB|BS)/.test(s(x.case['MBMnumber']))
+    const ubbs = !this.afterBordx && /^(UB|BS)/.test(s(x.case['MBMnumber']))
     const rejection = this.xe.status === 'D' && this.xe.claimability === 'C' && this.xe.pending === 'N'
     const pendingOpen = this.xe.status === 'O' && this.xe.claimability === 'A' && this.xe.pending === 'Y'
     const changed = (rejection && this.xe.repReason.trim() !== s(x.case['RepudiationReason']))
@@ -378,7 +387,7 @@ export class InvoiceAdjustmentPage {
     }
     this.busy.set(true)
     try {
-      const r = await firstValueFrom(this.http.post<{ message: string; opBatchNo: string; warnings: string[] }>(BASE, this.request(notes, email)))
+      const r = await firstValueFrom(this.http.post<{ message: string; opBatchNo: string; warnings: string[] }>(this.base, this.request(notes, email)))
       for (const w of r.warnings) this.notify.notify(w, 'info')
       this.result.set(r.message || 'Diagnosis and remark updated.')
       this.notify.notify(r.message || 'Diagnosis and remark updated.', 'success')
@@ -396,7 +405,7 @@ export class InvoiceAdjustmentPage {
   protected async saveAudit(): Promise<void> {
     if (!(await this.notify.ask('Are you sure want update Audit Details? '))) return
     try {
-      const r = await firstValueFrom(this.http.post<{ message: string }>(`${BASE}/${encodeURIComponent(this.caseNo)}/audit`, this.audit))
+      const r = await firstValueFrom(this.http.post<{ message: string }>(`${this.base}/${encodeURIComponent(this.caseNo)}/audit`, this.audit))
       this.notify.notify(r.message, 'success')
     } catch (err) {
       this.notify.notify(errorMessage(err), 'error')
@@ -405,7 +414,7 @@ export class InvoiceAdjustmentPage {
 
   protected async voidBordx(): Promise<void> {
     try {
-      const r = await firstValueFrom(this.http.post<{ message: string }>(`${BASE}/${encodeURIComponent(this.caseNo)}/void-bordx`, {}))
+      const r = await firstValueFrom(this.http.post<{ message: string }>(`${this.base}/${encodeURIComponent(this.caseNo)}/void-bordx`, {}))
       this.notify.notify(r.message, 'success')
       await this.go()
     } catch (err) {
@@ -415,7 +424,7 @@ export class InvoiceAdjustmentPage {
 
   protected async claimsApp(): Promise<void> {
     try {
-      await firstValueFrom(this.http.post(`${BASE}/${encodeURIComponent(this.caseNo)}/claims-app`, {}))
+      await firstValueFrom(this.http.post(`${this.base}/${encodeURIComponent(this.caseNo)}/claims-app`, {}))
       this.notify.notify('Claims approval set.', 'success')
     } catch (err) {
       this.notify.notify(errorMessage(err), 'error')

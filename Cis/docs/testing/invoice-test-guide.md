@@ -146,3 +146,14 @@ Read-only screen: nothing to clean up.
 | J7 | Audit: query + by + date → Update Audit | `Audit Details updated ! ` |
 
 Clean-up after J6 / J7: restore CISCAS (CasRemark, LastUpdateBy / Date, Audit*), the Claim / ClaimInvoice / ClaimInvoiceActualNew / CLM*New rows and the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt from a backup taken before.
+
+
+## 11. Invoice adjustment after bordereaux —  (frmInvoiceAdjAftBordx, right 179)
+
+| # | Action | Expected |
+|---|---|---|
+| K1 | Case  → Go | the case loads; no Pending Reasons / Audit / Void Bordx / Claims App |
+| K2 | Edit → Bill Amt 200 → Update |  |
+| K3 | (writes) Remark changed → Update → Yes | ; only CISCAS and ClaimInvoice change; CISCAS.AddPendNote becomes NULL |
+
+Clean-up after K3: restore CISCAS (CasRemark, LastUpdateBy / Date, AddPendNote) and ClaimInvoice from a backup taken before.

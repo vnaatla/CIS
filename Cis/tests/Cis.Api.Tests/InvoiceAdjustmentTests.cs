@@ -74,4 +74,29 @@ public class InvoiceAdjustmentDatabaseTests
             "SELECT CLMTotalActual, CLMMCOProcFee FROM CISWorksheet.dbo.Claim WHERE CASNumber = @Case", new { Case }, s.Sql().Transaction);
         Assert.Equal((233m, 23.3m), claim);
     }
+
+    [Fact]
+    public async Task After_bordx_saves_only_the_case_and_the_invoice()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        var (service, repo) = Create();
+        var loaded = await service.LoadAfterBordxAsync(Case);
+        Assert.Equal(AdjustmentEditMode.Full, loaded.EditMode);
+        var wrongBill = await Assert.ThrowsAsync<BusinessRuleException>(() => service.UpdateAfterBordxAsync(Request(bill: "200"), "devadmin"));
+        Assert.Equal("Please check Bill Amount! ", wrongBill.Message);
+
+        await using var s = await TestDb.Sessions().BeginAsync();
+        var before = await s.Sql().Connection.QuerySingleAsync<decimal>(
+            "SELECT CLMTotalActual FROM CISWorksheet.dbo.Claim WHERE CASNumber = @Case", new { Case }, s.Sql().Transaction);
+        var ws = await service.ComputeAsync(Request(), "devadmin");
+        var a = ClinicInvoiceRules.Amounts(Request().Entry);
+        await repo.SaveAsync(s, new AdjustmentSave(Request(remark: "ZZ AFTER BORDX"), loaded, a, 233, 0, ws, "", "DEVADMIN", new DateTime(2026, 11, 2), 0, 233,
+            AfterBordx: true));
+        var cas = await s.Sql().Connection.QuerySingleAsync<(string Remark, string? Note)>(
+            "SELECT RTRIM(CasRemark), AddPendNote FROM dbo.CISCAS WHERE CASNumber = @Case", new { Case }, s.Sql().Transaction);
+        Assert.Equal(("ZZ AFTER BORDX", null), cas);
+        Assert.Equal(before, await s.Sql().Connection.QuerySingleAsync<decimal>(
+            "SELECT CLMTotalActual FROM CISWorksheet.dbo.Claim WHERE CASNumber = @Case", new { Case }, s.Sql().Transaction));
+    }
 }

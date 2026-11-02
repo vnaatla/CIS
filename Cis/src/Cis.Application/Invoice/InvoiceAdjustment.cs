@@ -170,8 +170,9 @@ public record AdjustmentResult(string Message, string OpBatchNo, List<string> Wa
 /// <param name="Today">Today.</param>
 /// <param name="McoProcFee">MCO processing fee.</param>
 /// <param name="ClinicBill">lblCLNBillAmt.</param>
+/// <param name="AfterBordx">frmInvoiceAdjAftBordx: only the case (without QA / pending note) and the invoice are saved.</param>
 public record AdjustmentSave(AdjustmentRequest Request, AdjustmentCase Loaded, decimal[] Amounts, decimal Total, decimal ActCoPay, WorksheetResult Worksheet,
-    string RepAction, string UserCode, DateTime Today, decimal McoProcFee, decimal ClinicBill);
+    string RepAction, string UserCode, DateTime Today, decimal McoProcFee, decimal ClinicBill, bool AfterBordx = false);
 
 /// <summary>Data access of the adjustment (<c>cis.InvAdj_*</c> and the desktop's INVAdj procedures).</summary>
 public interface IInvoiceAdjustmentRepository
@@ -245,6 +246,12 @@ public interface IInvoiceAdjustmentService
 
     /// <summary>cmdvoidbordx_Click.</summary>
     Task<string> VoidBordxAsync(string? casNumber, string userCode);
+
+    /// <summary>frmInvoiceAdjAftBordx CmdGo_Click: a bordered case is editable unless posted to SUN.</summary>
+    Task<AdjustmentCase> LoadAfterBordxAsync(string? casNumber);
+
+    /// <summary>frmInvoiceAdjAftBordx CmdUpdate_Click: the case and its invoice only.</summary>
+    Task<AdjustmentResult> UpdateAfterBordxAsync(AdjustmentRequest request, string userCode);
 }
 
 /// <inheritdoc />
@@ -540,6 +547,58 @@ public sealed class InvoiceAdjustmentService(IDbSessions sessions, IInvoiceAdjus
         await s.CommitAsync();
         return $"Void Bordx Generated! Bordx No: {no} ";
     }
+
+    /// <summary>After Bordx's Edit message.</summary>
+    public const string PostedNoChange = "This case is posted into SUN System. Changes are not allowed!";
+
+    /// <inheritdoc />
+    public async Task<AdjustmentCase> LoadAfterBordxAsync(string? casNumber) => AfterBordx(await LoadAsync(casNumber));
+
+    /// <inheritdoc />
+    public async Task<AdjustmentResult> UpdateAfterBordxAsync(AdjustmentRequest r, string userCode)
+    {
+        var cas = Case(r.CaseNo);
+        var e = r.Entry;
+        var x = r.Extra;
+        var warnings = new List<string>();
+        await using var s = await sessions.BeginAsync();
+        var loaded = AfterBordx(await Load(s, cas));
+        if (loaded.EditMode == AdjustmentEditMode.None) throw new BusinessRuleException(loaded.EditMessage!);
+        var member = await invoices.MemberAsync(T(loaded.Case, "MBMnumber"), T(loaded.Case, "CoverID"));
+        var line = await Line(s, r, loaded with { SpecialistCoPay = N(loaded.Claim, "CLMCoPayColl") }, member, userCode);
+        var clinic = (e.ClinicCode ?? "").Trim().ToUpperInvariant();
+        var clinicName = clinic is "NP" or "NPS" ? "x" : (await clinics.ClinicAsync(s, clinic))?.Name ?? "";
+        var otherDiag = e.Diagnoses.Count > 4 && !string.IsNullOrWhiteSpace(e.Diagnoses[4])
+            && (await clinics.DiagnosisAsync(s, e.Diagnoses[4]!.Trim()))?.OtherIndicator?.Trim() == "Y";
+        var bill = ClinicInvoiceRules.NumOrNull(e.ClinicBillAmount);
+        var memo = F(x.MemoClaim);
+        string? message = null;
+        if (string.IsNullOrWhiteSpace(e.MbmNumber)) message = "Please keyin Member No ! ";
+        else if (string.IsNullOrWhiteSpace(e.VisitDate)) message = "Please Enter Visit Date! ";
+        else if (clinicName.Length == 0) message = "Please keyin the Clinic code ! ";
+        else if (clinic == "NP" && string.IsNullOrWhiteSpace(x.NpClinic)) message = "Please keyin the NP Clinic ! ";
+        else if (clinic == "NPS" && string.IsNullOrWhiteSpace(x.NpClinic)) message = "Please keyin the NPS Clinic ! ";
+        else if (otherDiag && string.IsNullOrWhiteSpace(e.DiagnosisOther)) message = "Please Keyin Others Diagnosis ! ";
+        else if (F(x.PayTo) == "C" && clinic == "NP") message = "Invalid Clinic Code";
+        else if (bill is null && memo == "Y") message = "Please Enter Bill Amount ! ";
+        else if (bill == 0 && memo == "Y") message = "Bill Amount Amount cannot be Zero ! ";
+        else if ((bill ?? 0) != line.Total && (bill ?? 0) != 0) message = "Please check Bill Amount! ";
+        else if (clinic == "NPS" && string.IsNullOrWhiteSpace(x.RefLetter)) message = "Please enter status for referral letter";
+        if (message is not null) throw new BusinessRuleException(message);
+        // The desktop only warns about a negative total and saves anyway.
+        if (line.Total < 0) warnings.Add("Total Invoice Amount cannot be Zero ! ");
+        await repository.SaveAsync(s, line with { Request = r, UserCode = userCode.Trim().ToUpperInvariant(), RepAction = T(loaded.Case, "CASRepAction"), AfterBordx = true });
+        await s.CommitAsync();
+        return new AdjustmentResult("Record updated ! ", T(loaded.Case, "OPBatchNo"), warnings);
+    }
+
+    /// <summary>After Bordx's Edit rule: everything unless posted to SUN; its co-pay is the claim's CLMCoPayColl.</summary>
+    private static AdjustmentCase AfterBordx(AdjustmentCase c) => c with
+    {
+        EditMode = c.Posted ? AdjustmentEditMode.None : AdjustmentEditMode.Full,
+        EditMessage = c.Posted ? PostedNoChange : null,
+        SpecialistCoPay = N(c.Claim, "CLMCoPayColl"),
+    };
 
     private static string Case(string? casNumber)
     {
