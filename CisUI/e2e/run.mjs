@@ -432,6 +432,17 @@ try {
   await page.waitForSelector('table[aria-label=Worksheet] [data-final]', { timeout: 30000 })
   check(true, 'Invoice enquiry: EA12586874 at T301 with its stored worksheet')
 
+  // 24. Invoice > Adjustment: load EA12586874, Edit enables Update (nothing is saved).
+  await page.goto(`${base}/invoice/adjustment`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'EA12586874')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinicName]')?.value === 'KLINIK TAN (TAMAN SETIA INDAH)', { timeout: 120000 })
+  const totalBill = await page.$eval('input[name=totalBill]', (i) => i.value)
+  await page.evaluate(() => [...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Edit').click())
+  await page.waitForFunction(() => ![...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Update').disabled)
+  check(totalBill === '233.00', `Invoice adjustment: EA12586874 loads (total ${totalBill}) and Edit enables Update`)
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

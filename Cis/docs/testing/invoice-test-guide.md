@@ -132,3 +132,17 @@ Clean-up after R6: as C7, plus the member's MBMHealthlimit when the plan has a h
 | E6 | Documents tab (Files:Folders:Outpatient configured) | the case's scanned files; click downloads |
 
 Read-only screen: nothing to clean up.
+
+## 10. Invoice adjustment — `/invoice/adjustment` (frmInvoiceAdj, right 119)
+
+| # | Action | Expected |
+|---|---|---|
+| J1 | Case `EA12586874` → Go | T301 KLINIK TAN, total 233.00, status O, accepted |
+| J2 | Edit | form enabled; Update available |
+| J3 | Bill Amt 200 → Update | `Please check Bill Amount! ` |
+| J4 | Pending Y, no reasons → Update | `Case is in Pending State, Please select Pending Reasons...! ` |
+| J5 | Compute | worksheet with the stored contracted rates |
+| J6 | (writes) Remark changed → Update → Are you sure ? → Yes | `Record updated ! `; CISCAS remark, Claim, CLM*New tables updated |
+| J7 | Audit: query + by + date → Update Audit | `Audit Details updated ! ` |
+
+Clean-up after J6 / J7: restore CISCAS (CasRemark, LastUpdateBy / Date, Audit*), the Claim / ClaimInvoice / ClaimInvoiceActualNew / CLM*New rows and the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt from a backup taken before.

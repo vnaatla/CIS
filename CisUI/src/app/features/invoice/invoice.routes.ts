@@ -67,4 +67,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.InvoiceAdjustment, legacyForm: 'FrmInvoiceEnq' },
     loadComponent: () => import('./invoice-enquiry.page').then((m) => m.InvoiceEnquiryPage),
   },
+  {
+    path: 'invoice/adjustment',
+    title: 'CIS - Invoice Adjustment',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceAdjustment, legacyForm: 'frmInvoiceAdj' },
+    loadComponent: () => import('./invoice-adjustment.page').then((m) => m.InvoiceAdjustmentPage),
+  },
 ]

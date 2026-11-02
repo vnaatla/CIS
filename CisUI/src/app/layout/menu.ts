@@ -75,7 +75,7 @@ export const MENU: MenuModule[] = [
       { label: 'Invoice Control', path: '/invoice/control', access: Access.InvoiceClinic, form: '—', desktop: 'nothing', phase: 3 },
       { label: 'Clinic', path: '/invoice/clinic', access: Access.InvoiceClinic, form: 'frmInvoice, frmWorksheet', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Member', path: '/invoice/member', access: Access.InvoiceMember, form: 'frmInvoiceMBM', group: 'Clinic', phase: 3, migrated: true },
-      { label: 'Adjustment', path: '/invoice/adjustment', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdj', group: 'Clinic', phase: 3 },
+      { label: 'Adjustment', path: '/invoice/adjustment', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdj', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Adjustment (After Posting)', path: '/invoice/adjustment-after-posting', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdjAfterPost', group: 'Clinic', phase: 3 },
       { label: 'Enquiry', path: '/invoice/enquiry', access: Access.InvoiceAdjustment, form: 'FrmInvoiceEnq', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Batch Transfer', path: '/invoice/batch-transfer', access: Access.InvoiceAdjustment, form: 'FrmInvoiceBatchNoUpd', group: 'Clinic', phase: 3, migrated: true },

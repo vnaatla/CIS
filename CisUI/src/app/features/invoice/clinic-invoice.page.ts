@@ -50,13 +50,13 @@ interface ClinicLine {
 }
 
 /** An item field of the form: A index and label (the desktop's captions). */
-type Item = [number, string]
-const PROCEDURES: Item[] = [[10, 'X-Ray'], [11, 'Utr Sound'], [12, 'ECG'], [13, 'Dressing'], [14, 'Nebulizer'], [15, 'I&D'], [16, 'T&S/Sto'], [17, 'M. Surg.'], [18, 'Oth']]
-const LABORATORY: Item[] = [[19, 'B. Drawing'], [20, 'B. Glucose'], [21, 'Urine'], [22, 'Pap Smear'], [23, 'Oth']]
-const IMMUNIZATION: Item[] = [[24, 'DTP&Polio'], [25, 'DTP&Polio&HIB'], [26, 'Hepatitis B'], [27, 'MMR'], [28, 'Oth']]
-const OTHERS: Item[] = [[7, 'Dental'], [8, 'Maternity'], [9, 'PRV Chk.'], [30, 'Vision'], [31, 'Room & Board'], [32, 'Typhoid Jab'], [33, 'Others']]
-const GP: Item[] = [[1, 'GP Fee + LT Med.'], [2, 'GP Med.'], [3, 'GP Inj.'], [4, 'GP LT Med.']]
-const SP: Item[] = [[5, 'Specialist Fee + LT Med.'], [6, 'Specialist Med.'], [7, 'Specialist Inj.'], [8, 'Specialist LT Med.']]
+export type Item = [number, string]
+export const PROCEDURES: Item[] = [[10, 'X-Ray'], [11, 'Utr Sound'], [12, 'ECG'], [13, 'Dressing'], [14, 'Nebulizer'], [15, 'I&D'], [16, 'T&S/Sto'], [17, 'M. Surg.'], [18, 'Oth']]
+export const LABORATORY: Item[] = [[19, 'B. Drawing'], [20, 'B. Glucose'], [21, 'Urine'], [22, 'Pap Smear'], [23, 'Oth']]
+export const IMMUNIZATION: Item[] = [[24, 'DTP&Polio'], [25, 'DTP&Polio&HIB'], [26, 'Hepatitis B'], [27, 'MMR'], [28, 'Oth']]
+export const OTHERS: Item[] = [[7, 'Dental'], [8, 'Maternity'], [9, 'PRV Chk.'], [30, 'Vision'], [31, 'Room & Board'], [32, 'Typhoid Jab'], [33, 'Others']]
+export const GP: Item[] = [[1, 'GP Fee + LT Med.'], [2, 'GP Med.'], [3, 'GP Inj.'], [4, 'GP LT Med.']]
+export const SP: Item[] = [[5, 'Specialist Fee + LT Med.'], [6, 'Specialist Med.'], [7, 'Specialist Inj.'], [8, 'Specialist LT Med.']]
 
 const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v))
 
