@@ -103,7 +103,7 @@ export const MENU: MenuModule[] = [
       { label: 'Case Transfer', path: '/invoice/case-transfer', access: Access.CaseTransfer, form: 'frmMembershipTransfer', group: 'Other', phase: 2, migrated: true },
       { label: 'Tracking', path: '/invoice/tracking', access: Access.InvoiceTracking, form: 'FrmInvoiceTracking', group: 'Other', phase: 10 },
       { label: 'Tracking (Jupiter)', path: '/invoice/tracking-jupiter', access: Access.InvoiceTrackingJupiter, form: 'FrmInvoiceTracking2', group: 'Other', phase: 10 },
-      { label: 'MMA/CPT', path: '/invoice/mma-cpt', access: Access.MmaCpt, form: 'frmMMASchedule, frmShowInvestigation', group: 'Other', phase: 3 },
+      { label: 'MMA/CPT', path: '/invoice/mma-cpt', access: Access.MmaCpt, form: 'frmMMASchedule, frmShowInvestigation', group: 'Other', phase: 3, migrated: true },
       { label: 'Worksheet Registration', path: '/invoice/worksheet-registration', access: Access.WorksheetRegistration, form: 'frmNewWSReg', group: 'Other', desktop: 'never-opened', phase: 3 },
       { label: 'Worksheet Adjustment', path: '/invoice/worksheet-adjustment', access: Access.WorksheetAdjustment, form: 'frmNewWSAjd', group: 'Other', desktop: 'never-opened', phase: 3 },
     ],

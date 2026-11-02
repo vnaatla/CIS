@@ -358,6 +358,19 @@ try {
   await page.waitForFunction(() => document.querySelector('[aria-label="Totals"]')?.textContent.includes('Records: 3'), { timeout: 120000 })
   check(true, 'OP Batch/Invoice lists the 3 open cases of clinic T301 in August 2021')
 
+  // 19. Invoice > MMA/CPT: search BRAIN / A01, a row opens its details.
+  await page.goto(`${base}/invoice/mma-cpt`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=mainBp]')
+  await page.type('input[name=mainBp]', 'brain')
+  await page.type('input[name=opcs]', 'A01')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => [...document.querySelectorAll('app-data-grid tbody td')].some((td) => td.textContent.trim() === 'A0110'), { timeout: 60000 })
+  await page.evaluate(() => [...document.querySelectorAll('app-data-grid tbody tr')].find((tr) => tr.textContent.includes('A0110')).click())
+  await page.waitForFunction(() => document.querySelector('input[name=dSurgFee]')?.value === '7030', { timeout: 30000 })
+  check(true, 'MMA/CPT finds A0110 (BRAIN) and its details show the surgeon fee 7030')
+  await page.click('button[aria-label="Close"]')
+  await page.waitForFunction(() => !document.querySelector('input[name=dSurgFee]'), { timeout: 10000 })
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

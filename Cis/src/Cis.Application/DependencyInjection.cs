@@ -44,6 +44,7 @@ public static class DependencyInjection
         services.AddScoped<Invoice.IInvoiceUpdateService, Invoice.InvoiceUpdateService>();
         services.AddScoped<Invoice.IOpBatchService, Invoice.OpBatchService>();
         services.AddScoped<Invoice.IInvoicePopupService, Invoice.InvoicePopupService>();
+        services.AddScoped<Invoice.IMmaScheduleService, Invoice.MmaScheduleService>();
         return services;
     }
 }

@@ -56,3 +56,15 @@ UPDATE CISDB.dbo.CISCAS SET OPBatchNo = NULL, OPNoEnterUser = NULL, OPBatchDate 
 WHERE CASNumber IN ('EA12586874', 'EA12586891');
 -- The OPBatch 'OC' sequence is not rolled back (the desktop never reuses numbers either).
 ```
+
+## 4. MMA/CPT — `/invoice/mma-cpt` (frmMMASchedule, right 150)
+
+| # | Action | Expected |
+|---|---|---|
+| M1 | Main Body Part `brain`, OPCS `A01` → Search | A0110 (surgical cat `CMO5`, surgeon fee 7030, part B), A0180 (4750) … |
+| M2 | Click A0110 | MMA Details: surgical fee 7030, page 4B, part B |
+| M3 | OPCS `ZZZZ` → Search | `Record not found` |
+| M4 | Surgical Category `SCMO5` | rows whose category contains `CMO5` (the first character is dropped, as in the desktop) |
+| M5 | Print | MMASchedule.xlsx |
+
+Read-only screen: nothing to clean up.

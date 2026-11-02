@@ -39,4 +39,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.InvoiceAdjustment, legacyForm: 'frmUpdateInvoiceBatch' },
     loadComponent: () => import('./op-batch.page').then((m) => m.OpBatchPage),
   },
+  {
+    path: 'invoice/mma-cpt',
+    title: 'CIS - MMA/CPT',
+    canActivate: [accessGuard],
+    data: { access: Access.MmaCpt, legacyForm: 'frmMMASchedule' },
+    loadComponent: () => import('./mma-cpt.page').then((m) => m.MmaCptPage),
+  },
 ]

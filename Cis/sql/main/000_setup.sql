@@ -83,7 +83,8 @@ FROM (VALUES
     (N'Ws_VIEW_Invoice_Tracking_2016', @CisWorksheetDb, N'VIEW_Invoice_Tracking_2016'),
     (N'Ws_ClaimInvoice', @CisWorksheetDb, N'ClaimInvoice'),
     (N'Pay_Payment2CLN', @CisPaymentDb, N'Payment2CLN'),
-    (N'Pay_Payment2MBM', @CisPaymentDb, N'Payment2MBM')) v (s, d, t)
+    (N'Pay_Payment2MBM', @CisPaymentDb, N'Payment2MBM'),
+    (N'Maint_VIEW_MMA_Schedule', @MaintenanceDb, N'VIEW_MMA_Schedule')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

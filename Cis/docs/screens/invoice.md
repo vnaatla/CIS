@@ -52,3 +52,14 @@ Deliberate differences / known desktop issues:
 | Case list — frmCasList (`CaseListModalComponent`) | at least 3 characters (`Search String must be at least 3 characters!`); search by Member No (member or covered person number, starts with), Policy No, Name (contains, default), IC/BC/PP, Case No; invoice (C) or dental (D) cases of active members in VIEW_Cas_MBM (`cis.Popup_CaseList`); none → `No Record Available`; patient blank → `Member may has been Deleted!`; clinic shown as "code - name" for panel clinics. |
 
 Built with their callers (they read or write the caller's state): case pending (frmCasePending, with Adjustment), member info (FrmINVMBMinfo, uses Medix.bas MemberSuppInfo, with the worksheet / invoice screens), invoice detail (frmInvoiceDetPopup, with its caller).
+
+## MMA/CPT — frmMMASchedule + frmShowInvestigation (`/invoice/mma-cpt`, right 150, `api/invoice/mma-cpt`)
+
+| Item | Behaviour |
+|---|---|
+| Search | Filters (each optional): Main Body Part, OPCS Code, Procedures (contains, upper-cased), Surgical / Anaesthetic Category (contains the text **without its first character**, as the desktop's `Mid(x, 2, 8)`), MMA Part (exact), Page from / to, CPT Code (exact), CPT Description (contains); HISMaintenance `VIEW_MMA_Schedule` (`cis.Mma_Search`). None → `Record not found`. |
+| List | main body part, OPCS, procedure, surgical / anaesthetic category (without the first character), surgeon / anaesthetist fee (Surgeon13thNew / Anesthetist13thNew, not part A), part A fee (part A only), page, part, CPT code / description. |
+| Row | opens the details (frmShowInvestigation, Source 1): body part, OPCS, categories and fees, part A fee, page, part, description. |
+| Print | the list as Excel. |
+
+frmShowInvestigation's second use (Source 2, the OPCS of an invoice line via Case_MMASchedule) comes with the invoice screens.
