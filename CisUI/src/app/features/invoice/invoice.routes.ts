@@ -46,4 +46,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.MmaCpt, legacyForm: 'frmMMASchedule' },
     loadComponent: () => import('./mma-cpt.page').then((m) => m.MmaCptPage),
   },
+  {
+    path: 'invoice/clinic',
+    title: 'CIS - Clinic Invoice',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceClinic, legacyForm: 'frmInvoice' },
+    loadComponent: () => import('./clinic-invoice.page').then((m) => m.ClinicInvoicePage),
+  },
 ]

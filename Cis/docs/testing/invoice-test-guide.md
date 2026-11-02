@@ -92,3 +92,17 @@ Clean-up after P6: `DELETE FROM CISWorksheet.dbo.ClaimFileTransfer WHERE CASNumb
 | D4 | Copay file: B=case no. (e.g. a test case starting S / N), C=amount, T=date → Verify Copay → Copay → Yes | `Records have been uploaded!`; Claim.CLMCoPayColl updated |
 
 Clean-up after D4: restore the case's CLMCoPayColl / ClaimLastUpdateDate / ClaimLastUpdateUser to the values noted before.
+
+## 7. Clinic invoice — `/invoice/clinic` (frmInvoice, right 117)
+
+| # | Action | Expected |
+|---|---|---|
+| C1 | Inv. No `ZZTEST`, Inv Date 31/08/2021, Rec Date 01/09/2021, Clinic `t301`, Tot. Amt 45 | clinic KLINIK TAN (TAMAN SETIA INDAH) |
+| C2 | Member `DCHC9086608` → Go | NUR RABIZAH BINTI ADENI, policy 01/08/2021–31/12/2021, limits shown |
+| C3 | Visit 15/08/2021, GP Fee 30, X-Ray 15, co-pay 0, Bill Amt 45, Clm'lity A → Add | line Bill Amt 45.00; Compute shows the worksheet (actual 30 / 15) |
+| C4 | Bill Amt 40 → Add | `Please check Bill Amount! ` |
+| C5 | Visit 31/07/2021 → Add | `Visit Date cannot less than Membership Effective date ! ` |
+| C6 | Verify | `45 Days LATE ! ` (old data) → Save stays disabled |
+| C7 | (data within 45 days only) Verify clean → Save → Are you sure ? → Yes | `Record Saved ! `, new case EA…; CISCAS, Claim, ClaimInvoice*, member balance updated |
+
+Clean-up after C7: delete the new case's rows (CISCAS, CISWorksheet Claim / ClaimInvoice / ClaimInvoiceActual* / ClaimCharges) and restore the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt / MBMCLNMCDaysBal noted before.

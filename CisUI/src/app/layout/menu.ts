@@ -73,7 +73,7 @@ export const MENU: MenuModule[] = [
     path: '/invoice',
     items: [
       { label: 'Invoice Control', path: '/invoice/control', access: Access.InvoiceClinic, form: '—', desktop: 'nothing', phase: 3 },
-      { label: 'Clinic', path: '/invoice/clinic', access: Access.InvoiceClinic, form: 'frmInvoice, frmWorksheet', group: 'Clinic', phase: 3 },
+      { label: 'Clinic', path: '/invoice/clinic', access: Access.InvoiceClinic, form: 'frmInvoice, frmWorksheet', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Member', path: '/invoice/member', access: Access.InvoiceMember, form: 'frmInvoiceMBM', group: 'Clinic', phase: 3 },
       { label: 'Adjustment', path: '/invoice/adjustment', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdj', group: 'Clinic', phase: 3 },
       { label: 'Adjustment (After Posting)', path: '/invoice/adjustment-after-posting', access: Access.InvoiceAdjustment, form: 'frmInvoiceAdjAfterPost', group: 'Clinic', phase: 3 },

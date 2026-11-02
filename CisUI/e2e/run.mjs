@@ -379,6 +379,28 @@ try {
   await page.waitForFunction(() => [...document.querySelectorAll('app-data-grid tbody td')].some((td) => td.textContent.trim() === 'KLINIK TAN (TAMAN SETIA INDAH)'), { timeout: 60000 })
   check(true, 'Pass to Claim: scanning EA12586874 lists it (KLINIK TAN (TAMAN SETIA INDAH))')
 
+  // 21. Invoice > Clinic: Go, clinic, items and Add build the line and its worksheet (nothing is saved).
+  await page.goto(`${base}/invoice/clinic`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=invoiceNo]')
+  await page.type('input[name=invoiceNo]', 'ZZE2E')
+  await page.type('input[aria-label="Invoice Date"]', '31/08/2021')
+  await page.type('input[aria-label="Receipt Date"]', '01/09/2021')
+  await page.type('input[name=clinicCode]', 't301')
+  await page.type('input[name=totalInvoiceAmount]', '45')
+  await page.type('input[name=mbmNumber]', 'DCHC9086608')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinicName]')?.value === 'KLINIK TAN (TAMAN SETIA INDAH)', { timeout: 60000 })
+  await page.waitForSelector('input[aria-label="Visit Date"]', { timeout: 120000 })
+  await page.type('input[aria-label="Visit Date"]', '15/08/2021')
+  await page.type('input[name=b1]', '30')
+  await page.type('input[name=a10]', '15')
+  await page.evaluate(() => { const i = document.querySelector('input[name=a29]'); i.value = ''; i.dispatchEvent(new Event('input')) })
+  await page.type('input[name=clinicBillAmount]', '45')
+  await page.select('select[name=claimability]', 'A')
+  await page.click('app-action-bar[label="Invoice actions"] button.primary')
+  await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
+  check(true, 'Clinic invoice: DCHC9086608 at T301 on 15/08/2021, GP fee 30 + X-Ray 15 → line 45.00 with its worksheet')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
