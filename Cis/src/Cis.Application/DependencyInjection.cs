@@ -47,6 +47,7 @@ public static class DependencyInjection
         services.AddScoped<Invoice.IMmaScheduleService, Invoice.MmaScheduleService>();
         services.AddScoped<Invoice.IWorksheetService, Invoice.WorksheetService>();
         services.AddScoped<Invoice.IMemberSuppService, Invoice.MemberSuppService>();
+        services.AddScoped<Invoice.IClinicInvoiceService, Invoice.ClinicInvoiceService>();
         services.AddScoped<Claim.IPassToClaimService, Claim.PassToClaimService>();
         services.AddScoped<Claim.IUpdateClaimsDataService, Claim.UpdateClaimsDataService>();
         return services;

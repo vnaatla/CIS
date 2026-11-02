@@ -89,7 +89,20 @@ FROM (VALUES
     (N'Ws_ClaimPass2ClaimUpdate', @CisWorksheetDb, N'ClaimPass2ClaimUpdate'),
     (N'Hdb_SearchCASToken', @HisDb, N'SearchCASToken'),
     (N'Ws_Bordx', @CisWorksheetDb, N'Bordx'),
-    (N'Hdb_VIEW_MBM_Clinical', @HisDb, N'VIEW_MBM_Clinical')) v (s, d, t)
+    (N'Hdb_VIEW_MBM_Clinical', @HisDb, N'VIEW_MBM_Clinical'),
+    (N'Ws_Save_Invoice', @CisWorksheetDb, N'Save_Invoice'),
+    (N'Ws_Save_ClaimActual', @CisWorksheetDb, N'Save_ClaimActual'),
+    (N'Ws_SaveActualOthers', @CisWorksheetDb, N'SaveActualOthers'),
+    (N'Ws_SaveINVActual', @CisWorksheetDb, N'SaveINVActual'),
+    (N'Ws_SaveINVCLNContract', @CisWorksheetDb, N'SaveINVCLNContract'),
+    (N'Ws_SaveINVMBMApp', @CisWorksheetDb, N'SaveINVMBMApp'),
+    (N'Ws_SaveINVMBMLmt', @CisWorksheetDb, N'SaveINVMBMLmt'),
+    (N'Ws_SaveINVMBMExcess', @CisWorksheetDb, N'SaveINVMBMExcess'),
+    (N'Ws_SaveINVCLNExcess', @CisWorksheetDb, N'SaveINVCLNExcess'),
+    (N'Ws_SaveINVCLNApp', @CisWorksheetDb, N'SaveINVCLNApp'),
+    (N'Ws_SaveINVClaim_2015', @CisWorksheetDb, N'SaveINVClaim_2015'),
+    (N'Ws_Save_Charges', @CisWorksheetDb, N'Save_Charges'),
+    (N'Hdb_sp_ASOClaimsUtilization', @HisDb, N'sp_ASOClaimsUtilization')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
