@@ -102,7 +102,9 @@ FROM (VALUES
     (N'Ws_SaveINVCLNApp', @CisWorksheetDb, N'SaveINVCLNApp'),
     (N'Ws_SaveINVClaim_2015', @CisWorksheetDb, N'SaveINVClaim_2015'),
     (N'Ws_Save_Charges', @CisWorksheetDb, N'Save_Charges'),
-    (N'Hdb_sp_ASOClaimsUtilization', @HisDb, N'sp_ASOClaimsUtilization')) v (s, d, t)
+    (N'Hdb_sp_ASOClaimsUtilization', @HisDb, N'sp_ASOClaimsUtilization'),
+    (N'Ws_ClaimInvoiceActualOthers', @CisWorksheetDb, N'ClaimInvoiceActualOthers'),
+    (N'Ws_CLMAppNew', @CisWorksheetDb, N'CLMAppNew')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

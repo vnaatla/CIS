@@ -25,7 +25,7 @@ GO
 CREATE OR ALTER PROCEDURE cis.InvClinic_MemberExtra @mbmNumber nvarchar(50), @covId nvarchar(2), @planCode nvarchar(20) AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT TOP (1) a.VisitLimit, a.prepostmatellimit AS PrePostMatLimit, p.PDentalStatus, a.PDentalAnnLimit, a.SPVisitLimit, a.MEVisitLimit, RTRIM(p.VISLmtInd) AS VisLmtInd,
+    SELECT TOP (1) RTRIM(p.HealthlimitIND) AS HealthLimitInd, a.HealthLimit, a.VisitLimit, a.prepostmatellimit AS PrePostMatLimit, p.PDentalStatus, a.PDentalAnnLimit, a.SPVisitLimit, a.MEVisitLimit, RTRIM(p.VISLmtInd) AS VisLmtInd,
            RTRIM(p.ChildLimitInd) AS ChildLimitInd, a.ChildDepLimit
     FROM dbo.AnnualLimit a INNER JOIN dbo.PLN p ON p.PLNCode = a.PLNCode WHERE a.PLNCode = @planCode;
     SELECT TOP (1) RTRIM(PLNMaternityInd) AS MaternityInd, RTRIM(PDentalStatus) AS DentalInd, RTRIM(ASOInd) AS AsoInd FROM dbo.PLN WHERE PLNCode = @planCode;

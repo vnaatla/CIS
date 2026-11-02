@@ -167,19 +167,7 @@ public sealed class ClinicInvoiceRepository : IClinicInvoiceRepository
             CLMSubsidiary = l.Member.Subsidiary, CLMGrpComCode = l.Member.GroupCompanyCode, CLMDeptName = l.Member.DeptName,
         });
 
-        foreach (var (proc, start) in Slots)
-        {
-            var actualSlots = proc == "cis.Ws_SaveINVActual";
-            var p = new DynamicParameters();
-            p.Add(actualSlots ? "CLMNo" : "CasNumber", x.CaseNo);
-            for (var i = 0; i < SlotParams.Length; i++)
-            {
-                if (proc == "cis.Ws_SaveINVMBMApp" && SlotParams[i] == "CLMPapSmear") continue;
-                // SaveINVActual takes typhoid / others from the item amounts (row 474 / 475).
-                p.Add(SlotParams[i], actualSlots && i >= 29 ? (i == 29 ? a[32] : a[33]) : R(start + i));
-            }
-            await session.ExecAsync(proc, p);
-        }
+        await SaveSlotsAsync(session, x.CaseNo, v, a[32], a[33]);
 
         var charges = new DynamicParameters(new { CASNumber = x.CaseNo });
         for (var i = 0; i < 7; i++)
@@ -198,6 +186,25 @@ public sealed class ClinicInvoiceRepository : IClinicInvoiceRepository
         {
             mbmNumber = x.MbmNumber, covId = x.CoverId, visitDate = visit, clinicCode = l.Clinic.Code, userCode = x.UserCode, today = x.Today,
         });
+    }
+
+    /// <summary>The seven SaveINV* procedures: the 31 worksheet slots of each in grid order (SaveINVActual takes typhoid / others from
+    /// <paramref name="typhoid"/> / <paramref name="others"/>; SaveINVMBMApp has no Pap Smear).</summary>
+    internal static async Task SaveSlotsAsync(IDbSession session, string caseNo, IReadOnlyDictionary<int, object?> v, decimal? typhoid, decimal? others)
+    {
+        decimal R(int i) => v.TryGetValue(i, out var o) && o is decimal d ? d : 0;
+        foreach (var (proc, start) in Slots)
+        {
+            var actualSlots = proc == "cis.Ws_SaveINVActual";
+            var p = new DynamicParameters();
+            p.Add(actualSlots ? "CLMNo" : "CasNumber", caseNo);
+            for (var i = 0; i < SlotParams.Length; i++)
+            {
+                if (proc == "cis.Ws_SaveINVMBMApp" && SlotParams[i] == "CLMPapSmear") continue;
+                p.Add(SlotParams[i], actualSlots && i >= 29 ? (i == 29 ? typhoid : others) : R(start + i));
+            }
+            await session.ExecAsync(proc, p);
+        }
     }
 
     /// <inheritdoc />

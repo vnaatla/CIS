@@ -71,6 +71,8 @@ public sealed record InvoiceMember
     public string DentalInd { get; init; } = "";
     /// <summary>ASO.</summary>
     public string AsoInd { get; init; } = "N";
+    /// <summary>PLN.HealthlimitIND (member invoice: the health limit is reduced on save).</summary>
+    public string HealthLimitInd { get; init; } = "";
     /// <summary>PLN.GRPCompany (C014 = Prince Court).</summary>
     public string PlanGroupCompany { get; init; } = "";
     /// <summary>Co-pay (A29 default).</summary>
@@ -412,7 +414,7 @@ public sealed class ClinicInvoiceService(IDbSessions sessions, IClinicInvoiceRep
         {
             Member = m, MemberType = type, AnnualLimit = annual, VisitLimit = visit, BalanceLimit = balance, AccumAmount = accum, GpLimit = N(x.GpSp, "GPLimit"),
             SpLimit = N(x.GpSp, "SPLimit"), SpecLimit = specLimit, SpecAccum = specAccum, SpecBalance = specBalance, Topup = topup, SpTopup = spTopup,
-            MaternityInd = maternity ? "Y" : T(x.Plan, "MaternityInd"), DentalInd = T(x.Plan, "DentalInd"), AsoInd = aso, PlanGroupCompany = T(x.GpSp, "GRPCompany"),
+            MaternityInd = maternity ? "Y" : T(x.Plan, "MaternityInd"), HealthLimitInd = T(x.Visit, "HealthLimitInd"), DentalInd = T(x.Plan, "DentalInd"), AsoInd = aso, PlanGroupCompany = T(x.GpSp, "GRPCompany"),
             CoPay = ClinicInvoiceRules.Num(m.CoPay), McDaysExceeded = mcExceeded, Warnings = warnings, CostCenter = Na("MBMCostCenter"), DeptCode = Na("MBMDeptCode"),
             Subsidiary = Na("Subsidiary"), GroupCompanyCode = T(x.ClaimInfo, "GRPCoCode"), DeptName = Na("MBMDepartment"),
         };
