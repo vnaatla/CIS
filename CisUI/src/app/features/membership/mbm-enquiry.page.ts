@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
+import { NgTemplateOutlet } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
@@ -113,6 +114,23 @@ interface Member {
   flexCare: boolean
   warnings: string[]
 }
+interface FlexRow {
+  item: string
+  capped: string
+  utilised: string
+  balance: string
+  highlight: boolean
+}
+interface Flex {
+  found: boolean
+  coverId: string
+  cappedItems: FlexRow[]
+  items: FlexRow[]
+  totals: FlexRow[]
+  family: FlexRow[]
+  outpatient: FlexRow[]
+  otherItems: FlexRow[]
+}
 interface Case {
   caseNo: string
   mbmNumber: string
@@ -144,7 +162,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
 /** Membership > MBM Enquiry (FrmMBMCLNEnq): a member's details, limits and utilisation, covers, histories, cases and benefit schedule (read-only). */
 @Component({
   selector: 'app-mbm-enquiry-page',
-  imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent, TabsComponent, TabDirective, MemberSearchModalComponent],
+  imports: [FormsModule, NgTemplateOutlet, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent, TabsComponent, TabDirective, MemberSearchModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-shell title="MBM Enquiry" subtitle="Replaces FrmMBMCLNEnq">
@@ -214,7 +232,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
 
             <ng-template appTab="Supplementary">
               <app-data-grid caption="Covered persons" [columns]="coverColumns" [rows]="mm.covers" [rowKey]="coverKey" [pageSize]="0" [selectable]="true"
-                [selectedKey]="cover()?.coverId ?? null" (rowSelected)="cover.set($event)" />
+                [selectedKey]="cover()?.coverId ?? null" (rowSelected)="pickCover($event)" />
               @if (cover(); as c) {
                 <fieldset aria-label="Covered person">
                   <legend>Covered Person {{ c.coverId }}</legend>
@@ -284,10 +302,52 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
                 </ul>
               }
             </ng-template>
+            @if (mm.flexCare) {
+              <ng-template appTab="FlexCare">
+                @if (flex(); as fx) {
+                  @if (!fx.found) {
+                    <p class="muted">No FlexCare figures for this member.</p>
+                  } @else {
+                    <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'Capped items', rows: fx.cappedItems, capped: true }" />
+                    <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'Items utilised', rows: fx.items, capped: false }" />
+                    <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'FlexCare totals', rows: fx.totals, capped: false }" />
+                  }
+                } @else {
+                  <p class="muted">Loading FlexCare…</p>
+                }
+              </ng-template>
+              <ng-template appTab="Family Benefits">
+                @if (!cover()) {
+                  <p class="muted">Select a covered person on the Supplementary tab.</p>
+                } @else if (family(); as fm) {
+                  <p class="notice">Member Name :{{ cover()!.name }} - CoverID:{{ cover()!.coverId }}</p>
+                  @if (fm.coverId === '01') {
+                    <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'Family benefits', rows: fm.family, capped: false }" />
+                  } @else {
+                    <p class="muted">Please select cover id 01 for available Limits &amp; Balance</p>
+                  }
+                  <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'Out-patient utilised', rows: fm.outpatient, capped: false }" />
+                  <ng-container *ngTemplateOutlet="flexTable; context: { caption: 'Other items utilised', rows: fm.otherItems, capped: false }" />
+                } @else {
+                  <p class="muted">Loading family benefits…</p>
+                }
+              </ng-template>
+            }
           </app-tabs>
         }
       </div>
     </app-page-shell>
+
+    <ng-template #flexTable let-caption="caption" let-rows="rows" let-capped="capped">
+      <div class="table-wrap limits-grid flex-grid"><table class="grid" [attr.aria-label]="caption">
+        <thead><tr><th scope="col">No.</th><th scope="col">Item</th>@if (capped) {<th scope="col" class="num">Capped Limit</th>}<th scope="col" class="num">{{ capped ? 'Utilised' : 'Amount' }}</th>@if (capped) {<th scope="col" class="num">Balance</th>}</tr></thead>
+        <tbody>
+          @for (r of rows; track $index) {
+            <tr><td>{{ $index + 1 }}</td><th scope="row">{{ r.item }}</th>@if (capped) {<td class="num">{{ r.capped }}</td>}<td class="num" [class.highlight]="r.highlight">{{ r.utilised }}</td>@if (capped) {<td class="num">{{ r.balance }}</td>}</tr>
+          }
+        </tbody>
+      </table></div>
+    </ng-template>
 
     @if (searchMode(); as mode) {
       <app-member-search-modal [mode]="mode" [initialText]="memberText" (picked)="picked($event)" (closed)="searchMode.set(null)" />
@@ -305,6 +365,8 @@ export class MbmEnquiryPage {
   protected readonly history = signal<Record<string, unknown>[]>([])
   protected readonly cases = signal<Cases | null>(null)
   protected readonly cover = signal<Cover | null>(null)
+  protected readonly flex = signal<Flex | null>(null)
+  protected readonly family = signal<Flex | null>(null)
   protected readonly files = signal<string[]>([])
   protected readonly filesConfigured = signal(true)
   protected readonly busy = signal(false)
@@ -413,6 +475,13 @@ export class MbmEnquiryPage {
     }
   }
 
+  /** lstCovAdd_Click: the cover's panel; FlexCare members reload the Family Benefits tab for it (ShowFlexiMBM). */
+  protected pickCover(c: Cover): void {
+    this.cover.set(c)
+    this.family.set(null)
+    this.loaded.delete(7)
+  }
+
   /** cmdExclusions_Click: General Exclusions (Enquiry) for the member's group company. */
   protected exclusions(): void {
     const grp = this.m()?.groupCompany.trim()
@@ -434,6 +503,12 @@ export class MbmEnquiryPage {
     try {
       if (i === 2) this.amends.set(this.indexed(await firstValueFrom(this.http.get<Record<string, unknown>[]>(`${BASE}/amend-history`, { params: this.p({ member: m.mbmNumber }) }))))
       if (i === 3) this.history.set(this.indexed(await firstValueFrom(this.http.get<Record<string, unknown>[]>(`${BASE}/mbm-history`, { params: this.p({ ic: m.ic }) }))))
+      if (i === 6) this.flex.set(await firstValueFrom(this.http.get<Flex>(`${BASE}/flex`, { params: this.p({ member: m.mbmNumber, coverId: '00' }) })))
+      if (i === 7) {
+        const c = this.cover()
+        if (!c) this.loaded.delete(7)
+        else this.family.set(await firstValueFrom(this.http.get<Flex>(`${BASE}/flex`, { params: this.p({ member: m.mbmNumber, coverId: c.coverId }) })))
+      }
       if (i === 4) this.cases.set(await firstValueFrom(this.http.get<Cases>(`${BASE}/cases`, { params: this.p({ member: m.mbmNumber }) })))
       if (i === 5 && m.groupCompany) {
         const r = await firstValueFrom(this.http.get<{ configured: boolean; files: string[] }>(`${BASE}/policy-files`, { params: this.p({ groupCompany: m.groupCompany }) }))
@@ -463,6 +538,8 @@ export class MbmEnquiryPage {
     this.history.set([])
     this.cases.set(null)
     this.cover.set(null)
+    this.flex.set(null)
+    this.family.set(null)
     this.files.set([])
     this.loaded = new Set()
     this.tab = 0

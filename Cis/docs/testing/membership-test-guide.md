@@ -118,6 +118,8 @@ the MBMCLNOthers / MBMCoveredPersonsCLN status columns (note them before testing
 | E7 | Benefit Schedule | the company's .jpg / .pdf files, or the "not configured" notice |
 | E8 | Show `ZZZZ99999999` | `No record found!` |
 | E9 | `DCHC8922156` → Show | limit status B, Accum. `908.000`, Annual / Balance `FULL` |
+| E11 | `UBHA0000156*05` → FlexCare tab | Sport equipment 1,000.00 / 0.00 / 1,000.00; Total flexCARE for current year 7,300.00, Total Utilised 2,588.58, Balance 4,711.42; |
+| E12 | Supplementary → click cover 01 → Family Benefits | Total Family Medical Benefit Limit 6,000.00, Utilised by Family 1,278.00, Balance 4,722.00; GP 660.00 |
 | E10 | Supplementary → click cover 01 (DARINA BINTI JUSOH) | grid GP 5,000.00 / 3,901.52 / 1,098.48, FFS `52.30`; covers 02–04 show 0.00 / 3,901.52 / 0.00 |
 
 Read-only screen: nothing to clean up.

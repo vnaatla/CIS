@@ -28,6 +28,10 @@ public sealed class MbmEnquiryController(IMbmEnquiryService enquiry, IMbmAdjustm
     [HttpGet("mbm-history")]
     public Task<List<Dictionary<string, object?>>> MbmHistory([FromQuery] string? ic) => adjustment.MbmHistoryAsync(ic);
 
+    /// <summary>FlexCare (cover 00) / Family Benefits (other covers) tab.</summary>
+    [HttpGet("flex")]
+    public Task<EnqFlex> Flex([FromQuery] string? member, [FromQuery] string? coverId) => enquiry.FlexAsync(member, coverId);
+
     /// <summary>Case tab.</summary>
     [HttpGet("cases")]
     public Task<EnqCases> Cases([FromQuery] string? member) => enquiry.CasesAsync(member);

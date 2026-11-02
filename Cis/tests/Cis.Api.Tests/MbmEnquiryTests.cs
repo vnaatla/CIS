@@ -166,6 +166,17 @@ public class MbmEnquiryDatabaseTests(ITestOutputHelper output)
         Assert.Equal(new EnqBenefit("5,000.00", "3,901.52", "1,098.48"), b.Covers[0].Gp);
         Assert.Equal("52.30", b.Covers[0].Ffs);
         Assert.All(b.Covers.Skip(1), c => Assert.Equal(new EnqBenefit("0.00", "3,901.52", "0.00"), c.Gp));
+        // UOB FlexCare (cis.MbmEnq_Flex = spGet_UOB_Flex_New_Cal without its OPENROWSET).
+        Assert.True((await service.FindAsync("UBHA0000156*05")).FlexCare);
+        var flex = await service.FlexAsync("UBHA0000156*05", "00");
+        Assert.True(flex.Found);
+        Assert.Equal(new EnqFlexRow("Sport equipment", "1,000.00", "0.00", "1,000.00"), flex.CappedItems[0]);
+        Assert.Equal(["6,000.00", "7,300.00", "2,588.58", "4,711.42"], new[] { flex.Totals[0], flex.Totals[4], flex.Totals[5], flex.Totals[6] }.Select(t => t.Utilised));
+        Assert.Equal("4,376.50", flex.Outpatient[0].Utilised);
+        var family = await service.FlexAsync("UBHA0000156*05", "01");
+        Assert.Equal(["6,000.00", "1,278.00", "4,722.00"], family.Family.Select(t => t.Utilised));
+        Assert.Equal("660.00", family.Outpatient[3].Utilised);
+        Assert.False((await service.FlexAsync("DCHC9086608", "00")).Found);
         var cases = await service.CasesAsync("DCHC4245383");
         Assert.Equal(10, cases.SpVisits);
         Assert.Equal(cases.SpBill, cases.SpBordx);

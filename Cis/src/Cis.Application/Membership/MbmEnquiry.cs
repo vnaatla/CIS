@@ -169,6 +169,26 @@ public record EnqCase(string CaseNo, string MbmNumber, string Name, string Relat
 public record EnqCases(List<EnqCase> Gp, int GpVisits, decimal GpBill, decimal GpBordx, decimal GpFfs, List<EnqCase> Specialist, int SpVisits, decimal SpBill,
     decimal SpBordx);
 
+/// <summary>A row of the FlexCare grids: item with capped limit / utilised / balance (blank when the grid has no such column).</summary>
+/// <param name="Item">Caption.</param>
+/// <param name="Capped">Capped limit.</param>
+/// <param name="Utilised">Utilised.</param>
+/// <param name="Balance">Balance.</param>
+/// <param name="Highlight">Yellow cell in the desktop.</param>
+public record EnqFlexRow(string Item, string Capped, string Utilised, string Balance, bool Highlight = false);
+
+/// <summary>FlexCare (cover 00) or Family Benefits (other covers) of a UOB FlexCare member (ShowFlexiMBM / PriFlexiCareMember).</summary>
+/// <param name="Found">spGet_UOB_Flex_New_Cal returned rows (else the tabs are hidden).</param>
+/// <param name="CoverId">Cover shown.</param>
+/// <param name="CappedItems">FlexCareGridLimits.</param>
+/// <param name="Items">FlexCareGridUtility.</param>
+/// <param name="Totals">FlexCareGridTotals.</param>
+/// <param name="Family">FamilyBenefitsGrid (shown for cover 01 only).</param>
+/// <param name="Outpatient">OpUtilisedGrid.</param>
+/// <param name="OtherItems">OtherItemUtilisedGrid.</param>
+public record EnqFlex(bool Found, string CoverId, List<EnqFlexRow> CappedItems, List<EnqFlexRow> Items, List<EnqFlexRow> Totals, List<EnqFlexRow> Family,
+    List<EnqFlexRow> Outpatient, List<EnqFlexRow> OtherItems);
+
 /// <summary>Data access of the MBM Enquiry.</summary>
 public interface IMbmEnquiryRepository
 {
@@ -205,6 +225,9 @@ public interface IMbmEnquiryRepository
     /// <summary>CIS_FFS2013 FFS rows: covers other than 00 (2) or one cover (3).</summary>
     Task<List<decimal?>> CoverFfsAsync(IDbSession session, string mbmNumber, int coverMode, string covId);
 
+    /// <summary>cis.MbmEnq_Flex (spGet_UOB_Flex_New_Cal) rows of the member's family for a policy year.</summary>
+    Task<List<Dictionary<string, object?>>> FlexAsync(IDbSession session, string mbmNumber, int policyYear);
+
     /// <summary>GP (false) or specialist (true) cases.</summary>
     Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist);
 }
@@ -217,6 +240,9 @@ public interface IMbmEnquiryService
 
     /// <summary>Case tab (ListCases + ListSpecialistCases).</summary>
     Task<EnqCases> CasesAsync(string? member);
+
+    /// <summary>FlexCare / Family Benefits tab of a cover (ShowFlexiMBM).</summary>
+    Task<EnqFlex> FlexAsync(string? member, string? coverId);
 
     /// <summary>Benefit Schedule tab (LoadDoc): .jpg / .pdf files of the group company's policy wording folder.</summary>
     List<string>? PolicyFiles(string? groupCompany);
@@ -343,6 +369,89 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         var sp = (await repository.CasesAsync(s, number, true)).Select(Case).ToList();
         var live = gp.Where(c => c.Status != "D").ToList();
         return new EnqCases(gp, gp.Count, gp.Sum(c => c.Bill), live.Sum(c => c.Bordx), live.Sum(c => c.Ffs), sp, sp.Count, sp.Sum(c => c.Bill), sp.Sum(c => c.Bill));
+    }
+
+    /// <inheritdoc />
+    public async Task<EnqFlex> FlexAsync(string? member, string? coverId)
+    {
+        var number = Number(member);
+        var cov = string.IsNullOrWhiteSpace(coverId) ? "00" : coverId.Trim();
+        await using var s = await sessions.OpenAsync();
+        var p = (await repository.MemberAsync(s, number)).FirstOrDefault() ?? throw new NotFoundException(NotFound);
+        var exp = p.GetValueOrDefault("MBMPolExpDate") as DateTime?;
+        // cmdShow_Click / lstCovAdd_Click call ShowFlexiMBM only for FlexCare plans (UbCount = 1); without a family the procedure is unfiltered.
+        var flexPlan = exp is not null && (await repository.PlanAsync(s, number, T(p, "PLNType"), T(p, "INSType"), exp)).FlexCount == 1;
+        var rows = flexPlan ? await repository.FlexAsync(s, number, exp!.Value.Year) : [];
+        return Flex(rows, number, cov);
+    }
+
+    /// <summary>ShowFlexiMBM + PriFlexiCareMember on the procedure's rows.</summary>
+    public static EnqFlex Flex(List<Dictionary<string, object?>> rows, string number, string cov)
+    {
+        if (rows.Count == 0) return new EnqFlex(false, cov, [], [], [], [], [], []);
+        var v = new Dictionary<string, string>();
+        string G(string k) => v.TryGetValue(k, out var x) ? x : "0.00";
+        foreach (var r in rows.Where(r => T(r, "CoverID") == cov && T(r, "MemberNo") == number))
+        {
+            if (cov == "00")
+                foreach (var col in new[] { "619", "300", "618", "266", "617Cap", "617", "617Bal", "466Cap", "466", "466Bal", "703Cap", "703", "703Bal", "697", "696", "654" })
+                    v[col] = FlexValue(r, col);
+            foreach (var col in new[] { "615", "303", "468", "616", "305", "135", "614", "306" }) v[col] = FlexValue(r, col);
+            if (N(r, "MBMCountNo") == 0)
+            {
+                v["limit"] = FlexValue(r, "Limits");
+                v["util"] = FlexValue(r, "SumFlexAmount");
+                v["sumop"] = FlexValue(r, "SumOP");
+                v["cf"] = FlexValue(r, "PriFlexBalCF");
+                v["leaves"] = FlexValue(r, "LeavesSoldAmount");
+                v["reward"] = FlexValue(r, "Reward");
+                v["current"] = FlexValue(r, "PriFlexAvailLimit");
+                v["balance"] = Money(Num(v["current"]) - Num(v["util"]));
+            }
+            else
+            {
+                v["limit"] = FlexValue(r, "Limits");
+                v["deputil"] = FlexValue(r, "DepUtil");
+                v["depbal"] = FlexValue(r, "DepBal");
+                v["sumop"] = Money(Num(FlexValue(r, "SumOP")) - Num(FlexValue(r, "SumFlexAmount")));
+            }
+        }
+        EnqFlexRow U(string item, string col) => new(item, "", G(col), "");
+        var others = new[]
+        {
+            ("Chiropractic", "615"), ("Dental", "303"), ("Health Screening", "306"), ("Insurance claim", "468"), ("Mental health treatment/counselling", "616"),
+            ("Optical", "305"), ("Traditional medical treatment", "135"), ("Vaccination", "614"),
+        };
+        return new EnqFlex(true, cov,
+            [
+                new("Sport equipment", G("617Cap"), G("617"), G("617Bal")), new("Vitamins/health supplements", G("466Cap"), G("466"), G("466Bal")),
+                new("Home office", G("703Cap"), G("703"), G("703Bal")), new("COVID-19 Screening(Flexcare)", "0.00", G("654"), "0.00"),
+                new("Medical Devices", "0.00", G("697"), "0.00"), new("Physiotherapy", "0.00", G("696"), "0.00"),
+            ],
+            [
+                U("Car Park", "619"), U("Childcare expenses", "618"), U("Chiropratic", "615"), U("Dental", "303"), U("Gym", "266"), U("Health Screening", "306"),
+                U("Maternity", "300"), U("Mental Health treatment/Counselling", "616"), U("Optical", "305"), U("Traditional medical treatment", "135"),
+                U("Vacciantion", "614"),
+            ],
+            [
+                new("Total Flex Care Limit", "", G("limit"), ""), new("FlexCARE Balance Carry Forward from Previous Year", "", G("cf"), ""),
+                new("Annual Leaves sold conversion", "", G("leaves"), ""), new("Rewards Amount", "", G("reward"), ""),
+                new("Total flexCARE for current year", "", G("current"), "", true), new("Total Utilised", "", G("util"), "", true),
+                new("Total flexCARE Balance Available", "", G("balance"), "", true),
+            ],
+            [
+                new("Total Family Medical Benefit Limit", "", G("limit"), ""), new("Total Utilised by Family", "", G("deputil"), ""),
+                new("Total Family Medical Benefit Balance available", "", G("depbal"), ""),
+            ],
+            [new("GP", "", G("sumop"), ""), new("SP", "", "0.00", ""), new("Inpatient", "", "-", ""), new("Total", "", G("sumop"), "")],
+            [.. others.Select(o => U(o.Item1, o.Item2)), new("Total", "", Money(others.Sum(o => Num(G(o.Item2)))), "")]);
+    }
+
+    /// <summary>Format(IIf(Len(x), x, 0), "#,##0.00"): amounts formatted, texts such as "NA" kept.</summary>
+    private static string FlexValue(Dictionary<string, object?> r, string col)
+    {
+        var t = r.GetValueOrDefault(col) is { } o ? Convert.ToString(o, CultureInfo.InvariantCulture)!.Trim() : "";
+        return t.Length == 0 ? "0.00" : IsNum(t) ? Money(t) : t;
     }
 
     /// <inheritdoc />
@@ -541,6 +650,9 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         decimal d => d,
         double d => (decimal)d,
         int i => i,
+        long l => l,
+        short h => h,
+        byte b => b,
         _ => 0,
     };
 }

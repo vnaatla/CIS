@@ -81,6 +81,10 @@ public sealed class MbmEnquiryRepository : IMbmEnquiryRepository
         await session.QueryAsync<decimal?>("cis.MbmEnq_CoverFfs", new { mbmNumber, coverMode, covId });
 
     /// <inheritdoc />
+    public Task<List<Dictionary<string, object?>>> FlexAsync(IDbSession session, string mbmNumber, int policyYear) =>
+        session.RowsAsync("cis.MbmEnq_Flex", new { icno = (string?)null, empno = (string?)null, mbmno = mbmNumber, polYear = policyYear });
+
+    /// <inheritdoc />
     public Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist) =>
         session.RowsAsync("cis.MbmEnq_Cases", new { mbmNumber, specialist });
 }
