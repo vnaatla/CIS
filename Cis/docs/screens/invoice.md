@@ -181,14 +181,14 @@ Known desktop issues (reproduced): the pending reasons list is empty when the ca
 Deliberate differences: parameters instead of pasted SQL (formatted amounts ≥ 1,000 broke it); the member balance is updated in the same transaction (the desktop's HISDB update was outside it); a shared-limit cover updates cover 01 (the desktop took an unordered "top 1" cover); the deferment letter (Word template `HCT_GL_deferment_letter.dot`, not in the source) is not generated; the diagnosis-only update shows a short confirmation (the desktop showed nothing).
 
 
-## Invoice adjustment after bordereaux — frmInvoiceAdjAftBordx (, right 179, )
+## Invoice adjustment after bordereaux — frmInvoiceAdjAftBordx (`/invoice/adjustment-after-bordx`, right 179, `api/invoice/adjustment-after-bordx`)
 
 The Adjustment page in its After Bordx mode (no pending reasons, audit review, void bordereaux or claims approval).
 
 | Step | Behaviour |
 |---|---|
-| Edit | bordered or not, the case is fully editable; posted to SUN → . |
-| Update | , visit date, , NP / NPS clinic names, others diagnosis, , ,  (accepted Y),  (a non-zero bill must equal the total), referral letter (NPS); a negative total only warns ().  → the case (INVAdj_SaveCase_2013V3) and the invoice (INVAdj_SaveInvoice) only → . |
+| Edit | bordered or not, the case is fully editable; posted to SUN → `This case is posted into SUN System. Changes are not allowed!`. |
+| Update | `Please keyin Member No ! `, `Please Enter Visit Date! `, `Please keyin the Clinic code ! `, NP / NPS clinic names, others diagnosis, `Invalid Clinic Code`, `Please Enter Bill Amount ! `, `Bill Amount Amount cannot be Zero ! ` (accepted Y), `Please check Bill Amount! ` (a non-zero bill must equal the total), referral letter (NPS); a negative total only warns (`Total Invoice Amount cannot be Zero ! `). `Are you sure ? ` → the case (INVAdj_SaveCase_2013V3) and the invoice (INVAdj_SaveInvoice) only → `Record updated ! `. |
 
 Known desktop issues (reproduced): only the case and the invoice are saved — the actual amounts, claim, worksheet tables and member balance keep their previous values; the pending note (AddPendNote) is cleared because the desktop leaves that argument out; the co-pay shown is the claim's CLMCoPayColl.
 
