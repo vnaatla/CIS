@@ -104,7 +104,16 @@ FROM (VALUES
     (N'Ws_Save_Charges', @CisWorksheetDb, N'Save_Charges'),
     (N'Hdb_sp_ASOClaimsUtilization', @HisDb, N'sp_ASOClaimsUtilization'),
     (N'Ws_ClaimInvoiceActualOthers', @CisWorksheetDb, N'ClaimInvoiceActualOthers'),
-    (N'Ws_CLMAppNew', @CisWorksheetDb, N'CLMAppNew')) v (s, d, t)
+    (N'Ws_CLMAppNew', @CisWorksheetDb, N'CLMAppNew'),
+    (N'Ws_SP_INV_CLAIM', @CisWorksheetDb, N'SP_INV_CLAIM'),
+    (N'Ws_SP_Claim_Bordx', @CisWorksheetDb, N'SP_Claim_Bordx'),
+    (N'Pay_ReceiptFrMBM', @CisPaymentDb, N'ReceiptFrMBM'),
+    (N'Ws_CLMActualNew', @CisWorksheetDb, N'CLMActualNew'),
+    (N'Ws_CLMClinicLmtNew', @CisWorksheetDb, N'CLMClinicLmtNew'),
+    (N'Ws_CLMLimitNew', @CisWorksheetDb, N'CLMLimitNew'),
+    (N'Ws_CLMMemberNew', @CisWorksheetDb, N'CLMMemberNew'),
+    (N'Ws_CLMClinicNew', @CisWorksheetDb, N'CLMClinicNew'),
+    (N'Ws_CLMClinicAppNew', @CisWorksheetDb, N'CLMClinicAppNew')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
