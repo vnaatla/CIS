@@ -9,6 +9,7 @@ namespace Cis.Application.Membership;
 /// <param name="AnnualFound">An AnnualLimit row exists for plan + insured type.</param>
 /// <param name="SuppLimitStatus">Its SuppLimitStatus.</param>
 /// <param name="PDentalAnnLimit">Its PDentalAnnLimit.</param>
+/// <param name="SDentalAnnLimit">Its SDentalAnnLimit.</param>
 /// <param name="PSpecAnnLimit">Its PSpecAnnLimit (the optical limit).</param>
 /// <param name="MaternityFound">A maternity plan's AnnualLimit row exists.</param>
 /// <param name="MaternityLimit">Its AnnMaternityLmt.</param>
@@ -18,7 +19,7 @@ namespace Cis.Application.Membership;
 /// <param name="DentalInd">CISDB PLN.PDentalStatus.</param>
 /// <param name="Product">"ProductName(PLNDescription)" of HISDB MBM + PLN, or "".</param>
 /// <param name="FlexCount">FlexCare plan rows covering the expiry date.</param>
-public record EnqPlan(bool AnnualFound, string? SuppLimitStatus, decimal? PDentalAnnLimit, decimal? PSpecAnnLimit, bool MaternityFound, decimal? MaternityLimit,
+public record EnqPlan(bool AnnualFound, string? SuppLimitStatus, decimal? PDentalAnnLimit, decimal? SDentalAnnLimit, decimal? PSpecAnnLimit, bool MaternityFound, decimal? MaternityLimit,
     bool SpecFound, string? SpecStatus, string MaternityInd, string DentalInd, string Product, int FlexCount);
 
 /// <summary>GetSpecLimit inputs (cis.MbmEnq_SpecLimit).</summary>
@@ -26,7 +27,8 @@ public record EnqPlan(bool AnnualFound, string? SuppLimitStatus, decimal? PDenta
 /// <param name="Found">A SpecialistLimit row exists.</param>
 /// <param name="PrinLimit">PrinLimit.</param>
 /// <param name="Status">SuppLimitStatus.</param>
-public record EnqSpecLimit(List<string?> Indicators, bool Found, decimal? PrinLimit, string? Status);
+/// <param name="SuppLimit">SuppLimit (supplementary members when the status is not A).</param>
+public record EnqSpecLimit(List<string?> Indicators, bool Found, decimal? PrinLimit, string? Status, decimal? SuppLimit = null);
 
 /// <summary>A covered person in the Supplementary list.</summary>
 /// <param name="CoverId">Cover id.</param>
@@ -41,8 +43,39 @@ public record EnqSpecLimit(List<string?> Indicators, bool Found, decimal? PrinLi
 /// <param name="Mco">MCO fee.</param>
 /// <param name="Exclusion">MBMCCLNWarranty.</param>
 /// <param name="Remarks">MBMCCLNRemarks.</param>
+/// <param name="PremReduction">Premium reduction (cancelled membership, MBMCISRefund).</param>
+/// <param name="PremEffective">Effective premium.</param>
+/// <param name="McoRefund">MCO refund.</param>
+/// <param name="McoEffective">Effective MCO.</param>
+/// <param name="Gp">GP limit / utilised / balance (S16–S18).</param>
+/// <param name="Specialist">Specialist (S27–S29).</param>
+/// <param name="Dental">Dental (S32–S34).</param>
+/// <param name="Optical">Optical (S36).</param>
+/// <param name="VisitLimit">Visit limit.</param>
+/// <param name="MepLimit">MEP limit.</param>
+/// <param name="DentalLimit">Dental limit.</param>
+/// <param name="DentalExtLimit">Dental extraction limit.</param>
+/// <param name="SpecLimit">Spectacles limit.</param>
+/// <param name="FirstSpecLimit">First spectacles limit.</param>
+/// <param name="AgeBand">Age band.</param>
+/// <param name="AdultChild">A / C.</param>
+/// <param name="EffDate">Cover effective date.</param>
+/// <param name="ExpDate">Cover expiry date.</param>
+/// <param name="Ffs">lstCovAdd_Click FFS label.</param>
+/// <param name="TopupAmt">lstCovAdd_Click top-up label.</param>
+/// <param name="SpTopupAmt">Specialist top-up label.</param>
 public record EnqCover(string CoverId, string Name, string Ic, string Relationship, DateTime? Dob, string Plan, string Status, string CardType, decimal Premium,
-    decimal Mco, string Exclusion, string Remarks);
+    decimal Mco, string Exclusion, string Remarks, decimal? PremReduction, decimal? PremEffective, decimal? McoRefund, decimal? McoEffective, EnqBenefit Gp,
+    EnqBenefit Specialist, EnqBenefit Dental, EnqBenefit Optical, string VisitLimit, decimal MepLimit, decimal DentalLimit, decimal DentalExtLimit, decimal SpecLimit,
+    decimal FirstSpecLimit, string AgeBand, string AdultChild, DateTime? EffDate, DateTime? ExpDate, string Ffs, string TopupAmt, string SpTopupAmt);
+
+/// <summary>showMBMCov, limit status F: PLN + AnnualLimit of the plan.</summary>
+/// <param name="AnnLmtIndSupp">ANNLmtIndSupp.</param>
+/// <param name="SuppLimit">SuppLimit.</param>
+/// <param name="ChildDepLimit">ChildDepLimit.</param>
+/// <param name="SSpecLimit">SSpecLimit.</param>
+/// <param name="VisLmtInd">VISLmtInd.</param>
+public record EnqFLimit(string? AnnLmtIndSupp, decimal? SuppLimit, decimal? ChildDepLimit, string? SSpecLimit, string? VisLmtInd);
 
 /// <summary>The enquiry of one member (cmdShow_Click → FindMBM → showMBM).</summary>
 /// <param name="MbmNumber">Member number.</param>
@@ -163,6 +196,15 @@ public interface IMbmEnquiryRepository
     /// <summary>tmpDentallimit_OneLimit.</summary>
     Task<List<EnqDentalRow>> DentalOneLimitAsync(IDbSession session, string mbmNumber);
 
+    /// <summary>AnnualLimit / SpecialistLimit statuses of a plan on a date (rows latest first).</summary>
+    Task<(List<string?> Annual, List<string?> Specialist)> CoverStatusAsync(IDbSession session, string plan, string insType, DateTime effDate);
+
+    /// <summary>PLN + AnnualLimit of a plan (limit status F).</summary>
+    Task<EnqFLimit?> FLimitAsync(IDbSession session, string plan);
+
+    /// <summary>CIS_FFS2013 FFS rows: covers other than 00 (2) or one cover (3).</summary>
+    Task<List<decimal?>> CoverFfsAsync(IDbSession session, string mbmNumber, int coverMode, string covId);
+
     /// <summary>GP (false) or specialist (true) cases.</summary>
     Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist);
 }
@@ -216,7 +258,8 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
             (topup, spTopup) = t is { } v ? (Money(v.Topup), Money(v.SpTopup)) : (NA, "0");
         }
 
-        var (annual, visit, specLimit) = await CallLimit(s, p, number, ins, plan, pay, eff, limitStatus, warnings);
+        var (annual, visit, specLimit) = await CallLimit(s, p, number, "00", "P", ins, plan, pay, eff, limitStatus, warnings);
+        var specLimitRaw = specLimit;
         var claims = await repository.ClaimsAsync(s, number);
         var shared = p.GetValueOrDefault("IsPrinDepGPShared") is true or 1;
         bool maternityPlan = pl.MaternityInd == "Y", dentalPlan = pl.DentalInd == "Y";
@@ -276,12 +319,7 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         var dental = DentalLabels(flags, asoType, pri, one, optical);
         var vision = Vision(flags, optical, opticalLimit);
 
-        var covers = ins is "F" or "H"
-            ? rows.Where(r => T(r, "MBMCCoverID") is { Length: > 0 } id && id != "00")
-                .Select(c => new EnqCover(T(c, "MBMCCoverID"), T(c, "MBMCName"), T(c, "MBMCICBCPPNo"), T(c, "MBMCRELCode"), c.GetValueOrDefault("MBMCDOB") as DateTime?,
-                    T(c, "MBMCCLNPLNCode") is { Length: > 0 } cp ? cp : plan, T(c, "MBMCCLNStatus"), T(c, "MBMCCardType"), N(c, "MBMCCLNPrem"), N(c, "MBMCCLNMCO"),
-                    T(c, "MBMCCLNWarranty"), T(c, "MBMCCLNRemarks"))).ToList()
-            : [];
+        var covers = ins is "F" or "H" ? await Covers(s, rows, p, number, flags, shared, limitStatus, annual, visit, specLimitRaw, claims, pl, warnings) : [];
         var ageBand = eff is null || dob is null ? "" : await AgeBand(s, eff.Value, dob.Value);
 
         return new EnqMember(number, T(p, "MBMCLNStatus"), T(p, "MBMCLNExpiryStatus"), T(p, "MBMCLNDataStatus"), pay, T(p, "MBMName"), T(p, "MBMPolicyNo"),
@@ -320,30 +358,33 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         _ => null,
     };
 
-    /// <summary>Medix.bas GetSpecLimit ("FULL", "N/A" or the amount) for the principal.</summary>
-    public static string SpecLimit(EnqSpecLimit v, List<string> warnings)
+    /// <summary>Medix.bas GetSpecLimit ("FULL", "N/A" or the amount); supplementary members (MBMType S) take SuppLimit unless the status is A.</summary>
+    public static string SpecLimit(EnqSpecLimit v, List<string> warnings, bool supplementary = false)
     {
         var ind = "N";
         foreach (var i in v.Indicators) ind = i?.Trim() is "F" or "Y" ? i.Trim() : "N";
         if (ind == "F") return "FULL";
         if (ind != "Y") return NA;
         if (!v.Found) return "0";
+        string limit;
         if (string.IsNullOrEmpty(v.Status))
         {
             warnings.Add(SpecWarning);
-            return "FULL";
+            limit = "FULL";
         }
-        return v.Status == "D" ? "FULL" : Cstr(v.PrinLimit ?? 0, "0");
+        else limit = v.Status == "D" ? "FULL" : Cstr(v.PrinLimit ?? 0, "0");
+        return supplementary && v.Status != "A" ? Cstr(v.SuppLimit ?? 0, "0") : limit;
     }
 
-    private async Task<(string Annual, string Visit, string Spec)> CallLimit(IDbSession s, Dictionary<string, object?> p, string number, string ins, string plan,
-        string pay, DateTime? eff, string limitStatus, List<string> warnings)
+    /// <summary>CallLimit / CallLimitDept: annual (ASO members: Tbl_ASOMemberDetails of the cover), visit and specialist limits.</summary>
+    private async Task<(string Annual, string Visit, string Spec)> CallLimit(IDbSession s, Dictionary<string, object?> p, string number, string covId, string mbmType,
+        string ins, string plan, string pay, DateTime? eff, string limitStatus, List<string> warnings)
     {
         string annual = "", visit = "";
-        LimitLookup? limits = eff is null ? null : await adjustment.LimitsAsync(s, "P", ins, plan, eff.Value, pay, limitStatus);
+        LimitLookup? limits = eff is null ? null : await adjustment.LimitsAsync(s, mbmType, ins, plan, eff.Value, pay, limitStatus);
         if (T(p, "ASOInd") == "Y")
         {
-            var aso = await repository.AsoAsync(s, number, "00");
+            var aso = await repository.AsoAsync(s, number, covId);
             annual = Cstr(aso is { Combined: "Y" } a ? a.Aso : aso?.Op ?? 0, "0");
         }
         else if (limits is not null)
@@ -352,9 +393,107 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
             annual = limits.AnnualFull ? "FULL" : Money(limits.AnnualLimit);
         }
         if (limits is not null) visit = limits.VisitFull ? "FULL" : Money(limits.VisitLimit);
-        var spec = SpecLimit(await repository.SpecLimitAsync(s, plan, pay, ins), warnings);
+        var spec = SpecLimit(await repository.SpecLimitAsync(s, plan, pay, ins), warnings, mbmType == "S");
         return (annual, visit, IsNum(spec) ? Money(spec) : spec);
     }
+
+    /// <summary>showMBMCov + lstCovAdd_Click: each covered person with the limits the desktop lists for it.</summary>
+    private async Task<List<EnqCover>> Covers(IDbSession s, List<Dictionary<string, object?>> rows, Dictionary<string, object?> p, string number, EnqFlags flags,
+        bool shared, string limitStatus, string annual, string visit, string spec, List<EnqClaimRow> claims, EnqPlan pl, List<string> warnings)
+    {
+        string ins = T(p, "INSType"), plan = T(p, "PLNType"), pay = T(p, "PAYCode");
+        DateTime? eff = p.GetValueOrDefault("MBMPolEffDate") as DateTime?, exp = p.GetValueOrDefault("MBMPolExpDate") as DateTime?;
+        var refunds = T(p, "MBMCLNStatus") == "C" ? await adjustment.RefundsAsync(s, number) : [];
+        var sDentalLimit = pl.AnnualFound ? pl.SDentalAnnLimit ?? 0 : 0;
+        var clickStatus = eff is null ? "" : (await repository.CoverStatusAsync(s, plan, ins, eff.Value)).Annual is { Count: > 0 } ca ? Blank(ca[^1], "A") : "";
+        var shareTaken = false;
+        var dentalRows = new Dictionary<string, List<EnqDentalRow>>();
+        async Task<List<EnqDentalRow>> Dental(string cov) => dentalRows.TryGetValue(cov, out var d) ? d : dentalRows[cov] = await repository.DentalAsync(s, number, cov);
+        async Task<(decimal Topup, decimal Sp)> Topup(string cov) => await repository.TopupAsync(s, number, cov) ?? (0m, 0m);
+
+        var list = new List<EnqCover>();
+        foreach (var c in rows.Where(r => T(r, "MBMCCoverID") is { Length: > 0 } id && id != "00"))
+        {
+            string cov = T(c, "MBMCCoverID"), coverPlan = T(c, "MBMCCLNPLNCode") is { Length: > 0 } cp ? cp : plan, rel = T(c, "MBMCRELCode");
+            (List<string?> annualRows, List<string?> specRows) = eff is null ? (new List<string?>(), new List<string?>()) : await repository.CoverStatusAsync(s, coverPlan, ins, eff.Value);
+            string status = annualRows.Count > 0 ? Blank(annualRows[^1], "") : "", specStatus = specRows.Count > 0 ? Blank(specRows[^1], "A") : "";
+
+            if (T(p, "ASOInd") == "Y" || status != "F")
+                (annual, visit, spec) = await CallLimit(s, p, number, cov, "S", ins, plan, pay, eff, limitStatus, warnings);
+            else if (await repository.FLimitAsync(s, plan) is { } fl)
+            {
+                if (rel is "W" or "H") annual = fl.AnnLmtIndSupp == "Y" ? Cstr(fl.SuppLimit, "") : "FULL";
+                else if (rel is "S" or "D") annual = fl.AnnLmtIndSupp == "Y" ? Cstr(fl.ChildDepLimit ?? 0, "0") : "FULL";
+                (spec, visit) = (fl.SSpecLimit ?? "", fl.VisLmtInd ?? "");
+            }
+
+            decimal ffs, acc;
+            var specBenefit = new EnqBenefit(NA, NA, NA);
+            var spTopup = (await Topup(cov)).Sp;
+            if (spec.Trim() == NA) (ffs, acc) = CoverGp(flags, status, CoverFilter(claims, CoverMode(status, cov, false), cov));
+            else
+            {
+                (ffs, acc) = CoverGpWithSpec(status, CoverFilter(claims, CoverMode(status, cov, true), cov));
+                var (_, specAcc) = CoverSpec(specStatus, status, cov, CoverFilter(claims, CoverMode(specStatus, cov, true), cov));
+                var counts = specStatus != "A" && ((specStatus == "B" && cov == "01") || specStatus is "C" or "" || (specStatus == "D" && cov == "01"));
+                specBenefit = IsNum(spec)
+                    ? counts ? new EnqBenefit(Money(spec), Money(specAcc), Money(Num(spec) + spTopup - specAcc)) : Zero
+                    : spec.Trim() == "FULL" ? new EnqBenefit("FULL", Money(specAcc), "FULL") : Zero;
+            }
+
+            var gpCounts = status != "A" && !shared;
+            var accLabel = gpCounts && (status is "B" or "C" or "F" or "" or "E" || (status == "D" && cov == "01")) ? Money(acc) : "0.00";
+            string limitLabel = "0.00", balLabel = "0.00";
+            if (IsNum(annual))
+            {
+                var topup = (await Topup("01")).Topup;
+                var take = gpCounts && ((status == "B" && !shareTaken) || status is "C" or "F" or "" or "E" || (status == "D" && cov == "01")
+                                        || (status == "D" && cov == "02" && !shareTaken));
+                if (take)
+                {
+                    (limitLabel, balLabel) = (Money(annual), Money(Num(annual) - acc + topup));
+                    if (status is "B" or "D") shareTaken = true;
+                }
+            }
+            else if (annual.Trim() == "FULL") (limitLabel, balLabel) = ("FULL", "FULL");
+            var gp = shared ? new EnqBenefit(NA, NA, NA) : new EnqBenefit(limitLabel, accLabel, balLabel);
+
+            var opticalCover = SuppOpticalCover(flags, cov);
+            var suppOptical = opticalCover is null ? 0 : SuppOptical(flags, await Dental(opticalCover));
+            var dental = SuppDentalLabels(flags, cov, sDentalLimit, SuppDentalRead(flags) ? SuppDental(flags, await Dental(cov)) : (0m, 0m), suppOptical);
+
+            // lstCovAdd_Click: FFS (CIS_FFS2013) and top-up by the principal plan's limit status.
+            int? clickMode = clickStatus switch
+            {
+                "B" when cov == "01" => 2,
+                "C" or "" => 3,
+                "D" when cov == "01" => 2,
+                "E" => 3,
+                _ => null,
+            };
+            List<decimal?> ffsRows = clickStatus == "A" || clickMode is null ? [] : await repository.CoverFfsAsync(s, number, clickMode.Value, cov);
+            var ffsLabel = ffsRows.Count == 0 ? "0.00" : ffsRows.Sum(x => x ?? 0).ToString("#,###.00", CultureInfo.InvariantCulture);
+            var clickTopup = clickStatus switch
+            {
+                "B" or "D" when cov == "01" => Money((await Topup("01")).Topup),
+                "C" or "" => Money((await Topup(cov)).Topup),
+                _ => "0.00",
+            };
+
+            var dob = c.GetValueOrDefault("MBMCDOB") as DateTime?;
+            var ageBand = eff is null || dob is null ? "" : await AgeBand(s, eff.Value, dob.Value);
+            var refund = refunds.TryGetValue(cov, out var rf) ? rf : ((decimal, decimal, decimal, decimal)?)null;
+            var coverEff = c.GetValueOrDefault("MBMCEffDate") as DateTime?;
+            list.Add(new EnqCover(cov, T(c, "MBMCName"), T(c, "MBMCICBCPPNo"), rel, dob, coverPlan, T(c, "MBMCCLNStatus"), T(c, "MBMCCardType"), N(c, "MBMCCLNPrem"),
+                N(c, "MBMCCLNMCO"), T(c, "MBMCCLNWarranty"), T(c, "MBMCCLNRemarks"), refund?.Item1, refund?.Item2, refund?.Item3, refund?.Item4, gp, specBenefit, dental,
+                new EnqBenefit(NA, opticalCover is null ? NA : Money(suppOptical), NA), IsNum(visit) ? Money(visit) : visit, N(c, "MBMCCLNMEPLmt"), N(c, "MBMCCLNDentalLmt"),
+                N(c, "MBMCCLNDentalExtLmt"), N(c, "MBMCCLNSpecLmt"), N(c, "MBMCCLNFirstSpecLmt"), ageBand, ageBand == "01" ? "C" : "A",
+                coverEff is null ? eff : coverEff, coverEff is null ? exp : c.GetValueOrDefault("MBMCExpDate") as DateTime?, ffsLabel, clickTopup, Money(spTopup)));
+        }
+        return list;
+    }
+
+    private static readonly EnqBenefit Zero = new("0.00", "0.00", "0.00");
 
     private async Task<string> AgeBand(IDbSession s, DateTime eff, DateTime dob)
     {
@@ -362,6 +501,13 @@ public sealed class MbmEnquiryService(IDbSessions sessions, IMbmEnquiryRepositor
         var code = await adjustment.AgeCodeAsync(s, int.Parse(age[..^1], CultureInfo.InvariantCulture), age.EndsWith('D'));
         return code.Length >= 2 ? code[..2] : code.PadLeft(2, '0');
     }
+
+    private static IEnumerable<EnqClaimRow> CoverFilter(List<EnqClaimRow> rows, int? mode, string cov) => mode switch
+    {
+        2 => rows.Where(r => r.CoverId?.Trim() != "00"),
+        3 => rows.Where(r => r.CoverId?.Trim() == cov),
+        _ => [],
+    };
 
     private static IEnumerable<EnqClaimRow> Filter(List<EnqClaimRow> rows, int? mode) => mode switch
     {

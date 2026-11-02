@@ -22,7 +22,7 @@ public sealed class MbmEnquiryRepository : IMbmEnquiryRepository
         var pln = (await grid.ReadAsync<(string? MaternityInd, string? DentalInd)>()).ToList();
         var product = (await grid.ReadAsync<(string? ProductName, string? Description)>()).ToList();
         var flex = await grid.ReadSingleAsync<int>();
-        return new EnqPlan(annual.Count > 0, annual.FirstOrDefault().SuppLimitStatus, annual.FirstOrDefault().PDentalAnnLimit, annual.FirstOrDefault().PSpecAnnLimit,
+        return new EnqPlan(annual.Count > 0, annual.FirstOrDefault().SuppLimitStatus, annual.FirstOrDefault().PDentalAnnLimit, annual.FirstOrDefault().SDentalAnnLimit, annual.FirstOrDefault().PSpecAnnLimit,
             maternity.Count > 0, maternity.FirstOrDefault(), spec.Count > 0, spec.FirstOrDefault(), pln.FirstOrDefault().MaternityInd?.Trim() ?? "",
             pln.FirstOrDefault().DentalInd?.Trim() ?? "",
             product.Count > 0 ? $"{product[0].ProductName}({product[0].Description})" : "", flex);
@@ -50,7 +50,7 @@ public sealed class MbmEnquiryRepository : IMbmEnquiryRepository
         using var grid = await session.MultipleAsync("cis.MbmEnq_SpecLimit", new { plnCode = plan, payCode, insCode = insType });
         var ind = (await grid.ReadAsync<string?>()).ToList();
         var row = (await grid.ReadAsync<(decimal? PrinLimit, decimal? SuppLimit, string? SuppLimitStatus)>()).ToList();
-        return new EnqSpecLimit(ind, row.Count > 0, row.FirstOrDefault().PrinLimit, row.FirstOrDefault().SuppLimitStatus?.Trim());
+        return new EnqSpecLimit(ind, row.Count > 0, row.FirstOrDefault().PrinLimit, row.FirstOrDefault().SuppLimitStatus?.Trim(), row.FirstOrDefault().SuppLimit);
     }
 
     /// <inheritdoc />
@@ -64,6 +64,21 @@ public sealed class MbmEnquiryRepository : IMbmEnquiryRepository
     /// <inheritdoc />
     public async Task<List<EnqDentalRow>> DentalOneLimitAsync(IDbSession session, string mbmNumber) =>
         (await session.QueryAsync<EnqDentalRow>("cis.MbmEnq_DentalOneLimit", new { mbmNumber })).ToList();
+
+    /// <inheritdoc />
+    public async Task<(List<string?> Annual, List<string?> Specialist)> CoverStatusAsync(IDbSession session, string plan, string insType, DateTime effDate)
+    {
+        using var grid = await session.MultipleAsync("cis.MbmEnq_CoverStatus", new { plnCode = plan, insCode = insType, effDate });
+        return ((await grid.ReadAsync<string?>()).ToList(), (await grid.ReadAsync<string?>()).ToList());
+    }
+
+    /// <inheritdoc />
+    public async Task<EnqFLimit?> FLimitAsync(IDbSession session, string plan) =>
+        (await session.QueryAsync<EnqFLimit>("cis.MbmEnq_FLimit", new { plnCode = plan })).FirstOrDefault();
+
+    /// <inheritdoc />
+    public async Task<List<decimal?>> CoverFfsAsync(IDbSession session, string mbmNumber, int coverMode, string covId) =>
+        await session.QueryAsync<decimal?>("cis.MbmEnq_CoverFfs", new { mbmNumber, coverMode, covId });
 
     /// <inheritdoc />
     public Task<List<Dictionary<string, object?>>> CasesAsync(IDbSession session, string mbmNumber, bool specialist) =>

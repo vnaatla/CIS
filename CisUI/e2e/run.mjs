@@ -305,6 +305,16 @@ try {
   await page.evaluate(() => [...document.querySelectorAll('.tabs button')].find((b) => b.textContent.trim() === 'Case').click())
   await page.waitForFunction(() => document.querySelector('[aria-label="Specialist totals"]')?.textContent.includes('Total Visits: 10'), { timeout: 60000 })
   check(true, 'MBM Enquiry: DCHC4245383 utilised 1,985.000 and 10 specialist cases')
+  await page.$eval('input[name=member]', (i) => { i.value = '' })
+  await page.type('input[name=member]', 'DCHC8922156')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name="Accum. Amt"]')?.value === '908.000', { timeout: 90000 })
+  await page.evaluate(() => [...document.querySelectorAll('.tabs button')].find((b) => b.textContent.trim() === 'Supplementary').click())
+  await page.waitForSelector('app-data-grid tbody tr:not(.empty-row)')
+  await page.click('app-data-grid tbody tr:not(.empty-row)')
+  await page.waitForSelector('.cover-limits')
+  const covRow = await page.$eval('.cover-limits tbody tr:nth-child(3)', (r) => [...r.cells].map((c) => c.textContent.trim()).join(' '))
+  check(covRow.startsWith('Balance 1,098.48'), `MBM Enquiry: a click on cover 01 of DCHC8922156 shows its shared limit (${covRow})`)
 
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')

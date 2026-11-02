@@ -34,6 +34,27 @@ interface Cover {
   mco: number
   exclusion: string
   remarks: string
+  premReduction: number | null
+  premEffective: number | null
+  mcoRefund: number | null
+  mcoEffective: number | null
+  gp: Benefit
+  specialist: Benefit
+  dental: Benefit
+  optical: Benefit
+  visitLimit: string
+  mepLimit: number
+  dentalLimit: number
+  dentalExtLimit: number
+  specLimit: number
+  firstSpecLimit: number
+  ageBand: string
+  adultChild: string
+  effDate: string | null
+  expDate: string | null
+  ffs: string
+  topupAmt: string
+  spTopupAmt: string
 }
 interface Member {
   mbmNumber: string
@@ -192,7 +213,33 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
             </ng-template>
 
             <ng-template appTab="Supplementary">
-              <app-data-grid caption="Covered persons" [columns]="coverColumns" [rows]="mm.covers" [rowKey]="coverKey" [pageSize]="0" />
+              <app-data-grid caption="Covered persons" [columns]="coverColumns" [rows]="mm.covers" [rowKey]="coverKey" [pageSize]="0" [selectable]="true"
+                [selectedKey]="cover()?.coverId ?? null" (rowSelected)="cover.set($event)" />
+              @if (cover(); as c) {
+                <fieldset aria-label="Covered person">
+                  <legend>Covered Person {{ c.coverId }}</legend>
+                  <app-field label="Name"><input name="covName" [value]="c.name" disabled /></app-field>
+                  <app-field label="IC"><input name="covIc" [value]="c.ic" disabled /></app-field>
+                  <app-field label="Relationship"><input name="covRel" [value]="c.relationship" disabled /></app-field>
+                  <app-field label="DOB / Age Band"><input name="covDob" [value]="fmt(c.dob) + ' / ' + c.ageBand + ' (' + c.adultChild + ')'" disabled /></app-field>
+                  <app-field label="Plan"><input name="covPlan" [value]="c.plan" disabled /></app-field>
+                  <app-field label="Card Type"><input name="covCard" [value]="c.cardType" disabled /></app-field>
+                  <app-field label="Eff. / Exp. Date"><input name="covPeriod" [value]="fmt(c.effDate) + ' - ' + fmt(c.expDate)" disabled /></app-field>
+                  @for (f of coverFields(c); track f[0]) {
+                    <app-field [label]="f[0]"><input class="num" [attr.name]="'cov ' + f[0]" [value]="f[1]" disabled /></app-field>
+                  }
+                  <app-field label="Exclusion" [wide]="true"><textarea name="covExclusion" rows="2" [value]="c.exclusion" disabled></textarea></app-field>
+                  <app-field label="Remarks" [wide]="true"><textarea name="covRemarks" rows="2" [value]="c.remarks" disabled></textarea></app-field>
+                </fieldset>
+                <div class="table-wrap limits-grid cover-limits"><table class="grid" aria-label="Covered person limits">
+                  <thead><tr><th scope="col">Item</th>@for (b of coverBenefits(c); track b[0]) {<th scope="col" class="num">{{ b[0] }}</th>}</tr></thead>
+                  <tbody>
+                    <tr><th scope="row">Limit</th>@for (b of coverBenefits(c); track b[0]) {<td class="num">{{ b[1].limit }}</td>}</tr>
+                    <tr><th scope="row">Utilised</th>@for (b of coverBenefits(c); track b[0]) {<td class="num">{{ b[1].utilised }}</td>}</tr>
+                    <tr><th scope="row">Balance</th>@for (b of coverBenefits(c); track b[0]) {<td class="num">{{ b[1].balance }}</td>}</tr>
+                  </tbody>
+                </table></div>
+              }
             </ng-template>
 
             <ng-template appTab="Adjustment History">
@@ -257,6 +304,7 @@ export class MbmEnquiryPage {
   protected readonly amends = signal<Record<string, unknown>[]>([])
   protected readonly history = signal<Record<string, unknown>[]>([])
   protected readonly cases = signal<Cases | null>(null)
+  protected readonly cover = signal<Cover | null>(null)
   protected readonly files = signal<string[]>([])
   protected readonly filesConfigured = signal(true)
   protected readonly busy = signal(false)
@@ -312,6 +360,20 @@ export class MbmEnquiryPage {
       ['MEP Limit', money(mm.mepLimit)], ['Dental Limit', money(mm.dentalLimit)], ['Dental Ext. Limit', money(mm.dentalExtLimit)], ['Spec. Limit', money(mm.specLimit)],
       ['First Spec. Limit', money(mm.firstSpecLimit)],
     ]
+  }
+
+  protected coverFields(c: Cover): [string, string][] {
+    return [
+      ['Premium', money(c.premium)], ['Prem. Reduction', money(c.premReduction)], ['Prem. Effective', money(c.premEffective)], ['MCO', money(c.mco)],
+      ['MCO Refund', money(c.mcoRefund)], ['MCO Effective', money(c.mcoEffective)], ['FFS Amt', c.ffs], ['Topup Amt', c.topupAmt], ['SP Topup Amt', c.spTopupAmt],
+      ['Visit Limit', c.visitLimit], ['MEP Limit', money(c.mepLimit)], ['Dental Limit', money(c.dentalLimit)], ['Dental Ext. Limit', money(c.dentalExtLimit)],
+      ['Spec. Limit', money(c.specLimit)], ['First Spec. Limit', money(c.firstSpecLimit)],
+    ]
+  }
+
+  /** lstCovAdd_Click's FGridTopup: maternity is always N/A for a covered person. */
+  protected coverBenefits(c: Cover): [string, Benefit][] {
+    return [['GP', c.gp], ['SP', c.specialist], ['Maternity', { limit: 'N/A', utilised: 'N/A', balance: 'N/A' }], ['Dental', c.dental], ['Optical', c.optical]]
   }
 
   protected benefits(mm: Member): [string, Benefit][] {
@@ -400,6 +462,7 @@ export class MbmEnquiryPage {
     this.amends.set([])
     this.history.set([])
     this.cases.set(null)
+    this.cover.set(null)
     this.files.set([])
     this.loaded = new Set()
     this.tab = 0

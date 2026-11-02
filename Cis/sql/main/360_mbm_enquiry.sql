@@ -124,3 +124,37 @@ BEGIN
         FROM dbo.VIEW_CISMBMInquiry_Spe_CASE WHERE MBMNumber = @mbmNumber;
 END
 GO
+
+-- showMBMCov / lstCovAdd_Click: the cover plan's AnnualLimit and SpecialistLimit statuses on the policy date, in the desktop's read order
+-- (latest first; the desktop keeps the last row it reads).
+CREATE OR ALTER PROCEDURE cis.MbmEnq_CoverStatus @plnCode nvarchar(10), @insCode nvarchar(5), @effDate datetime AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT RTRIM(SuppLimitStatus) AS SuppLimitStatus FROM dbo.AnnualLimit WHERE INSCode = @insCode AND PLNCode = @plnCode AND AnnEffDate <= @effDate ORDER BY AnnEffDate DESC;
+    SELECT RTRIM(SuppLimitStatus) AS SuppLimitStatus FROM dbo.SpecialistLimit WHERE INSCode = @insCode AND PLNCode = @plnCode AND EffDate <= @effDate ORDER BY EffDate DESC;
+END
+GO
+
+-- showMBMCov, limit status F: PLN + AnnualLimit of the plan (first row).
+CREATE OR ALTER PROCEDURE cis.MbmEnq_FLimit @plnCode nvarchar(10) AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 1 RTRIM(p.ANNLmtIndSupp) AS AnnLmtIndSupp, a.SuppLimit, a.ChildDepLimit, RTRIM(p.SSpecLimit) AS SSpecLimit, RTRIM(p.VISLmtInd) AS VisLmtInd
+    FROM dbo.PLN p INNER JOIN dbo.AnnualLimit a ON a.PLNCode = p.PLNCode WHERE p.PLNCode = @plnCode;
+END
+GO
+
+-- lstCovAdd_Click: FFS of CIS_FFS2013 (which also needs an HISDB MBMTwo row) for covers other than 00 (@coverMode 2) or one cover (3).
+CREATE OR ALTER PROCEDURE cis.MbmEnq_CoverFfs @mbmNumber nvarchar(30), @coverMode int, @covId nvarchar(2) AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT cl.CLMMCOProcFee AS FFS
+    FROM dbo.CISCas c WITH (NOLOCK)
+    INNER JOIN cis.Ws_Claim cl WITH (NOLOCK) ON c.CASNumber = cl.CASNumber
+    INNER JOIN cis.Hdb_MBMCLNOthers o ON o.MBMNumber = c.MBMnumber
+    INNER JOIN cis.Hdb_MBMTwo t ON t.MBMNumber = c.MBMnumber
+    INNER JOIN dbo.PLN p ON p.PLNCode = o.PLNType
+    INNER JOIN cis.Ws_ClaimInvoiceActualNew ia WITH (NOLOCK) ON cl.CASNumber = ia.CASNumber
+    WHERE c.CASStatus <> 'D' AND c.MBMnumber = @mbmNumber AND ((@coverMode = 2 AND c.CoverID <> '00') OR (@coverMode = 3 AND c.CoverID = @covId));
+END
+GO

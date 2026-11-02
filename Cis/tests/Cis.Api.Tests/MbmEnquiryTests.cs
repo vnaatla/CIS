@@ -79,6 +79,35 @@ public class MbmEnquiryRulesTests
     }
 
     [Fact]
+    public void Cover_rules_follow_showMBMCov()
+    {
+        Assert.Equal(2, CoverMode("B", "02", false));
+        Assert.Null(CoverMode("B", "02", true));
+        Assert.Equal(3, CoverMode("F", "02", false));
+        Assert.Null(CoverMode("D", "02", false));
+        Assert.Null(CoverMode("A", "01", false));
+        var rows = new[] { Row(100, m: 10, o: 5, u: 20, cov: "01", ffs: 3), Row(50, cov: "01", cln: "S", ffs: 2) };
+        Assert.Equal((0m, 0m), CoverGp(F("C||B|B||"), "A", rows));
+        Assert.Equal((5m, 135m), CoverGp(F("Y||B|B||"), "C", rows));            // bordx - others - maternity (specialist rows too)
+        Assert.Equal((5m, 115m), CoverGp(F("C||B|B||"), "C", rows));            // minus Utilization in this scenario
+        Assert.Equal((0m, -20m), CoverGp(F("C||B|B||"), "F", rows));            // F rows add nothing, the deduction still applies
+        Assert.Equal((3m, 95m), CoverGpWithSpec("C", rows));
+        Assert.Equal((2m, 50m), CoverSpec("C", "C", "01", rows));
+        Assert.Equal((0m, 0m), CoverSpec("E", "C", "01", rows));
+        Assert.Equal((2m, 50m), CoverSpec("E", "", "01", rows));                // the desktop tests the GP status here
+        var dental = new List<EnqDentalRow>
+        {
+            new() { CoverId = "01", TreatmentType = "DENTAL", ClmBordxAmt = 40 },
+            new() { CoverId = "01", TreatmentType = "OPTICAL", ClmBordxAmt = 25 },
+        };
+        Assert.Equal((40m, 40m), SuppDental(F("C||B|B||"), dental));
+        Assert.Equal(25m, SuppOptical(F("C||A|A|C|"), dental));
+        Assert.Equal(65m, SuppOptical(F("Y|C|E|A|Y|C"), dental));               // every row in this scenario
+        Assert.Equal(new EnqBenefit("300.00", "40.00", "235.00"), SuppDentalLabels(F("Y|Y|D|B|Y|"), "01", 300, (40, 40), 25));
+        Assert.Equal(new EnqBenefit(NA, NA, NA), SuppDentalLabels(F("Y|Y|D|B|Y|"), "02", 300, (40, 40), 25));
+    }
+
+    [Fact]
     public void Spec_limit_and_utilisation_filter_follow_the_desktop()
     {
         var w = new List<string>();
@@ -118,6 +147,7 @@ public class MbmEnquiryDatabaseTests(ITestOutputHelper output)
         output.WriteLine(System.Text.Json.JsonSerializer.Serialize(m with { Covers = [] }));
         Assert.Equal(("NUR RABIZAH BINTI ADENI", "H", "S079", "A"), (m.Name, m.InsType, m.Plan, m.LimitStatus));
         Assert.Equal(3, m.Covers.Count);
+        output.WriteLine(System.Text.Json.JsonSerializer.Serialize(m.Covers));
         // Top-ups (negative here) are part of the balance: 7,500 - 4,371 = the member's stored 3,129 balance.
         Assert.Equal(("-4,371.00", "7,500.00", "3,129.00", "FULL"), (m.TopupAmt, m.AnnualLimit, m.BalanceLimit, m.VisitLimit));
         Assert.Equal(new EnqBenefit("250.00", "0.00", "250.00"), m.Dental);       // one-limit dental scenario (C||B|B||)
@@ -130,6 +160,12 @@ public class MbmEnquiryDatabaseTests(ITestOutputHelper output)
         Assert.Equal(("1,985.000", "18.50", "3,000.00", "1,015.00", "N/A"), (u.AccumAmt, u.FfsAmt, u.AnnualLimit, u.BalanceLimit, u.TopupAmt));
         Assert.StartsWith("CO-PAYMENT", u.SpecialRemark);
         await Assert.ThrowsAsync<NotFoundException>(() => service.FindAsync("ZZZZ99999999"));
+        // Limit status B (shared by the supplementaries): every cover shows the covers' claims; only the first gets the limit and balance.
+        var b = await service.FindAsync("DCHC8922156");
+        Assert.Equal(("B", "908.000", "FULL"), (b.LimitStatus, b.AccumAmt, b.BalanceLimit));
+        Assert.Equal(new EnqBenefit("5,000.00", "3,901.52", "1,098.48"), b.Covers[0].Gp);
+        Assert.Equal("52.30", b.Covers[0].Ffs);
+        Assert.All(b.Covers.Skip(1), c => Assert.Equal(new EnqBenefit("0.00", "3,901.52", "0.00"), c.Gp));
         var cases = await service.CasesAsync("DCHC4245383");
         Assert.Equal(10, cases.SpVisits);
         Assert.Equal(cases.SpBill, cases.SpBordx);

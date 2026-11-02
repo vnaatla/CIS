@@ -279,6 +279,130 @@ public static class MbmEnquiryRules
         };
     }
 
+    /// <summary>showMBMCov's claim filter of a cover: 2 = covers other than 00, 3 = this cover, null = none. <paramref name="specBranch"/>:
+    /// with a specialist limit the desktop needs cover 01 for B.</summary>
+    public static int? CoverMode(string status, string coverId, bool specBranch) => status switch
+    {
+        "B" when !specBranch || coverId == "01" => 2,
+        "C" or "F" or "" => 3,
+        "D" when coverId == "01" => 2,
+        "E" => 3,
+        _ => null,
+    };
+
+    /// <summary>showMBMCov (no specialist limit): a row's deduction of Utilization in the cover's accumulated amount.</summary>
+    public static bool CoverSubtractsUtilisation(EnqFlags f) => f.Key switch
+    {
+        "C||A|C|Y|" or "C||B|A|C|" or "C||B|B||" or "Y|Y|B|B||" or "Y|C|E|A|Y|C" => true,
+        "Y|Y|D|B||" => f.PdlPositive,
+        _ => false,
+    };
+
+    /// <summary>showMBMCov (no specialist limit): (FFS, accumulated) of a cover; limit status A gives zero, F rows add nothing.</summary>
+    public static (decimal Ffs, decimal Acc) CoverGp(EnqFlags f, string status, IEnumerable<EnqClaimRow> rows)
+    {
+        if (status == "A") return (0, 0);
+        decimal ffs = 0, acc = 0;
+        var sub = CoverSubtractsUtilisation(f);
+        foreach (var r in rows)
+        {
+            if (status != "F")
+            {
+                ffs += r.Ffs ?? 0;
+                acc += (r.ClmBordxAmt ?? 0) - (r.ClmOthersNoDed ?? 0) - (r.ClmMaternity ?? 0);
+            }
+            if (sub) acc -= r.Utilization ?? 0;
+        }
+        return (ffs, acc);
+    }
+
+    /// <summary>showMBMCov with a specialist limit: GP (FFS, accumulated) of a cover from its non-specialist rows.</summary>
+    public static (decimal Ffs, decimal Acc) CoverGpWithSpec(string status, IEnumerable<EnqClaimRow> rows)
+    {
+        if (status == "A") return (0, 0);
+        var gp = rows.Where(r => r.ClnType is not null && r.ClnType.Trim() != "S").ToList();
+        return (gp.Sum(r => r.Ffs ?? 0), gp.Sum(r => (r.ClmBordxAmt ?? 0) - (r.ClmOthersNoDed ?? 0)));
+    }
+
+    /// <summary>showMBMCov: specialist (FFS, accumulated) of a cover; the desktop tests the GP status for blank in its second branch.</summary>
+    public static (decimal Ffs, decimal Acc) CoverSpec(string specStatus, string gpStatus, string coverId, IEnumerable<EnqClaimRow> rows)
+    {
+        if (specStatus == "A") return (0, 0);
+        bool counts = (specStatus == "B" && coverId == "01") || specStatus == "C" || gpStatus == "" || (specStatus == "D" && coverId == "01");
+        if (!counts) return (0, 0);
+        var sp = rows.Where(r => r.ClnType?.Trim() == "S").ToList();
+        return (sp.Sum(r => r.Ffs ?? 0), sp.Sum(r => (r.ClmBordxAmt ?? 0) - (r.ClmOthersNoDed ?? 0) - (r.ClmMaternity ?? 0)));
+    }
+
+    private static bool SuppDentalKey(EnqFlags f) => f.Key switch
+    {
+        "C||A|A|C|" or "C||A|C|Y|" or "C||B|A|C|" or "Y||B|A|Y|" or "C||B|B||" or "Y||B|B||" or "Y|Y|B|B||" or "Y||A|B||" or "C||B|A||" or "C||D|B||"
+            or "Y|C|A|A||C" or "C||A|A||C" or "Y|C|C|D|Y|" => true,
+        "C||A|B||" => f.PdlBlank || f.PdlPositive,
+        "Y|Y|D|B||" => f.PdlPositive,
+        _ => false,
+    };
+
+    /// <summary>tmpsuppdentallimit: (last row's amount, total) of a cover's dental rows.</summary>
+    public static (decimal Last, decimal Total) SuppDental(EnqFlags f, IEnumerable<EnqDentalRow> rows)
+    {
+        decimal last = 0, total = 0;
+        foreach (var r in rows)
+        {
+            string cov = (r.CoverId ?? "").Trim(), tt = (r.TreatmentType ?? "").Trim();
+            if (tt != "DENTAL") continue;
+            if (!((SuppDentalKey(f) && cov != "00") || (f.Key == "Y|Y|D|B|Y|" && cov == "01") || f.Key == "Y|C|E|A|Y|C")) continue;
+            last = r.ClmBordxAmt ?? 0;
+            total += last;
+        }
+        return (last, total);
+    }
+
+    /// <summary>Suppoptiocalimitlimit: a cover's optical claims.</summary>
+    public static decimal SuppOptical(EnqFlags f, IEnumerable<EnqDentalRow> rows) => rows.Where(r =>
+    {
+        string cov = (r.CoverId ?? "").Trim(), tt = (r.TreatmentType ?? "").Trim();
+        if (f.Key == "Y|C|E|A|Y|C") return true;
+        if (f.Key == "Y|Y|D|B|Y|") return cov == "01" && tt == "OPTICAL";
+        var key = f.Key is "C||A|A|C|" or "C||A|C|Y|" or "C||B|A|C|" or "C||B|A||" or "Y|C|A|A||C" or "C||A|A||C" or "Y|C|C|D|Y|" or "||A|D|C|"
+                  || (f.Key == "C||A|B||" && f.PdlBlank);
+        return key && cov != "00" && tt == "OPTICAL";
+    }).Sum(r => r.ClmBordxAmt ?? 0);
+
+    /// <summary>Which cover the optical figure of Supplyoptiocallimit is computed for (null = N/A).</summary>
+    public static string? SuppOpticalCover(EnqFlags f, string coverId) => f.Key switch
+    {
+        "C||A|A|C|" or "C||A|C|Y|" or "C||B|A|C|" or "C||B|A||" or "Y|C|A|A||C" or "C||A|A||C" or "Y|C|C|D|Y|" or "Y|C|E|A|Y|C" => coverId,
+        "C||A|B||" when f.PdlBlank => coverId,
+        "Y|Y|D|B|Y|" => coverId == "01" ? "01" : null,
+        _ => null,
+    };
+
+    /// <summary>Whether SupplyDentallimits reads the cover's dental rows.</summary>
+    public static bool SuppDentalRead(EnqFlags f) => f.Key switch
+    {
+        "C||A|A|C|" or "C||A|C|Y|" or "C||B|A|C|" or "C||B|B||" or "Y|Y|B|B||" or "C||B|A||" or "C||D|B||" or "Y|C|A|A||C" or "Y|C|C|D|Y|" or "||A|D|C|"
+            or "Y|C|E|A|Y|C" or "Y|Y|D|B|Y|" => true,
+        "C||A|B||" => f.PdlBlank || f.PdlPositive,
+        _ => false,
+    };
+
+    /// <summary>SupplyDentallimits' labels of a cover.</summary>
+    public static EnqBenefit SuppDentalLabels(EnqFlags f, string coverId, decimal sDentalLimit, (decimal Last, decimal Total) d, decimal suppOptical)
+    {
+        var na = new EnqBenefit(NA, NA, NA);
+        var total = new EnqBenefit(NA, Money(d.Total), NA);
+        return f.Key switch
+        {
+            "C||A|A|C|" or "C||A|C|Y|" or "C||B|A|C|" or "C||B|B||" or "C||B|A||" or "C||D|B||" or "Y|C|A|A||C" or "Y|C|C|D|Y|" or "||A|D|C|" => total,
+            "C||A|B||" when f.PdlBlank || f.PdlPositive => total,
+            "Y|Y|B|B||" => new(Money(sDentalLimit), Money(d.Last), Money(sDentalLimit - d.Last)),
+            "Y|C|E|A|Y|C" => new(NA, Money(d.Last), NA),
+            "Y|Y|D|B|Y|" when coverId == "01" => new(Money(sDentalLimit), Money(d.Last), Money(sDentalLimit - (d.Last + R2(suppOptical)))),
+            _ => na,
+        };
+    }
+
     /// <summary>VB CDbl of a label ("1,234.00" → 1234; non-numeric → 0).</summary>
     public static decimal Num(string? text) =>
         decimal.TryParse(text, NumberStyles.Number, CultureInfo.InvariantCulture, out var d) ? d : 0;
