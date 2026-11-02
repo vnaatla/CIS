@@ -102,7 +102,7 @@ Clean-up after D4: restore the case's CLMCoPayColl / ClaimLastUpdateDate / Claim
 | C3 | Visit 15/08/2021, GP Fee 30, X-Ray 15, co-pay 0, Bill Amt 45, Clm'lity A → Add | line Bill Amt 45.00; Compute shows the worksheet (actual 30 / 15) |
 | C4 | Bill Amt 40 → Add | `Please check Bill Amount! ` |
 | C5 | Visit 31/07/2021 → Add | `Visit Date cannot less than Membership Effective date ! ` |
-| C6 | Verify | `45 Days LATE ! ` (old data) → Save stays disabled |
+| C6 | Verify | `45 Days LATE ! ` (old data) listed; Save is still enabled (desktop behaviour) |
 | C7 | (data within 45 days only) Verify clean → Save → Are you sure ? → Yes | `Record Saved ! `, new case EA…; CISCAS, Claim, ClaimInvoice*, member balance updated |
 
 Clean-up after C7: delete the new case's rows (CISCAS, CISWorksheet Claim / ClaimInvoice / ClaimInvoiceActual* / ClaimCharges) and restore the member's MBMCLNBalLmt / MBMAccumAmt / MBMAdjAnnLmt / MBMCLNMCDaysBal noted before.

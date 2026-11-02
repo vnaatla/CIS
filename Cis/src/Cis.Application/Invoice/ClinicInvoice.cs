@@ -264,10 +264,9 @@ public sealed class ClinicInvoiceService(IDbSessions sessions, IClinicInvoiceRep
         bool aso;
         await using (var s = await sessions.BeginAsync())
         {
-            var (line, sameDay, notPayable) = await Build(s, r.Entry, userCode);
+            var (line, sameDay, _) = await Build(s, r.Entry, userCode);
             if (sameDay > 0 && !r.ConfirmDuplicate) throw new BusinessRuleException(Duplicate);
-            // The desktop enables Save only after a clean verification.
-            if (Errors(r.Entry, line, notPayable) is [var first, ..]) throw new BusinessRuleException(first);
+            // The desktop enables Save after Verify even when it listed errors (they are only exported).
             var a = line.Amounts;
             var others = a[32] + a[33];
             var clnBill = ClinicInvoiceRules.Num(r.Entry.ClinicBillAmount);

@@ -384,7 +384,7 @@ export class ClinicInvoicePage implements OnInit {
     try {
       const r = await firstValueFrom(this.http.post<{ errors: string[]; message: string | null }>(`${BASE}/verify`, this.request(this.confirmed)))
       this.errors.set(r.errors)
-      this.verified.set(r.errors.length === 0)
+      this.verified.set(true)
       if (r.message) this.notify.notify(r.message, 'success')
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
