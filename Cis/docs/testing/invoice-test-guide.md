@@ -37,3 +37,22 @@ Clean-up after U6 (note the case's InvoiceNo / InvoiceDate / RegisterDate / Regi
 ```sql
 UPDATE CISDB.dbo.CISCAS SET InvoiceNo = '<old>', InvoiceDate = '<old>', RegisterDate = '<old>', RegisterBy = '<old>' WHERE CASNumber = '<case>';
 ```
+
+## 3. OP Batch/Invoice — `/invoice/op-batch` (frmUpdateInvoiceBatch, right 119)
+
+| # | Action | Expected |
+|---|---|---|
+| O1 | Clinic `T301 - …`, visit 01/08/2021–31/08/2021 → Search | 3 cases: EA12585463 (OP batch OCA1133582), EA12586874, EA12586891 |
+| O2 | Check EA12585463 after giving it an invoice | `Selected Case Already OP Batch And Invoice No generated..! ` |
+| O3 | Invoice No. `ZZ9`, clear Visit Date To → Update | `Please select Visit Date.` |
+| O4 | Update with nothing checked | `Please select the record` |
+| O5 | Check EA12586874 → Update (no invoice no.) → Yes | `Record Saved...`; the case gets a new OCA… batch, OPNoEnterUser, OPBatchDate |
+| O6 | Search again, check EA12586891, Invoice No. `ZZ9` → Update → Yes | invoice `ZZ9-T301`, date 31/08/2021, CASInvMonth 08, CASInvYear 2021 |
+| O7 | Repeat O6 with `ZZ9` | `Given Invoice No is already used...!` |
+
+Clean-up after O5 / O6:
+```sql
+UPDATE CISDB.dbo.CISCAS SET OPBatchNo = NULL, OPNoEnterUser = NULL, OPBatchDate = NULL, InvoiceNo = NULL, InvoiceDate = NULL, CASInvMonth = NULL, CASInvYear = NULL
+WHERE CASNumber IN ('EA12586874', 'EA12586891');
+-- The OPBatch 'OC' sequence is not rolled back (the desktop never reuses numbers either).
+```

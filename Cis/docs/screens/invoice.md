@@ -26,3 +26,20 @@ Deliberate differences:
 | Update | `Please select the record`, `Invalid Invoice Date!`, `Please Enter Cheque Amt!` (the desktop's text for a missing invoice number), `Do you want to update the record ? `; each checked case: CISCAS InvoiceNo, InvoiceDate, RegisterDate = today, RegisterBy = user, in one transaction → `Record Saved...` and the list shows the cases of the new invoice number and date. |
 
 Deliberate differences: filters are parameters (the desktop built SQL text and passed it to ClaimBordxModule); an amount filter that is not a number is ignored (the desktop failed with an SQL error); the unreachable `Please Enter Invoice Date! ` check is not shown.
+
+## OP Batch/Invoice — frmUpdateInvoiceBatch (`/invoice/op-batch`, right 119, `api/invoice/op-batch`)
+
+| Item | Behaviour |
+|---|---|
+| Search | Open cases (CASStatus O, payor not DZ / EM / ES, not DEMO COMPANY BERHAD) of CISCAS + CISWorksheet Claim (the desktop's ClaimBordxModule case 27 as `cis.OpBatch_Search`). Filters, each optional: WS No., clinic, payor, visit / invoice / register dates, invoice no., amount, OP batch and bordereaux / BTBG ranges, the "without OP batch / invoice / bordx / BTBG bordx" boxes, OMNI, clinic type (0 S, 1 G, 2 none), FFS clinic, invoiced Y / N, pay to, referral letter, entity (SJ cases or not). Cases with Pending Z are left out. None → `No record found!`. Totals: records, invoice amount, FFS. |
+| Check | a case with an OP batch and an invoice → `Selected Case Already OP Batch And Invoice No generated..! `; pending → `Selected Case is Pending..! `; claimability not A → `Please check Case Claimability..! `. Check (all) checks the others and warns `Un Selected Few Cases Already OP Batch or Case Pending Or Case Claimability Or Invoice No generated ..! `. |
+| Print | the list as Excel. |
+| Update with an invoice no. | `Please Search Data..!`, `Please select Visit Date.`, `Above claims must belong to same clinic code.` (no clinic filter), `All the claims visit date must belong to same Month & Year.`; invoice no. = typed no. + "-" + the first four characters of the clinic; invoice date = last day of the month of the last listed case's visit; used already → `Given Invoice No is already used...!`. |
+| Update | `Please select the record`, `Do you want to update the record ? `. Checked cases without an OP batch share one new batch (OPBatch "OC" sequence: `OC` + letter + 7 digits, `cis.OpBatch_Next` with a lock) with OPNoEnterUser = user and OPBatchDate = today; with an invoice no. every checked case also gets InvoiceNo, InvoiceDate, CASInvMonth (MM) and CASInvYear → `Record Saved...` and the list clears. Without an invoice no. cases that already have a batch are not changed. |
+
+Deliberate differences / known desktop issues:
+- The search is parameterised; the desktop built SQL text for ClaimBordxModule.
+- The desktop's check rules test the selected row instead of each row (Check all and ItemCheck); the web applies them to each row, and the API re-checks them.
+- All checked cases are saved in one transaction (the desktop committed per case and, for a case with a batch but no invoice no., left a transaction open).
+- The OP batch number is generated inside the save transaction with a lock (the desktop could hand the same number to two users).
+- The "pending state" message after listing can never appear in the desktop (it tests a Pending "Z" value for "Y"); not shown. Double-click to open the case in Adjustment comes with that screen.

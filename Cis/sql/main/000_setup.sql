@@ -80,7 +80,10 @@ FROM (VALUES
     (N'Hdb_ASOMemberDetails', @HisDb, N'Tbl_ASOMemberDetails'),
     (N'Ws_Claim', @CisWorksheetDb, N'Claim'),
     (N'Ws_ClaimInvoiceActualNew', @CisWorksheetDb, N'ClaimInvoiceActualNew'),
-    (N'Ws_VIEW_Invoice_Tracking_2016', @CisWorksheetDb, N'VIEW_Invoice_Tracking_2016')) v (s, d, t)
+    (N'Ws_VIEW_Invoice_Tracking_2016', @CisWorksheetDb, N'VIEW_Invoice_Tracking_2016'),
+    (N'Ws_ClaimInvoice', @CisWorksheetDb, N'ClaimInvoice'),
+    (N'Pay_Payment2CLN', @CisPaymentDb, N'Payment2CLN'),
+    (N'Pay_Payment2MBM', @CisPaymentDb, N'Payment2MBM')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO

@@ -348,6 +348,16 @@ try {
   await page.waitForFunction(() => [...document.querySelectorAll('app-data-grid tbody td')].some((td) => td.textContent.trim() === 'EA12582360'), { timeout: 120000 })
   check(true, 'Invoice Update finds the cases of invoice I00496-ERMA-M813 (EA12582360)')
 
+  // 18. Invoice > OP Batch/Invoice: clinic T301, August 2021 lists its 3 open cases (nothing is updated).
+  await page.goto(`${base}/invoice/op-batch`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=clinic]')
+  await page.type('input[name=clinic]', 'T301 - X')
+  await page.type('input[aria-label="Visit Date From"]', '01/08/2021')
+  await page.type('input[aria-label="Visit Date To"]', '31/08/2021')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('[aria-label="Totals"]')?.textContent.includes('Records: 3'), { timeout: 120000 })
+  check(true, 'OP Batch/Invoice lists the 3 open cases of clinic T301 in August 2021')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

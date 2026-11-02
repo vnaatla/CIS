@@ -32,4 +32,11 @@ export const invoiceRoutes: Routes = [
     data: { access: Access.InvoiceAdjustment, legacyForm: 'frmUpdateCLNInvoice' },
     loadComponent: () => import('./invoice-update.page').then((m) => m.InvoiceUpdatePage),
   },
+  {
+    path: 'invoice/op-batch',
+    title: 'CIS - OP Batch/Invoice',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceAdjustment, legacyForm: 'frmUpdateInvoiceBatch' },
+    loadComponent: () => import('./op-batch.page').then((m) => m.OpBatchPage),
+  },
 ]
