@@ -112,3 +112,12 @@ STDClinicBNFSPE, PLN, BNFNew, CLNRedAmt). Callers: clinic invoice (1), member in
 | Row values | 168–198 actual; 211–241, 426–456, 297–327, 254–284 also the actual (desktop copies the Actual column into the contracted-rate, payable, limit and approved slots — reproduced); 383–413 not payable; 340–370 excess; 150–166 claim totals / audit (159 is always 0 — never set by the desktop); 468 MCO fee; member invoice (476) / adjustment pay-to-M (475) override the approved amount when > 0. |
 
 `CalculateReim` / `CalculateCashless` are never called by the desktop and are not migrated. The grid is shown by the invoice screens' worksheet modal (with those screens).
+
+## Member info — Medix.bas MemberSuppInfo + FrmINVMBMinfo (`api/invoice/member-info/{member}/{cover}`, `MemberInfoModalComponent`)
+
+`cis.MemberSupp_Info` returns the raw rows (VIEW_MBM_Clinical without deleted data, GRPCompany, MBMCLNOthers, PLN by plan / HLT / payor,
+CoPaymentMBM, AnnualLimit.SuppLimitStatus, the covered person and MBMCoveredPersonsCLN of the cover and cover 01); `MemberSuppService` applies
+the desktop's rules: `Membership No not found ! `, `Clinical Plan not found ! `, `No such Cover Person ! `; supplementary limit type A unless
+ANNLmtIndSupp = Y and AnnualLimit gives B / C / D; principal of type D → balance FULL and annual indicator N; AnnLmtIND N → balance FULL;
+VISLmtInd N → visit FULL; principal P* / cover S* dental, specialist and MEP statuses; covers use their own (C) or cover 01's (B / D) clinical
+limits (supplementary indicators N → FULL), card type and status; no cover limit row → status D. The pop-up shows the member, policy and limits.

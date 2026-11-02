@@ -88,7 +88,8 @@ FROM (VALUES
     (N'Ws_VIEW_ClaimPass2Claim', @CisWorksheetDb, N'VIEW_ClaimPass2Claim'),
     (N'Ws_ClaimPass2ClaimUpdate', @CisWorksheetDb, N'ClaimPass2ClaimUpdate'),
     (N'Hdb_SearchCASToken', @HisDb, N'SearchCASToken'),
-    (N'Ws_Bordx', @CisWorksheetDb, N'Bordx')) v (s, d, t)
+    (N'Ws_Bordx', @CisWorksheetDb, N'Bordx'),
+    (N'Hdb_VIEW_MBM_Clinical', @HisDb, N'VIEW_MBM_Clinical')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
