@@ -34,8 +34,11 @@ public sealed class MbmEnquiryController(IMbmEnquiryService enquiry, IMbmAdjustm
 
     /// <summary>Benefit Schedule tab: the group company's policy wording files.</summary>
     [HttpGet("policy-files")]
-    public object PolicyFiles([FromQuery] string? groupCompany) =>
-        new { files = enquiry.PolicyFiles(groupCompany) ?? throw new NotConfiguredException("The policy wording folder is not configured (Files:Folders:PolicyWording).") };
+    public object PolicyFiles([FromQuery] string? groupCompany)
+    {
+        var files = enquiry.PolicyFiles(groupCompany);
+        return new { configured = files is not null, files = files ?? [] };
+    }
 
     /// <summary>Open a listed policy wording file.</summary>
     [HttpGet("policy-file")]

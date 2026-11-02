@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -80,6 +81,7 @@ const BOXES: [string, string][] = [
 export class GeneralExclusionsEnquiryPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
+  private readonly route = inject(ActivatedRoute)
 
   protected readonly boxes = BOXES
   protected readonly groups = signal<string[]>([])
@@ -92,7 +94,13 @@ export class GeneralExclusionsEnquiryPage implements OnInit {
   protected groupCompany = ''
   protected tab = 0
 
+  /** MBM Enquiry's Exclusions button opens the page with ?groupCompany= and searches it (cmdExclusions_Click). */
   async ngOnInit(): Promise<void> {
+    const preset = this.route.snapshot.queryParamMap.get('groupCompany')
+    if (preset) {
+      this.groupCompany = preset
+      void this.search()
+    }
     try {
       this.groups.set((await firstValueFrom(this.http.get<string[] | null>(`${BASE}/group-companies`))) ?? [])
     } catch (e) {

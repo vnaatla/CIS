@@ -115,3 +115,23 @@ Deliberate differences:
 
 Local environment: MBMTwo (`trgMbmContactEncrypt`), MBMOthersTwo (`trgBankAcEncrypt`) and MBM have encryption triggers that need the
 HISDB database master key, which the restored local copy lacks, so Amendment saves fail here; the other endorsements do not touch them.
+
+## MBM Enquiry — FrmMBMCLNEnq (`/membership/enquiry`, right 113, `api/membership/enquiry`)
+
+| Item | Behaviour |
+|---|---|
+| Show | `Please Enter Membership No. Atleast first 8 characters required.` under 8 characters; numbers not starting DC / SL with at most 11 characters (and no `*` in position 12) go through frmSearchMBM05 (one match is taken); HISDB `SearchCISMemberProc_test`; none → `No record found!`. Prev / Next / Search as in MBM Adjustment. The plan's special remark (PLNSpecialRemark) is highlighted and shown as a message. |
+| Exclusions | Empty group company → `Please Check Group Company! `; else General Exclusions (Enquiry) opens searched for the member's group company. |
+| Principal Details | the member's fields, product (HISDB MBM + PLN: `ProductName(PLNDescription)`), limit status text, fees and the limits labels, plus the FPGridTopup grid: Item / GP / SP / Maternity / Dental / Optical × Limit / Utilised / Balance. |
+| Limits | Top-up (CISDB MBMCISTopupHistory): limit status A → all covers, B–F → cover 00, none → `N/A`. CallLimit: ASO members (ASOInd Y) → Tbl_ASOMemberDetails (combined → ASO limit, else OP limit); else GetAnnualLimit / GetVisitLimit; GetSpecLimit (PLN.PSpecLimit F → FULL, Y → SpecialistLimit). Balance = annual + top-up − utilised (limit status E → annual `FULL`). Visit limit shows MBMCLNVisitLmt when numeric. |
+| Utilisation | `CIS_FFS2018_test` claims of the member (parameterised copy `cis.MbmEnq_Utilisation`), filtered by limit status (shared GP or A → all covers; B–E, blank, F → cover 00). No specialist limit: per row the deduction of the plan's scenario (PDentalStatus / SDentalStatus / IsGPDentalShared / IsDentalOpticalShared / PSpecStatus / SSpecStatus, PDentalAnnLimit), maternity deducted for maternity plans; with a specialist limit: GP rows (all rows when PLNGPSPShared) minus others / typhoid / maternity / dental, specialist rows (CLNType S) = bordx − others − maternity, filtered by SpecialistLimit status. Maternity = AnnMaternityLmt − all maternity claims. Optical = principal optical claims; dental from `tmpDlimit_local_test1` or `tmpDentallimit_OneLimit` per scenario (`MbmEnquiryRules`). |
+| Supplementary | I / G → `This Plan does not have supplementary` (back to the first tab); covers of the member. |
+| Adjustment / MBM History | as MBM Adjustment. |
+| Case | GP (VIEW_CISMBMInquiry_GPCASE) and specialist (VIEW_CISMBMInquiry_Spe_CASE) cases; totals: visits, bill, bordereaux and FFS of not-deleted GP cases; specialist bordereaux total adds the bill amount (desktop). |
+| Benefit Schedule | `.jpg` / `.JPG` / `.pdf` / `.PDF` files of `CLNPolicyWording\<group company>`; a click opens the file. |
+
+Deliberate differences:
+- CIS_FFS2018_test, tmpDlimit_local_test1 and tmpDentallimit_OneLimit are called with parameters; the desktop concatenated the member number into SQL text.
+- Dentallimit_OneLimit compares a blank ASOType with 2 / 3, which raises a VB type-mismatch and aborts the Show; the web treats blank as "not 2 / 3".
+- CallLimit splits the member number at "-" only when the dash is the first character (desktop bug, reproduced: ASO look-ups use the whole number).
+- Not yet migrated (next step): the covered person's limits on a Supplementary click (lstCovAdd_Click / showMBMCov) and the FlexCare / Family Benefits tabs (UB FlexCare plans).

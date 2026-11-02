@@ -104,3 +104,18 @@ Opened from the clinic invoice (Phase 3). Until then test it through the API (`/
 
 Clean-up after a test endorsement: delete the MBMCISAmendHistory / MBMCISRefund rows of the member created by DEVADMIN today and restore
 the MBMCLNOthers / MBMCoveredPersonsCLN status columns (note them before testing).
+
+## 7. MBM Enquiry — `/membership/enquiry` (FrmMBMCLNEnq, right 113)
+
+| # | Action | Expected |
+|---|---|---|
+| E1 | Show with `DCHC908` | `Please Enter Membership No. Atleast first 8 characters required.` |
+| E2 | `DCHC9086608` → Show | limit status `Share Limit For Family`; Topup `-4,371.00`, Annual `7,500.00`, Balance `3,129.00`, Visit `FULL`; grid Dental 250.00 / 0.00 / 250.00, Maternity 3,000.00 / 0.00 / 3,000.00, SP N/A |
+| E3 | `DCHC4245383` → Show | message with the special remark `CO-PAYMENT RM15 (SPECIALIST LEVEL)…`; FFS `18.50`, Accum. `1,985.000`, Annual `3,000.00`, Balance `1,015.00`, Topup `N/A` |
+| E4 | Case tab (DCHC4245383) | 10 specialist cases; specialist Bill = Bordx total |
+| E5 | Supplementary tab (DCHC9086608) | 3 covers (01–03) |
+| E6 | Exclusions | General Exclusions (Enquiry) for SACOFA SDN BHD |
+| E7 | Benefit Schedule | the company's .jpg / .pdf files, or the "not configured" notice |
+| E8 | Show `ZZZZ99999999` | `No record found!` |
+
+Read-only screen: nothing to clean up.

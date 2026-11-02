@@ -406,3 +406,9 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .screen-form fieldset > .radio-row { grid-column: 1 / -1; flex-wrap: wrap; }
 .screen-form > .notice { margin: 0; padding: 8px 12px; border-left: 4px solid var(--accent); background: var(--accent-soft, #f9ecf7); font-size: 13px; }
 .file-list { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+/* MBM Enquiry: limits grid (FPGridTopup), case totals, highlighted special remark (txtsplremark yellow). */
+.screen-form > .tabs .limits-grid, .limits-grid { max-width: 760px; margin-top: 8px; }
+.limits-grid td.num, .limits-grid th.num { text-align: right; }
+.totals { margin: 6px 0 14px; font-size: 13px; }
+.section-title { margin: 12px 0 6px; font-size: 14px; }
+textarea.highlight { background: #fff8c5; }

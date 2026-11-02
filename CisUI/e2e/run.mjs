@@ -290,6 +290,22 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('app-data-grid tbody tr:not(.empty-row)').length === 3, { timeout: 60000 })
   check(true, 'MBM Adjustment shows DCHC9086608 and its 3 covered persons')
 
+  // 15b. Membership > MBM Enquiry: Show computes the limits (7,500 - 4,371 top-ups = 3,129 balance); the Case tab lists the cases of a member with claims.
+  await page.goto(`${base}/membership/enquiry`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=member]')
+  await page.type('input[name=member]', 'DCHC9086608')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name="Balance Limit"]')?.value === '3,129.00', { timeout: 90000 })
+  const gpRow = await page.$eval('.limits-grid tbody tr:nth-child(3)', (r) => [...r.cells].map((c) => c.textContent.trim()).join(' '))
+  check(gpRow.startsWith('Balance 3,129.00'), `MBM Enquiry shows DCHC9086608's limits grid (${gpRow})`)
+  await page.$eval('input[name=member]', (i) => { i.value = '' })
+  await page.type('input[name=member]', 'DCHC4245383')
+  await page.click('app-action-bar button.primary')
+  await page.waitForFunction(() => document.querySelector('input[name="Accum. Amt"]')?.value === '1,985.000', { timeout: 90000 })
+  await page.evaluate(() => [...document.querySelectorAll('.tabs button')].find((b) => b.textContent.trim() === 'Case').click())
+  await page.waitForFunction(() => document.querySelector('[aria-label="Specialist totals"]')?.textContent.includes('Total Visits: 10'), { timeout: 60000 })
+  check(true, 'MBM Enquiry: DCHC4245383 utilised 1,985.000 and 10 specialist cases')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

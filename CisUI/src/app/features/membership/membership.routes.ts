@@ -18,4 +18,11 @@ export const membershipRoutes: Routes = [
     data: { access: Access.MbmAdjustment, legacyForm: 'FrmMBMCLNAdj' },
     loadComponent: () => import('./mbm-adjustment.page').then((m) => m.MbmAdjustmentPage),
   },
+  {
+    path: 'membership/enquiry',
+    title: 'CIS - MBM Enquiry',
+    canActivate: [accessGuard],
+    data: { access: Access.MbmEnquiry, legacyForm: 'FrmMBMCLNEnq' },
+    loadComponent: () => import('./mbm-enquiry.page').then((m) => m.MbmEnquiryPage),
+  },
 ]
