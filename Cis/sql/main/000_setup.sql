@@ -129,7 +129,12 @@ FROM (VALUES
     (N'Ws_CLMMedCharges', @CisWorksheetDb, N'CLMMedCharges'),
     (N'Ws_Claim_BordxSEQ', @CisWorksheetDb, N'Claim_BordxSEQ'),
     (N'Ws_SUNPosting', @CisWorksheetDb, N'SUNPosting'),
-    (N'Ws_sp_CreateSubCasNumClaim', @CisWorksheetDb, N'sp_CreateSubCasNumClaim')) v (s, d, t)
+    (N'Ws_sp_CreateSubCasNumClaim', @CisWorksheetDb, N'sp_CreateSubCasNumClaim'),
+    (N'Hdb_CLNLG1', @HisDb, N'CLNLG1'),
+    (N'Hdb_SP_ValidateLG1', @HisDb, N'SP_ValidateLG1'),
+    (N'Hdb_MessageComboList', @HisDb, N'MessageComboList'),
+    (N'Ws_GetLGAnnLimitSpecLimit', @CisWorksheetDb, N'GetLGAnnLimitSpecLimit'),
+    (N'Maint_CISEmailMaster', @MaintenanceDb, N'Tbl_CISEmailMaster')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
