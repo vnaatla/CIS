@@ -51,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<Invoice.IMemberInvoiceService, Invoice.MemberInvoiceService>();
         services.AddScoped<Invoice.IInvoiceEnquiryService, Invoice.InvoiceEnquiryService>();
         services.AddScoped<Invoice.IInvoiceAdjustmentService, Invoice.InvoiceAdjustmentService>();
+        services.AddScoped<Audit.IAuditReviewService, Audit.AuditReviewService>();
         services.AddScoped<Claim.IPassToClaimService, Claim.PassToClaimService>();
         services.AddScoped<Claim.IUpdateClaimsDataService, Claim.UpdateClaimsDataService>();
         return services;

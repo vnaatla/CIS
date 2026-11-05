@@ -42,7 +42,8 @@ public static class SqlScripts
             await using var conn = new SqlConnection(connectionString);
             await conn.OpenAsync();
             foreach (var batch in Regex.Split(File.ReadAllText(CombinedPath), @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase))
-                if (!string.IsNullOrWhiteSpace(batch)) await conn.ExecuteAsync(batch, commandTimeout: 120);
+                // Generous: on this RAM-starved PC a single batch (synonym rebuild, large procedures) can take minutes when SQL Server is cold.
+                if (!string.IsNullOrWhiteSpace(batch)) await conn.ExecuteAsync(batch, commandTimeout: 300);
             _deployed = true;
         }
         finally

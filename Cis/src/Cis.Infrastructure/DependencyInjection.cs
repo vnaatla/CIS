@@ -81,6 +81,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Invoice.IMemberInvoiceRepository, Invoice.MemberInvoiceRepository>();
         services.AddScoped<Application.Invoice.IInvoiceEnquiryRepository, Invoice.InvoiceEnquiryRepository>();
         services.AddScoped<Application.Invoice.IInvoiceAdjustmentRepository, Invoice.InvoiceAdjustmentRepository>();
+        services.AddScoped<Application.Audit.IAuditReviewRepository, Audit.AuditReviewRepository>();
         services.AddScoped<Application.Claim.IPassToClaimRepository, Claim.PassToClaimRepository>();
         services.AddScoped<Application.Claim.IUpdateClaimsDataRepository, Claim.UpdateClaimsDataRepository>();
         services.AddSingleton<Application.Documents.ISpreadsheetReader, Documents.SpreadsheetReader>();
