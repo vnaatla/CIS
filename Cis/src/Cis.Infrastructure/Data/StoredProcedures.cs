@@ -41,6 +41,6 @@ public static class StoredProcedures
         s.Sql().Connection.QueryMultipleAsync(name, p, s.Sql().Transaction, commandType: CommandType.StoredProcedure);
 
     /// <summary>Rows of a procedure as case-insensitive dictionaries (legacy procedures with many columns, report queries).</summary>
-    public static async Task<List<Dictionary<string, object?>>> RowsAsync(this IDbSession s, string name, object? p = null) =>
-        RowMapper.ToDictionaries(await s.Sql().Connection.QueryAsync(name, p, s.Sql().Transaction, commandType: CommandType.StoredProcedure));
+    public static async Task<List<Dictionary<string, object?>>> RowsAsync(this IDbSession s, string name, object? p = null, int? timeout = null) =>
+        RowMapper.ToDictionaries(await s.Sql().Connection.QueryAsync(name, p, s.Sql().Transaction, timeout, CommandType.StoredProcedure));
 }
