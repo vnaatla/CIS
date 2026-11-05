@@ -465,6 +465,14 @@ try {
   await page.waitForFunction(() => ![...document.querySelectorAll('app-action-bar[label="Adjustment actions"] button')].find((b) => b.textContent.trim() === 'Create').disabled)
   check(true, 'Invoice adjustment (After Posting): posted case EA12549445 loads and Edit enables Create')
 
+  // 27. LG & Audit > Audit review: case EA12586874 shows its clinic and the audit form (nothing is updated).
+  await page.goto(`${base}/lg-audit/audit-review`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseNo]')
+  await page.type('input[name=caseNo]', 'EA12586874')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelector('input[name=clinic]')?.value.startsWith('T301'), { timeout: 120000 })
+  check(!!(await page.$('input[name=query]')), 'Audit review: EA12586874 at T301 with its audit form')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

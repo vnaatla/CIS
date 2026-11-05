@@ -4,6 +4,7 @@ import { maintenanceRoutes } from './features/maintenance/maintenance.routes'
 import { invoiceRoutes } from './features/invoice/invoice.routes'
 import { membershipRoutes } from './features/membership/membership.routes'
 import { claimRoutes } from './features/claim/claim.routes'
+import { lgAuditRoutes } from './features/lg-audit/lg-audit.routes'
 
 /**
  * Each migration phase adds its screens here as lazy routes under the module path, guarded by `accessGuard` with
@@ -22,6 +23,7 @@ export const routes: Routes = [
       ...membershipRoutes,
       ...invoiceRoutes,
       ...claimRoutes,
+      ...lgAuditRoutes,
       {
         path: ':module',
         children: [
