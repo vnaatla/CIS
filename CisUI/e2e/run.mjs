@@ -473,6 +473,15 @@ try {
   await page.waitForFunction(() => document.querySelector('input[name=clinic]')?.value.startsWith('T301'), { timeout: 120000 })
   check(!!(await page.$('input[name=query]')), 'Audit review: EA12586874 at T301 with its audit form')
 
+  // 28. LG & Audit > Audit Tracking: case EA12586874 lists one row per medication (6).
+  await page.goto(`${base}/lg-audit/audit-tracking`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseFrom]')
+  await page.type('input[name=caseFrom]', 'EA12586874')
+  await page.type('input[name=caseTo]', 'EA12586874')
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="Audit tracking"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
+  check(true, 'Audit Tracking: EA12586874 lists its 6 medication rows')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

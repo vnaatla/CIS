@@ -22,3 +22,14 @@ WHERE CASNumber = 'EA12586874';
 ```
 
 After A7: delete the copied file from `<Outpatient>\Guarantee Letter\EA12586874`.
+
+## 2. Audit Tracking — `/lg-audit/audit-tracking` (FrmAuditInvoiceTracking, right 119; read-only)
+
+| # | Action | Expected |
+|---|---|---|
+| T1 | Print to File before any search | `Please search again.!` |
+| T2 | Case No From / To `EA12586874` → Search | 6 rows (LORATADINE 10MG TAB … ECONAZINE 20MG CREAM); the case columns (IC 710121016006, LATIFAH BTE HASSAN, T301, BANK SIMPANAN NASIONAL, DIABETES / URTI/SORE THROAT) only on the first |
+| T3 | T2 + Pay To `M - Member` → Search | `No record found!` |
+| T4 | T2 + OMNI Ref No From `A` → Search | `Invalid column name 'OMNIRefNo'.` |
+| T5 | T2 → Print to File | InvoiceAuditTracking.xlsx with the 6 rows in columns A–Y |
+| T6 | Group Company `BANK SIMPANAN NASIONAL` | Department list includes JABATAN OPERASI PERBANKAN |

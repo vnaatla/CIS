@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 28 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 29 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -18,13 +18,13 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 1 | 4 |
-| [LG & Audit](#lg--audit) | 3 | 1 | 0 |
+| [LG & Audit](#lg--audit) | 3 | 2 | 0 |
 | [Payment](#payment) | 9 | 0 | 3 |
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **28** | **20** |
+| **Total** | **119** | **29** | **20** |
 
 ## Membership
 
@@ -146,7 +146,7 @@ Module page: `/lg-audit`
 |---|---|---|---:|---|---:|---|---|
 | LG | Generate LG | frmLGGeneration | 119 |  | 4 | Pending | `/lg-audit/generate-lg` |
 | Audit review | Audit review | frmAuditInvoice | 119 |  | 4 | **Migrated** | `/lg-audit/audit-review` |
-| Audit review | Audit Tracking | FrmAuditInvoiceTracking | 119 |  | 4 | Pending | `/lg-audit/audit-tracking` |
+| Audit review | Audit Tracking | FrmAuditInvoiceTracking | 119 |  | 4 | **Migrated** | `/lg-audit/audit-tracking` |
 
 ## Payment
 

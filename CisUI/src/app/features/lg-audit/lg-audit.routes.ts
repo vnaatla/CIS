@@ -11,4 +11,11 @@ export const lgAuditRoutes: Routes = [
     data: { access: Access.AuditReview, legacyForm: 'frmAuditInvoice' },
     loadComponent: () => import('./audit-review.page').then((m) => m.AuditReviewPage),
   },
+  {
+    path: 'lg-audit/audit-tracking',
+    title: 'CIS - Audit Tracking',
+    canActivate: [accessGuard],
+    data: { access: Access.AuditReview, legacyForm: 'FrmAuditInvoiceTracking' },
+    loadComponent: () => import('./audit-tracking.page').then((m) => m.AuditTrackingPage),
+  },
 ]
