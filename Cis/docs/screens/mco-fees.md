@@ -27,3 +27,17 @@ Known desktop issues (reproduced):
 - Covered persons are listed whatever their credit-note status.
 
 Deliberate differences (Refund Listing): parameters instead of the filters pasted into MCOFeeModule; the credit note number and the member stamps are saved in one transaction (the desktop updated row by row without one); the credit note is an Excel built by the report engine (the `Clinical_MCOCreditNote.xlt` template is not available); a principal's credit note stays on the principal's row (the desktop wrote it onto the last covered person's row).
+
+## MCO Invoice — frmMCOInvoiceNew (`/mco-fees/invoice`, `api/mco-fees/invoice`)
+
+| Step | Behaviour |
+|---|---|
+| Search | Criteria Bordereaux Batch / Bordereaux Range / Invoice No (invoice no switches to Reprint by group company with payor / group disabled); version Invoice - by Payor / Group Company / Department (the company's departments); Print New / Reprint. Checks: `Please Enter Bordereaux Date!`, `Please Enter Batch Number!`, `Please enter valid Bordereaux Range !`, `Please enter Invoice Number!`, `Please Select a Payor!`, `Please Select a Group Company!`, `Please Select a Department!`; `No record found!`. Principals (VIEW_CisMCO_Princ), then the covered persons of family plans (F / H), then every other matching covered person (VIEW_CisMCO_Supp); principal / supplementary counts and the invoice no. found. |
+| Print Preview / Print | `Different Invoice Found in Same Batch or Range, Please Search by Invoice No ! `; the invoice (Excel): company block (PAY by payor, else GRPCompany), department for the department version, invoice no / date, one line per insurer (I - INDIVIDUAL, F - FAMILY, G - GROUP INDIVIDUAL, H - GROUP FAMILY) / bordx date / adult-child with principals, covered persons and MCO fee, totals. Print with no invoice yet: a new number from CLNMCOINVQ for a batch (print new) or a range, then every listed member without one is stamped (cover 00: MBMCLNOthers incl. MBMCInvoiced = Y; other covers: MBMCoveredPersonsCLN); afterwards Print is disabled and the option switches to Reprint. |
+
+Known desktop issues (reproduced):
+- The Reprint filter (`IS NOT NULL OR <> ''`) also matches members without an invoice no.
+- Printing by invoice no or a batch with Reprint stamps the members with the screen's (blank) invoice no when none was found.
+- Covered persons are not marked MBMCInvoiced = 'Y'.
+
+Deliberate differences (MCO Invoice): parameters instead of the criteria pasted into MCOFeeNew; numbering and stamps in one transaction with the number taken under a lock; the invoice is an Excel built by the report engine (the `MCOInvoice.xlt` template is not available).

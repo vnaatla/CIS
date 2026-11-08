@@ -527,6 +527,31 @@ try {
   await page.waitForFunction(() => document.querySelector('[aria-label=Totals]')?.textContent.includes('748.95'), { timeout: 120000 })
   check(true, 'MCO Refund Listing: RAYA AIRWAYS SDN BHD lists 34 principals with refund 748.95')
 
+  // 32. MCO Fees > MCO Invoice: bordereaux batch 06/08/2021 / 1 of group company D048, print new (nothing is printed).
+  await page.goto(`${base}/mco-fees/invoice`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=criteria]')
+  await page.evaluate(() => {
+    const pick = (name, text) => {
+      const sel = document.querySelector(`select[name=${name}]`)
+      sel.value = [...sel.options].find((o) => o.textContent.trim() === text).value
+      sel.dispatchEvent(new Event('change'))
+    }
+    pick('criteria', 'Bordereaux Batch')
+  })
+  await page.waitForSelector('input[name=batchNo]')
+  await page.evaluate(() => {
+    const sel = document.querySelector('select[name=version]')
+    sel.value = [...sel.options].find((o) => o.textContent.trim() === 'Invoice - by Group Company').value
+    sel.dispatchEvent(new Event('change'))
+  })
+  await page.waitForSelector('input[name=groupCompany]')
+  await page.type('input[aria-label="Bordx Date"]', '06/08/2021')
+  await page.type('input[name=batchNo]', '1')
+  await page.type('input[name=groupCompany]', 'D048')
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO invoice members"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
+  check(true, 'MCO Invoice: batch 06/08/2021 / 1 of D048 lists 2 principals and 4 covered persons')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

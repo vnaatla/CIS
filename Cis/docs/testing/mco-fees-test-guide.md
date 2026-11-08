@@ -39,3 +39,14 @@ UPDATE HISDB.dbo.MBMCLNOthers SET MBMCLNCRNote = NULL, MBMCLNCRNoteDate = NULL, 
 UPDATE HISDB.dbo.MBMCoveredPersonsCLN SET MBMCCLNCRNote = NULL, MBMCCLNCRNoteDate = NULL, MBMCCLNCRNoteby = NULL WHERE MBMCCLNCRNote = 'C00097';
 UPDATE HISMaintenance.dbo.CLNMCOCRNoteSeq SET CLNCRNote = '00096';
 ```
+
+## 3. MCO Invoice — `/mco-fees/invoice` (frmMCOInvoiceNew)
+
+| # | Action | Expected |
+|---|---|---|
+| I1 | Bordereaux Batch, no date → Search | `Please Enter Bordereaux Date!` |
+| I2 | Batch 06/08/2021 / 1, by Group Company `D048`, Print New → Search | 2 principals (STHB9440145*01, STHB9440246*01), 4 covered persons |
+| I3 | I2 → Print Preview | MCOInvoice.xlsx: H - GROUP FAMILY, Child, principals 2, covered 6 |
+| I4 | (writes) I2 → Print | new invoice I0832x on the 6 rows |
+
+Clean-up after I4: as after F7 of the Fee Listing (replace the invoice number).
