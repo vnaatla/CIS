@@ -66,6 +66,7 @@ public sealed class SmtpEmailSender(IOptions<EmailOptions> options) : IEmailSend
         mime.From.Add(MailboxAddress.Parse(from));
         foreach (var to in message.To) mime.To.Add(MailboxAddress.Parse(to));
         foreach (var cc in message.Cc) mime.Cc.Add(MailboxAddress.Parse(cc));
+        foreach (var bcc in message.Bcc) mime.Bcc.Add(MailboxAddress.Parse(bcc));
         mime.Subject = message.Subject;
         var body = new BodyBuilder { HtmlBody = message.HtmlBody };
         foreach (var (fileName, content) in message.Attachments) body.Attachments.Add(fileName, content);

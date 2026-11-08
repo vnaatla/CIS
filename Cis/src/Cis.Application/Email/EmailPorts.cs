@@ -11,6 +11,9 @@ public record EmailMessage(IReadOnlyList<string> To, string Subject, string Html
     /// <summary>Copy recipients.</summary>
     public IReadOnlyList<string> Cc { get; init; } = [];
 
+    /// <summary>Blind copy recipients.</summary>
+    public IReadOnlyList<string> Bcc { get; init; } = [];
+
     /// <summary>Attachments (file name, bytes).</summary>
     public IReadOnlyList<(string FileName, byte[] Content)> Attachments { get; init; } = [];
 }

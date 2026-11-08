@@ -26,7 +26,11 @@ BEGIN
         PLNGLNo nvarchar(50), HRApproval nvarchar(5));
     INSERT @lim EXEC cis.Ws_GetLGAnnLimitSpecLimit @SchMBMNumber = @member, @CoverId = @cover;
     SELECT * FROM @lim;
-    EXEC cis.Hdb_SP_ValidateLG1 @ICNo = @ic, @MBMNumber = @member;
+    -- SP_ValidateLG1 returns no result set at all for some inputs (e.g. a blank IC): capture it so the result sets stay in order.
+    DECLARE @v TABLE (PLNGPSPShared nvarchar(5), LGIssuedInd nvarchar(5), ANNLmtInd nvarchar(5), AnnLimit nvarchar(30), PlnCode nvarchar(20),
+        MBMStatus nvarchar(5), LGIssuedAfterLimitExInd nvarchar(5));
+    INSERT @v EXEC cis.Hdb_SP_ValidateLG1 @ICNo = @ic, @MBMNumber = @member;
+    SELECT * FROM @v;
     SELECT SUM(COALESCE(SP_TopupAmt, 0)) AS SpTopup FROM dbo.MBMCISTopupHistory WHERE MBMNumber = @member;
     DECLARE @plan nvarchar(20) = (SELECT TOP 1 RTRIM(PLNCode) FROM @lim);
     SELECT TOP 1 SuppLimitStatus FROM dbo.AnnualLimit WHERE PLNCode = @plan;

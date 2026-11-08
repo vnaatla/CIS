@@ -143,11 +143,32 @@ public interface ILgService
 
     /// <summary>Group company clinics.</summary>
     Task<List<(string Code, string Name)>> ClinicsAsync(string? company);
+
+    /// <summary>CmdAdd_Click.</summary>
+    Task<LgGateResult> AddCheckAsync(string? member, string? cover, int confirmed);
+
+    /// <summary>CmdEdit_Click.</summary>
+    Task<LgGateResult> EditCheckAsync(string? lgNo, string? clinicText, string? category, int confirmed);
+
+    /// <summary>cmdLG_Click + SaveLG.</summary>
+    Task<LgActionResult> IssueAsync(LgIssueRequest request, string user);
+
+    /// <summary>cmdDecline_Click.</summary>
+    Task<LgActionResult> DeclineAsync(LgDeclineRequest request, string user);
+
+    /// <summary>CmdPreview_Click.</summary>
+    Task<Documents.FileOutput> PreviewAsync(LgIssueRequest request, string user);
+
+    /// <summary>cmdCopyFile_Click.</summary>
+    Task<string> CopyAsync(string? lgNo, string? fileName, Stream content);
+
+    /// <summary>A document of the LG.</summary>
+    Task<(byte[] Content, string FileName)> DocumentAsync(string? lgNo, string? fileName);
 }
 
 /// <inheritdoc />
-public sealed partial class LgService(IDbSessions sessions, ILgRepository repository, IClinicInvoiceRepository clinics, IMbmEnquiryRepository enquiry, IFileDrop files)
-    : ILgService
+public sealed partial class LgService(IDbSessions sessions, ILgRepository repository, ILgSaveRepository saves, IClinicInvoiceRepository clinics,
+    IMbmEnquiryRepository enquiry, IFileDrop files, Documents.ILetterWriter letters, Email.IEmailSender mail, TimeProvider clock) : ILgService
 {
     /// <summary>Desktop texts.</summary>
     public const string KeyMember = "Please key the Membership No", NotFound = "Record not found!", NotActive = "Member is not active.",

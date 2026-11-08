@@ -84,6 +84,8 @@ public static class DependencyInjection
         services.AddScoped<Application.Audit.IAuditReviewRepository, Audit.AuditReviewRepository>();
         services.AddScoped<Application.Audit.IAuditTrackingRepository, Audit.AuditTrackingRepository>();
         services.AddScoped<Application.Lg.ILgRepository, Lg.LgRepository>();
+        services.AddScoped<Application.Lg.ILgSaveRepository, Lg.LgSaveRepository>();
+        services.AddSingleton<Application.Documents.ILetterWriter, Documents.PdfLetterWriter>();
         services.AddScoped<Application.Claim.IPassToClaimRepository, Claim.PassToClaimRepository>();
         services.AddScoped<Application.Claim.IUpdateClaimsDataRepository, Claim.UpdateClaimsDataRepository>();
         services.AddSingleton<Application.Documents.ISpreadsheetReader, Documents.SpreadsheetReader>();

@@ -7,6 +7,20 @@ public interface IReportExporter
     FileOutput Export(ReportDocument report, ReportFileType type);
 }
 
+/// <summary>A letter: heading lines, the filled-in fields (the Word template's bookmarks) and closing paragraphs.</summary>
+/// <param name="Title">Title line.</param>
+/// <param name="Heading">Lines above the title (letter head, date, reference).</param>
+/// <param name="Fields">Label / value pairs in order.</param>
+/// <param name="Paragraphs">Text after the fields.</param>
+public record LetterDocument(string Title, IReadOnlyList<string> Heading, IReadOnlyList<(string Label, string Value)> Fields, IReadOnlyList<string> Paragraphs);
+
+/// <summary>Writes letters as PDF (replaces the desktop's Word templates, which are not available).</summary>
+public interface ILetterWriter
+{
+    /// <summary>The PDF bytes.</summary>
+    byte[] Write(LetterDocument letter);
+}
+
 /// <summary>Finds copies of the desktop's legacy Excel templates (<c>\\svr-doc\HISREPORTS</c>).</summary>
 public interface IReportTemplateStore
 {
