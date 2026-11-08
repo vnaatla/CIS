@@ -50,3 +50,12 @@ UPDATE HISMaintenance.dbo.CLNMCOCRNoteSeq SET CLNCRNote = '00096';
 | I4 | (writes) I2 → Print | new invoice I0832x on the 6 rows |
 
 Clean-up after I4: as after F7 of the Fee Listing (replace the invoice number).
+
+## 4. MCO Invoice GST — `/mco-fees/invoice-gst` (frmMCOFeeGST)
+
+| # | Action | Expected |
+|---|---|---|
+| G1 | Batch 06/08/2021 / 1, by Group Company, no company → Search | `Please Select a Group Company!` |
+| G2 | Batch 06/08/2021 / 1, by Group Company `D005` → Search | 6 members |
+| G3 | G2 → Print Preview | MCOInvoiceGST.xlsx with the invoice and DETAILS sheets |
+| G4 | (writes) G2 → Print | new invoice on the 6 members (clean up as F7) |

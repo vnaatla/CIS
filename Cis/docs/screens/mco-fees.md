@@ -41,3 +41,18 @@ Known desktop issues (reproduced):
 - Covered persons are not marked MBMCInvoiced = 'Y'.
 
 Deliberate differences (MCO Invoice): parameters instead of the criteria pasted into MCOFeeNew; numbering and stamps in one transaction with the number taken under a lock; the invoice is an Excel built by the report engine (the `MCOInvoice.xlt` template is not available).
+
+## MCO Invoice GST — frmMCOFeeGST (`/mco-fees/invoice-gst`, `api/mco-fees/invoice-gst`)
+
+| Step | Behaviour |
+|---|---|
+| Search | As MCO Invoice (criteria, checks and messages), versions by Payor / Group Company only, plus the group company's subsidiary. One list of principals and covered persons from View_MCOGSTInvoiceOP: batch and range list members without an invoice no.; group company and subsidiary filter whenever given, the payor for the payor version. |
+| Print Preview | `Different Invoice Found in Same Batch or Range, Please Search by Invoice No ! `; the GST invoice (Excel) with the criteria and the payor only: sheet 1 company block, invoice no., lines (insurer / bordx date / adult-child, employees, dependants, basic MCO, GST, totals) from View_OPMCOSummary; sheet 2 the member details with basic MCO and GST. |
+| Print | No invoice yet: a new number from CLNMCOINVQ (batch with Print New, or range), the listed members without one are stamped; then the invoice of that invoice no. |
+
+Known desktop issues (reproduced):
+- Print Preview ignores the group company and subsidiary, so it covers every payor's member of the batch / range.
+- The company block's second address line is always empty (the desktop passes the first line twice).
+- Covered persons are not marked MBMCInvoiced = 'Y'.
+
+Deliberate differences (MCO Invoice GST): parameters instead of the criteria pasted into SP_MCOSummaryGSTOP / SP_MCOGSTInvoiceOP; the numbering and stamps are in one transaction (the desktop had none); the workbook is downloaded instead of being saved in `C:\GSTMCOReports`.

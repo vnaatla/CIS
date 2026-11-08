@@ -7,14 +7,14 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 33 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 34 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
 | Module | Screens | Migrated | Not in the desktop menu (hidden / disabled / never opened) |
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 3 | 1 |
-| [MCO Fees](#mco-fees) | 5 | 3 | 0 |
+| [MCO Fees](#mco-fees) | 5 | 4 | 0 |
 | [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 1 | 4 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **33** | **20** |
+| **Total** | **119** | **34** | **20** |
 
 ## Membership
 
@@ -48,7 +48,7 @@ Module page: `/mco-fees`
 | Sub-menu | Menu item | VB6 form(s) | Access | Desktop | Phase | Status | Web route |
 |---|---|---|---:|---|---:|---|---|
 |  | MCO Invoice | frmMCOInvoiceNew | 115 |  | 5 | **Migrated** | `/mco-fees/invoice` |
-|  | MCO Invoice GST | frmMCOFeeGST | 115 |  | 5 | Pending | `/mco-fees/invoice-gst` |
+|  | MCO Invoice GST | frmMCOFeeGST | 115 |  | 5 | **Migrated** | `/mco-fees/invoice-gst` |
 |  | MCO Invoice GST Zeroised | frmMCOFeeGSTZeroised | 115 |  | 5 | Pending | `/mco-fees/invoice-gst-zeroised` |
 |  | Fee Listing | frmMCOFeeListNew | 116 |  | 5 | **Migrated** | `/mco-fees/fee-listing` |
 |  | Refund Listing | frmMCORefundListing | 116 |  | 5 | **Migrated** | `/mco-fees/refund-listing` |
