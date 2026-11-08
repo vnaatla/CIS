@@ -21,3 +21,21 @@ UPDATE HISDB.dbo.MBMCLNOthers SET MBMCInvoiceDate = NULL, MBMCInvoiceNo = NULL, 
 UPDATE HISDB.dbo.MBMCoveredPersonsCLN SET MBMCInvoiceDate = NULL, MBMCInvoiceNo = NULL, MBMCInvoiceBy = NULL, MBMCCLNBilledMCO = NULL WHERE MBMCInvoiceNo = 'I08329';
 UPDATE CISDB.dbo.CLNMCOINVQ SET MCOInvoice_No = '08328';
 ```
+
+## 2. Refund Listing — `/mco-fees/refund-listing` (frmMCORefundListing)
+
+| # | Action | Expected |
+|---|---|---|
+| R1 | Search without a version | `Please Enter Listing Version!` |
+| R2 | by Group Company, no To date | `Please Enter Endt. Eff Date!` |
+| R3 | by Group Company `RAYA AIRWAYS SDN BHD`, Endt. Eff Date 01/01/2021–28/07/2021, status N → Search | 34 principals, refund 748.95 |
+| R4 | R3 → Print | MCORefundListing.xlsx |
+| R5 | (writes) R3 → Print CR Note | credit note C00097 on the 34 members |
+
+Clean-up after R5:
+
+```sql
+UPDATE HISDB.dbo.MBMCLNOthers SET MBMCLNCRNote = NULL, MBMCLNCRNoteDate = NULL, MBMCLNCRNoteby = NULL WHERE MBMCLNCRNote = 'C00097';
+UPDATE HISDB.dbo.MBMCoveredPersonsCLN SET MBMCCLNCRNote = NULL, MBMCCLNCRNoteDate = NULL, MBMCCLNCRNoteby = NULL WHERE MBMCCLNCRNote = 'C00097';
+UPDATE HISMaintenance.dbo.CLNMCOCRNoteSeq SET CLNCRNote = '00096';
+```

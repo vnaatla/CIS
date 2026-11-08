@@ -63,7 +63,7 @@ export const MENU: MenuModule[] = [
       { label: 'MCO Invoice GST', path: '/mco-fees/invoice-gst', access: Access.McoInvoice, form: 'frmMCOFeeGST', phase: 5 },
       { label: 'MCO Invoice GST Zeroised', path: '/mco-fees/invoice-gst-zeroised', access: Access.McoInvoice, form: 'frmMCOFeeGSTZeroised', phase: 5 },
       { label: 'Fee Listing', path: '/mco-fees/fee-listing', access: Access.McoFeeListing, form: 'frmMCOFeeListNew', phase: 5, migrated: true },
-      { label: 'Refund Listing', path: '/mco-fees/refund-listing', access: Access.McoFeeListing, form: 'frmMCORefundListing', phase: 5 },
+      { label: 'Refund Listing', path: '/mco-fees/refund-listing', access: Access.McoFeeListing, form: 'frmMCORefundListing', phase: 5, migrated: true },
     ],
   },
   {

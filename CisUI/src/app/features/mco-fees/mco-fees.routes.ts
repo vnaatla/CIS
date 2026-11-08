@@ -11,4 +11,11 @@ export const mcoFeesRoutes: Routes = [
     data: { access: Access.McoFeeListing, legacyForm: 'frmMCOFeeListNew' },
     loadComponent: () => import('./fee-listing.page').then((m) => m.McoFeeListingPage),
   },
+  {
+    path: 'mco-fees/refund-listing',
+    title: 'CIS - MCO Refund Listing',
+    canActivate: [accessGuard],
+    data: { access: Access.McoFeeListing, legacyForm: 'frmMCORefundListing' },
+    loadComponent: () => import('./refund-listing.page').then((m) => m.McoRefundListingPage),
+  },
 ]

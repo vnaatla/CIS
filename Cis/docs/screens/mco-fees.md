@@ -11,4 +11,19 @@ Known desktop issues (reproduced):
 - The invoice's company block is always read from GRPCompany by the payor / group code (PrintPAYInfo compares the listing version with "Invoice - by Payor", which this screen never has).
 - Covered persons are not marked MBMCInvoiced = 'Y' when invoiced, so they stay in the "not invoiced" listing.
 
-Deliberate differences: parameters instead of the criteria pasted into MCOFeeNew; the reports are PDFs built by the report engine (the Crystal `.rpt` files and the `\\PLUTO` staging copy `MCOInvoicePluto` are not used); the invoice number is taken under a lock inside the save (the desktop's recordset update could give two users the same number).
+Deliberate differences (Fee Listing): parameters instead of the criteria pasted into MCOFeeNew; the reports are PDFs built by the report engine (the Crystal `.rpt` files and the `\\PLUTO` staging copy `MCOInvoicePluto` are not used); the invoice number is taken under a lock inside the save (the desktop's recordset update could give two users the same number).
+
+## Refund Listing — frmMCORefundListing (`/mco-fees/refund-listing`, `api/mco-fees/refund-listing`)
+
+| Step | Behaviour |
+|---|---|
+| Search | Listing version by Payor / Group Company / Department (the company's departments), Endt. Eff Date or Endt. Bordx Date range, print status N (no credit note) / Y. Checks: `Please Enter Listing Version!`, `Please Enter Endt. Eff Date!` / `Please Enter Endt. Bordx Date!` (To date), `Please Select a Payor!`, `Please Select a Group Company!`, `Please Select a Department!`; `No record found!`. Principals from VIEW_CLN_MBM_Refund_Search; covered persons of family plans (insured type F / H) from VIEW_CLN_Supp_Refund_Search. MCO fee utilised: utilised ≤ 50 (F / H and covered persons) or ≤ 25 → fee − threshold, else the utilised amount. Totals: principals, covered persons, principal refund, fee utilised, covered-person refund, total refund. |
+| Print | The listing as Excel (`Report cannot be printed without any record.`). |
+| Print CR Note | `Please Enter Listing Version!`, `Please Select Records!`, `Please Select Date Selection!`, `Please Select Payor!`, `Please Select Group Company!`; company block from PAY (by payor) or GRPCompany by name (department version shows the department); status N → next credit note (`C` + 5 digits of CLNMCOCRNoteSeq) stamped on each listed member and all its covers; status Y → the first row's credit note and date; total refund. |
+
+Known desktop issues (reproduced):
+- Only the To date is checked (the desktop tests it twice); the From date may be blank.
+- The name is shown only for cancelled (`(Cancelled)`) or pending (`(Pending)`) members.
+- Covered persons are listed whatever their credit-note status.
+
+Deliberate differences (Refund Listing): parameters instead of the filters pasted into MCOFeeModule; the credit note number and the member stamps are saved in one transaction (the desktop updated row by row without one); the credit note is an Excel built by the report engine (the `Clinical_MCOCreditNote.xlt` template is not available); a principal's credit note stays on the principal's row (the desktop wrote it onto the last covered person's row).

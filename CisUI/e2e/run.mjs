@@ -511,6 +511,22 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO fees"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
   check(true, 'MCO Fee Listing: batch 06/08/2021 / 1 of D005 lists its 6 members')
 
+  // 31. MCO Fees > Refund Listing: RAYA AIRWAYS SDN BHD endorsed 01/01/2021–28/07/2021 without credit note (nothing is printed).
+  await page.goto(`${base}/mco-fees/refund-listing`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=version]')
+  await page.evaluate(() => {
+    const sel = document.querySelector('select[name=version]')
+    sel.value = [...sel.options].find((o) => o.textContent.trim() === 'MCO Listing - by Group Company').value
+    sel.dispatchEvent(new Event('change'))
+  })
+  await page.waitForSelector('input[name=groupCompany]')
+  await page.type('input[name=groupCompany]', 'RAYA AIRWAYS SDN BHD')
+  await page.type('input[aria-label="From"]', '01/01/2021')
+  await page.type('input[aria-label="To"]', '28/07/2021')
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelector('[aria-label=Totals]')?.textContent.includes('748.95'), { timeout: 120000 })
+  check(true, 'MCO Refund Listing: RAYA AIRWAYS SDN BHD lists 34 principals with refund 748.95')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
