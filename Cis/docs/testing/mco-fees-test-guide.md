@@ -59,3 +59,13 @@ Clean-up after I4: as after F7 of the Fee Listing (replace the invoice number).
 | G2 | Batch 06/08/2021 / 1, by Group Company `D005` → Search | 6 members |
 | G3 | G2 → Print Preview | MCOInvoiceGST.xlsx with the invoice and DETAILS sheets |
 | G4 | (writes) G2 → Print | new invoice on the 6 members (clean up as F7) |
+
+## 5. MCO Invoice GST Zeroised — `/mco-fees/invoice-gst-zeroised` (frmMCOFeeGSTZeroised)
+
+| # | Action | Expected |
+|---|---|---|
+| Z1 | Batch 06/08/2021 / 1, by Group Company `D005` → Search | 6 members with check boxes |
+| Z2 | Z1 → Check All | all 6 checked, button shows Uncheck All |
+| Z3 | Z1 → Print Excel | `Please search with invoice no.` |
+| Z4 | Invoice No `I07600` → Search → Print Excel → No | I07600-MAJLIS BANDARAYA SUBANG JAYA.xlsx (invoice + 5,363 members) |
+| Z5 | (writes) Z1 → check one member → Print | new invoice on that member only (clean up as F7) |

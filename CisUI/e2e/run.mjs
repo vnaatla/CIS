@@ -571,6 +571,26 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO GST members"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
   check(true, 'MCO Invoice GST: batch 06/08/2021 / 1 of D005 lists its 6 members')
 
+  // 34. MCO Fees > MCO Invoice GST Zeroised: the same batch, Check All checks the 6 members (nothing is printed).
+  await page.goto(`${base}/mco-fees/invoice-gst-zeroised`, { waitUntil: 'domcontentloaded' })
+  for (const [name, text] of [['criteria', 'Bordereaux Batch'], ['version', 'Invoice - by Group Company']]) {
+    await page.waitForSelector(`select[name=${name}]`)
+    await page.evaluate((n, t) => {
+      const sel = document.querySelector(`select[name=${n}]`)
+      sel.value = [...sel.options].find((o) => o.textContent.trim() === t).value
+      sel.dispatchEvent(new Event('change'))
+    }, name, text)
+  }
+  await page.waitForSelector('input[name=groupCompany]')
+  await page.type('input[aria-label="Bordx Date"]', '06/08/2021')
+  await page.type('input[name=batchNo]', '1')
+  await page.type('input[name=groupCompany]', 'D005')
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO GST zeroised members"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Check All').click())
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO GST zeroised members"] tbody input[type=checkbox]:checked').length >= 6, { timeout: 30000 })
+  check(true, 'MCO Invoice GST Zeroised: batch 06/08/2021 / 1 of D005 lists 6 members and Check All checks them')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

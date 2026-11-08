@@ -5,6 +5,13 @@ import { accessGuard } from '../../core/auth/guards'
 /** MCO Fees screens. Paths match layout/menu.ts. */
 export const mcoFeesRoutes: Routes = [
   {
+    path: 'mco-fees/invoice-gst-zeroised',
+    title: 'CIS - MCO Invoice GST Zeroised',
+    canActivate: [accessGuard],
+    data: { access: Access.McoInvoice, legacyForm: 'frmMCOFeeGSTZeroised' },
+    loadComponent: () => import('./invoice-gst-zeroised.page').then((m) => m.McoGstZeroisedPage),
+  },
+  {
     path: 'mco-fees/invoice-gst',
     title: 'CIS - MCO Invoice GST',
     canActivate: [accessGuard],

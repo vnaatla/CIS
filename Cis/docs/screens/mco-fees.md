@@ -56,3 +56,13 @@ Known desktop issues (reproduced):
 - Covered persons are not marked MBMCInvoiced = 'Y'.
 
 Deliberate differences (MCO Invoice GST): parameters instead of the criteria pasted into SP_MCOSummaryGSTOP / SP_MCOGSTInvoiceOP; the numbering and stamps are in one transaction (the desktop had none); the workbook is downloaded instead of being saved in `C:\GSTMCOReports`.
+
+## MCO Invoice GST Zeroised — frmMCOFeeGSTZeroised (`/mco-fees/invoice-gst-zeroised`, `api/mco-fees/invoice-gst-zeroised`)
+
+| Step | Behaviour |
+|---|---|
+| Search | As MCO Invoice GST plus the policy no.; the list has check boxes. Checking an invoiced member: `The selected member already invoice generated,Please check..!`; Check All / Uncheck All (`Please select a record.` when the list is empty). |
+| Print | No invoice yet: a new number from CLNMCOINVQ (batch with Print New, or range) and only the checked members are stamped; then the zeroised invoice of that number and the list is searched again. |
+| Print Excel | `Please search with invoice no.` unless searched by invoice no.; `Are you sure the above invoice no print by Subsidary ` (Yes: the company block of the first member's subsidiary); the zeroised invoice: company block (Tbl_Subsidary for a chosen / first subsidiary, else CompanyGRP by group name, blanks as `NA`), invoice no., date, persons and the TPA fee total; a member sheet (member, cost centre, department, division, employee no., names, IC, DOB, sex, cover, relation, dates, policy, group, subsidiary, branch, status, remarks, days insured, basic MCO, TPA fee). |
+
+Deliberate differences (MCO Invoice GST Zeroised): parameters instead of pasted criteria; numbering and stamps in one transaction (the desktop had none); the workbook is downloaded (the desktop saved an Excel and a PDF of sheet 1 in the MCO save folder); the `Zeroised GST_Invoice_2020.xlt` template is not available, so the invoice sheet is a generated layout with the same fields.
