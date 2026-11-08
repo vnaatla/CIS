@@ -134,7 +134,8 @@ FROM (VALUES
     (N'Hdb_SP_ValidateLG1', @HisDb, N'SP_ValidateLG1'),
     (N'Hdb_MessageComboList', @HisDb, N'MessageComboList'),
     (N'Ws_GetLGAnnLimitSpecLimit', @CisWorksheetDb, N'GetLGAnnLimitSpecLimit'),
-    (N'Maint_CISEmailMaster', @MaintenanceDb, N'Tbl_CISEmailMaster')) v (s, d, t)
+    (N'Maint_CISEmailMaster', @MaintenanceDb, N'Tbl_CISEmailMaster'),
+    (N'Maint_CLNMCOCRNoteSeq', @MaintenanceDb, N'CLNMCOCRNoteSeq')) v (s, d, t)
 WHERE DB_ID(d) IS NOT NULL;
 EXEC (@sql);
 GO
