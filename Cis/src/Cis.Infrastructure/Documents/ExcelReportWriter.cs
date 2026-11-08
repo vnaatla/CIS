@@ -18,9 +18,17 @@ public sealed class ExcelReportWriter(IReportTemplateStore templates)
     {
         var template = report.Template is { } name ? templates.Find(name) : null;
         using var book = template is null ? new XLWorkbook() : new XLWorkbook(template);
-        var sheet = template is null ? book.Worksheets.Add(SheetName(report.Title)) : book.Worksheet(1);
+        WriteSheet(template is null ? book.Worksheets.Add(SheetName(report.Title)) : book.Worksheet(1), report, template is null);
+        foreach (var extra in report.ExtraSheets) WriteSheet(book.Worksheets.Add(SheetName(extra.Title)), extra, true);
 
-        var row = template is null ? WriteHeading(sheet, report) : report.TemplateStartRow;
+        using var stream = new MemoryStream();
+        book.SaveAs(stream);
+        return stream.ToArray();
+    }
+
+    private static void WriteSheet(IXLWorksheet sheet, ReportDocument report, bool heading)
+    {
+        var row = heading ? WriteHeading(sheet, report) : report.TemplateStartRow;
         var firstData = row;
         foreach (var data in report.Rows)
         {
@@ -41,15 +49,11 @@ public sealed class ExcelReportWriter(IReportTemplateStore templates)
             sheet.Row(row).Style.Font.Bold = true;
         }
 
-        if (template is null)
+        if (heading)
         {
             sheet.SheetView.FreezeRows(firstData - 1);
             sheet.Columns(1, Math.Max(1, report.Columns.Count)).AdjustToContents(1, Math.Min(row, firstData + 500));
         }
-
-        using var stream = new MemoryStream();
-        book.SaveAs(stream);
-        return stream.ToArray();
     }
 
     private static int WriteHeading(IXLWorksheet sheet, ReportDocument report)

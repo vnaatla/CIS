@@ -56,6 +56,9 @@ public record ReportDocument(string Title, IReadOnlyList<ReportColumn> Columns, 
 
     /// <summary>Print the PDF in landscape (wide listings).</summary>
     public bool Landscape { get; init; } = true;
+
+    /// <summary>Further sheets of an Excel workbook (e.g. a detail sheet after the summary); ignored by PDF / CSV.</summary>
+    public IReadOnlyList<ReportDocument> ExtraSheets { get; init; } = [];
 }
 
 /// <summary>A generated file.</summary>
