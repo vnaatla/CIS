@@ -354,6 +354,8 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 }
 .actions > button.link, .modal-actions > button.link { min-width: 0; }
 .registration fieldset > .actions { grid-column: 1 / -1; flex-wrap: wrap; justify-self: start; }
+/* <app-action-bar> inside a form fieldset: the toolbar takes its own full row (buttons in one line, not squeezed into one field cell). */
+.registration fieldset > app-action-bar { grid-column: 1 / -1; justify-self: start; max-width: 100%; }
 
 /* ======================================================================================================================
  * CIS additions (not in GENESIS)
