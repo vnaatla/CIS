@@ -37,12 +37,14 @@ public class McoFeeListingDatabaseTests
         Assert.All(r.Rows, x => Assert.Equal("M284", ((string)x["GRPCoCode"]!).Trim()));
         Assert.False(r.CanPrint);
         Assert.False(r.MultipleInvoices);
-        var listing = await service.PrintAsync(new McoListPrintRequest { Search = Invoiced, ReportType = 1 }, "DEVADMIN");
+        var batch = new McoListRequest { Criteria = 0, BordxDate = "06/08/2021", BatchNo = "1", Version = 1, GroupCompany = "D005 - X", Invoiced = "N" };
+        Assert.True((await service.SearchAsync(batch)).CanPrint);
+        var listing = await service.PrintAsync(new McoListPrintRequest { Search = batch, ReportType = 1 }, "DEVADMIN");
         Assert.Equal("application/pdf", listing.ContentType);
-        var invoice = await service.PrintAsync(new McoListPrintRequest { Search = Invoiced, ReportType = 0, Print = true }, "DEVADMIN");
-        Assert.Equal("MCOInvoice_I07600.pdf", invoice.FileName);
+        var invoice = await service.PrintAsync(new McoListPrintRequest { Search = batch, ReportType = 0 }, "DEVADMIN");
+        Assert.Equal("MCOInvoice.pdf", invoice.FileName);
         Assert.Equal(McoListService.NoReportType,
-            (await Assert.ThrowsAsync<BusinessRuleException>(() => service.PrintAsync(new McoListPrintRequest { Search = Invoiced }, "DEVADMIN"))).Message);
+            (await Assert.ThrowsAsync<BusinessRuleException>(() => service.PrintAsync(new McoListPrintRequest { Search = batch }, "DEVADMIN"))).Message);
     }
 
     [Fact]
