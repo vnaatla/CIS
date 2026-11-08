@@ -495,6 +495,22 @@ try {
   const lgBalance = await page.$eval('input[name=balLmt]', (e) => e.value)
   check(lgBalance === 'FULL', `Generate LG: UBHA0511637*05-00 balance ${lgBalance}, LG EA12590411 loads SUNWAY MEDICAL CENTRE[S427]`)
 
+  // 30. MCO Fees > Fee Listing: bordereaux batch 06/08/2021 / 1 of group company D005, not invoiced (nothing is printed).
+  await page.goto(`${base}/mco-fees/fee-listing`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=criteria]')
+  await page.evaluate(() => {
+    const sel = document.querySelector('select[name=criteria]')
+    sel.value = [...sel.options].find((o) => o.textContent.trim() === 'Bordereaux Batch').value
+    sel.dispatchEvent(new Event('change'))
+  })
+  await page.waitForSelector('input[name=batchNo]')
+  await page.type('input[aria-label="Bordx Date"]', '06/08/2021')
+  await page.type('input[name=batchNo]', '1')
+  await page.type('input[name=groupCompany]', 'D005')
+  await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Search').click())
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO fees"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
+  check(true, 'MCO Fee Listing: batch 06/08/2021 / 1 of D005 lists its 6 members')
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')
