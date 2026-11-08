@@ -85,6 +85,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Audit.IAuditTrackingRepository, Audit.AuditTrackingRepository>();
         services.AddScoped<Application.Lg.ILgRepository, Lg.LgRepository>();
         services.AddScoped<Application.Mco.IMcoListRepository, Mco.McoListRepository>();
+        services.AddScoped<Application.Mco.IMcoZeroRepository, Mco.McoZeroRepository>();
         services.AddScoped<Application.Mco.IMcoGstRepository, Mco.McoGstRepository>();
         services.AddScoped<Application.Mco.IMcoInvoiceRepository, Mco.McoInvoiceRepository>();
         services.AddScoped<Application.Mco.IMcoRefundRepository, Mco.McoRefundRepository>();

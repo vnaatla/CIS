@@ -55,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<Audit.IAuditTrackingService, Audit.AuditTrackingService>();
         services.AddScoped<Lg.ILgService, Lg.LgService>();
         services.AddScoped<Mco.IMcoListService, Mco.McoListService>();
+        services.AddScoped<Mco.IMcoZeroService, Mco.McoZeroService>();
         services.AddScoped<Mco.IMcoGstService, Mco.McoGstService>();
         services.AddScoped<Mco.IMcoInvoiceService, Mco.McoInvoiceService>();
         services.AddScoped<Mco.IMcoRefundService, Mco.McoRefundService>();
