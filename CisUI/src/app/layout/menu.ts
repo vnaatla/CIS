@@ -158,7 +158,7 @@ export const MENU: MenuModule[] = [
     icon: 'check',
     path: '/lg-audit',
     items: [
-      { label: 'Generate LG', path: '/lg-audit/generate-lg', access: Access.GenerateLg, form: 'frmLGGeneration', group: 'LG', phase: 4 },
+      { label: 'Generate LG', path: '/lg-audit/generate-lg', access: Access.GenerateLg, form: 'frmLGGeneration', group: 'LG', phase: 4, migrated: true },
       { label: 'Audit review', path: '/lg-audit/audit-review', access: Access.AuditReview, form: 'frmAuditInvoice', group: 'Audit review', phase: 4, migrated: true },
       { label: 'Audit Tracking', path: '/lg-audit/audit-tracking', access: Access.AuditReview, form: 'FrmAuditInvoiceTracking', group: 'Audit review', phase: 4, migrated: true },
     ],

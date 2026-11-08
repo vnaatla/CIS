@@ -5,6 +5,13 @@ import { accessGuard } from '../../core/auth/guards'
 /** LG & Audit screens. Paths match layout/menu.ts. */
 export const lgAuditRoutes: Routes = [
   {
+    path: 'lg-audit/generate-lg',
+    title: 'CIS - Generate LG',
+    canActivate: [accessGuard],
+    data: { access: Access.GenerateLg, legacyForm: 'frmLGGeneration' },
+    loadComponent: () => import('./generate-lg.page').then((m) => m.GenerateLgPage),
+  },
+  {
     path: 'lg-audit/audit-review',
     title: 'CIS - Audit Review',
     canActivate: [accessGuard],

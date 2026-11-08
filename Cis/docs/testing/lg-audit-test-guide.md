@@ -33,3 +33,25 @@ After A7: delete the copied file from `<Outpatient>\Guarantee Letter\EA12586874`
 | T4 | T2 + OMNI Ref No From `A` → Search | `Invalid column name 'OMNIRefNo'.` |
 | T5 | T2 → Print to File | InvoiceAuditTracking.xlsx with the 6 rows in columns A–Y |
 | T6 | Group Company `BANK SIMPANAN NASIONAL` | Department list includes JABATAN OPERASI PERBANKAN |
+
+## 3. Generate LG — `/lg-audit/generate-lg` (frmLGGeneration, right 119)
+
+The restored members' policies ended in 2021, so Add / Edit / LG stop at the expiry checks on local data; the issue and decline writes are covered by the rolled-back API tests.
+
+| # | Action | Expected |
+|---|---|---|
+| G1 | Search with a blank Membership No | `Please key the Membership No` |
+| G2 | `UBHA0511637*05` → Search | covers 00–03 (Patricia Ooi Puay Hua …) |
+| G3 | Click cover 00 | Annual / Balance FULL, LG Issued Y, LGs EA12590411, EA12590413 … |
+| G4 | Add | `Letter of Guarantee is Not Allowed !!` (policy expired 31/12/2021) |
+| G5 | Click LG EA12590411 | clinic SUNWAY MEDICAL CENTRE[S427], DERMATOLOGIST, 500.00, Normal GL, UOB template remarks |
+| G6 | Edit | `THE ABOVE MEMBER EXPIRY..!!` |
+| G7 | Decline without a reason | `Please Select Decline Reason`; with a reason: `Are you sure you want to decline [EA12590411]?` → answer No |
+| G8 | Preview | PreviewEA12590411.pdf with the LG's fields |
+| G9 | GP Cases / Specialist Cases tabs | the member's cases |
+
+If an LG is issued or declined on a test copy, restore it with (values of EA12590411 before the test):
+
+```sql
+UPDATE CISDB.dbo.tblRecord SET IsLGissued = 1, IsRejected = 0, CaseProgress = 'LG Issued' WHERE CaseNo = 'EA12590411';
+```

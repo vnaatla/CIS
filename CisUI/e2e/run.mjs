@@ -482,6 +482,19 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('table[aria-label="Audit tracking"] tbody tr:not(.empty-row)').length >= 6, { timeout: 120000 })
   check(true, 'Audit Tracking: EA12586874 lists its 6 medication rows')
 
+  // 29. LG & Audit > Generate LG: UBHA0511637*05 cover 00 shows its limits and LGs; LG EA12590411 loads its clinic (nothing is issued).
+  await page.goto(`${base}/lg-audit/generate-lg`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=mbmNo]')
+  await page.type('input[name=mbmNo]', 'UBHA0511637*05')
+  await page.keyboard.press('Enter')
+  await page.waitForFunction(() => document.querySelectorAll('table[aria-label="Members"] tbody tr:not(.empty-row)').length >= 4, { timeout: 120000 })
+  await page.evaluate(() => document.querySelector('table[aria-label="Members"] tbody tr').click())
+  await page.waitForFunction(() => [...document.querySelectorAll('table[aria-label="LG list"] tbody tr')].some((tr) => tr.textContent.includes('EA12590411')), { timeout: 120000 })
+  await page.evaluate(() => [...document.querySelectorAll('table[aria-label="LG list"] tbody tr')].find((tr) => tr.textContent.includes('EA12590411')).click())
+  await page.waitForFunction(() => document.querySelector('input[name=clinic]')?.value.includes('[S427]'), { timeout: 120000 })
+  const lgBalance = await page.$eval('input[name=balLmt]', (e) => e.value)
+  check(lgBalance === 'FULL', `Generate LG: UBHA0511637*05-00 balance ${lgBalance}, LG EA12590411 loads SUNWAY MEDICAL CENTRE[S427]`)
+
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
   await page.waitForSelector('form.card')

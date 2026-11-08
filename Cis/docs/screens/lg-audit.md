@@ -30,3 +30,29 @@ Known desktop issues (reproduced):
 - The OMNI Ref filters use the column `OMNIRefNo`, which none of the report's tables has, so they end in SQL Server's `Invalid column name 'OMNIRefNo'.` (the desktop showed that error).
 
 Deliberate differences: every filter is a parameter (the desktop pasted the filter text into the procedure, an injection risk); the Excel is written by the report engine without the template's merged cells (the case columns are blank on a case's medication rows instead); Stop and View / Back (desktop layout buttons) are not needed in the browser.
+
+## Generate LG — frmLGGeneration (`/lg-audit/generate-lg`, right 119, `api/lg-audit/generate-lg`)
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please key the Membership No`; HISDB CLNLG1 lists the covers (`Record not found!`). For OPENET, SPAN, Communication Corporation, Saint-Gobain, PKNS, DiGi and three named members the member's MBMCLNWarranty text is shown. |
+| Cover click | CheckMBMLimit: GetLGAnnLimitSpecLimit labels, then the utilisation recomputed from CIS_FFS2013 by limit status (ASO members: Tbl_ASOMemberDetails), specialist top-ups, status E / C rules, shared plans N/A, MERCHANTRADE M230 balance message. HR approval asks ` All MO/SP GL Request Must be Come From HR.`. ValidateLG (SP_ValidateLG1) sets the status (`Member is not active.`) and whether an LG may be issued. The member's LGs come from LGlst2020. |
+| LG click | View_PrintLG, the pending notice (`The case is still in pending state. …`), the LG's alert message, GetLGAnnLimitSpecLimit labels as they are (no recalculation), the GL template and remarks (Sp_Gettemplatedetails_2), pharmacy cases (documents in OtherScannedDoc, actions disabled while a medication request is in progress). |
+| Add | The desktop's limit tree (`Letter of Guarantee is Not Allowed !!`, `Limit Exceeded. …`, `Member Entitled Max LG Amount RM … Press OK to Add LG and Cancel to Abort.`, the SCOMI notice, `No LG For this Plan!!!!` …), then only opens the entry fields. |
+| Edit | `Please Select the LG !!`; bordereaux / invoice no.; payment; clinic not in panel (spLGforSP_check, then CLN.CLNPanel); `THE ABOVE MEMBER EXPIRY..!!` (expiry older than 30 days); then the limit tree with "Edit LG" wording. |
+| LG / Update | Pending question; bordereaux, payment, panel and expiry checks; the reason for delay when the treatment date is the LG's date and more than 30 minutes have passed (`Please Enter the reason for Delay.!`, Yes on `Are you want to Enter or Update the reason for Delay.?` stops); the balance test (`Insufficient Balance, Please Check`); SaveLG's checks in order (`Please select a Clinic` … `Treatment Date cannot be Greater Than Member Expiry date..!`, `Please Check NO GLTemplate is Assigned for Plan Code : …`); `Are you sure?`; then LG, Claim, CISCas (pending cleared), TblRecord (`LG Issued`), ClaimInvoice and ClaimInvoiceActualNew in one transaction → `Record Updated....`, the GL letter (`LG Generated Successfully`) and the company notification e-mail (Tbl_CISEmailMaster by group / subsidiary / department / cost centre). |
+| Decline | `Please Select Decline Reason`; `Please Select a LG!`; `Are you sure you want to decline [LG]?`; UpdateLG2, the pharmacy request, TblRecord `LG Declined` → decline letter, `Decline Letter Generated Successfully`. |
+| Preview / Copy File | The letter as it stands; Copy File puts a file in the LG's folder (pharmacy: bmp, gif, png, jpg, jpeg, pdf as RX_&lt;LG&gt;-&lt;n&gt;; `Specified File Copied Successfully`). |
+
+Known desktop issues (reproduced):
+- Add never creates an LG: it only opens the fields, and LG then says `Kindly Press Edit..Then Continue`. LGs are issued by loading an existing request and using Edit.
+- In the "B" limit branches the balances are joined as text before being compared or shown (100 and 50 give 10050).
+- A blank GL amount is a VB type mismatch in the balance test, so nothing happens; for an LG with a previous amount the test compares IsNumeric (−1) with the balance.
+- With GP / SP not shared and no specialist balance, any positive amount gives `Insufficient Balance, Please Check`.
+- The daily visit check never stops (its result is ignored), so `Specialist GL issued already for the same visit date...!!` is never shown.
+- Clinics picked from the group company list are shown as `NAME     [ CODE]`, which never matches the panel check, so non-PEMC GLs to them stop with `The selected clinic is not in HC panel. GL not allowed..!!`.
+- The private delivery amount compares the Normal and Caesarean boxes as text; ClaimInvoice always takes the GL amount.
+- Decline passes the decline reason as the LG remarks (UpdateLG2).
+- The e-mail is sent depending on the EmailInd of the last LG in the list, not the one issued.
+
+Deliberate differences: parameters instead of pasted SQL (CLNLG1 / LGlst2020 filters are built from validated values); the Word templates (`\\Svr-doc\Template\CIS LG\*.dot`) are not available, so the GL, decline and preview letters are PDFs carrying the same fields (the AIA additional page, SEB health assessment form and excess letter are not produced); the notification e-mail uses the configured mail sender instead of the SMTP account and password hard-coded in the form; questions are asked one at a time by the page and answered back to the API.
