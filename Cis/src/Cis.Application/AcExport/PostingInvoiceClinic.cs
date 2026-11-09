@@ -74,7 +74,11 @@ public sealed class PostInvClnPostRequestValidator : Common.RequestValidator<Pos
 
 /// <summary>A posting line (lstClnInvList / lstCDList).</summary>
 public sealed record PostingLine(bool Posted, string Journal, string Ledger, string BatchNo, string Period, string Date, string Reference, string Account, decimal Amount,
-    string DebitCredit, string Analysis, string PayCode, string ClinicCode, bool PostLine, DateTime? InvoiceDate, string Description);
+    string DebitCredit, string Analysis, string PayCode, string ClinicCode, bool PostLine, DateTime? InvoiceDate, string Description)
+{
+    /// <summary>Screen-specific columns (e.g. the member screen's bordx period, bordx no. and member no.).</summary>
+    public Dictionary<string, string>? Extra { get; init; }
+}
 
 /// <summary>The lines, the debit / credit totals, the record count and whether the list is posted.</summary>
 public sealed record PostingResult(List<PostingLine> Lines, decimal Debit, decimal Credit, int Records, bool Posted, string? BatchNo = null);
