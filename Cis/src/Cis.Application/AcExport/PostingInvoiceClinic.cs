@@ -32,6 +32,9 @@ public sealed record PostInvClnRequest
     public string? InvoicePeriod { get; init; }
     public string? PvDateFrom { get; init; }
     public string? PvDateTo { get; init; }
+    /// <summary>The SUN invoice no. range (CLNInvoiceBatch; GST screens).</summary>
+    public string? SunFrom { get; init; }
+    public string? SunTo { get; init; }
 #pragma warning restore CS1591
 }
 

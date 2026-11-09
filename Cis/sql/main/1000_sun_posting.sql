@@ -85,3 +85,39 @@ BEGIN
     SELECT RTRIM(AccMonth) + '/' + RTRIM(AccYear) AS Period FROM HISMaintenance.dbo.AccPeriod ORDER BY AccYear DESC, AccMonth DESC;
 END
 GO
+
+-- Invoice Posting > Clinic (GST) (frmPostingInvoiceClnGST): SUN_CIS_Posting 'InvClnGST' (VIEW_SUN_Posting_InvClnGST). @batchNo lists a posted batch; @company is not
+-- applied (the view has no group company column, so the desktop's filter failed).
+CREATE OR ALTER PROCEDURE cis.SunPost_InvClnGST_Search @batchNo nvarchar(20) = NULL, @clinic nvarchar(10) = NULL, @invDateFrom datetime = NULL, @invDateTo datetime = NULL,
+    @invFrom nvarchar(100) = NULL, @invTo nvarchar(100) = NULL, @posted char(1) = '0', @postDateFrom datetime = NULL, @postDateTo datetime = NULL,
+    @batchFrom nvarchar(20) = NULL, @batchTo nvarchar(20) = NULL, @sunFrom nvarchar(20) = NULL, @sunTo nvarchar(20) = NULL, @accMonth nvarchar(2) = NULL,
+    @accYear nvarchar(4) = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ClnName, InvoiceDate, InvoiceNo, CLNAccCode, PostStatus, PostType, AccMonth, AccYear, InvCLNStatus, PAYCode, INVPayTo, INVAmount, ClinicCode, BatchNo, PostDate,
+        CLMPayableByMedix2C, CLMTotalActual, CLMCoPayColl, SUNInvoiceNo, CLMMCOProcFee, CLMFFSNoGST, CLMFFSGST, CLNInvoiceBatch
+    FROM CISWorksheet.dbo.VIEW_SUN_Posting_InvClnGST
+    WHERE (@batchNo IS NULL OR BatchNo = @batchNo)
+      AND (@batchNo IS NOT NULL OR (
+            (@clinic IS NULL OR ClinicCode = @clinic)
+        AND (@invDateFrom IS NULL OR InvoiceDate >= @invDateFrom) AND (@invDateTo IS NULL OR InvoiceDate <= @invDateTo)
+        AND (@invFrom IS NULL OR InvoiceNo >= @invFrom) AND (@invTo IS NULL OR InvoiceNo <= @invTo)
+        AND (@posted <> '0' OR ((InvCLNStatus IS NULL OR InvCLNStatus = '0') AND (PostStatus IS NULL OR PostStatus = '0')))
+        AND (@posted <> '1' OR (InvCLNStatus = '1' AND PostStatus = '1'))
+        AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
+        AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)
+        AND (@sunFrom IS NULL OR CLNInvoiceBatch >= @sunFrom) AND (@sunTo IS NULL OR CLNInvoiceBatch <= @sunTo)
+        AND (@accMonth IS NULL OR AccMonth = @accMonth) AND (@accYear IS NULL OR AccYear = @accYear)))
+    OPTION (RECOMPILE);
+END
+GO
+
+-- CmdPost_Click: one SUNPosting row per posted invoice, with its own SUN invoice batch (I / T + PostingINVSEQ) under the post's batch no. (SunPostBatch).
+CREATE OR ALTER PROCEDURE cis.SunPost_InvClnGST_Insert @invoiceNo nvarchar(100), @clinic nvarchar(10), @accMonth nvarchar(2), @accYear nvarchar(4),
+    @invBatch nvarchar(20), @invDate datetime = NULL, @batchNo nvarchar(20), @user nvarchar(50) AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT CISWorksheet.dbo.SUNPosting (InvoiceNo, TransRef, InvCLNStatus, PostStatus, PostType, PostDate, PostBy, AccMonth, AccYear, CLNInvoiceBatch, CLNInvDate, BatchNo)
+    VALUES (@invoiceNo, @clinic, '1', '1', 'InvClnGST', CAST(GETDATE() AS date), @user, @accMonth, @accYear, @invBatch, @invDate, @batchNo);
+END
+GO
