@@ -78,3 +78,13 @@ Deliberate differences: a blank period is simply not filtered (the desktop's mas
 Known desktop issues (reproduced): Bordx Control's "total amount" is the MCO fee total; check boxes for opposite values (e.g. sent and not sent) both apply and find nothing.
 
 Deliberate differences: parameters instead of pasted criteria; Bordx Control with a subsidiary uses the same query as without one (the desktop switched to case 16, whose view rejects the `Bordx.` / `CISCas.` filters it always adds, so it always failed); the check boxes are drop-downs.
+
+## Print Bordx — frmPrintBordxExcel (`/claim-bordx/print/standard`, right 124, `api/claim-bordx/print`)
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please enter Bordx Reference No`; the bordereaux's worksheets (CLM_PayAdviceCLNBSN case 1) with plan, case, patient, member, clinic, bill / co-pay / approved / MCO fee / bordx amounts and the printed flag; `No record found `. The print month / year come from the bordereaux and can only be chosen while it is not printed. |
+| Print Details / Preview | `Please Select company name`, `Please Select Bill Type`, `Please Select Health Connect Or Sihat Johor..!`, `Please keyin Month or Year !` (not printed yet); the pay advice (Excel): summary sheet with the group company / subsidiary block (VIEW_OP_GRPSummaryALL), the month line and one line per group of the report type (group company, department, relationship, cost centre, cost centre-branch, subsidiary), and a detail sheet. Print (not Preview) stamps the bordereaux printed (date, month, year, by). |
+| Print Summary / Preview | The summary sheet only. |
+
+Deliberate differences: the ~20 Excel templates (`PayAdviceCLNBordx*.xlt`, `BordxByCostCenter*.xlt`, credit-note variants) and the Word cover letter are not available, so the pay advice is a generated workbook with the same figures (title: Invoice / Disbursement Note, `CREDIT NOTE` for KCN bordereaux); the pasted criterion is replaced by the quoted bordx no.

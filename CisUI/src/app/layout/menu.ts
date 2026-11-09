@@ -126,7 +126,7 @@ export const MENU: MenuModule[] = [
       { label: 'Remove Worksheet', path: '/claim-bordx/remove-worksheet', access: Access.BordxRemove, form: 'FrmBordxRevise', group: 'Worksheet', phase: 6, migrated: true },
       { label: 'Update Claims Data', path: '/claim-bordx/update-claims-data', access: Access.BordxPrint, form: 'frmUpdateClaimsData', group: 'Bordx', phase: 3, migrated: true },
       { label: 'Print Bordx (Crystal)', path: '/claim-bordx/print/crystal', access: Access.BordxPrint, form: 'frmPrintBordx', group: 'Print Bordx', desktop: 'hidden', phase: 6 },
-      { label: 'Print Bordx', path: '/claim-bordx/print/standard', access: Access.BordxPrint, form: 'frmPrintBordxExcel', group: 'Print Bordx', phase: 6 },
+      { label: 'Print Bordx', path: '/claim-bordx/print/standard', access: Access.BordxPrint, form: 'frmPrintBordxExcel', group: 'Print Bordx', phase: 6, migrated: true },
       { label: 'Print Bordx (SEB/INDAH WATER)', path: '/claim-bordx/print/seb', access: Access.BordxPrint, form: 'frmPrintBordxIBM', group: 'Print Bordx', phase: 6 },
       { label: 'Print Bordx (Prasarana)', path: '/claim-bordx/print/prasarana', access: Access.BordxPrint, form: 'frmPrintBordxSPNB', group: 'Print Bordx', phase: 6 },
       { label: 'Print Bordx (AXA Affin)', path: '/claim-bordx/print/axa-affin', access: Access.BordxPrint, form: 'frmPrintBordxAXAAffin', group: 'Print Bordx', phase: 6 },

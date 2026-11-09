@@ -62,4 +62,14 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | M3 | Outstanding Bordx: `DAYANG ENTERPRISE SDN BHD` → Search | `No record found for this Group Company!` |
 | M4 | Bordx & Worksheet: `DAYANG ENTERPRISE SDN BHD`, bordx KDC55049–KDC55049 → Search | its worksheets (e.g. EA12409034, 250.00) |
 
+## 6. Print Bordx — `/claim-bordx/print/standard`
+
+| # | Action | Expected |
+|---|---|---|
+| P1 | Search with a blank bordx no | `Please enter Bordx Reference No` |
+| P2 | `KDC55049` → Search | EA12409034, 250.00; printed NO |
+| P3 | P2 → Detail Preview without a bill type | `Please Select Bill Type` |
+| P4 | Health Connect, Disbursement Note, June 2021 → Detail Preview | PrintBordx_KDC55049.xlsx (summary + DETAILS) |
+| P5 | (writes) P4 → Print Details | the bordereaux shows printed YES (restore: `UPDATE CISWorksheet.dbo.Bordx SET BordxPrintedStatus = 0, BordxPrintedDate = NULL, BORDXPrintMonth = NULL, BORDXPrintYear = NULL WHERE BordxRefNo = 'KDC55049'`) |
+
 Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`

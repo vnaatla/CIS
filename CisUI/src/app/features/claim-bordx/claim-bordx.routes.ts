@@ -46,6 +46,13 @@ export const claimBordxRoutes: Routes = [
     data: { access: Access.BordxAcPeriod, legacyForm: 'FrmACPeriod', kind: 'acperiod' },
     loadComponent: () => import('./delivery.page').then((m) => m.BordxDeliveryPage),
   },
+  {
+    path: 'claim-bordx/print/standard',
+    title: 'CIS - Print Bordx',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxPrint, legacyForm: 'frmPrintBordxExcel' },
+    loadComponent: () => import('./print-bordx.page').then((m) => m.PrintBordxPage),
+  },
   ...(
     [
       ['control', Access.BordxControl, 'FrmBordxControl', 'Bordx Control'],

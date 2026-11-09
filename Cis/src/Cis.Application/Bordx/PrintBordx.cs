@@ -13,7 +13,7 @@ public sealed record PrintBordxRequest
     public string BordxNo { get; init; } = "";
     /// <summary>MediExpress, Health Connect or Sihat Johor.</summary>
     public string? Company { get; init; }
-    /// <summary>0 TAX, 1 (non-tax "_20" layout).</summary>
+    /// <summary>0 Invoice (the TAX templates), 1 Disbursement Note (the "_20" templates).</summary>
     public int? BillType { get; init; }
     /// <summary>0 by group company, 1 by department, 2 by relationship, 3 by cost center, 4 by cost center-branch, 5 by subsidiary.</summary>
     public int ReportType { get; init; }
@@ -123,7 +123,7 @@ public sealed class PrintBordxService(IDbSessions sessions, IPrintBordxRepositor
         }
         var head = summary.FirstOrDefault();
         var credit = no.StartsWith("KCN", StringComparison.OrdinalIgnoreCase);
-        var title = (credit ? "CREDIT NOTE - " : "") + (r.Company is "MediExpress" ? "MEDIEXPRESS " : "") + (r.BillType == 0 ? "TAX INVOICE / PAY ADVICE" : "PAY ADVICE");
+        var title = (credit ? "CREDIT NOTE - " : "") + (r.Company is "MediExpress" ? "MEDIEXPRESS " : "") + (r.BillType == 0 ? "INVOICE" : "DISBURSEMENT NOTE");
         var subtitles = new List<string>
         {
             T(head, "subname") is { Length: > 0 } sub ? sub : T(head, "MBMGroupCompany"), Join(head, "GRPCoAdd1", "GRPCoAdd2", "GRPCoAdd3", "GRPPostCode"),

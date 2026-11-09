@@ -70,4 +70,12 @@ export async function claimBordx(page, base, check) {
     await page.type('input[name=bordxFrom]', 'KDC55049')
     await page.type('input[name=bordxTo]', 'KDC55049')
   }, 1, 'Bordx & Worksheet: DAYANG ENTERPRISE SDN BHD bordx KDC55049 lists its worksheets')
+
+  // Print Bordx: KDC55049 lists its worksheet (nothing is printed).
+  await page.goto(`${base}/claim-bordx/print/standard`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxNo]')
+  await page.type('input[name=bordxNo]', 'KDC55049')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Bordereaux worksheets"] tbody')?.textContent.includes('EA12409034'), { timeout: 120000 })
+  check(true, 'Print Bordx: KDC55049 lists EA12409034')
 }
