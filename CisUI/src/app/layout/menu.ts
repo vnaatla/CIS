@@ -188,7 +188,7 @@ export const MENU: MenuModule[] = [
     path: '/receipt',
     items: [
       { label: 'Fr Member', path: '/receipt/member', access: Access.ReceiptMember, form: 'FrmReceiptMember', phase: 8, migrated: true },
-      { label: 'Fr Grp Company', path: '/receipt/payor', access: Access.ReceiptPayor, form: 'FrmReceiptPayor', phase: 8 },
+      { label: 'Fr Grp Company', path: '/receipt/payor', access: Access.ReceiptPayor, form: 'FrmReceiptPayor', phase: 8, migrated: true },
       { label: 'Fr FFS', path: '/receipt/ffs', access: Access.ReceiptFfs, form: 'FrmReceiptFFS', phase: 8 },
       { label: 'Fr MNRB', path: '/receipt/mnrb', access: Access.ReceiptPayor, form: 'FrmReceiptMNRB', desktop: 'never-opened', phase: 8 },
       { label: 'Upload Receipt', path: '/receipt/upload', access: Access.ReceiptPayor, form: 'frmReceiptUpload', phase: 8 },

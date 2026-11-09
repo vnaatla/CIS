@@ -11,4 +11,11 @@ export const receiptRoutes: Routes = [
     data: { access: Access.ReceiptMember, legacyForm: 'FrmReceiptMember' },
     loadComponent: () => import('./receipt-member.page').then((m) => m.ReceiptMemberPage),
   },
+  {
+    path: 'receipt/payor',
+    title: 'CIS - Receipt from Group Company',
+    canActivate: [accessGuard],
+    data: { access: Access.ReceiptPayor, legacyForm: 'FrmReceiptPayor' },
+    loadComponent: () => import('./receipt-payor.page').then((m) => m.ReceiptPayorPage),
+  },
 ]

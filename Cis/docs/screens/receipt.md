@@ -14,4 +14,18 @@ Known desktop issues (reproduced): the receipt no. filter uses the "from" box fo
 
 Deliberate differences: parameters instead of pasted criteria (the amount range was compared as formatted text); the amounts are re-read on the server; the receipts of one Save are in one transaction; unticking a case really takes it out of the save (the desktop's untick cleared the whole selection).
 
+## Fr Grp Company — FrmReceiptPayor (`/receipt/payor`, right ReceiptPayor, `api/receipt/payor`)
+
+| Step | Behaviour |
+|---|---|
+| Search | By bordereaux (PaymentReceiptModule case 18) or by worksheet (case 19), as `cis.RcpPay_Search`. Scan one bordx no. / worksheet no. (`Please Enter Bordx No` / `Please Enter Worksheet No`, `Data has been uploaded!`; appended) or ranges, group company (worksheet: its subsidiaries), payor (CISDB PAY) and its insured clients, insured YES (KDC bordereaux) / NO, bordx status 0–5, worksheet status 0–2, receipt no. / date, client PV no., Medix receipt no., A/C month / year ranges; `No record found!` / `No record found !`. Bordereaux rows: payor, bordx no., claim amount, received, balance, status, bordx date, subsidiary, group company, receipt no., client PV, Medix receipt, insured. Worksheet rows add the case and receipt date. |
+| Tick | A bordereaux or claim received in full: `Record has been paid !`; a partial bordereaux: `Record has been Partial Paid !` (it takes the claims not yet received). |
+| Save | Bordereaux: `Please select at least one record to be updated! ` / `Please select group company! ` (with an OP claim or OP fee amount), `Please Enter Receipt No!`, `Please Enter Receipt Date!`, `Please Enter Cheque No!`, `Please Enter Receipt Amount!`, amount ≠ selected without a remark `Please Enter Remark!`; `Do you want to update the record ?` → per claim of each ticked bordereaux: claim received (F), a ReceiptfrPAY row (receipt amount, the claim's bordx amount as received), bordereaux F with the receipt date; the OP claim / OP fee lines go to ReceiptSummary → `Record Updated...`. Worksheet: the same checks with their own texts → per ticked claim a ReceiptfrPAY row when it has none, the claim F, then the bordereaux F when all its claims are received, else P → `Record updated...`. The receipt's rows are then listed. |
+| Edit / Update | Edit, then clicking a row loads its receipt (`Payment hasn't been made!` when none); Update (`Please select the record`, `Please Enter Receipt No!`, `Invalid Receipt Date!`, `Please Enter Cheque No!`, `Please Enter Receipt Amt!`) overwrites the bordereaux's receipt rows (with the period) or the claim's row → `Record Updated...`. |
+| Export | The list as CSV. |
+
+Known desktop issues (reproduced): every ReceiptfrPAY row of a save carries the whole receipt amount; Update does not change the bordereaux's receipt date (the desktop never saved it); the worksheet Update does not change the period.
+
+Deliberate differences: parameters instead of pasted criteria; the lists use an extra filter implied by their join so a bordereaux search takes about 11 s (the desktop's procedure 13 s) and a worksheet search 6 s (27 s); one transaction per save (the desktop wrote claim by claim); the selected amount and the statuses are re-read on the server; the claim update is limited to the ticked case (the desktop's `case AND bordx OR BTBG bordx` without brackets could pick another claim); bordx status 5 works (the desktop's filter was invalid SQL); in bordereaux mode clicking a row in edit mode loads its receipt (the desktop's check was inverted and always failed).
+
 The restored local data has no member debit notes (VIEW_CISReceiptFrMBM and ReceiptFrMBM are empty), so the list and the saves could only be checked for their messages and SQL, not against real rows.
