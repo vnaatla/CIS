@@ -90,12 +90,13 @@ export class PostingInvoiceClinicPage implements OnInit {
   private readonly notify = inject(NotifyService)
   /** Invoice Posting > Clinic (GST) and (GST-2017) use the same screen (route data variant 'gst' / 'gst2017'). */
   private readonly variant = inject(ActivatedRoute).snapshot.data['variant'] as string | undefined
-  protected readonly gst = this.variant === 'gst' || this.variant === 'gst2017'
-  protected readonly y2017 = this.variant === 'gst2017'
-  private readonly base = this.y2017 ? '/api/ac-export/invoice-clinic-gst-2017' : this.gst ? '/api/ac-export/invoice-clinic-gst' : CLINIC
-  protected readonly title = this.y2017 ? 'Invoice Posting - Clinic (GST-2017)' : this.gst ? 'Invoice Posting - Clinic (GST)' : 'Invoice Posting - Clinic'
-  protected readonly form = this.y2017 ? 'frmPostingInvClnGST2017' : this.gst ? 'frmPostingInvoiceClnGST' : 'frmPostingInvoiceCln'
-  protected readonly caption = this.y2017 ? 'Clinic invoice postings (GST-2017)' : this.gst ? 'Clinic invoice postings (GST)' : 'Clinic invoice postings'
+  protected readonly gst = this.variant === 'gst' || this.variant === 'gst2017' || this.variant === 'zeroised'
+  protected readonly y2017 = this.variant === 'gst2017' || this.variant === 'zeroised'
+  private readonly suffix = this.variant === 'zeroised' ? ' (GST-2017 Zeroised)' : this.y2017 ? ' (GST-2017)' : this.gst ? ' (GST)' : ''
+  private readonly base = CLINIC + (({ gst: '-gst', gst2017: '-gst-2017', zeroised: '-gst-2017-zeroised' } as Record<string, string>)[this.variant ?? ''] ?? '')
+  protected readonly title = 'Invoice Posting - Clinic' + this.suffix
+  protected readonly form = this.variant === 'zeroised' ? 'frmPostingInvClnGST2017Zeroised' : this.y2017 ? 'frmPostingInvClnGST2017' : this.gst ? 'frmPostingInvoiceClnGST' : 'frmPostingInvoiceCln'
+  protected readonly caption = 'Clinic invoice postings' + this.suffix
   protected readonly selectedKey = signal<string | null>(null)
   private selected: Line | null = null
 

@@ -41,3 +41,9 @@ The GST screen (route variant `gst2017`) over SUN_CIS_Posting `InvClnGST2017` (V
 | Generate Tax Invoice | For the selected line's SUN invoice batch (`Invoice posting is not done,Generate is not possible` when blank): the clinic (representative, name, address, phone), `FEE FOR SERVICE FOR <batch>`, the FFS fee without GST and the GST, the batch and today → `Tax Invoice Generated Successfully`. |
 
 Deliberate differences: the `HC FFS Tax Invoice.xlt` template is not available, so the tax invoice is a generated workbook downloaded in the browser (the desktop saved it on `\svr-doc\Template\FFSTaxInv\<batch>\`).
+
+## Invoice Posting > Clinic (GST-2017 Zeroised) — frmPostingInvClnGST2017Zeroised (`/ac-export/invoice/clinic-gst-2017-zeroised`, `api/ac-export/invoice-clinic-gst-2017-zeroised`)
+
+The desktop menu never opens this form; it is migrated as GST-2017 with one difference: in the list the whole FFS fee goes to `1002` and the `8830` GST line is 0.00 (route variant `zeroised`). Post (type InvClnGST2017, a `T` SUN invoice batch for FFS invoices) and Generate Tax Invoice are those of GST-2017.
+
+Known desktop issues (reproduced): Generate Tax Invoice still splits the fee into 94.34 % and GST, unlike the zeroised list.

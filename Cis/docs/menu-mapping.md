@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**118 screens to build · 73 migrated · 7 menu items with no handler, no form or an empty form (nothing to build).**
+**118 screens to build · 74 migrated · 7 menu items with no handler, no form or an empty form (nothing to build).**
 
 ## Summary
 
@@ -21,10 +21,10 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
-| [A/C Export](#ac-export) | 15 | 3 | 4 |
+| [A/C Export](#ac-export) | 15 | 4 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **118** | **73** | **19** |
+| **Total** | **118** | **74** | **19** |
 
 ## Membership
 
@@ -187,7 +187,7 @@ Module page: `/ac-export`
 | Invoice | Clinic | frmPostingInvoiceCln | 120 |  | 9 | **Migrated** | `/ac-export/invoice/clinic` |
 | Invoice | Clinic (GST) | frmPostingInvoiceClnGST | 120 |  | 9 | **Migrated** | `/ac-export/invoice/clinic-gst` |
 | Invoice | Clinic (GST-2017) | frmPostingInvClnGST2017 | 120 |  | 9 | **Migrated** | `/ac-export/invoice/clinic-gst-2017` |
-| Invoice | Clinic (GST-2017 Zeroised) | frmPostingInvClnGST2017Zeroised | 120 | Never opened | 9 | Pending | `/ac-export/invoice/clinic-gst-2017-zeroised` |
+| Invoice | Clinic (GST-2017 Zeroised) | frmPostingInvClnGST2017Zeroised | 120 | Never opened | 9 | **Migrated** | `/ac-export/invoice/clinic-gst-2017-zeroised` |
 | Invoice | Member | frmPostingInvoiceMember | 120 |  | 9 | Pending | `/ac-export/invoice/member` |
 | Invoice | Invoice Posting | frmInvPosting | 120 | Never opened | 9 | Pending | `/ac-export/invoice/posting` |
 | Payment | Clinic | FrmPostingPay2Cln | 120 |  | 9 | Pending | `/ac-export/payment/clinic` |

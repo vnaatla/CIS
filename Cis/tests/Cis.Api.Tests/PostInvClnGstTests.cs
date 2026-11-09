@@ -26,6 +26,8 @@ public class PostInvClnGstRuleTests
         Assert.Equal((608.86m, 3 * 608.86m), (r.Debit, r.Credit));
         Assert.Equal((0m, 0m), PostInvClnGstService.Split(32.045m, new DateTime(2015, 3, 31)));
         Assert.Equal(3, PostInvClnGstService.Lines([row], "G", new DateTime(2015, 3, 31)).Lines.Count);
+        var zeroised = PostInvClnGstService.Lines([row], "G", new DateTime(2026, 11, 9), zeroised: true);
+        Assert.Equal([("1002", 32.05m), ("8830", 0m)], zeroised.Lines.Skip(2).Select(l => (l.Account, l.Amount)).ToList());
     }
 }
 

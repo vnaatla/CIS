@@ -26,10 +26,10 @@ public interface IPostInvClnGstRepository
 public interface IPostInvClnGstService
 {
     /// <summary>Search / Search Debit / Search Credit.</summary>
-    Task<PostingResult> SearchAsync(PostInvClnRequest request, bool y2017 = false);
+    Task<PostingResult> SearchAsync(PostInvClnRequest request, bool y2017 = false, bool zeroised = false);
 
     /// <summary>CmdPost_Click (after the confirmation): the batch no., its lines and the posting workbook.</summary>
-    Task<(PostingResult Result, FileOutput File)> PostAsync(PostInvClnPostRequest request, string user, bool y2017 = false);
+    Task<(PostingResult Result, FileOutput File)> PostAsync(PostInvClnPostRequest request, string user, bool y2017 = false, bool zeroised = false);
 
     /// <summary>cmdgenerate_Click (GST-2017): the FFS tax invoice of a posted SUN invoice batch.</summary>
     Task<FileOutput> TaxInvoiceAsync(string? invBatch);
@@ -44,10 +44,10 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
         Generated = "Tax Invoice Generated Successfully";
 
     /// <inheritdoc />
-    public async Task<PostingResult> SearchAsync(PostInvClnRequest r, bool y2017 = false)
+    public async Task<PostingResult> SearchAsync(PostInvClnRequest r, bool y2017 = false, bool zeroised = false)
     {
         await using var s = await sessions.OpenAsync();
-        var result = Lines(await repository.SearchAsync(s, Filter(r, null), y2017), Kind(r.Kind), Today, y2017);
+        var result = Lines(await repository.SearchAsync(s, Filter(r, null), y2017), Kind(r.Kind), Today, y2017, zeroised);
         if (result.Records == 0) throw new NotFoundException(PostInvClnService.NoRecord);
         return result;
     }
@@ -55,7 +55,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
     private DateTime Today => clock.GetLocalNow().Date;
 
     /// <inheritdoc />
-    public async Task<(PostingResult Result, FileOutput File)> PostAsync(PostInvClnPostRequest r, string user, bool y2017 = false)
+    public async Task<(PostingResult Result, FileOutput File)> PostAsync(PostInvClnPostRequest r, string user, bool y2017 = false, bool zeroised = false)
     {
         if (r.Ticked.Count == 0) throw new BusinessRuleException(PostInvClnService.NoSelection);
         var invFrom = Date(r.Search.InvDateFrom);
@@ -72,7 +72,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
         {
             var row = open[(t.InvoiceNo.Trim(), t.ClinicCode.Trim())];
             // An invoice with an FFS fee split into GST gets a "T" SUN invoice batch, the others "I".
-            var invBatch = (Split(N(row, "CLMMCOProcFee"), Today).NoGst > 0 ? "T" : "I") + await numbers.NextInvNoAsync(tx);
+            var invBatch = (Split(N(row, "CLMMCOProcFee"), Today, zeroised).NoGst > 0 ? "T" : "I") + await numbers.NextInvNoAsync(tx);
             var tick = t with { InvoiceNo = t.InvoiceNo.Trim(), ClinicCode = t.ClinicCode.Trim() };
             // GST-2017 writes one SUNPosting row per case of the invoice (the case no. as InvoiceNo).
             foreach (var key in y2017 ? await repository.CasesAsync(tx, tick) : [tick.InvoiceNo])
@@ -80,7 +80,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
                     y2017 ? "InvClnGST2017" : "InvClnGST");
         }
         var result = Lines(await repository.SearchAsync(tx, new PostInvClnGstFilter(batch, null, null, null, null, null, "", null, null, null, null, null, null, null, null),
-            y2017), "G", Today, y2017) with { BatchNo = batch };
+            y2017), "G", Today, y2017, zeroised) with { BatchNo = batch };
         await tx.CommitAsync();
         return (result, export.Export(result, $"{batch} RC-CLNInv {invFrom:yyyyMMdd}-{invTo:dd}"));
     }
@@ -112,9 +112,11 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
     }
 
     /// <summary>The FFS fee split: from 01/04/2015, 94.34 % without GST and the rest GST.</summary>
-    public static (decimal NoGst, decimal Gst) Split(decimal ffs, DateTime today)
+    public static (decimal NoGst, decimal Gst) Split(decimal ffs, DateTime today, bool zeroised = false)
     {
         if (ffs == 0 || today < new DateTime(2015, 4, 1)) return (0, 0);
+        // GST-2017 Zeroised: the whole fee without GST.
+        if (zeroised) return (Math.Round(ffs, 2, MidpointRounding.AwayFromZero), 0);
         var noGst = Math.Round(ffs * 0.9434m, 2, MidpointRounding.AwayFromZero);
         return (noGst, Math.Round(ffs - noGst, 2, MidpointRounding.AwayFromZero));
     }
@@ -122,7 +124,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
     /// <summary>ClnInvListing (GST): no FFS fee → credit 84 + clinic and debit 6000 (payable); with an FFS fee → debit 6000 (actual − co-pay), credit 84 + clinic
     /// (payable), credit 1002 (the FFS fee without GST, or the whole fee before GST) and credit 8830 (the GST). The totals add the payable amount for every line,
     /// as the desktop.</summary>
-    public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind, DateTime today, bool y2017 = false)
+    public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind, DateTime today, bool y2017 = false, bool zeroised = false)
     {
         var lines = new List<PostingLine>();
         decimal debit = 0, credit = 0;
@@ -136,7 +138,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
             var payable = R(N(x, "CLMPayableByMedix2C"));
             var actual = R(N(x, "CLMTotalActual") - R(N(x, "CLMCoPayColl")));
             var ffs = N(x, "CLMMCOProcFee");
-            var (noGst, gst) = Split(ffs, today);
+            var (noGst, gst) = Split(ffs, today, zeroised);
             var period = T(x, "AccMonth") + T(x, "AccYear") == "" ? "" : $"{T(x, "AccMonth")}/{T(x, "AccYear")}";
             var inv = x.GetValueOrDefault("InvoiceDate") as DateTime?;
             PostingLine Line(string account, string dc, decimal amount, bool postLine) => new(isPosted, "RC", "UHC", T(x, "CLNInvoiceBatch"), period, date,

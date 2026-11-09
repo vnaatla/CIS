@@ -35,4 +35,15 @@ export async function acExport(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice postings (GST-2017)"] tbody')?.textContent.includes('84P320'), { timeout: 120000 })
   check(true, 'Invoice Posting - Clinic (GST-2017): 01/07/2021 lists 0210152590')
+
+  // Invoice Posting > Clinic (GST-2017 Zeroised): the same invoice on the zeroised screen.
+  await page.goto(`${base}/ac-export/invoice/clinic-gst-2017-zeroised`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=sunFrom]')
+  await page.type('input[aria-label="Invoice Date From"]', '01/07/2021')
+  await page.type('input[aria-label="Invoice Date To"]', '01/07/2021')
+  await page.type('input[name=invoiceFrom]', '0210152590')
+  await page.type('input[name=invoiceTo]', '0210152590')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice postings (GST-2017 Zeroised)"] tbody')?.textContent.includes('84P320'), { timeout: 120000 })
+  check(true, 'Invoice Posting - Clinic (GST-2017 Zeroised): 01/07/2021 lists 0210152590')
 }
