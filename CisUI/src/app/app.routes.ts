@@ -7,6 +7,7 @@ import { claimRoutes } from './features/claim/claim.routes'
 import { lgAuditRoutes } from './features/lg-audit/lg-audit.routes'
 import { mcoFeesRoutes } from './features/mco-fees/mco-fees.routes'
 import { claimBordxRoutes } from './features/claim-bordx/claim-bordx.routes'
+import { paymentRoutes } from './features/payment/payment.routes'
 
 /**
  * Each migration phase adds its screens here as lazy routes under the module path, guarded by `accessGuard` with
@@ -28,6 +29,7 @@ export const routes: Routes = [
       ...lgAuditRoutes,
       ...mcoFeesRoutes,
       ...claimBordxRoutes,
+      ...paymentRoutes,
       {
         path: ':module',
         children: [

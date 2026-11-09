@@ -169,7 +169,7 @@ export const MENU: MenuModule[] = [
     icon: 'wallet',
     path: '/payment',
     items: [
-      { label: 'To Clinic', path: '/payment/clinic', access: Access.PaymentClinic, form: 'frmPaymentClinic', phase: 7 },
+      { label: 'To Clinic', path: '/payment/clinic', access: Access.PaymentClinic, form: 'frmPaymentClinic', phase: 7, migrated: true },
       { label: 'To Clinic - Invoice', path: '/payment/clinic-invoice', access: Access.PaymentClinicInvoice, form: 'frmPaymentCLNInvoice, frmPrintChequeRange, frmPrintPVRange, frmInvoiceDetPopup', phase: 7 },
       { label: 'To Member', path: '/payment/member', access: Access.PaymentMember, form: 'frmPaymentMemberAuto08', phase: 7 },
       { label: 'To Member (old)', path: '/payment/member-legacy', access: Access.PaymentMember, form: 'frmPaymentMember', desktop: 'never-opened', phase: 7 },
