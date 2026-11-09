@@ -19,11 +19,23 @@ public sealed class ExcelReportWriter(IReportTemplateStore templates)
         var template = report.Template is { } name ? templates.Find(name) : null;
         using var book = template is null ? new XLWorkbook() : new XLWorkbook(template);
         WriteSheet(template is null ? book.Worksheets.Add(SheetName(report.Title)) : book.Worksheet(1), report, template is null);
-        foreach (var extra in report.ExtraSheets) WriteSheet(book.Worksheets.Add(SheetName(extra.Title)), extra, true);
+        foreach (var extra in report.ExtraSheets) WriteSheet(book.Worksheets.Add(Unique(book, SheetName(extra.Title))), extra, true);
 
         using var stream = new MemoryStream();
         book.SaveAs(stream);
         return stream.ToArray();
+    }
+
+    /// <summary>A sheet name not yet in the workbook (several sheets with one title, e.g. a voucher per PV, get " (2)", " (3)"...).</summary>
+    private static string Unique(XLWorkbook book, string name)
+    {
+        if (!book.Worksheets.Contains(name)) return name;
+        for (var i = 2; ; i++)
+        {
+            var suffix = $" ({i})";
+            var candidate = (name.Length + suffix.Length > 31 ? name[..(31 - suffix.Length)] : name) + suffix;
+            if (!book.Worksheets.Contains(candidate)) return candidate;
+        }
     }
 
     private static void WriteSheet(IXLWorksheet sheet, ReportDocument report, bool heading)
