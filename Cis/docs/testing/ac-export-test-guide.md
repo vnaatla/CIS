@@ -17,3 +17,13 @@ Clean-up after a real post (replace the batch no.; set PostingINVSEQ back to the
 DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = 'A817066' AND PostType = 'InvCln';
 UPDATE CISWorksheet.dbo.PostingINVSEQ SET SEQNumber = 'A817065';
 ```
+
+## 2. Invoice Posting > Clinic (GST) — `/ac-export/invoice/clinic-gst` (frmPostingInvoiceClnGST)
+
+| # | Action | Expected |
+|---|---|---|
+| G1 | Invoice date 01/08/2017 – 05/08/2017, status 0 - No → Search | 891 unposted invoices |
+| G2 | Invoice date 04/08/2017, invoice no. 059809 → Search | 6000 D 640.90, 84D153 C 608.86, 1002 C 30.23, 8830 C 1.82 |
+| G3 | Tick a line → Post without invoice dates | `Please Enter Invoice Date! ` |
+
+Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = '<batch>' AND PostType = 'InvClnGST'`, then set SunPostBatch.BatchNo and PostingINVSEQ.SEQNumber back.

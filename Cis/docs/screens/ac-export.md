@@ -16,3 +16,16 @@ Batch numbers: the posting screens use one of two desktop sequences, both locked
 Known desktop issues (reproduced): the bordx month and year are compared separately (e.g. 12/2020 – 01/2021 finds nothing).
 
 Deliberate differences: parameters instead of pasted criteria; the group company filter is not offered (VIEW_SUN_Posting_InvCln has no group company column, so the desktop's filter failed); the ticked invoices are checked to be still unposted on the server; one transaction with the sequence locked; the posting workbook is downloaded (the desktop saved it on `\\Mars\accounts\Account Journal Import\JIS CLN Not Posted\`).
+
+## Invoice Posting > Clinic (GST) — frmPostingInvoiceClnGST (`/ac-export/invoice/clinic-gst`, right AcExport, `api/ac-export/invoice-clinic-gst`)
+
+The clinic posting screen with route variant `gst`.
+
+| Step | Behaviour |
+|---|---|
+| Search | SUN_CIS_Posting `InvClnGST` (VIEW_SUN_Posting_InvClnGST, as `cis.SunPost_InvClnGST_Search`): clinic, invoice date and no., post status, post date, batch no., SUN invoice no. (CLNInvoiceBatch), posted A/C period. Line date = today, the batch column shows the SUN invoice batch. No FFS fee: `84` + clinic C and `6000` D (payable). With an FFS fee (MCO processing fee): `6000` D (actual − co-pay, the line Post writes), `84` + clinic C (payable), `1002` C (the fee × 94.34 % from 01/04/2015, else the whole fee) and `8830` C (the GST, fee − 1002 amount). |
+| Post | As the clinic screen, but `Please Enter Invoice Date! ` (invoice dates instead of bordx dates). Batch no. from SunPostBatch; each invoice gets a SUN invoice batch `T` (FFS fee with GST) or `I` + PostingINVSEQ; SUNPosting rows with type InvClnGST; file `<batch> RC-CLNInv <invoice from yyyyMMdd>-<invoice to dd>`. |
+
+Known desktop issues (reproduced): the debit / credit totals add the payable amount for every line (an FFS invoice counts it three times as credit), not each line's amount.
+
+Deliberate differences: as the clinic screen (no group company filter, the view has no such column).

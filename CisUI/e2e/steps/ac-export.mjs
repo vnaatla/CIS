@@ -13,4 +13,15 @@ export async function acExport(page, base, check) {
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice postings"] tbody')?.textContent.includes('0210152590'), { timeout: 120000 })
   check(await page.evaluate(() => document.querySelector('table[aria-label="Clinic invoice postings"] tbody').textContent.includes('84P320')),
     'Invoice Posting - Clinic: 01/07/2021 lists 0210152590 with its 84P320 credit line')
+
+  // Invoice Posting > Clinic (GST): the FFS invoice 059809 of 04/08/2017 is split into four lines with the 8830 GST line (nothing is posted).
+  await page.goto(`${base}/ac-export/invoice/clinic-gst`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=sunFrom]')
+  await page.type('input[aria-label="Invoice Date From"]', '04/08/2017')
+  await page.type('input[aria-label="Invoice Date To"]', '04/08/2017')
+  await page.type('input[name=invoiceFrom]', '059809')
+  await page.type('input[name=invoiceTo]', '059809')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice postings (GST)"] tbody')?.textContent.includes('8830'), { timeout: 120000 })
+  check(true, 'Invoice Posting - Clinic (GST): FFS invoice 059809 has its 1002 and 8830 lines')
 }

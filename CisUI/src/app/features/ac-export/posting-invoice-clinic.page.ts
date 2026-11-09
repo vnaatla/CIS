@@ -1,5 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { FormsModule } from '@angular/forms'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
@@ -12,7 +13,7 @@ import { saveBlob } from '../../shared/lib/download'
 import { formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-const BASE = '/api/ac-export/invoice-clinic'
+const CLINIC = '/api/ac-export/invoice-clinic'
 type Line = Record<string, unknown>
 const s = (v: unknown) => (v == null ? '' : String(v).trim())
 
@@ -22,7 +23,8 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Posting - Clinic" subtitle="Replaces frmPostingInvoiceCln">
+    <app-page-shell [title]="gst ? 'Invoice Posting - Clinic (GST)' : 'Invoice Posting - Clinic'"
+      [subtitle]="gst ? 'Replaces frmPostingInvoiceClnGST' : 'Replaces frmPostingInvoiceCln'">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -31,10 +33,15 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
           <app-field label="Invoice Date To"><app-date-input name="invDateTo" ariaLabel="Invoice Date To" [(ngModel)]="f.invDateTo" /></app-field>
           <app-field label="Invoice No From"><input name="invoiceFrom" maxlength="100" [(ngModel)]="f.invoiceFrom" /></app-field>
           <app-field label="Invoice No To"><input name="invoiceTo" maxlength="100" [(ngModel)]="f.invoiceTo" /></app-field>
-          <app-field label="Bordx Date From"><app-date-input name="bordxDateFrom" ariaLabel="Bordx Date From" [(ngModel)]="f.bordxDateFrom" /></app-field>
-          <app-field label="Bordx Date To"><app-date-input name="bordxDateTo" ariaLabel="Bordx Date To" [(ngModel)]="f.bordxDateTo" /></app-field>
-          <app-field label="PV Date From"><app-date-input name="pvDateFrom" ariaLabel="PV Date From" [(ngModel)]="f.pvDateFrom" /></app-field>
-          <app-field label="PV Date To"><app-date-input name="pvDateTo" ariaLabel="PV Date To" [(ngModel)]="f.pvDateTo" /></app-field>
+          @if (gst) {
+            <app-field label="SUN Invoice No From"><input name="sunFrom" maxlength="20" [(ngModel)]="f.sunFrom" /></app-field>
+            <app-field label="SUN Invoice No To"><input name="sunTo" maxlength="20" [(ngModel)]="f.sunTo" /></app-field>
+          } @else {
+            <app-field label="Bordx Date From"><app-date-input name="bordxDateFrom" ariaLabel="Bordx Date From" [(ngModel)]="f.bordxDateFrom" /></app-field>
+            <app-field label="Bordx Date To"><app-date-input name="bordxDateTo" ariaLabel="Bordx Date To" [(ngModel)]="f.bordxDateTo" /></app-field>
+            <app-field label="PV Date From"><app-date-input name="pvDateFrom" ariaLabel="PV Date From" [(ngModel)]="f.pvDateFrom" /></app-field>
+            <app-field label="PV Date To"><app-date-input name="pvDateTo" ariaLabel="PV Date To" [(ngModel)]="f.pvDateTo" /></app-field>
+          }
           <app-field label="Post Status">
             <select name="posted" [(ngModel)]="f.posted"><option value="0 - No">0 - No</option><option value="1 - Yes">1 - Yes</option></select>
           </app-field>
@@ -64,7 +71,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
           <app-action-bar label="Post actions"><button appButton variant="primary" [busy]="posting()" (click)="post()">Post</button></app-action-bar>
         </fieldset>
 
-        <app-data-grid caption="Clinic invoice postings" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
+        <app-data-grid [caption]="gst ? 'Clinic invoice postings (GST)' : 'Clinic invoice postings'" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
           (checkedChange)="check($event)" />
         <p class="totals" aria-label="Totals">
           Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
@@ -77,6 +84,9 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
 export class PostingInvoiceClinicPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
+  /** Invoice Posting > Clinic (GST) uses the same screen (route data variant 'gst'). */
+  protected readonly gst = inject(ActivatedRoute).snapshot.data['variant'] === 'gst'
+  private readonly base = this.gst ? '/api/ac-export/invoice-clinic-gst' : CLINIC
 
   protected readonly money = (v: number) => formatMoney(v)
   protected readonly periods = signal<string[]>([])
@@ -106,13 +116,13 @@ export class PostingInvoiceClinicPage implements OnInit {
   private empty() {
     return {
       clinic: '', invDateFrom: '', invDateTo: '', invoiceFrom: '', invoiceTo: '', bordxDateFrom: '', bordxDateTo: '', pvDateFrom: '', pvDateTo: '', posted: '0 - No',
-      postDateFrom: '', postDateTo: '', batchFrom: '', batchTo: '', invoicePeriod: '',
+      postDateFrom: '', postDateTo: '', batchFrom: '', batchTo: '', invoicePeriod: '', sunFrom: '', sunTo: '',
     }
   }
 
   async ngOnInit(): Promise<void> {
     try {
-      this.periods.set(await firstValueFrom(this.http.get<string[]>(`${BASE}/periods`)))
+      this.periods.set(await firstValueFrom(this.http.get<string[]>(`${CLINIC}/periods`)))
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
     }
@@ -122,7 +132,7 @@ export class PostingInvoiceClinicPage implements OnInit {
     this.busy.set(true)
     this.batchNo.set('')
     try {
-      this.show(await firstValueFrom(this.http.post<{ lines: Line[]; debit: number; credit: number; records: number; posted: boolean }>(`${BASE}/search`, { ...this.f, kind })), kind)
+      this.show(await firstValueFrom(this.http.post<{ lines: Line[]; debit: number; credit: number; records: number; posted: boolean }>(`${this.base}/search`, { ...this.f, kind })), kind)
     } catch (e) {
       this.show({ lines: [], debit: 0, credit: 0, records: 0, posted: false }, kind)
       this.notify.notify(errorMessage(e), 'error')
@@ -176,13 +186,14 @@ export class PostingInvoiceClinicPage implements OnInit {
     const ticked = this.lines().filter((x) => x['postLine'] && this.checked().has(this.key(x)))
     if (this.kind() !== 'G' || !ticked.length) return this.notify.notify('Please select the record', 'error')
     if (this.postedList()) return this.notify.notify('Record(s) has been posted ! ', 'error')
-    if (!this.f.bordxDateFrom || !this.f.bordxDateTo) return this.notify.notify('Please Enter Bordx Date! ', 'error')
+    if (this.gst && (!this.f.invDateFrom || !this.f.invDateTo)) return this.notify.notify('Please Enter Invoice Date! ', 'error')
+    if (!this.gst && (!this.f.bordxDateFrom || !this.f.bordxDateTo)) return this.notify.notify('Please Enter Bordx Date! ', 'error')
     if (!this.period) return this.notify.notify('Please Select Accounting Period ! ', 'error')
     if (!(await this.notify.ask('Do you want to Post record(s) ?'))) return
     this.posting.set(true)
     try {
       const body = { search: this.f, period: this.period, ticked: ticked.map((x) => ({ invoiceNo: s(x['reference']), clinicCode: s(x['clinicCode']), invoiceDate: x['invoiceDate'] })) }
-      const res: HttpResponse<Blob> = await firstValueFrom(this.http.post(`${BASE}/post`, body, { responseType: 'blob', observe: 'response' }))
+      const res: HttpResponse<Blob> = await firstValueFrom(this.http.post(`${this.base}/post`, body, { responseType: 'blob', observe: 'response' }))
       const batch = res.headers.get('X-Batch-No') ?? ''
       saveBlob(res.body!, `${batch} RC-CLNInv.xlsx`)
       this.batchNo.set(batch)
@@ -201,7 +212,7 @@ export class PostingInvoiceClinicPage implements OnInit {
   protected async print(): Promise<void> {
     if (!this.lines().length) return this.notify.notify('Report cannot be printed without any record.', 'info')
     try {
-      saveBlob(await firstValueFrom(this.http.post(`${BASE}/export`, { ...this.f, kind: this.kind() }, { responseType: 'blob' })), 'PostingInvoiceClinic.xlsx')
+      saveBlob(await firstValueFrom(this.http.post(`${this.base}/export`, { ...this.f, kind: this.kind() }, { responseType: 'blob' })), 'PostingInvoiceClinic.xlsx')
     } catch (e) {
       this.notify.notify(await blobErrorMessage(e), 'error')
     }
