@@ -6,7 +6,7 @@ import type { IconName } from '../shared/icon.component'
  * - hidden: designer Visible = 0 · disabled: designer Enabled = 0 · never-opened: no menu item / handler commented out, the form is still in
  *   the project · nothing: menu item without a click handler and without a form (nothing to build, listed only for completeness).
  */
-export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing'
+export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty'
 
 export interface MenuItem {
   /** Desktop caption. */
@@ -177,7 +177,7 @@ export const MENU: MenuModule[] = [
       { label: 'Tracking', path: '/payment/tracking', access: Access.PaymentTracking, form: 'FrmPayment', phase: 7, migrated: true },
       { label: 'Tracking (Jupiter)', path: '/payment/tracking-jupiter', access: Access.PaymentTrackingJupiter, form: 'frmPayment2', phase: 7, migrated: true },
       { label: 'FFS Payment', path: '/payment/ffs', access: Access.PaymentFfs, form: 'FrmPaymentFFS', phase: 7, migrated: true },
-      { label: 'Pay Member Post', path: '/payment/post/member', access: Access.AcExport, form: 'frmPayMBMPost', desktop: 'never-opened', phase: 7 },
+      { label: 'Pay Member Post', path: '/payment/post/member', access: Access.AcExport, form: 'frmPayMBMPost', desktop: 'empty', phase: 7 },
       { label: 'Pay Clinic Post', path: '/payment/post/clinic', access: Access.AcExport, form: 'frmPayClinicPost', desktop: 'never-opened', phase: 7, migrated: true },
     ],
   },
@@ -251,7 +251,10 @@ export const MENU: MenuModule[] = [
 ]
 
 /** Items that need a screen (excludes desktop menu items without a handler and without a form). */
-export const buildable = (m: MenuModule) => m.items.filter((i) => i.desktop !== 'nothing')
+export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty'
+
+/** Items that need a screen. */
+export const buildable = (m: MenuModule) => m.items.filter((i) => !nothingToBuild(i))
 
 export const DESKTOP_STATE_TEXT: Record<DesktopState, string> = {
   visible: 'In the desktop menu',
@@ -259,4 +262,5 @@ export const DESKTOP_STATE_TEXT: Record<DesktopState, string> = {
   disabled: 'Disabled in the desktop',
   'never-opened': 'Form in the project, never opened by the desktop',
   nothing: 'Menu item without a handler (nothing to build)',
+  empty: 'Form in the project with no code behind it (nothing to build)',
 }

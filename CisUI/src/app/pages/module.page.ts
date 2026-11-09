@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { SessionService } from '../core/auth/session.service'
-import { DESKTOP_STATE_TEXT, MENU, MenuItem } from '../layout/menu'
+import { DESKTOP_STATE_TEXT, MENU, MenuItem, nothingToBuild } from '../layout/menu'
 import { PageShellComponent } from '../shared/screen.components'
 
 interface Group {
@@ -49,7 +49,7 @@ interface Group {
                         <td class="num">{{ i.access }}</td>
                         <td>{{ desktop(i) }}</td>
                         <td>
-                          @if (i.desktop === 'nothing') {
+                          @if (nothingToBuild(i)) {
                             <span class="badge blue">Nothing to build</span>
                           } @else if (i.migrated) {
                             <span class="badge green">Migrated</span>
@@ -91,6 +91,8 @@ export class ModulePage {
     }
     return groups
   })
+
+  protected readonly nothingToBuild = nothingToBuild
 
   protected desktop(i: MenuItem): string {
     return DESKTOP_STATE_TEXT[i.desktop ?? 'visible']

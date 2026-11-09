@@ -4,7 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { filter, map } from 'rxjs'
 import { SessionService } from '../core/auth/session.service'
 import { IconComponent } from '../shared/icon.component'
-import { MENU, MenuItem, MenuModule } from './menu'
+import { MENU, MenuItem, MenuModule, nothingToBuild } from './menu'
 
 const NAV_COLLAPSED = 'nav-collapsed'
 
@@ -86,7 +86,7 @@ export class AppLayoutComponent {
 
   /** Sidebar entries: everything that needs a screen (menu items without a handler and a form are only on the module page). */
   protected sidebarItems(m: MenuModule): MenuItem[] {
-    return m.items.filter((i) => i.desktop !== 'nothing')
+    return m.items.filter((i) => !nothingToBuild(i))
   }
 
   protected toggleNav(): void {

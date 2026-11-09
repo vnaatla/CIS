@@ -82,7 +82,7 @@ Deliberate differences: the desktop's Post read VIEW_PayClinic_Posting through t
 ## Not migrated
 
 - **To Member - Batch** — the menu item has no handler (nothing opens).
-- **Pay Member Post (frmPayMBMPost)** — the form is empty: its only code writes the action log when it opens (no fields, no actions), so there is nothing to migrate.
+- **Pay Member Post (frmPayMBMPost)** — nothing to build (decision 9 Nov 2026): the form has a layout like Pay Clinic Post (payor, invoice no., register date, post status, list, Search / Post / Print to File) but no code behind it except the action log on opening, and member payments have no posting flag of their own. Member payment posting is part of A/C Export (VIEW_SUN_Posting_Pay2MBM, Phase 9). The menu item shows "Nothing to build" (desktop state `empty`).
 
 ## Tracking / Tracking (Jupiter) — FrmPayment, frmPayment2 (`/payment/tracking`, `/payment/tracking-jupiter`, rights PaymentTracking / PaymentTrackingJupiter, `api/payment/tracking`)
 
