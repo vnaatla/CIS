@@ -89,6 +89,11 @@ Deliberate differences: parameters instead of pasted criteria; Bordx Control wit
 
 Deliberate differences: the ~20 Excel templates (`PayAdviceCLNBordx*.xlt`, `BordxByCostCenter*.xlt`, credit-note variants) and the Word cover letter are not available, so the pay advice is a generated workbook with the same figures (title: Invoice / Disbursement Note, `CREDIT NOTE` for KCN bordereaux); the pasted criterion is replaced by the quoted bordx no.
 
+## Not migrated
+
+- **Insert Invoice (frmWSBordx2)** — the desktop menu item is disabled, so users cannot open it; bordereaux are created with Insert Worksheet. Its code lists invoices (`Invoice Date cannot be empty.`, `Group Company cannot be empty!`) and bordereaux them like Insert Worksheet; it can be added later if the menu item is to be enabled.
+- **BSN-PrintSummary (frmBSNPrintSummary)** — never opened from the menu (handler commented out) and unfinished: its only action adds empty text boxes; Search lists SP_Bordxdetails (bordx no., claims, amount, date), which Print Bordx (BSN) already shows.
+
 ## Print Bordx client variants — frmPrintBordxIBM, frmPrintBordxSPNB, frmPrintBordxAXAAffin, frmPrintBordxTimeDotcom, frmPrintBordxBSN, frmPrintBordxBSI, frmPrintBordx (`/claim-bordx/print/seb` · `prasarana` · `axa-affin` · `time-dotcom` · `bsn` · `berjaya-sompo` · `crystal`)
 
 The Print Bordx page with the client's summary source and title; the company and bill type are not asked. Summary sources: SEB / Indah Water VIEW_OP_GRPSummaryALL, Prasarana View_CISBordxSummary_SPNB, AXA Affin and Time Dotcom VIEW_OP_AXASummary, BSN View_OP_BSNSummary, Berjaya Sompo and the hidden Crystal screen View_CIS_PrintBordx_Summary. Same checks (`Please enter Bordx Reference No`, `No record found `, `Please keyin Month or Year !`) and Print stamping.
