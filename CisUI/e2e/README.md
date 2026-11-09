@@ -12,5 +12,12 @@ $env:E2E_BROWSER = 'C:\...\chrome.exe'          # optional; Chrome / Edge are fo
 npm run e2e
 ```
 
+While building a phase, run only its steps (one login, no wrong-password attempt, far less load on the local SQL Server):
+
+```powershell
+$env:E2E_STEPS = 'claim-bordx'   # modules in e2e/steps (comma-separated)
+node e2e/only.mjs
+```
+
 It writes what a real login writes on the local databases: `USR.CIScnt` + 1 then - 1, one `Tbl_USRTrack` row, one `LoginCIS.txt`
 line and `tblActionLog` rows. Run it against local / test databases only.

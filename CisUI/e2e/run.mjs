@@ -3,6 +3,7 @@
 // Writes what a real login writes on the local databases: USR.CIScnt +1 / -1, a Tbl_USRTrack row, a LoginCIS.txt line, tblActionLog rows.
 import puppeteer from 'puppeteer-core'
 import { existsSync } from 'node:fs'
+import { claimBordx } from './steps/claim-bordx.mjs'
 
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
@@ -590,6 +591,9 @@ try {
   await page.evaluate(() => [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Check All').click())
   await page.waitForFunction(() => document.querySelectorAll('table[aria-label="MCO GST zeroised members"] tbody input[type=checkbox]:checked').length >= 6, { timeout: 30000 })
   check(true, 'MCO Invoice GST Zeroised: batch 06/08/2021 / 1 of D005 lists 6 members and Check All checks them')
+
+  // 35. Claim Bordx (Phase 6) steps.
+  await claimBordx(page, base, check)
 
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')

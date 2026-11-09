@@ -44,4 +44,8 @@
   e2e: `$env:E2E_PASSWORD='Gen12345'; npm run e2e` (API + UI running; writes a real login: CIScnt ±1, Tbl_USRTrack, LoginCIS.txt).
 - Pinned deps: PDFsharp-MigraDoc must stay 6.2.x (6.5+ is AGPL and throws without a license). npm deps exact (`save-exact`), ≥ 7 days old.
 - PC is short on RAM: with VB6 + API + ng serve + Chrome running SQL Server can stop answering logins for minutes (pre-login timeout); wait / close apps.
+  Since 2026-11-09 SQL Server has `min server memory` 2048 MB / `max server memory` 4096 MB (sp_configure; it was trimmed to ~150 MB before).
+  To avoid timeouts while building: run only the new test classes (`dotnet test --filter`), only the new browser steps
+  (`$env:E2E_STEPS='claim-bordx'; node e2e/only.mjs`, modules in `CisUI\e2e\steps`), no SQL queries in parallel with tests,
+  small sample data in tests (no 5,000-row results), `dotnet build-server shutdown` before DB tests; the full suites once at the end of a phase.
 - Git: repo github.com/vnaatla/CIS (remote URL carries `vnaatla@`); commit with `git -c user.name="vnaatla" -c user.email="vishnu.reddy.naatla@gmail.com" commit ...`.
