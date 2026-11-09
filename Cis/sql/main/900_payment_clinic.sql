@@ -130,8 +130,10 @@ BEGIN
         v.ClinicGrpCode, v.ClinicCode, v.CLNName, v.CLNAdd1, v.CLNAdd2, v.CLNAdd3, v.CLNPostCode, v.CLNCity, v.CLNState, v.CLNPaidAmt, v.CLMPayableByMedix2C,
         (SELECT TOP 1 r.ReceiptNo FROM CISPayment.dbo.REceiptFrPAY r WHERE r.CASNumber = v.CASNumber) AS ReceiptNo,
         hq.CLNCode AS HqCode, hq.CLNName AS HqName, hq.CLNAdd1 AS HqAdd1, hq.CLNAdd2 AS HqAdd2, hq.CLNAdd3 AS HqAdd3, hq.CLNPostCode AS HqPostCode,
-        hq.CLNCity AS HqCity, hq.CLNState AS HqState
+        hq.CLNCity AS HqCity, hq.CLNState AS HqState, v.InvoiceNo, v.InvoiceDate, v.CLMFinalApprove, v.PVCLNChequeAmt, v.CLNAccPeriodMth, v.CLNAccPeriodYr,
+        p.CLNPName, p.CLNPAdd1, p.CLNPAdd2, p.CLNPAdd3
     FROM CISPayment.dbo.View_Payment2CLN v
+    LEFT JOIN cis.Hdb_CLN p ON p.CLNCode = v.ClinicCode
     LEFT JOIN cis.Hdb_CLN hq ON @pvNo IS NULL AND COALESCE(RTRIM(v.ClinicGrpCode), '') <> '' AND hq.CLNCode = RTRIM(v.ClinicGrpCode)
     WHERE v.CASNumber IN (SELECT CASNumber FROM @c) AND (@pvNo IS NULL OR v.PVCLNNo = @pvNo);
 END
