@@ -149,7 +149,7 @@ export const MENU: MenuModule[] = [
       { label: 'Claim Tracking (Jupiter - Simple)', path: '/claim-bordx/claim-tracking/jupiter-simple', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRptSimpleJup', group: 'Claim Tracking', phase: 10 },
       { label: 'Claim Tracking 2 (Jupiter)', path: '/claim-bordx/claim-tracking/v2-jupiter', access: Access.ClaimTracking2Jupiter, form: 'FrmNewClaimRpt2', group: 'Claim Tracking', phase: 10 },
       { label: 'Claim Tracking (SUN System)', path: '/claim-bordx/claim-tracking/sun', access: Access.ClaimTracking, form: 'frmClaimRptSUN', group: 'Claim Tracking', phase: 10 },
-      { label: 'ClaimBordxDate', path: '/claim-bordx/bordx-date', access: Access.BordxInsert, form: 'FrmBordxDate', group: 'Bordx', phase: 6 },
+      { label: 'ClaimBordxDate', path: '/claim-bordx/bordx-date', access: Access.BordxInsert, form: 'FrmBordxDate', group: 'Bordx', phase: 6, migrated: true },
     ],
   },
   {

@@ -16,3 +16,23 @@ Known desktop issues (reproduced):
 - The duplicate-GP-visit scan in the tick routine is computed but never used.
 
 Deliberate differences: parameters instead of the criteria pasted into the procedures; the CISCas / Payment2MBM updates are in the same transaction (the desktop's CISDB / CISPayment writes were outside its CISWorksheet transaction); the list prints as CSV; double-clicking a row (opens Invoice Adjustment in the desktop) is not provided — open the case in Invoice Adjustment.
+
+## Remove Worksheet — FrmBordxRevise (`/claim-bordx/remove-worksheet`, right 123, `api/claim-bordx/remove-worksheet`)
+
+| Step | Behaviour |
+|---|---|
+| Go | `Please select a Bordx No `; the bordereaux's worksheets (VIEW_CIS_BordxRevise, ClaimBordxModule case 3) with the bordx date, printed date, count and total approved; `No record found!`. |
+| Reject | `You are going to remove a worksheet from current Bordereaux. Are you sure?` → per ticked worksheet: the claim count comes off the case's own bordereaux and the approved amount off the bordereaux on the screen, a BordxWSArchive row, ClaimInvoice and Claim bordx fields cleared (an ASCII-sent worksheet gets ASCII N / status D) → `Record updated...`. |
+
+Known desktop issues (reproduced): the count and the amount are taken off different bordereaux rows when the case's BordxRefNo differs from the one typed; Print does nothing.
+
+Deliberate differences: unticking a worksheet really leaves it out (the desktop compared the member no. with the case no., so unticked worksheets were still removed); all removals are in one transaction (the desktop had none).
+
+## ClaimBordxDate — FrmBordxDate (`/claim-bordx/bordx-date`, right 122, `api/claim-bordx/bordx-date`)
+
+| Step | Behaviour |
+|---|---|
+| Search | BordxDateChange: one line per posting status (bordx no., date, `YES` / `NO`, no. of cases); `Record not found`; a posted bordereaux shows `Posting is Done. Update is not allowed`. |
+| Update | `Please Enter Bordx Date`; `Posting is Done. Update is not allowed`; Bordx date / by and the claims' bordx month / year → `BordxDate Updated Successfully..!!`. |
+
+Deliberate differences: the posting check is made again at Update on the bordx no. being updated (the desktop used the status of the last search, even if the no. was changed afterwards); both updates are in one transaction.

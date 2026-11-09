@@ -21,3 +21,20 @@ UPDATE CISWorksheet.dbo.ClaimInvoice SET INVBordxRefNo = NULL, INVBordxed = 0 WH
 DELETE CISWorksheet.dbo.Bordx WHERE BordxRefNo = 'KCN00000';
 UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCode = 'CN';
 ```
+
+## 2. Remove Worksheet — `/claim-bordx/remove-worksheet` (FrmBordxRevise)
+
+| # | Action | Expected |
+|---|---|---|
+| R1 | Go with a blank bordx no | `Please select a Bordx No ` |
+| R2 | `KIV03270` → Go | EA12476058 (NADRAH BINTI ABD HAMID), approved 503.35; bordx date 02/08/2021 |
+| R3 | (writes) R2 → tick EA12476058 → Reject → Yes | `Record updated...`; the worksheet is no longer listed |
+
+## 3. ClaimBordxDate — `/claim-bordx/bordx-date` (FrmBordxDate)
+
+| # | Action | Expected |
+|---|---|---|
+| D1 | `KZZ99999` → Search | `Record not found` |
+| D2 | `KIV03270` → Search | KIV03270, 02/08/2021, posting NO |
+| D3 | Update with no date | `Please Enter Bordx Date` |
+| D4 | (writes) New date 05/08/2021 → Update | `BordxDate Updated Successfully..!!` (restore: set it back to 02/08/2021) |

@@ -18,4 +18,11 @@ export const claimBordxRoutes: Routes = [
     data: { access: Access.BordxRemove, legacyForm: 'FrmBordxRevise' },
     loadComponent: () => import('./remove-worksheet.page').then((m) => m.RemoveWorksheetPage),
   },
+  {
+    path: 'claim-bordx/bordx-date',
+    title: 'CIS - Bordx Date',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxInsert, legacyForm: 'FrmBordxDate' },
+    loadComponent: () => import('./bordx-date.page').then((m) => m.BordxDatePage),
+  },
 ]

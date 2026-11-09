@@ -34,4 +34,12 @@ export async function claimBordx(page, base, check) {
     timeout: 60000,
   })
   check(true, 'Remove Worksheet: bordx KIV03270 lists EA12476058')
+
+  // ClaimBordxDate: KIV03270 shows its line (nothing is updated).
+  await page.goto(`${base}/claim-bordx/bordx-date`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxNo]')
+  await page.type('input[name=bordxNo]', 'KIV03270')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Bordx lines"] tbody')?.textContent.includes('KIV03270'), { timeout: 60000 })
+  check(true, 'ClaimBordxDate: KIV03270 shows its bordx date and posting status')
 }
