@@ -32,4 +32,11 @@ export const acExportRoutes: Routes = [
     data: { access: Access.AcExport, legacyForm: 'frmPostingInvClnGST2017Zeroised', variant: 'zeroised' },
     loadComponent: () => import('./posting-invoice-clinic.page').then((m) => m.PostingInvoiceClinicPage),
   },
+  {
+    path: 'ac-export/invoice/member',
+    title: 'CIS - Invoice Posting - Member',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'frmPostingInvoiceMember' },
+    loadComponent: () => import('./posting-invoice-member.page').then((m) => m.PostingInvoiceMemberPage),
+  },
 ]

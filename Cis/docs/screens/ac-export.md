@@ -47,3 +47,12 @@ Deliberate differences: the `HC FFS Tax Invoice.xlt` template is not available, 
 The desktop menu never opens this form; it is migrated as GST-2017 with one difference: in the list the whole FFS fee goes to `1002` and the `8830` GST line is 0.00 (route variant `zeroised`). Post (type InvClnGST2017, a `T` SUN invoice batch for FFS invoices) and Generate Tax Invoice are those of GST-2017.
 
 Known desktop issues (reproduced): Generate Tax Invoice still splits the fee into 94.34 % and GST, unlike the zeroised list.
+
+## Invoice Posting > Member — frmPostingInvoiceMember (`/ac-export/invoice/member`, right AcExport, `api/ac-export/invoice-member`)
+
+| Step | Behaviour |
+|---|---|
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `InvMBM` (VIEW_SUN_Posting_InvMBM, as `cis.SunPost_InvMbm_Search`): group company, invoice date, case no., post status, post date, batch no., bordx date, bordx no., invoice registration period. Per case: `6000` D (actual = payable to member), `82` + group company code C (actual − postage) and, with postage, `4040` C (postage); journal RC, ledger UHC, analysis 1R, the patient (member or covered person, 25 characters), bordx period YYMM, bordx no., the member no.'s last 4 digits. Search Credit lists `82` with the actual and, with postage, `82` again with actual − postage, as the desktop. |
+| Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked case (TransRef = case no., InvoiceNo = the row's batch no., i.e. blank, type InvMBM) → file `<batch> RC-MBMInv <bordx from yyyyMMdd>-<bordx to dd>`. |
+
+Deliberate differences: VIEW_SUN_Posting_InvMBM takes over 4 minutes for a 5-day search, so the procedure picks the cases through the most selective filter given (batch, invoice date / case no., batch range, bordx no.) and applies the view's joins and conditions to them (about 15 s; a search with none of these filters reads everything, as the desktop).

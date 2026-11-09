@@ -35,3 +35,12 @@ Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = 
 | Y1 | Invoice date 01/07/2021 – 01/07/2021 → Search | 105 unposted invoices (payor column blank) |
 | Y2 | Status 1 - Yes, batch 2660 – 2660 → Search | the posted invoice of C225 with SUN invoice batch IA817065 |
 | Y3 | Y2 → select a line → Generate Tax Invoice | a workbook `IA817065<timestamp>.xlsx` |
+
+## 4. Invoice Posting > Member — `/ac-export/invoice/member` (frmPostingInvoiceMember)
+
+| # | Action | Expected |
+|---|---|---|
+| M1 | Invoice date 01/07/2021 – 05/07/2021 → Search | 1016 unposted cases (about 15 s) |
+| M2 | Case EA12538622 → Search | 6000 D 178.00, 82U063 C 178.00, patient Nur Amilin Binti Man |
+| M3 | Status 1 - Yes, batch 2649 – 2649 → Search | the posted batch (9343 cases, about 20 s) |
+| M4 | Tick → Post with bordx dates but no period | `Please Keyin for Accounting Period ! ` |
