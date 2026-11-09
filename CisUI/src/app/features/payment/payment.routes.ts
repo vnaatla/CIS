@@ -39,4 +39,11 @@ export const paymentRoutes: Routes = [
     data: { access: Access.PaymentTrackingJupiter, legacyForm: 'frmPayment2', screenTitle: 'Payment Tracking (Jupiter)' },
     loadComponent: () => import('./payment-tracking.page').then((m) => m.PaymentTrackingPage),
   },
+  {
+    path: 'payment/ffs',
+    title: 'CIS - FFS Payment',
+    canActivate: [accessGuard],
+    data: { access: Access.PaymentFfs, legacyForm: 'FrmPaymentFFS' },
+    loadComponent: () => import('./payment-ffs.page').then((m) => m.PaymentFfsPage),
+  },
 ]

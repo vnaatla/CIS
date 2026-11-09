@@ -57,4 +57,12 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Payment tracking"] tbody')?.textContent.includes('CP100472166'), { timeout: 120000 })
   check(await page.evaluate(() => document.querySelector('table[aria-label="Payment tracking"] tbody').textContent.includes('21')), 'Payment Tracking: PV CP100472166 has 21 cases')
+
+  // FFS Payment: bordx KDC55955 lists its unpaid FFS (nothing is saved).
+  await page.goto(`${base}/payment/ffs`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxFrom]')
+  await page.type('input[name=bordxFrom]', 'KDC55955')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="FFS payments"] tbody')?.textContent.includes('KDC55955'), { timeout: 120000 })
+  check(true, 'FFS Payment: bordx KDC55955 lists its FFS')
 }

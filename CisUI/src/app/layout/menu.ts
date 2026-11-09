@@ -176,7 +176,7 @@ export const MENU: MenuModule[] = [
       { label: 'To Member - Batch', path: '/payment/member-batch', access: Access.PaymentMember, form: '—', desktop: 'nothing', phase: 7 },
       { label: 'Tracking', path: '/payment/tracking', access: Access.PaymentTracking, form: 'FrmPayment', phase: 7, migrated: true },
       { label: 'Tracking (Jupiter)', path: '/payment/tracking-jupiter', access: Access.PaymentTrackingJupiter, form: 'frmPayment2', phase: 7, migrated: true },
-      { label: 'FFS Payment', path: '/payment/ffs', access: Access.PaymentFfs, form: 'FrmPaymentFFS', phase: 7 },
+      { label: 'FFS Payment', path: '/payment/ffs', access: Access.PaymentFfs, form: 'FrmPaymentFFS', phase: 7, migrated: true },
       { label: 'Pay Member Post', path: '/payment/post/member', access: Access.AcExport, form: 'frmPayMBMPost', desktop: 'never-opened', phase: 7 },
       { label: 'Pay Clinic Post', path: '/payment/post/clinic', access: Access.AcExport, form: 'frmPayClinicPost', desktop: 'never-opened', phase: 7 },
     ],

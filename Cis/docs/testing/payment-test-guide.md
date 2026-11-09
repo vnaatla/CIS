@@ -45,6 +45,15 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | T3 | Pay to Clinic, By PV No, same PV | 1 row, 21 cases, 1,323.90 |
 | T4 | Pay to Member, By Bordx, PV CP100471601 – CP100471603 | 1 row `Empty`, 7 cases, 1,091.00 |
 
+## 5. FFS Payment — `/payment/ffs`
+
+| # | Action | Expected |
+|---|---|---|
+| F1 | Search with a blank bordx no | `Please Enter Bordx Ref. No. ` |
+| F2 | `KDC55955` → Search | unpaid FFS 215.98 |
+| F3 | F2 → tick → Save without PV date | `Invalid PV Date!` |
+| F4 | Untick One bordx no., PV CP100175200 – CP100175200 → Search → click a row → Print PV | the PV's bordereaux (e.g. KDC07917 161.85) |
+
 Clean-up after C7 (replace the PV no.; set PVSeq2013 back to the number before the test):
 
 ```sql

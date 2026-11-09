@@ -33,6 +33,28 @@ Known desktop issues (reproduced): a clinic's PV takes the year of its last tick
 
 Deliberate differences: parameters instead of pasted criteria; all PVs of a save are in one transaction with the sequence locked; the clinic's cheque amount is the total of the cases paid (the desktop used the ticked rows' payable, which can include cases already on another PV); Print PV / Preview PV work (the desktop read fields its list query does not return and always failed with "Export To Excel failed"); the PV (`PV-Clinic.xlt`) and cheque (`PaymentCheque.xlt`) templates are not available, so they are generated workbooks to print on the pre-printed forms; the cheque range checks still run in order but stop at the first failing one.
 
+## FFS Payment — FrmPaymentFFS (`/payment/ffs`, right PaymentFfs, `api/payment/ffs`)
+
+| Step | Behaviour |
+|---|---|
+| Search | One bordx no. (the default; `Please Enter Bordx Ref. No. `, `Data has been uploaded!`, appended) or a range, group company, payment All / Paid / Unpaid, bordx date, PV no., PV date, A/C month / year ranges and the "empty" boxes (CISPayment SP_CISPayment `PayFFS` / View_PaymentFFS); `No Record Found ! `. Rows: status, bordx no. / date / amount, FFS (MCO fee), paid, balance, group company, PV / cheque / bank / period / payee / receipt fields; total FFS. |
+| Tick / Check All | A paid bordereaux: `Payment has been made!`; the amount is the balance. Check All toggles every row (`Please select a record.`). |
+| Add | `Please checked at least 1 Claim  ! `; clears the PV frame and puts the ticked total in the cheque amount (payee HEALTH CONNECT SDN BHD, bank MB - MAYBANK). |
+| Save | `Please select the record`, `Invalid PV Date!`, `Please Enter Cheque Amt!`, cheque ≠ total without a remark (`Amount to paid is incorrect` / `Please key in remark for reason.`), `Please Enter Bank !`, A/C month / year, `Please keyin Bank - PV Code ! `, `Please keyin Payee Name ! `; `Do you want to update the record ? ` → PV no. (bank's PV code + PVSeq2013) and per ticked bordereaux a PaymentFFS row (status F, the payee's group company code) → `Record Saved...` and the PV is listed. |
+| Edit / Update | Clicking a paid row fills the frame; Update (`Please select the record`, `Please Confirm PV No!`, the date / amount / bank / period checks) overwrites the row. |
+| Print PV / Preview PV | The FFS voucher: payee and address, PV no., cheque no. and date, prepared by; per bordereaux no., date and amount paid (preview: the FFS balance). |
+| Print to File | The list as CSV. |
+
+Known desktop issues (reproduced): Update writes the cheque amount as the row's paid amount.
+
+Deliberate differences: parameters instead of pasted criteria; the amounts are re-read on the server; the preview shows each bordereaux's FFS (the desktop left the amount column empty); the PV template (`PV-FFS.xlt`) is not available, so the voucher is a generated workbook.
+
+## Not migrated
+
+- **To Member (old) (frmPaymentMember)** — never opened from the menu (replaced by frmPaymentMemberAuto08, migrated above).
+- **To Member - Batch** — the menu item has no handler (nothing opens).
+- **Pay Member Post (frmPayMBMPost) / Pay Clinic Post (frmPayClinicPost)** — never opened from the menu; the payment postings are part of A/C Export (Phase 9).
+
 ## Tracking / Tracking (Jupiter) — FrmPayment, frmPayment2 (`/payment/tracking`, `/payment/tracking-jupiter`, rights PaymentTracking / PaymentTrackingJupiter, `api/payment/tracking`)
 
 | Step | Behaviour |
