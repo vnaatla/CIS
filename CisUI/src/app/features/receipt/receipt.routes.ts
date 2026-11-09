@@ -25,4 +25,18 @@ export const receiptRoutes: Routes = [
     data: { access: Access.ReceiptFfs, legacyForm: 'FrmReceiptFFS' },
     loadComponent: () => import('./receipt-ffs.page').then((m) => m.ReceiptFfsPage),
   },
+  {
+    path: 'receipt/upload',
+    title: 'CIS - Upload Receipt',
+    canActivate: [accessGuard],
+    data: { access: Access.ReceiptPayor, legacyForm: 'frmReceiptUpload', multiple: false },
+    loadComponent: () => import('./receipt-upload.page').then((m) => m.ReceiptUploadPage),
+  },
+  {
+    path: 'receipt/upload-multiple',
+    title: 'CIS - Upload Receipt (Multiple Receipts)',
+    canActivate: [accessGuard],
+    data: { access: Access.ReceiptPayor, legacyForm: 'frmReceiptUpMultiple', multiple: true },
+    loadComponent: () => import('./receipt-upload.page').then((m) => m.ReceiptUploadPage),
+  },
 ]

@@ -40,4 +40,21 @@ Deliberate differences: parameters instead of pasted criteria; the lists use an 
 
 Deliberate differences: parameters instead of pasted criteria; the FFS amounts are re-read on the server; listing a receipt's rows reads its bordereaux one at a time (the view sums every claim, so a receipt-no. filter took 25 s; now about 7 s for 9 bordereaux).
 
+## Upload Receipt / Upload Receipt (Multiple Receipts) — frmReceiptUpload, frmReceiptUpMultiple (`/receipt/upload`, `/receipt/upload-multiple`, right ReceiptPayor, `api/receipt/upload`)
+
+| Step | Behaviour |
+|---|---|
+| Upload | `Please select file to upload!`. Sheet 1 from row 2 (rows with a blank claim no. — column B for multiple — are skipped): B bordx no., C claim no., F receipt amount, G client PV no.; multiple also H receipt no., I Medix receipt no. Each row is compared with its claim: claim / bordx `Matched` or `Not Matched`, the claim's bordx amount and the difference. |
+| Receipt date | Fills the A/C period month and year. |
+| Update | `Please Upload file..! `; single: `Please Enter Receipt Number! `, `Please Enter Medix Receipt Number! `; `Do you want to update the record ?` → per matched claim a ReceiptfrPAY row (receipt no. and Medix no. from the form, or from the file for multiple; date, amount, cheque and period from the form; the file amount as received; the claim's bordx no.; client PV no.) and the claim received (F) → `Record Updated...`. |
+| Print | The list as CSV. |
+
+Known desktop issues (reproduced): the bordx column always shows `Matched` when the claim exists (the desktop compared the CIS bordx no. with itself); the bordereaux's receipt status is not updated.
+
+Deliberate differences: the file is an `.xlsx` read on the server (the desktop opened it in Excel); the claims are matched again on the server when saving; one transaction for the upload (the desktop wrote row by row and could add an extra blank receipt row for a claim without one).
+
+## Not migrated
+
+- **Fr MNRB (FrmReceiptMNRB)** — never opened from the desktop menu.
+
 The restored local data has no member debit notes (VIEW_CISReceiptFrMBM and ReceiptFrMBM are empty), so the list and the saves could only be checked for their messages and SQL, not against real rows.

@@ -31,6 +31,19 @@ The restored data has no member debit notes (VIEW_CISReceiptFrMBM is empty), so 
 | F3 | `KDC55710` → Search → tick → Add | Receipt Amt 14.20 |
 | F4 | F3 → receipt no `MRTEST`, date, amount 1, cheque → Save | `Amount to paid is incorrect` / `Please key in remarks.` |
 
+## 4. Upload Receipt — `/receipt/upload`, `/receipt/upload-multiple`
+
+Make an `.xlsx` with a header row and, from row 2: B `KIT00036`, C `EA12523998`, F `90`, G `PV1` (multiple: H `RPTESTM`, I `MXTEST`); and a row with C `NOPE`.
+
+| # | Action | Expected |
+|---|---|---|
+| U1 | Upload without a file | `Please select file to upload!` |
+| U2 | Update before uploading | `Please Upload file..! ` |
+| U3 | Upload the file | EA12523998 Matched, 99.00 in CIS, difference 9.00; NOPE Not Matched |
+| U4 | Single: Update without a Medix receipt no | `Please Enter Medix Receipt Number! ` |
+
+Clean-up after an upload save: `DELETE CISPayment.dbo.ReceiptfrPAY WHERE ReceiptNo IN ('RPTEST', 'RPTESTM');` and set the claim's `PVRecPayorStatus` back.
+
 Clean-up after an FFS save: `DELETE CISPayment.dbo.ReceiptFrFFS WHERE ReceiptNo = 'MRTEST';`
 
 Clean-up after a real group company save (replace the receipt no. and bordx no.; the claims' PVRecPayorStatus and the bordereaux's BordxPAYFRStatus / BordxPAYRecDate must be set back to their values before the test):

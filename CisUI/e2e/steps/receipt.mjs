@@ -29,4 +29,13 @@ export async function receipt(page, base, check) {
   await page.click('table[aria-label="FFS receipts"] tbody input[type=checkbox]')
   await toast(page, 'FFS has been received!')
   check(true, 'Receipt from FFS: KDC01078 lists receipt MR10245 and cannot be ticked')
+
+  // Upload Receipt: Upload without a file, and Update before an upload (nothing is saved).
+  await page.goto(`${base}/receipt/upload`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=file]')
+  await click(page, 'Upload')
+  await toast(page, 'Please select file to upload!')
+  await click(page, 'Update')
+  await toast(page, 'Please Upload file..!')
+  check(true, 'Upload Receipt: asks for a file, and for an upload before Update')
 }
