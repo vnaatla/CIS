@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 62 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 63 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -20,11 +20,11 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Claim Bordx](#claim-bordx) | 29 | 20 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 9 | 6 | 3 |
-| [Receipt](#receipt) | 6 | 2 | 1 |
+| [Receipt](#receipt) | 6 | 3 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **62** | **20** |
+| **Total** | **119** | **63** | **20** |
 
 ## Membership
 
@@ -173,7 +173,7 @@ Module page: `/receipt`
 |---|---|---|---:|---|---:|---|---|
 |  | Fr Member | FrmReceiptMember | 135 |  | 8 | **Migrated** | `/receipt/member` |
 |  | Fr Grp Company | FrmReceiptPayor | 136 |  | 8 | **Migrated** | `/receipt/payor` |
-|  | Fr FFS | FrmReceiptFFS | 121 |  | 8 | Pending | `/receipt/ffs` |
+|  | Fr FFS | FrmReceiptFFS | 121 |  | 8 | **Migrated** | `/receipt/ffs` |
 |  | Fr MNRB | FrmReceiptMNRB | 136 | Never opened | 8 | Pending | `/receipt/mnrb` |
 |  | Upload Receipt | frmReceiptUpload | 136 |  | 8 | Pending | `/receipt/upload` |
 |  | Upload Receipt (Multiple Receipts) | frmReceiptUpMultiple | 136 |  | 8 | Pending | `/receipt/upload-multiple` |

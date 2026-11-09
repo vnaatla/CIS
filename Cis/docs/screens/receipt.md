@@ -28,4 +28,16 @@ Known desktop issues (reproduced): every ReceiptfrPAY row of a save carries the 
 
 Deliberate differences: parameters instead of pasted criteria; the lists use an extra filter implied by their join so a bordereaux search takes about 11 s (the desktop's procedure 13 s) and a worksheet search 6 s (27 s); one transaction per save (the desktop wrote claim by claim); the selected amount and the statuses are re-read on the server; the claim update is limited to the ticked case (the desktop's `case AND bordx OR BTBG bordx` without brackets could pick another claim); bordx status 5 works (the desktop's filter was invalid SQL); in bordereaux mode clicking a row in edit mode loads its receipt (the desktop's check was inverted and always failed).
 
+## Fr FFS — FrmReceiptFFS (`/receipt/ffs`, right ReceiptFfs, `api/receipt/ffs`)
+
+| Step | Behaviour |
+|---|---|
+| Search | One bordx no. (the default; `Please Enter Bordx No`, `Data has been uploaded!`, appended) or a range, group company, payment All / Paid / Unpaid, bordx date, receipt no., receipt date and A/C month / year ranges (PaymentReceiptModule case 17: VIEW_CISReceiptFFS, as `cis.RcpFfs_Search`); `No record found!`. Rows: status, bordx no. / date / amount, FFS, received, balance, receipt no. / date / remark / period / cheque, total received, group company; total FFS. |
+| Tick / Check All / Add | A received bordereaux: `FFS has been received!`; Check All toggles every row (`Please select a record.`); Add (`Please checked at least 1 Claim  ! `) clears the frame with the checked FFS total. |
+| Save | `Please select the record`, `Please Enter Receipt No`, `Invalid Receipt Date!`, `Please Enter Receipt Amt!`, amount ≠ checked total without a remark (`Amount to paid is incorrect` / `Please key in remarks.`), `Please Cheque Number!`, A/C month / year; `Do you want to update the record ? ` → one ReceiptFrFFS row (status F, the bordereaux's FFS) per ticked bordereaux → the receipt's rows are listed → `Record Saved...`. |
+| Edit / Update | Clicking a received row fills the frame; Update (same checks) overwrites that row with the frame's amount → `Record Saved...`. |
+| Export | The list as CSV. |
+
+Deliberate differences: parameters instead of pasted criteria; the FFS amounts are re-read on the server; listing a receipt's rows reads its bordereaux one at a time (the view sums every claim, so a receipt-no. filter took 25 s; now about 7 s for 9 bordereaux).
+
 The restored local data has no member debit notes (VIEW_CISReceiptFrMBM and ReceiptFrMBM are empty), so the list and the saves could only be checked for their messages and SQL, not against real rows.

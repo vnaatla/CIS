@@ -22,7 +22,18 @@ The restored data has no member debit notes (VIEW_CISReceiptFrMBM is empty), so 
 | P4 | Worksheet, Scan `EA12523998` → Search | KIT00036, 99.00, RP37929, Full |
 | P5 | Save with no receipt no | `Please Enter Receipt No!` |
 
-Clean-up after a real save (replace the receipt no. and bordx no.; the claims' PVRecPayorStatus and the bordereaux's BordxPAYFRStatus / BordxPAYRecDate must be set back to their values before the test):
+## 3. Fr FFS — `/receipt/ffs` (FrmReceiptFFS)
+
+| # | Action | Expected |
+|---|---|---|
+| F1 | Search with a blank bordx no | `Please Enter Bordx No` |
+| F2 | `KDC01078` → Search → tick | received 99.30 (MR10245); `FFS has been received!` |
+| F3 | `KDC55710` → Search → tick → Add | Receipt Amt 14.20 |
+| F4 | F3 → receipt no `MRTEST`, date, amount 1, cheque → Save | `Amount to paid is incorrect` / `Please key in remarks.` |
+
+Clean-up after an FFS save: `DELETE CISPayment.dbo.ReceiptFrFFS WHERE ReceiptNo = 'MRTEST';`
+
+Clean-up after a real group company save (replace the receipt no. and bordx no.; the claims' PVRecPayorStatus and the bordereaux's BordxPAYFRStatus / BordxPAYRecDate must be set back to their values before the test):
 
 ```sql
 DELETE CISPayment.dbo.ReceiptfrPAY WHERE ReceiptNo = 'RPTEST';

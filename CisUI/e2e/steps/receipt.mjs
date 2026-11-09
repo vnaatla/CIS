@@ -19,4 +19,14 @@ export async function receipt(page, base, check) {
   await page.click('table[aria-label="Bordx receipts"] tbody input[type=checkbox]')
   await toast(page, 'Record has been paid !')
   check(true, 'Receipt from Group Company: KIT00036 lists receipt RP37929 and cannot be ticked')
+
+  // Receipt from FFS: bordx KDC01078 is received (MR10245) and ticking it is refused (nothing is saved).
+  await page.goto(`${base}/receipt/ffs`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxFrom]')
+  await page.type('input[name=bordxFrom]', 'KDC01078')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="FFS receipts"] tbody')?.textContent.includes('MR10245'), { timeout: 120000 })
+  await page.click('table[aria-label="FFS receipts"] tbody input[type=checkbox]')
+  await toast(page, 'FFS has been received!')
+  check(true, 'Receipt from FFS: KDC01078 lists receipt MR10245 and cannot be ticked')
 }
