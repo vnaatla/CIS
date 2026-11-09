@@ -33,6 +33,13 @@ export const paymentRoutes: Routes = [
     loadComponent: () => import('./payment-member-legacy.page').then((m) => m.PaymentMemberLegacyPage),
   },
   {
+    path: 'payment/post/clinic',
+    title: 'CIS - Pay Clinic Post',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'frmPayClinicPost' },
+    loadComponent: () => import('./payment-clinic-post.page').then((m) => m.PaymentClinicPostPage),
+  },
+  {
     path: 'payment/tracking',
     title: 'CIS - Payment Tracking',
     canActivate: [accessGuard],

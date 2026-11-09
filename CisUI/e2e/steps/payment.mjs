@@ -73,4 +73,13 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member payments (old)"] tbody')?.textContent.includes('CHOOK SHENG CAI'), { timeout: 120000 })
   check(true, 'Payment to Member (old): SLK004743875 lists CHOOK SHENG CAI')
+
+  // Pay Clinic Post: unposted payments registered 1-3 Aug 2021 include PV CP100470829 (nothing is posted).
+  await page.goto(`${base}/payment/post/clinic`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=posted]')
+  await page.type('input[aria-label="Register Date From"]', '01/08/2021')
+  await page.type('input[aria-label="Register Date To"]', '03/08/2021')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic payment postings"] tbody')?.textContent.includes('CP100470829'), { timeout: 120000 })
+  check(true, 'Pay Clinic Post: unposted payments of 1-3 Aug 2021 include PV CP100470829')
 }

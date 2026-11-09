@@ -67,6 +67,18 @@ Known desktop issues (reproduced): the two PV no. boxes each filter on "equals";
 
 Deliberate differences: parameters instead of pasted criteria; Save with nothing ticked is refused before a PV no. is taken (the desktop took a PV no. and saved nothing); amounts re-read on the server; one transaction.
 
+## Pay Clinic Post — frmPayClinicPost (`/payment/post/clinic`, right AcExport, `api/payment/post/clinic`)
+
+The desktop menu never opens this form; it is migrated on request.
+
+| Step | Behaviour |
+|---|---|
+| Search | CISPayment VIEW_PayClinic_Posting (as `cis.PayClnPost_Search`): payor (first 2 characters), invoice no. range, register date range (`Invalid date format!`, `Invoice Date cannot greater than system date ! `), post status (default 0 - No). Two posting lines per payment: debit `84` + clinic code (PV date period, amount, D, PV date, CP, PV no., invoice no., clinic, payor, register period YYMM, group company code, bordx no. characters 4–8, posted Yes / No, post user / date) and credit `7600` (C, invoice no., cheque no. - clinic name); debit and credit totals. |
+| Post | The listed posting lines as a workbook; the cases of each listed invoice and clinic not yet posted get CASPayCLNPost 1, the user and today. |
+| Print to File | The list as CSV. |
+
+Deliberate differences: the desktop's Post read VIEW_PayClinic_Posting through the CISWorksheet connection (the view exists only in CISPayment), filtered on an invoice-posting column the view does not have, wrote the invoice-posting layout and set the invoice-posting flag, so it could never run. Post here exports the lines this screen lists and sets the clinic-payment posting flag the screen searches on; the parameters replace the pasted criteria; one transaction.
+
 ## Not migrated
 
 - **To Member - Batch** — the menu item has no handler (nothing opens).

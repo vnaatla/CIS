@@ -178,7 +178,7 @@ export const MENU: MenuModule[] = [
       { label: 'Tracking (Jupiter)', path: '/payment/tracking-jupiter', access: Access.PaymentTrackingJupiter, form: 'frmPayment2', phase: 7, migrated: true },
       { label: 'FFS Payment', path: '/payment/ffs', access: Access.PaymentFfs, form: 'FrmPaymentFFS', phase: 7, migrated: true },
       { label: 'Pay Member Post', path: '/payment/post/member', access: Access.AcExport, form: 'frmPayMBMPost', desktop: 'never-opened', phase: 7 },
-      { label: 'Pay Clinic Post', path: '/payment/post/clinic', access: Access.AcExport, form: 'frmPayClinicPost', desktop: 'never-opened', phase: 7 },
+      { label: 'Pay Clinic Post', path: '/payment/post/clinic', access: Access.AcExport, form: 'frmPayClinicPost', desktop: 'never-opened', phase: 7, migrated: true },
     ],
   },
   {
