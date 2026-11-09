@@ -88,3 +88,9 @@ Deliberate differences: parameters instead of pasted criteria; Bordx Control wit
 | Print Summary / Preview | The summary sheet only. |
 
 Deliberate differences: the ~20 Excel templates (`PayAdviceCLNBordx*.xlt`, `BordxByCostCenter*.xlt`, credit-note variants) and the Word cover letter are not available, so the pay advice is a generated workbook with the same figures (title: Invoice / Disbursement Note, `CREDIT NOTE` for KCN bordereaux); the pasted criterion is replaced by the quoted bordx no.
+
+## Print Bordx client variants — frmPrintBordxIBM, frmPrintBordxSPNB, frmPrintBordxAXAAffin, frmPrintBordxTimeDotcom, frmPrintBordxBSN, frmPrintBordxBSI, frmPrintBordx (`/claim-bordx/print/seb` · `prasarana` · `axa-affin` · `time-dotcom` · `bsn` · `berjaya-sompo` · `crystal`)
+
+The Print Bordx page with the client's summary source and title; the company and bill type are not asked. Summary sources: SEB / Indah Water VIEW_OP_GRPSummaryALL, Prasarana View_CISBordxSummary_SPNB, AXA Affin and Time Dotcom VIEW_OP_AXASummary, BSN View_OP_BSNSummary, Berjaya Sompo and the hidden Crystal screen View_CIS_PrintBordx_Summary. Same checks (`Please enter Bordx Reference No`, `No record found `, `Please keyin Month or Year !`) and Print stamping.
+
+Deliberate differences: the client templates (`AXA Bordx Listing.xlt`, `TimeDotcomBordx.xlt`, `PayAdviceCLNBSN_2019.xlt`, `BSIOPBordx.xlt`, `IBMOutpatientMedicalClaims.xlt`, `Airod OP Template.xls`, the Crystal report) are not available, so all variants print the generated pay advice; the SEB / Indah Water date range and the Prasarana subsidiary summaries (Rapid KL, Prime, Pride, Penang, KL Star Rail) are not separate layouts.

@@ -55,6 +55,23 @@ export const claimBordxRoutes: Routes = [
   },
   ...(
     [
+      ['seb', 'frmPrintBordxIBM', 'Print Bordx (SEB/INDAH WATER)'],
+      ['prasarana', 'frmPrintBordxSPNB', 'Print Bordx (Prasarana)'],
+      ['axa-affin', 'frmPrintBordxAXAAffin', 'Print Bordx (AXA Affin)'],
+      ['time-dotcom', 'frmPrintBordxTimeDotcom', 'Print Bordx (Time Dotcom)'],
+      ['bsn', 'frmPrintBordxBSN', 'Print Bordx (BSN)'],
+      ['berjaya-sompo', 'frmPrintBordxBSI', 'Print Bordx (Berjaya Sompo)'],
+      ['crystal', 'frmPrintBordx', 'Print Bordx (Crystal)'],
+    ] as const
+  ).map(([variant, legacyForm, screenTitle]) => ({
+    path: `claim-bordx/print/${variant}`,
+    title: `CIS - ${screenTitle}`,
+    canActivate: [accessGuard],
+    data: { access: Access.BordxPrint, legacyForm, variant, screenTitle },
+    loadComponent: () => import('./print-bordx.page').then((m) => m.PrintBordxPage),
+  })),
+  ...(
+    [
       ['control', Access.BordxControl, 'FrmBordxControl', 'Bordx Control'],
       ['outstanding', Access.BordxOutstanding, 'FrmOSBordx', 'Outstanding Bordx'],
       ['bordx-worksheet', Access.BordxWorksheet, 'FrmBordxWks', 'Bordx & Worksheet'],

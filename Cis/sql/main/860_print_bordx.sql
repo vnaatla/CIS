@@ -19,10 +19,16 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE cis.PrintBordx_Summary @bordxNo nvarchar(20) AS
+-- @variant: the client screens' summary sources (Prasarana View_CISBordxSummary_SPNB, AXA Affin / Time Dotcom VIEW_OP_AXASummary, BSN View_OP_BSNSummary,
+-- Berjaya Sompo / Crystal View_CIS_PrintBordx_Summary); standard and SEB / Indah Water VIEW_OP_GRPSummaryALL.
+CREATE OR ALTER PROCEDURE cis.PrintBordx_Summary @bordxNo nvarchar(20), @variant varchar(20) = 'standard' AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT * FROM dbo.VIEW_OP_GRPSummaryALL WHERE BordxRefNo = @bordxNo;
+    IF @variant = 'prasarana' SELECT * FROM CISWorksheet.dbo.View_CISBordxSummary_SPNB WHERE BordxRefNo = @bordxNo;
+    ELSE IF @variant IN ('axa-affin', 'time-dotcom') SELECT * FROM dbo.VIEW_OP_AXASummary WHERE BordxRefNo = @bordxNo;
+    ELSE IF @variant = 'bsn' SELECT * FROM dbo.View_OP_BSNSummary WHERE BordxRefNo = @bordxNo;
+    ELSE IF @variant IN ('berjaya-sompo', 'crystal') SELECT * FROM CISWorksheet.dbo.View_CIS_PrintBordx_Summary WHERE BordxRefNo = @bordxNo;
+    ELSE SELECT * FROM dbo.VIEW_OP_GRPSummaryALL WHERE BordxRefNo = @bordxNo;
 END
 GO
 

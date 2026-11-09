@@ -23,6 +23,8 @@ public sealed record PrintBordxRequest
     public bool Print { get; init; }
     /// <summary>Summary only (Print Summary).</summary>
     public bool Summary { get; init; }
+    /// <summary>The client screen: standard, seb, prasarana, axa-affin, time-dotcom, bsn, berjaya-sompo, crystal.</summary>
+    public string? Variant { get; init; }
 #pragma warning restore CS1591
 }
 
@@ -35,6 +37,7 @@ public sealed class PrintBordxRequestValidator : Common.RequestValidator<PrintBo
         RuleFor(r => r.BordxNo).MaximumLength(20);
         RuleFor(r => r.Month).MaximumLength(20);
         RuleFor(r => r.Year).MaximumLength(4);
+        RuleFor(r => r.Variant).Must(v => v is null || PrintBordxService.Variants.ContainsKey(v));
     }
 }
 
@@ -47,7 +50,7 @@ public interface IPrintBordxRepository
 #pragma warning disable CS1591
     Task<Dictionary<string, object?>?> InfoAsync(IDbSession session, string bordxNo);
     Task<List<Dictionary<string, object?>>> RowsAsync(IDbSession session, string bordxNo);
-    Task<List<Dictionary<string, object?>>> SummaryAsync(IDbSession session, string bordxNo);
+    Task<List<Dictionary<string, object?>>> SummaryAsync(IDbSession session, string bordxNo, string variant);
     Task UpdateAsync(IDbSession session, string bordxNo, string month, string year, string user);
 #pragma warning restore CS1591
 }
@@ -69,6 +72,13 @@ public sealed class PrintBordxService(IDbSessions sessions, IPrintBordxRepositor
     public const string NoBordx = "Please enter Bordx Reference No", NoRecord = "No record found ", NoCompany = "Please Select company name",
         NoBillType = "Please Select Bill Type", NoMonth = "Please keyin Month or Year !", WrongCompany = "Please Select Health Connect Or Sihat Johor..!";
 
+    /// <summary>The Print Bordx screens and their print titles.</summary>
+    public static readonly IReadOnlyDictionary<string, string> Variants = new Dictionary<string, string>
+    {
+        ["standard"] = "", ["seb"] = "SEB / INDAH WATER - ", ["prasarana"] = "PRASARANA - ", ["axa-affin"] = "AXA AFFIN - ", ["time-dotcom"] = "TIME DOTCOM - ",
+        ["bsn"] = "BSN - ", ["berjaya-sompo"] = "BERJAYA SOMPO - ", ["crystal"] = "",
+    };
+
     /// <summary>The companies of cboCompany.</summary>
     public static readonly string[] Companies = ["MediExpress", "Health Connect", "Sihat Johor"];
 
@@ -89,7 +99,9 @@ public sealed class PrintBordxService(IDbSessions sessions, IPrintBordxRepositor
     public async Task<FileOutput> PrintAsync(PrintBordxRequest r, string user)
     {
         if (string.IsNullOrWhiteSpace(r.BordxNo)) throw new BusinessRuleException(NoBordx);
-        if (!r.Summary)
+        var variant = r.Variant ?? "standard";
+        // Only the standard screen asks for the company and bill type (the client screens print their own layout).
+        if (!r.Summary && variant == "standard")
         {
             if (string.IsNullOrWhiteSpace(r.Company)) throw new BusinessRuleException(NoCompany);
             if (r.BillType is not (0 or 1)) throw new BusinessRuleException(NoBillType);
@@ -105,7 +117,7 @@ public sealed class PrintBordxService(IDbSessions sessions, IPrintBordxRepositor
         var year = printed ? T(info, "BORDXPrintYear") : r.Year!.Trim();
         var rows = await repository.RowsAsync(s, no);
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
-        var summary = await repository.SummaryAsync(s, no);
+        var summary = await repository.SummaryAsync(s, no, variant);
         foreach (var x in rows)
         {
             x["Name"] = T(x, "CoverID") == "00" ? T(x, "MBMName") : T(x, "MBMCName");
@@ -123,7 +135,8 @@ public sealed class PrintBordxService(IDbSessions sessions, IPrintBordxRepositor
         }
         var head = summary.FirstOrDefault();
         var credit = no.StartsWith("KCN", StringComparison.OrdinalIgnoreCase);
-        var title = (credit ? "CREDIT NOTE - " : "") + (r.Company is "MediExpress" ? "MEDIEXPRESS " : "") + (r.BillType == 0 ? "INVOICE" : "DISBURSEMENT NOTE");
+        var title = (credit ? "CREDIT NOTE - " : "") + Variants.GetValueOrDefault(variant, "") + (r.Company is "MediExpress" ? "MEDIEXPRESS " : "")
+            + (variant != "standard" ? "OUTPATIENT MEDICAL CLAIMS" : r.BillType == 0 ? "INVOICE" : "DISBURSEMENT NOTE");
         var subtitles = new List<string>
         {
             T(head, "subname") is { Length: > 0 } sub ? sub : T(head, "MBMGroupCompany"), Join(head, "GRPCoAdd1", "GRPCoAdd2", "GRPCoAdd3", "GRPPostCode"),

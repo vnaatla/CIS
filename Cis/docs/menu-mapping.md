@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 47 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 54 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -17,14 +17,14 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
 | [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
-| [Claim Bordx](#claim-bordx) | 29 | 13 | 4 |
+| [Claim Bordx](#claim-bordx) | 29 | 20 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 9 | 0 | 3 |
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **47** | **20** |
+| **Total** | **119** | **54** | **20** |
 
 ## Membership
 
@@ -112,15 +112,15 @@ Module page: `/claim-bordx`
 | Worksheet | Insert Invoice | frmWSBordx2 | 122 | Disabled (Enabled = 0) | 6 | Pending | `/claim-bordx/insert-invoice` |
 | Worksheet | Remove Worksheet | FrmBordxRevise | 123 |  | 6 | **Migrated** | `/claim-bordx/remove-worksheet` |
 | Bordx | Update Claims Data | frmUpdateClaimsData | 124 |  | 3 | **Migrated** | `/claim-bordx/update-claims-data` |
-| Print Bordx | Print Bordx (Crystal) | frmPrintBordx | 124 | Hidden (Visible = 0) | 6 | Pending | `/claim-bordx/print/crystal` |
+| Print Bordx | Print Bordx (Crystal) | frmPrintBordx | 124 | Hidden (Visible = 0) | 6 | **Migrated** | `/claim-bordx/print/crystal` |
 | Print Bordx | Print Bordx | frmPrintBordxExcel | 124 |  | 6 | **Migrated** | `/claim-bordx/print/standard` |
-| Print Bordx | Print Bordx (SEB/INDAH WATER) | frmPrintBordxIBM | 124 |  | 6 | Pending | `/claim-bordx/print/seb` |
-| Print Bordx | Print Bordx (Prasarana) | frmPrintBordxSPNB | 124 |  | 6 | Pending | `/claim-bordx/print/prasarana` |
-| Print Bordx | Print Bordx (AXA Affin) | frmPrintBordxAXAAffin | 124 |  | 6 | Pending | `/claim-bordx/print/axa-affin` |
-| Print Bordx | Print Bordx (Time Dotcom) | frmPrintBordxTimeDotcom | 124 |  | 6 | Pending | `/claim-bordx/print/time-dotcom` |
-| Print Bordx | Print Bordx (BSN) | frmPrintBordxBSN | 124 |  | 6 | Pending | `/claim-bordx/print/bsn` |
+| Print Bordx | Print Bordx (SEB/INDAH WATER) | frmPrintBordxIBM | 124 |  | 6 | **Migrated** | `/claim-bordx/print/seb` |
+| Print Bordx | Print Bordx (Prasarana) | frmPrintBordxSPNB | 124 |  | 6 | **Migrated** | `/claim-bordx/print/prasarana` |
+| Print Bordx | Print Bordx (AXA Affin) | frmPrintBordxAXAAffin | 124 |  | 6 | **Migrated** | `/claim-bordx/print/axa-affin` |
+| Print Bordx | Print Bordx (Time Dotcom) | frmPrintBordxTimeDotcom | 124 |  | 6 | **Migrated** | `/claim-bordx/print/time-dotcom` |
+| Print Bordx | Print Bordx (BSN) | frmPrintBordxBSN | 124 |  | 6 | **Migrated** | `/claim-bordx/print/bsn` |
 | Print Bordx | BSN-PrintSummary | frmBSNPrintSummary | 124 | Never opened | 6 | Pending | `/claim-bordx/print/bsn-summary` |
-| Print Bordx | Print Bordx (Berjaya Sompo) | frmPrintBordxBSI | 124 |  | 6 | Pending | `/claim-bordx/print/berjaya-sompo` |
+| Print Bordx | Print Bordx (Berjaya Sompo) | frmPrintBordxBSI | 124 |  | 6 | **Migrated** | `/claim-bordx/print/berjaya-sompo` |
 | Bordx Delivery | Send to Grp. Company | FrmSendtoPayor | 125 |  | 6 | **Migrated** | `/claim-bordx/delivery/send-to-payor` |
 | Bordx Delivery | Returned Fr Grp. Company | FrmReturnPayor | 126 |  | 6 | **Migrated** | `/claim-bordx/delivery/returned` |
 | Bordx Delivery | Send to A/C | FrmSendtoAC | 127 |  | 6 | **Migrated** | `/claim-bordx/delivery/send-to-ac` |

@@ -15,7 +15,8 @@ public sealed class PrintBordxRepository : IPrintBordxRepository
     public Task<List<Dictionary<string, object?>>> RowsAsync(IDbSession session, string bordxNo) => session.RowsAsync("cis.PrintBordx_Rows", new { bordxNo }, 300);
 
     /// <inheritdoc />
-    public Task<List<Dictionary<string, object?>>> SummaryAsync(IDbSession session, string bordxNo) => session.RowsAsync("cis.PrintBordx_Summary", new { bordxNo }, 300);
+    public Task<List<Dictionary<string, object?>>> SummaryAsync(IDbSession session, string bordxNo, string variant) =>
+        session.RowsAsync("cis.PrintBordx_Summary", new { bordxNo, variant }, 300);
 
     /// <inheritdoc />
     public Task UpdateAsync(IDbSession session, string bordxNo, string month, string year, string user) =>

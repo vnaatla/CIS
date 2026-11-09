@@ -78,4 +78,12 @@ export async function claimBordx(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Bordereaux worksheets"] tbody')?.textContent.includes('EA12409034'), { timeout: 120000 })
   check(true, 'Print Bordx: KDC55049 lists EA12409034')
+
+  // A client variant (BSN) uses the same page without company / bill type.
+  await page.goto(`${base}/claim-bordx/print/bsn`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxNo]')
+  await page.type('input[name=bordxNo]', 'KDC55049')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Bordereaux worksheets"] tbody')?.textContent.includes('EA12409034'), { timeout: 120000 })
+  check(!(await page.$('select[name=billType]')), 'Print Bordx (BSN): KDC55049 lists EA12409034 without the bill type')
 }

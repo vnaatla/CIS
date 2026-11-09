@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -28,7 +29,7 @@ const m = (key: string, label: string): GridColumn<Row> => ({ key, label, align:
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Print Bordereaux" subtitle="Replaces frmPrintBordxExcel">
+    <app-page-shell [title]="title" [subtitle]="'Replaces ' + form">
       <div class="screen-form">
         <fieldset aria-label="Bordereaux">
           <legend>Bordereaux</legend>
@@ -40,12 +41,14 @@ const m = (key: string, label: string): GridColumn<Row> => ({ key, label, align:
           <app-field label="Year">
             <select name="year" [(ngModel)]="f.year" [disabled]="!!info()?.printed"><option value=""></option>@for (y of years; track y) { <option [value]="y">{{ y }}</option> }</select>
           </app-field>
-          <app-field label="Company" [required]="true">
-            <select name="company" [(ngModel)]="f.company"><option value=""></option>@for (c of companies; track c) { <option [value]="c">{{ c }}</option> }</select>
-          </app-field>
-          <app-field label="Bill Type" [required]="true">
-            <select name="billType" [(ngModel)]="f.billType"><option [ngValue]="null"></option><option [ngValue]="0">Invoice</option><option [ngValue]="1">Disbursement Note</option></select>
-          </app-field>
+          @if (variant === 'standard') {
+            <app-field label="Company" [required]="true">
+              <select name="company" [(ngModel)]="f.company"><option value=""></option>@for (c of companies; track c) { <option [value]="c">{{ c }}</option> }</select>
+            </app-field>
+            <app-field label="Bill Type" [required]="true">
+              <select name="billType" [(ngModel)]="f.billType"><option [ngValue]="null"></option><option [ngValue]="0">Invoice</option><option [ngValue]="1">Disbursement Note</option></select>
+            </app-field>
+          }
           <app-field label="Report Type">
             <select name="reportType" [(ngModel)]="f.reportType">@for (t of reportTypes; track $index) { <option [ngValue]="$index">{{ t }}</option> }</select>
           </app-field>
@@ -71,6 +74,10 @@ export class PrintBordxPage {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
 
+  private readonly data = inject(ActivatedRoute).snapshot.data
+  protected readonly variant: string = this.data['variant'] ?? 'standard'
+  protected readonly title: string = this.data['screenTitle'] ?? 'Print Bordereaux'
+  protected readonly form: string = this.data['legacyForm'] ?? 'frmPrintBordxExcel'
   protected readonly s = s
   protected readonly money = (v: number) => formatMoney(v)
   protected readonly months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -111,7 +118,7 @@ export class PrintBordxPage {
 
   protected async print(print: boolean, summary: boolean): Promise<void> {
     try {
-      const blob = await firstValueFrom(this.http.post(BASE, { ...this.f, print, summary }, { responseType: 'blob' }))
+      const blob = await firstValueFrom(this.http.post(BASE, { ...this.f, print, summary, variant: this.variant }, { responseType: 'blob' }))
       saveBlob(blob, `PrintBordx_${this.f.bordxNo.trim()}.xlsx`)
       if (print && !this.info()?.printed) await this.search()
     } catch (e) {

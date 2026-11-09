@@ -28,5 +28,10 @@ public class PrintBordxDatabaseTests
         var file = await service.PrintAsync(req with { Month = "JUNE", Year = "2021" }, "DEVADMIN");
         using var book = new ClosedXML.Excel.XLWorkbook(new MemoryStream(file.Content));
         Assert.Equal(2, book.Worksheets.Count);
+        foreach (var v in new[] { "seb", "prasarana", "axa-affin", "time-dotcom", "bsn", "berjaya-sompo", "crystal" })
+        {
+            var f = await service.PrintAsync(new PrintBordxRequest { BordxNo = "KDC55049", Variant = v, Month = "June", Year = "2021", Summary = true }, "DEVADMIN");
+            Assert.EndsWith(".xlsx", f.FileName);
+        }
     }
 }

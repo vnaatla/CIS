@@ -72,4 +72,6 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | P4 | Health Connect, Disbursement Note, June 2021 → Detail Preview | PrintBordx_KDC55049.xlsx (summary + DETAILS) |
 | P5 | (writes) P4 → Print Details | the bordereaux shows printed YES (restore: `UPDATE CISWorksheet.dbo.Bordx SET BordxPrintedStatus = 0, BordxPrintedDate = NULL, BORDXPrintMonth = NULL, BORDXPrintYear = NULL WHERE BordxRefNo = 'KDC55049'`) |
 
+| P6 | `/claim-bordx/print/bsn` (or any variant): `KDC55049` → Search → Summary Preview (June 2021) | the list without company / bill type; the variant's summary workbook |
+
 Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`
