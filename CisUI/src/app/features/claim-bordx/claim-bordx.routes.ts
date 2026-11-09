@@ -12,6 +12,13 @@ export const claimBordxRoutes: Routes = [
     loadComponent: () => import('./insert-worksheet.page').then((m) => m.InsertWorksheetPage),
   },
   {
+    path: 'claim-bordx/insert-invoice',
+    title: 'CIS - Insert Invoice',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxInsert, legacyForm: 'frmWSBordx2' },
+    loadComponent: () => import('./insert-invoice.page').then((m) => m.InsertInvoicePage),
+  },
+  {
     path: 'claim-bordx/remove-worksheet',
     title: 'CIS - Remove Worksheet',
     canActivate: [accessGuard],

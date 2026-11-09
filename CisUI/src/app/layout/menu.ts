@@ -122,7 +122,7 @@ export const MENU: MenuModule[] = [
     path: '/claim-bordx',
     items: [
       { label: 'Insert Worksheet', path: '/claim-bordx/insert-worksheet', access: Access.BordxInsert, form: 'frmWSBordx', group: 'Worksheet', phase: 6, migrated: true },
-      { label: 'Insert Invoice', path: '/claim-bordx/insert-invoice', access: Access.BordxInsert, form: 'frmWSBordx2', group: 'Worksheet', desktop: 'disabled', phase: 6 },
+      { label: 'Insert Invoice', path: '/claim-bordx/insert-invoice', access: Access.BordxInsert, form: 'frmWSBordx2', group: 'Worksheet', desktop: 'disabled', phase: 6, migrated: true },
       { label: 'Remove Worksheet', path: '/claim-bordx/remove-worksheet', access: Access.BordxRemove, form: 'FrmBordxRevise', group: 'Worksheet', phase: 6, migrated: true },
       { label: 'Update Claims Data', path: '/claim-bordx/update-claims-data', access: Access.BordxPrint, form: 'frmUpdateClaimsData', group: 'Bordx', phase: 3, migrated: true },
       { label: 'Print Bordx (Crystal)', path: '/claim-bordx/print/crystal', access: Access.BordxPrint, form: 'frmPrintBordx', group: 'Print Bordx', desktop: 'hidden', phase: 6, migrated: true },

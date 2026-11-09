@@ -89,9 +89,22 @@ Deliberate differences: parameters instead of pasted criteria; Bordx Control wit
 
 Deliberate differences: the ~20 Excel templates (`PayAdviceCLNBordx*.xlt`, `BordxByCostCenter*.xlt`, credit-note variants) and the Word cover letter are not available, so the pay advice is a generated workbook with the same figures (title: Invoice / Disbursement Note, `CREDIT NOTE` for KCN bordereaux); the pasted criterion is replaced by the quoted bordx no.
 
+## Insert Invoice — frmWSBordx2 (`/claim-bordx/insert-invoice`, right BordxInsert, `api/claim-bordx/insert-invoice`)
+
+The desktop menu item is disabled; the screen is migrated on request.
+
+| Step | Behaviour |
+|---|---|
+| Search | Invoices whose claims are not bordxed (VIEW_CISINV_PendingBordx, as `cis.BordxInv_Search`): register date range, payor, group company (choosing a group company fills its payor); `No record found!`. Rows: payor, invoice no., invoice date, group company, approved; total approved. |
+| Tick / Check All | `Invoice Date cannot be empty.`, `Group Company cannot be empty!`. |
+| Bordx | `Please select a record before proceeding!`, `Please select at least one record to be updated! `; `Do you want to update the record?` → a bordx no. from the group company's payor (CLAIM_BordxSEQ, as Insert Worksheet); every not-yet-bordxed claim of the ticked invoices gets the bordx no. (claim, claim invoice, case not pending) and a Bordx row is added (payor, the group company combo text, today, user, total approved, number of claims) → `Record Saved, Your Bordx No is : …`. |
+
+Known desktop issues (reproduced): the Bordx row's group company holds the combo text ("code - name"); the bordx no. is taken from the group company's payor, so a search by payor alone numbers the bordereaux without a payor code.
+
+Deliberate differences: parameters instead of pasted criteria; the group company filter uses the whole code (the desktop took 3 characters, so 4-character codes such as A242 found nothing); Bordx takes the claims behind each ticked invoice (the desktop looked the invoice no. up as a case no., never found it and the save failed, which is probably why the menu item was disabled); one transaction.
+
 ## Not migrated
 
-- **Insert Invoice (frmWSBordx2)** — the desktop menu item is disabled, so users cannot open it; bordereaux are created with Insert Worksheet. Its code lists invoices (`Invoice Date cannot be empty.`, `Group Company cannot be empty!`) and bordereaux them like Insert Worksheet; it can be added later if the menu item is to be enabled.
 - **BSN-PrintSummary (frmBSNPrintSummary)** — never opened from the menu (handler commented out) and unfinished: its only action adds empty text boxes; Search lists SP_Bordxdetails (bordx no., claims, amount, date), which Print Bordx (BSN) already shows.
 
 ## Print Bordx client variants — frmPrintBordxIBM, frmPrintBordxSPNB, frmPrintBordxAXAAffin, frmPrintBordxTimeDotcom, frmPrintBordxBSN, frmPrintBordxBSI, frmPrintBordx (`/claim-bordx/print/seb` · `prasarana` · `axa-affin` · `time-dotcom` · `bsn` · `berjaya-sompo` · `crystal`)

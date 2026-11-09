@@ -86,4 +86,14 @@ export async function claimBordx(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Bordereaux worksheets"] tbody')?.textContent.includes('EA12409034'), { timeout: 120000 })
   check(!(await page.$('select[name=billType]')), 'Print Bordx (BSN): KDC55049 lists EA12409034 without the bill type')
+
+  // Insert Invoice: A242, registered 1-4 Aug 2021, lists invoice 7486 (nothing is saved).
+  await page.goto(`${base}/claim-bordx/insert-invoice`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=groupCompany]')
+  await page.type('input[name=groupCompany]', 'A242 - ASIAFLEX PRODUCTS SDN. BHD.')
+  await page.type('input[aria-label="Register Date From"]', '01/08/2021')
+  await page.type('input[aria-label="Register Date To"]', '04/08/2021')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Invoices pending bordx"] tbody')?.textContent.includes('7486'), { timeout: 120000 })
+  check(true, 'Insert Invoice: A242 registered 1-4 Aug 2021 lists invoice 7486')
 }
