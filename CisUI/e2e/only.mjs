@@ -4,8 +4,9 @@
 import puppeteer from 'puppeteer-core'
 import { existsSync } from 'node:fs'
 import { claimBordx } from './steps/claim-bordx.mjs'
+import { payment } from './steps/payment.mjs'
 
-const modules = { 'claim-bordx': claimBordx }
+const modules = { 'claim-bordx': claimBordx, payment }
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
 const password = process.env.E2E_PASSWORD
