@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs'
 import { claimBordx } from './steps/claim-bordx.mjs'
 import { payment } from './steps/payment.mjs'
 import { receipt } from './steps/receipt.mjs'
+import { acExport } from './steps/ac-export.mjs'
 
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
@@ -602,6 +603,9 @@ try {
 
   // 37. Receipt (Phase 8) steps.
   await receipt(page, base, check)
+
+  // 38. A/C Export (Phase 9) steps.
+  await acExport(page, base, check)
 
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')

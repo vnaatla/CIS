@@ -9,6 +9,7 @@ import { mcoFeesRoutes } from './features/mco-fees/mco-fees.routes'
 import { claimBordxRoutes } from './features/claim-bordx/claim-bordx.routes'
 import { paymentRoutes } from './features/payment/payment.routes'
 import { receiptRoutes } from './features/receipt/receipt.routes'
+import { acExportRoutes } from './features/ac-export/ac-export.routes'
 
 /**
  * Each migration phase adds its screens here as lazy routes under the module path, guarded by `accessGuard` with
@@ -32,6 +33,7 @@ export const routes: Routes = [
       ...claimBordxRoutes,
       ...paymentRoutes,
       ...receiptRoutes,
+      ...acExportRoutes,
       {
         path: ':module',
         children: [
