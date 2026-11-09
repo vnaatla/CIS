@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 68 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 69 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -19,12 +19,12 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 22 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
-| [Payment](#payment) | 9 | 6 | 3 |
+| [Payment](#payment) | 9 | 7 | 3 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **68** | **20** |
+| **Total** | **119** | **69** | **20** |
 
 ## Membership
 
@@ -157,7 +157,7 @@ Module page: `/payment`
 |  | To Clinic | frmPaymentClinic | 133 |  | 7 | **Migrated** | `/payment/clinic` |
 |  | To Clinic - Invoice | frmPaymentCLNInvoice, frmPrintChequeRange, frmPrintPVRange, frmInvoiceDetPopup | 121 |  | 7 | **Migrated** | `/payment/clinic-invoice` |
 |  | To Member | frmPaymentMemberAuto08 | 134 |  | 7 | **Migrated** | `/payment/member` |
-|  | To Member (old) | frmPaymentMember | 134 | Never opened | 7 | Pending | `/payment/member-legacy` |
+|  | To Member (old) | frmPaymentMember | 134 | Never opened | 7 | **Migrated** | `/payment/member-legacy` |
 |  | To Member - Batch | — | 134 | No handler, no form | 7 | Nothing to build | `/payment/member-batch` |
 |  | Tracking | FrmPayment | 165 |  | 7 | **Migrated** | `/payment/tracking` |
 |  | Tracking (Jupiter) | frmPayment2 | 167 |  | 7 | **Migrated** | `/payment/tracking-jupiter` |

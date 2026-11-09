@@ -65,4 +65,12 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="FFS payments"] tbody')?.textContent.includes('KDC55955'), { timeout: 120000 })
   check(true, 'FFS Payment: bordx KDC55955 lists its FFS')
+
+  // Payment to Member (old): scanning SLK004743875 lists the unpaid case with the patient's name (nothing is saved).
+  await page.goto(`${base}/payment/member-legacy`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseFrom]')
+  await page.type('input[name=caseFrom]', 'SLK004743875')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Member payments (old)"] tbody')?.textContent.includes('CHOOK SHENG CAI'), { timeout: 120000 })
+  check(true, 'Payment to Member (old): SLK004743875 lists CHOOK SHENG CAI')
 }

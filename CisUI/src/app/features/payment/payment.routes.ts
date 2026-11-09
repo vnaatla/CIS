@@ -26,6 +26,13 @@ export const paymentRoutes: Routes = [
     loadComponent: () => import('./payment-member.page').then((m) => m.PaymentMemberPage),
   },
   {
+    path: 'payment/member-legacy',
+    title: 'CIS - Payment to Member (old)',
+    canActivate: [accessGuard],
+    data: { access: Access.PaymentMember, legacyForm: 'frmPaymentMember' },
+    loadComponent: () => import('./payment-member-legacy.page').then((m) => m.PaymentMemberLegacyPage),
+  },
+  {
     path: 'payment/tracking',
     title: 'CIS - Payment Tracking',
     canActivate: [accessGuard],

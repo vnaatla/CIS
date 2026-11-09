@@ -27,6 +27,14 @@ public sealed class PayMbmOldController(IPayMbmOldService pay) : ApiControllerBa
     [HttpPost("update")]
     public async Task<object> Update(PayMbmOldSaveRequest request) => new { message = await pay.UpdateAsync(request, UserCode) };
 
+    /// <summary>txtChequeAmt_LostFocus: the amount in words (leading "And" removed).</summary>
+    [HttpGet("wording")]
+    public object Wording([FromQuery] decimal amount)
+    {
+        var w = AmountInWords.Wording(amount).Trim();
+        return new { wording = w.StartsWith("And", StringComparison.Ordinal) && w.Length > 4 ? w[4..].Trim() : w };
+    }
+
     /// <summary>Print PV.</summary>
     [HttpGet("voucher")]
     public async Task<FileContentResult> Voucher([FromQuery] string? pvNo, [FromQuery] string? payTo)

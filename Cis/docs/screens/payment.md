@@ -49,11 +49,28 @@ Known desktop issues (reproduced): Update writes the cheque amount as the row's 
 
 Deliberate differences: parameters instead of pasted criteria; the amounts are re-read on the server; the preview shows each bordereaux's FFS (the desktop left the amount column empty); the PV template (`PV-FFS.xlt`) is not available, so the voucher is a generated workbook.
 
+## To Member (old) — frmPaymentMember (`/payment/member-legacy`, right PaymentMember, `api/payment/member-legacy`)
+
+The desktop menu never opens this form (it was replaced by frmPaymentMemberAuto08); it is migrated on request.
+
+| Step | Behaviour |
+|---|---|
+| Search | View_Payment2MBM (as `cis.PayMbmOld_Search`): scan one worksheet no. (`Please Enter Worksheet No`, `Data has been uploaded!`; appended) or a range, member no., member name, group company, payment 0–5, bordx status (default 1 - Bordx), PV no. (each box an "equals" filter), PV date, cheque no., CR no., OP batch, A/C month / year ranges and the "empty" boxes; `No record found!`. Rows as To Member, with the payee's account no. |
+| Tick / Check All / Add | As To Member (`Payment has been made!`; the amount to pay is the balance, or payable − postage); Add (`Please checked at least 1 Claim  ! `) clears the PV frame. |
+| Cheque amount | Fills the amount in words. |
+| Save | The user enters the PV frame: `Please select the record`, `Please Enter Pay To!`, `Please Enter PV Date!`, `Invalid PV Date!`, `Please Enter Cheque Number!`, `Please Enter Cheque Date!`, `Please Enter Cheque Amt!`, cheque amount ≠ selected without a remark (`Amount to paid is incorrect` / `Please key in remark for reason.`), `Please Enter Wording Amount!`, `Please Enter Bank !`, A/C month / year, `Please keyin Bank - PV Code ! `; `Do you want to update the record?` → a PV no. and per ticked case a Payment2MBM row with the frame's details (a partial case's row first gets the new status, then a new row is added); the wording is split at 55 characters into dollars / cents → the PV is listed → `Record Saved...`. |
+| Edit / Update | Clicking a paid row fills the frame; Update (`Please select the record`, `Please Enter Pay to! `, the cheque / bank / period / wording checks) overwrites that row (keeping its status and paid amount) and the PV's cheque details → `Record Updated ! `. |
+| Print PV / Preview PV / Print Cheque | The PV of the frame's PV no. (`Please Enter or Generate PV No`) with each case's patient; the preview and the cheque as To Member. |
+| Print | The list as CSV. |
+
+Known desktop issues (reproduced): the two PV no. boxes each filter on "equals"; the A/C year "from" filter only applies when "to" is chosen.
+
+Deliberate differences: parameters instead of pasted criteria; Save with nothing ticked is refused before a PV no. is taken (the desktop took a PV no. and saved nothing); amounts re-read on the server; one transaction.
+
 ## Not migrated
 
-- **To Member (old) (frmPaymentMember)** — never opened from the menu (replaced by frmPaymentMemberAuto08, migrated above).
 - **To Member - Batch** — the menu item has no handler (nothing opens).
-- **Pay Member Post (frmPayMBMPost) / Pay Clinic Post (frmPayClinicPost)** — never opened from the menu; the payment postings are part of A/C Export (Phase 9).
+- **Pay Member Post (frmPayMBMPost)** — the form is empty: its only code writes the action log when it opens (no fields, no actions), so there is nothing to migrate.
 
 ## Tracking / Tracking (Jupiter) — FrmPayment, frmPayment2 (`/payment/tracking`, `/payment/tracking-jupiter`, rights PaymentTracking / PaymentTrackingJupiter, `api/payment/tracking`)
 
