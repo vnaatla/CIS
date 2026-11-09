@@ -8,14 +8,20 @@ namespace Cis.Infrastructure.Documents;
 public sealed class SpreadsheetReader : ISpreadsheetReader
 {
     /// <inheritdoc />
-    public List<(int Row, string[] Cells)> Read(Stream content, int maxColumns, int maxRows = 60000)
+    public List<(int Row, string[] Cells)> Read(Stream content, int maxColumns, int maxRows = 60000, int keyColumn = 1, bool skipBlankKey = false)
     {
         using var book = new XLWorkbook(content);
         var sheet = book.Worksheet(1);
         var rows = new List<(int, string[])>();
+        var last = Math.Min(maxRows - 1, sheet.LastRowUsed()?.RowNumber() ?? 1);
         for (var r = 2; r < maxRows; r++)
         {
-            if (Text(sheet.Cell(r, 1)).Length == 0) break;
+            if (skipBlankKey && r > last) break;
+            if (Text(sheet.Cell(r, keyColumn)).Length == 0)
+            {
+                if (skipBlankKey) continue;
+                break;
+            }
             var cells = new string[maxColumns + 1];
             for (var c = 1; c <= maxColumns; c++) cells[c] = Text(sheet.Cell(r, c));
             rows.Add((r, cells));
