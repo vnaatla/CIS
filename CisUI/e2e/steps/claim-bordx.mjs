@@ -53,4 +53,21 @@ export async function claimBordx(page, base, check) {
     await page.waitForFunction(() => document.querySelectorAll('table[aria-label="Bordereaux"] tbody tr:not(.empty-row)').length >= 17, { timeout: 60000 })
     check(true, `${label}: DAYANG ENTERPRISE SDN BHD lists its bordereaux from 2021`)
   }
+
+  // Monitoring: Bordx Control (DAYANG from 2021), Outstanding Bordx (ALAM TEKNOKRAT), Bordx & Worksheet (DAYANG KDC55049).
+  const monitor = async (kind, company, fill, rows, label) => {
+    await page.goto(`${base}/claim-bordx/monitoring/${kind}`, { waitUntil: 'domcontentloaded' })
+    await page.waitForSelector('input[name=company]')
+    await page.type('input[name=company]', company)
+    await fill()
+    await click(page, 'Search')
+    await page.waitForFunction((n) => document.querySelectorAll('app-data-grid tbody tr:not(.empty-row)').length >= n, { timeout: 120000 }, rows)
+    check(true, label)
+  }
+  await monitor('control', 'DAYANG ENTERPRISE SDN BHD', () => page.type('input[aria-label="Bordx Date From"]', '01/01/2021'), 17, 'Bordx Control: DAYANG ENTERPRISE SDN BHD from 2021 lists 17 bordereaux')
+  await monitor('outstanding', 'ALAM TEKNOKRAT SDN BHD', async () => {}, 4, 'Outstanding Bordx: ALAM TEKNOKRAT SDN BHD lists 4 outstanding bordereaux')
+  await monitor('bordx-worksheet', 'DAYANG ENTERPRISE SDN BHD', async () => {
+    await page.type('input[name=bordxFrom]', 'KDC55049')
+    await page.type('input[name=bordxTo]', 'KDC55049')
+  }, 1, 'Bordx & Worksheet: DAYANG ENTERPRISE SDN BHD bordx KDC55049 lists its worksheets')
 }

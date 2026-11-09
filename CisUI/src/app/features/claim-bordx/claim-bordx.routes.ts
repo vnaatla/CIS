@@ -46,4 +46,17 @@ export const claimBordxRoutes: Routes = [
     data: { access: Access.BordxAcPeriod, legacyForm: 'FrmACPeriod', kind: 'acperiod' },
     loadComponent: () => import('./delivery.page').then((m) => m.BordxDeliveryPage),
   },
+  ...(
+    [
+      ['control', Access.BordxControl, 'FrmBordxControl', 'Bordx Control'],
+      ['outstanding', Access.BordxOutstanding, 'FrmOSBordx', 'Outstanding Bordx'],
+      ['bordx-worksheet', Access.BordxWorksheet, 'FrmBordxWks', 'Bordx & Worksheet'],
+    ] as const
+  ).map(([kind, access, legacyForm, title]) => ({
+    path: `claim-bordx/monitoring/${kind}`,
+    title: `CIS - ${title}`,
+    canActivate: [accessGuard],
+    data: { access, legacyForm, kind },
+    loadComponent: () => import('./monitoring.page').then((m) => m.BordxMonitoringPage),
+  })),
 ]

@@ -65,3 +65,16 @@ The same page as Bordx Delivery with the A/C period filters and update.
 Known desktop issues (reproduced): the period filter compares the month as text, and applies the year only for months 10–12.
 
 Deliberate differences: a blank period is simply not filtered (the desktop's masked box compared `_` with 0 and the search failed); scan mode uses the same list as the range (the desktop used case 10, which lacks the A/C period status column).
+
+## Monitoring — FrmBordxControl, FrmOSBordx, FrmBordxWks (`/claim-bordx/monitoring/control` · `outstanding` · `bordx-worksheet`, rights 129 / 130 / 131, `api/claim-bordx/monitoring`)
+
+| Screen | Behaviour |
+|---|---|
+| Bordx Control | Group company (its subsidiaries), bordx range, bordx date range, sent / not sent, returned paid / partial, payment paid / partial / unpaid, subsidiary, cash type C / M, entity Health Connect / Sihat Johor; ClaimBordxModule1 case 17 (copied as `cis.BordxControl_Search`): per bordereaux the bill, co-pay, approved, MCO fee, bordx and non-GP amounts, the sent / returned / paid dates and days (0 shown as 1); `No record found!`. The total is the sum of the MCO fee column (as the desktop). |
+| Outstanding Bordx | Group company and O/S date (today); bordereaux sent but not fully paid (VIEW_OS_CISBordx); days = O/S date − date sent + 1, amount under `<= 14 Days` or `> 14 Days`; total due; `No record found for this Group Company!`. |
+| Bordx & Worksheet | Group company, payor, bordx / worksheet / receipt no. ranges, date from payor range or empty; VIEW_CISBordx_Wks rows with a payor code; count and total approved; `No record found!`. |
+| Print | The list as CSV. |
+
+Known desktop issues (reproduced): Bordx Control's "total amount" is the MCO fee total; check boxes for opposite values (e.g. sent and not sent) both apply and find nothing.
+
+Deliberate differences: parameters instead of pasted criteria; Bordx Control with a subsidiary uses the same query as without one (the desktop switched to case 16, whose view rejects the `Bordx.` / `CISCas.` filters it always adds, so it always failed); the check boxes are drop-downs.

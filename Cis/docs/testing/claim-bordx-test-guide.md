@@ -53,4 +53,13 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | B7 | Bor Acc Period: same company / date → Search | 17 bordereaux with their A/C periods |
 | B8 | B7 → tick one → Update without a month | `Month cannot be Empty.` |
 
+## 5. Monitoring — `/claim-bordx/monitoring/control`, `outstanding`, `bordx-worksheet`
+
+| # | Action | Expected |
+|---|---|---|
+| M1 | Bordx Control: `DAYANG ENTERPRISE SDN BHD`, bordx date from 01/01/2021 → Search | 17 bordereaux (e.g. KCN00799, 24/02/2021) |
+| M2 | Outstanding Bordx: `ALAM TEKNOKRAT SDN BHD` → Search | 4 bordereaux with days and the ≤ 14 / > 14 split |
+| M3 | Outstanding Bordx: `DAYANG ENTERPRISE SDN BHD` → Search | `No record found for this Group Company!` |
+| M4 | Bordx & Worksheet: `DAYANG ENTERPRISE SDN BHD`, bordx KDC55049–KDC55049 → Search | its worksheets (e.g. EA12409034, 250.00) |
+
 Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`
