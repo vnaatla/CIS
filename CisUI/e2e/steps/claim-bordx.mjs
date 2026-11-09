@@ -44,8 +44,8 @@ export async function claimBordx(page, base, check) {
   check(true, 'ClaimBordxDate: KIV03270 shows its bordx date and posting status')
 
   // Bordx Delivery: Send to Grp. Company and Send to A/C for DAYANG ENTERPRISE SDN BHD from 01/01/2021 (nothing is updated).
-  for (const [path, label] of [['send-to-payor', 'Send to Grp. Company'], ['send-to-ac', 'Send to A/C']]) {
-    await page.goto(`${base}/claim-bordx/delivery/${path}`, { waitUntil: 'domcontentloaded' })
+  for (const [path, label] of [['delivery/send-to-payor', 'Send to Grp. Company'], ['delivery/send-to-ac', 'Send to A/C'], ['ac-period', 'Bor Acc Period']]) {
+    await page.goto(`${base}/claim-bordx/${path}`, { waitUntil: 'domcontentloaded' })
     await page.waitForSelector('input[name=company]')
     await page.type('input[name=company]', 'DAYANG ENTERPRISE SDN BHD')
     await page.type('input[aria-label="Bordx Date From"]', '01/01/2021')

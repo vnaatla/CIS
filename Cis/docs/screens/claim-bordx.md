@@ -51,3 +51,17 @@ One page and one service for the four screens; they differ only in their filters
 Known desktop issues (reproduced): amounts and A/C periods are compared as text; Send to MNRB is not on the desktop menu (never opened).
 
 Deliberate differences: parameters instead of pasted criteria; the updates of the ticked bordereaux are in one transaction; the scan duplicate check uses the bordx no. (the desktop compared the typed no. with the group company column, so a bordereaux could be listed twice); the Excel print is a CSV.
+
+## Bor Acc Period — FrmACPeriod (`/claim-bordx/ac-period`, right 128, `api/claim-bordx/delivery/acperiod`)
+
+The same page as Bordx Delivery with the A/C period filters and update.
+
+| Step | Behaviour |
+|---|---|
+| Search | Group company, scan / bordx range, bordx date, amount, A/C period from / to (`mm/yyyy`), without A/C period; ClaimBordxModule case 11; `No record found!`. |
+| Tick | A bordereaux whose A/C period status is set: `Record has been Updated!`. |
+| Update | `Please select at least one record to be updated! `, `Month cannot be Empty.` (1–12), `Year cannot be empty!` (1999–3000), `Do you want to update the record?` → PAYToACPeriodMth / Yr and ACPeriodStatus 1 → `Record updated...`. |
+
+Known desktop issues (reproduced): the period filter compares the month as text, and applies the year only for months 10–12.
+
+Deliberate differences: a blank period is simply not filtered (the desktop's masked box compared `_` with 0 and the search failed); scan mode uses the same list as the range (the desktop used case 10, which lacks the A/C period status column).

@@ -138,7 +138,7 @@ export const MENU: MenuModule[] = [
       { label: 'Returned Fr Grp. Company', path: '/claim-bordx/delivery/returned', access: Access.BordxReturnedFromPayor, form: 'FrmReturnPayor', group: 'Bordx Delivery', phase: 6, migrated: true },
       { label: 'Send to A/C', path: '/claim-bordx/delivery/send-to-ac', access: Access.BordxSendToAc, form: 'FrmSendtoAC', group: 'Bordx Delivery', phase: 6, migrated: true },
       { label: 'Send to MNRB', path: '/claim-bordx/delivery/send-to-mnrb', access: Access.BordxSendToPayor, form: 'FrmSendtoMNRB', group: 'Bordx Delivery', desktop: 'never-opened', phase: 6, migrated: true },
-      { label: 'Bor Acc Period', path: '/claim-bordx/ac-period', access: Access.BordxAcPeriod, form: 'FrmACPeriod', group: 'Bordx', phase: 6 },
+      { label: 'Bor Acc Period', path: '/claim-bordx/ac-period', access: Access.BordxAcPeriod, form: 'FrmACPeriod', group: 'Bordx', phase: 6, migrated: true },
       { label: 'Bordx Control', path: '/claim-bordx/monitoring/control', access: Access.BordxControl, form: 'FrmBordxControl', group: 'Monitoring', phase: 6 },
       { label: 'Outstanding Bordx', path: '/claim-bordx/monitoring/outstanding', access: Access.BordxOutstanding, form: 'FrmOSBordx', group: 'Monitoring', phase: 6 },
       { label: 'Bordx & Worksheet', path: '/claim-bordx/monitoring/bordx-worksheet', access: Access.BordxWorksheet, form: 'FrmBordxWks', group: 'Monitoring', phase: 6 },

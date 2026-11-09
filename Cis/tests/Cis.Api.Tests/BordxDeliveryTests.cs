@@ -34,5 +34,22 @@ public class BordxDeliveryDatabaseTests
         var status = await tx.Sql().Connection.QuerySingleAsync<int>(
             "SELECT CAST(BordxPayDocFRStatus AS int) FROM CISWorksheet.dbo.Bordx WHERE BordxRefNo = @no", new { no }, tx.Sql().Transaction);
         Assert.Equal(1, status);
+        Assert.Equal(1, await repo.UpdateAsync(tx, "acperiod", no, null, "9", "2021"));
+        var period = await tx.Sql().Connection.QuerySingleAsync<string>(
+            "SELECT RTRIM(PAYToACPeriodMth) + '/' + RTRIM(PAYToACPeriodYR) FROM CISWorksheet.dbo.Bordx WHERE BordxRefNo = @no", new { no }, tx.Sql().Transaction);
+        Assert.Equal("9/2021", period);
+    }
+
+    [Fact]
+    public async Task Ac_period_search_and_checks()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        var service = new BordxDeliveryService(TestDb.Sessions(), new BordxDeliveryRepository());
+        Assert.Equal(17, (await service.SearchAsync("acperiod", Dayang with { Status = null })).Rows.Count);
+        Assert.Equal(BordxDeliveryService.NoMonth,
+            (await Assert.ThrowsAsync<BusinessRuleException>(() => service.UpdateAsync("acperiod", new BordxDeliveryUpdateRequest { BordxNos = ["X"] }))).Message);
+        Assert.Equal(("9", null), BordxDeliveryService.Period("09/2021"));
+        Assert.Equal(("11", "2021"), BordxDeliveryService.Period("11/2021"));
     }
 }

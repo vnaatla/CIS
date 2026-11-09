@@ -12,7 +12,7 @@ public sealed class BordxDeliveryController(IBordxDeliveryService delivery) : Ap
 {
     /// <summary>Group companies and payors.</summary>
     [HttpGet("lookups")]
-    [RequireAccess(AccessRight.BordxSendToPayor, AccessRight.BordxReturnedFromPayor, AccessRight.BordxSendToAc)]
+    [RequireAccess(AccessRight.BordxSendToPayor, AccessRight.BordxReturnedFromPayor, AccessRight.BordxSendToAc, AccessRight.BordxAcPeriod)]
     public async Task<object> Lookups()
     {
         var (companies, payors) = await delivery.LookupsAsync();
@@ -58,4 +58,14 @@ public sealed class BordxDeliveryController(IBordxDeliveryService delivery) : Ap
     [HttpPost("ac/update")]
     [RequireAccess(AccessRight.BordxSendToAc)]
     public async Task<object> UpdateAc(BordxDeliveryUpdateRequest request) => new { message = await delivery.UpdateAsync("ac", request) };
+
+    /// <summary>Bor Acc Period (FrmACPeriod).</summary>
+    [HttpPost("acperiod/search")]
+    [RequireAccess(AccessRight.BordxAcPeriod)]
+    public Task<BordxDeliveryResult> SearchAcPeriod(BordxDeliveryRequest request) => delivery.SearchAsync("acperiod", request);
+
+    /// <summary>Update the A/C period.</summary>
+    [HttpPost("acperiod/update")]
+    [RequireAccess(AccessRight.BordxAcPeriod)]
+    public async Task<object> UpdateAcPeriod(BordxDeliveryUpdateRequest request) => new { message = await delivery.UpdateAsync("acperiod", request) };
 }

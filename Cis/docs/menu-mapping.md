@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 42 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 43 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -17,14 +17,14 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
 | [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
-| [Claim Bordx](#claim-bordx) | 29 | 8 | 4 |
+| [Claim Bordx](#claim-bordx) | 29 | 9 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 9 | 0 | 3 |
 | [Receipt](#receipt) | 6 | 0 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **42** | **20** |
+| **Total** | **119** | **43** | **20** |
 
 ## Membership
 
@@ -125,7 +125,7 @@ Module page: `/claim-bordx`
 | Bordx Delivery | Returned Fr Grp. Company | FrmReturnPayor | 126 |  | 6 | **Migrated** | `/claim-bordx/delivery/returned` |
 | Bordx Delivery | Send to A/C | FrmSendtoAC | 127 |  | 6 | **Migrated** | `/claim-bordx/delivery/send-to-ac` |
 | Bordx Delivery | Send to MNRB | FrmSendtoMNRB | 125 | Never opened | 6 | **Migrated** | `/claim-bordx/delivery/send-to-mnrb` |
-| Bordx | Bor Acc Period | FrmACPeriod | 128 |  | 6 | Pending | `/claim-bordx/ac-period` |
+| Bordx | Bor Acc Period | FrmACPeriod | 128 |  | 6 | **Migrated** | `/claim-bordx/ac-period` |
 | Monitoring | Bordx Control | FrmBordxControl | 129 |  | 6 | Pending | `/claim-bordx/monitoring/control` |
 | Monitoring | Outstanding Bordx | FrmOSBordx | 130 |  | 6 | Pending | `/claim-bordx/monitoring/outstanding` |
 | Monitoring | Bordx & Worksheet | FrmBordxWks | 131 |  | 6 | Pending | `/claim-bordx/monitoring/bordx-worksheet` |

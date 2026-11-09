@@ -50,4 +50,7 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | B5 | Returned: same bordereaux, date earlier than the date sent | `Date Received from Payor cannot be ealier than Date Sent to Payor!` |
 | B6 | Send to A/C / Send to MNRB (payor `DC - …`): same search | the bordereaux with their A/C / MNRB dates |
 
+| B7 | Bor Acc Period: same company / date → Search | 17 bordereaux with their A/C periods |
+| B8 | B7 → tick one → Update without a month | `Month cannot be Empty.` |
+
 Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`

@@ -15,7 +15,7 @@ import { ActionBarComponent, PageShellComponent } from '../../shared/screen.comp
 
 const BASE = '/api/claim-bordx/delivery'
 type Row = Record<string, unknown>
-type Kind = 'payor' | 'returned' | 'ac' | 'mnrb'
+type Kind = 'payor' | 'returned' | 'ac' | 'mnrb' | 'acperiod'
 const s = (v: unknown) => (v == null ? '' : String(v).trim())
 const d = (v: unknown) => (v ? formatDate(String(v)) : '')
 const flag = (v: unknown) => (v === true || v === 1 || v === '1' ? 'True' : 'False')
@@ -55,6 +55,13 @@ const screens: Record<Kind, Screen> = {
       { key: 'BordxMNRBRecDocDate', label: 'MNRB Received', value: (r) => d(r['BordxMNRBRecDocDate']) },
       { key: 'BordxSendACDate', label: 'Sent to A/C', value: (r) => d(r['BordxSendACDate']) },
       { key: 'BordxSendToACStatus', label: 'A/C Status', value: (r) => flag(r['BordxSendToACStatus']) }],
+  },
+  acperiod: {
+    title: 'Bordereaux Accounting Period', form: 'FrmACPeriod', update: 'Update', dateLabel: '', periods: false, status: false,
+    columns: [...common, { key: 'BordxPAYSentDate', label: 'Sent to Payor', value: (r) => d(r['BordxPAYSentDate']) },
+      { key: 'BordxPAYRecDate', label: 'Received', value: (r) => d(r['BordxPAYRecDate']) },
+      { key: 'BordxMNRBSentDate', label: 'Sent to MNRB', value: (r) => d(r['BordxMNRBSentDate']) }, period,
+      { key: 'ACPeriodStatus', label: 'A/C Period Status', value: (r) => flag(s(r['ACPeriodStatus']) === 'True' ? 1 : r['ACPeriodStatus']) }],
   },
   mnrb: {
     title: 'Send Bordereaux to MNRB', form: 'FrmSendtoMNRB', update: 'To MNRB', dateLabel: 'Date Sent', periods: true, status: true,
@@ -98,6 +105,10 @@ const screens: Record<Kind, Screen> = {
             <app-field label="A/C Month To"><input name="monthTo" maxlength="4" [(ngModel)]="f.monthTo" /></app-field>
             <app-field label="A/C Year From"><input name="yearFrom" maxlength="6" [(ngModel)]="f.yearFrom" /></app-field>
             <app-field label="A/C Year To"><input name="yearTo" maxlength="6" [(ngModel)]="f.yearTo" /></app-field>
+          } @else if (kind === 'acperiod') {
+            <app-field label="A/C Period From (mm/yyyy)"><input name="periodFrom" maxlength="7" placeholder="mm/yyyy" [(ngModel)]="f.periodFrom" /></app-field>
+            <app-field label="A/C Period To (mm/yyyy)"><input name="periodTo" maxlength="7" placeholder="mm/yyyy" [(ngModel)]="f.periodTo" /></app-field>
+            <app-field label="No A/C Period"><label class="check-field"><input type="checkbox" name="noPeriod" [(ngModel)]="f.noPeriod" /> Without A/C period</label></app-field>
           } @else {
             <app-field label="Date Sent From"><app-date-input name="sentFrom" ariaLabel="Date Sent From" [(ngModel)]="f.sentFrom" /></app-field>
             <app-field label="Date Sent To"><app-date-input name="sentTo" ariaLabel="Date Sent To" [(ngModel)]="f.sentTo" /></app-field>
@@ -107,7 +118,16 @@ const screens: Record<Kind, Screen> = {
               <select name="status" [(ngModel)]="f.status"><option [ngValue]="0">0 - Not Sent</option><option [ngValue]="1">1 - Sent</option><option [ngValue]="2">2 - Both</option></select>
             </app-field>
           }
-          <app-field [label]="screen.dateLabel" [required]="true"><app-date-input name="date" [ariaLabel]="screen.dateLabel" [(ngModel)]="date" /></app-field>
+          @if (kind === 'acperiod') {
+            <app-field label="Period Month" [required]="true">
+              <select name="month" [(ngModel)]="month"><option value=""></option>@for (m of months; track m) { <option [value]="m">{{ m }}</option> }</select>
+            </app-field>
+            <app-field label="Period Year" [required]="true">
+              <select name="year" [(ngModel)]="year"><option value=""></option>@for (y of years; track y) { <option [value]="y">{{ y }}</option> }</select>
+            </app-field>
+          } @else {
+            <app-field [label]="screen.dateLabel" [required]="true"><app-date-input name="date" [ariaLabel]="screen.dateLabel" [(ngModel)]="date" /></app-field>
+          }
           <app-action-bar label="Delivery actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [disabled]="!rows().length" (click)="checkAll()">Check All</button>
@@ -136,6 +156,10 @@ export class BordxDeliveryPage implements OnInit {
   protected readonly checked = signal<ReadonlySet<string>>(new Set())
   protected readonly busy = signal(false)
   protected date = ''
+  protected month = ''
+  protected year = ''
+  protected readonly months = Array.from({ length: 12 }, (_, i) => String(i + 1))
+  protected readonly years = Array.from({ length: 3000 - 1999 + 1 }, (_, i) => String(1999 + i))
   protected f = this.empty()
   private searched = this.empty()
   protected readonly key = (r: Row) => s(r['BordxRefNo'])
@@ -143,7 +167,7 @@ export class BordxDeliveryPage implements OnInit {
   private empty() {
     return {
       company: '', scan: false, bordxFrom: '', bordxTo: '', dateFrom: '', dateTo: '', amountFrom: '', amountTo: '', monthFrom: '', monthTo: '', yearFrom: '', yearTo: '',
-      status: 0 as number | null, sentFrom: '', sentTo: '',
+      status: 0 as number | null, sentFrom: '', sentTo: '', periodFrom: '', periodTo: '', noPeriod: false,
     }
   }
 
@@ -205,10 +229,14 @@ export class BordxDeliveryPage implements OnInit {
   /** CmdToPayor_Click and the other update buttons. */
   protected async update(): Promise<void> {
     if (!this.checked().size) return this.notify.notify('Please select at least one record to be updated! ', 'error')
-    if (!this.date) return this.notify.notify('Please Enter in date', 'error')
+    if (this.kind === 'acperiod') {
+      if (!this.month) return this.notify.notify('Month cannot be Empty.', 'error')
+      if (!this.year) return this.notify.notify('Year cannot be empty!', 'error')
+    } else if (!this.date) return this.notify.notify('Please Enter in date', 'error')
     if (!(await this.notify.ask('Do you want to update the record?'))) return
     try {
-      const r = await firstValueFrom(this.http.post<{ message: string }>(`${BASE}/${this.kind}/update`, { bordxNos: [...this.checked()], date: this.date }))
+      const body = { bordxNos: [...this.checked()], date: this.date, month: this.month, year: this.year }
+      const r = await firstValueFrom(this.http.post<{ message: string }>(`${BASE}/${this.kind}/update`, body))
       this.notify.notify(r.message, r.message === 'Record updated...' ? 'success' : 'error')
       this.clearList()
       if (!this.searched.scan) {

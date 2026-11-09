@@ -39,4 +39,11 @@ export const claimBordxRoutes: Routes = [
     data: { access, legacyForm, kind },
     loadComponent: () => import('./delivery.page').then((m) => m.BordxDeliveryPage),
   })),
+  {
+    path: 'claim-bordx/ac-period',
+    title: 'CIS - Bor Acc Period',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxAcPeriod, legacyForm: 'FrmACPeriod', kind: 'acperiod' },
+    loadComponent: () => import('./delivery.page').then((m) => m.BordxDeliveryPage),
+  },
 ]

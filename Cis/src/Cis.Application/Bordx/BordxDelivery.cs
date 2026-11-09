@@ -27,6 +27,10 @@ public sealed record BordxDeliveryRequest
     /// <summary>Send to A/C: date sent from / to.</summary>
     public string? SentFrom { get; init; }
     public string? SentTo { get; init; }
+    /// <summary>A/C Period: period from / to (mm/yyyy) and "no A/C period".</summary>
+    public string? PeriodFrom { get; init; }
+    public string? PeriodTo { get; init; }
+    public bool NoPeriod { get; init; }
 #pragma warning restore CS1591
 }
 
@@ -55,6 +59,10 @@ public sealed record BordxDeliveryUpdateRequest
     public List<string> BordxNos { get; init; } = [];
     /// <summary>dd/mm/yyyy.</summary>
     public string? Date { get; init; }
+    /// <summary>A/C Period: month (1-12) and year.</summary>
+    public string? Month { get; init; }
+    /// <summary>A/C Period year.</summary>
+    public string? Year { get; init; }
 }
 
 /// <summary>Lengths.</summary>
@@ -69,14 +77,15 @@ public record BordxDeliveryResult(List<Dictionary<string, object?>> Rows, decima
 
 /// <summary>cis.BordxDelivery_Search parameters.</summary>
 public record BordxDeliveryFilter(string Kind, string? Company, string? PayCode, bool Scan, string? BordxFrom, string? BordxTo, DateTime? DateFrom, DateTime? DateTo,
-    string? AmountFrom, string? AmountTo, string? MonthFrom, string? MonthTo, string? YearFrom, string? YearTo, string? Status, DateTime? SentFrom, DateTime? SentTo);
+    string? AmountFrom, string? AmountTo, string? MonthFrom, string? MonthTo, string? YearFrom, string? YearTo, string? Status, DateTime? SentFrom, DateTime? SentTo,
+    string? PeriodMonthFrom = null, string? PeriodYearFrom = null, string? PeriodMonthTo = null, string? PeriodYearTo = null, bool NoPeriod = false);
 
 /// <summary>Data access.</summary>
 public interface IBordxDeliveryRepository
 {
 #pragma warning disable CS1591
     Task<List<Dictionary<string, object?>>> SearchAsync(IDbSession session, BordxDeliveryFilter filter);
-    Task<int> UpdateAsync(IDbSession session, string kind, string bordxNo, DateTime date);
+    Task<int> UpdateAsync(IDbSession session, string kind, string bordxNo, DateTime? date, string? month = null, string? year = null);
     Task<(List<string> Companies, List<(string Code, string Name)> Payors)> LookupsAsync(IDbSession session);
 #pragma warning restore CS1591
 }
@@ -98,7 +107,10 @@ public interface IBordxDeliveryService
 public sealed class BordxDeliveryService(IDbSessions sessions, IBordxDeliveryRepository repository) : IBordxDeliveryService
 {
     /// <summary>The screens.</summary>
-    public static readonly string[] Kinds = ["payor", "returned", "ac", "mnrb"];
+    public static readonly string[] Kinds = ["payor", "returned", "ac", "mnrb", "acperiod"];
+
+    /// <summary>A/C Period texts.</summary>
+    public const string NoMonth = "Month cannot be Empty.", NoYear = "Year cannot be empty!";
 
     /// <summary>Desktop texts.</summary>
     public const string NoCompany = "Please select a Group Company", NoPayor = "Please select a Payor", NoBordx = "Please Enter Bordx No", NoRecord = "No record found!",
@@ -127,6 +139,12 @@ public sealed class BordxDeliveryService(IDbSessions sessions, IBordxDeliveryRep
             ClinicInvoiceRules.Date(r.DateFrom), ClinicInvoiceRules.Date(r.DateTo), Blank(r.AmountFrom), Blank(r.AmountTo), Blank(r.MonthFrom), Blank(r.MonthTo),
             Blank(r.YearFrom), Blank(r.YearTo), r.Status is 0 or 1 ? r.Status.Value.ToString(System.Globalization.CultureInfo.InvariantCulture) : null,
             ClinicInvoiceRules.Date(r.SentFrom), ClinicInvoiceRules.Date(r.SentTo));
+        if (kind == "acperiod")
+        {
+            var (mf, yf) = Period(r.PeriodFrom);
+            var (mt, yt) = Period(r.PeriodTo);
+            filter = filter with { PeriodMonthFrom = mf, PeriodYearFrom = yf, PeriodMonthTo = mt, PeriodYearTo = yt, NoPeriod = r.NoPeriod };
+        }
         await using var s = await sessions.OpenAsync();
         var rows = await repository.SearchAsync(s, filter);
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
@@ -139,10 +157,17 @@ public sealed class BordxDeliveryService(IDbSessions sessions, IBordxDeliveryRep
         Kind(kind);
         var nos = r.BordxNos.Select(x => x.Trim()).Where(x => x.Length > 0).Distinct().ToList();
         if (nos.Count == 0) throw new BusinessRuleException(NoneTicked);
-        var date = ClinicInvoiceRules.Date(r.Date) ?? throw new BusinessRuleException(NoDate);
+        DateTime? date = null;
+        string? month = null, year = null;
+        if (kind == "acperiod")
+        {
+            month = int.TryParse(r.Month?.Trim(), out var m) && m is >= 1 and <= 12 ? m.ToString(System.Globalization.CultureInfo.InvariantCulture) : throw new BusinessRuleException(NoMonth);
+            year = int.TryParse(r.Year?.Trim(), out var y) && y is >= 1999 and <= 3000 ? y.ToString(System.Globalization.CultureInfo.InvariantCulture) : throw new BusinessRuleException(NoYear);
+        }
+        else date = ClinicInvoiceRules.Date(r.Date) ?? throw new BusinessRuleException(NoDate);
         await using var tx = await sessions.BeginAsync();
         var result = 1;
-        foreach (var no in nos) result = await repository.UpdateAsync(tx, kind, no, date);
+        foreach (var no in nos) result = await repository.UpdateAsync(tx, kind, no, date, month, year);
         await tx.CommitAsync();
         // Returned Fr Grp. Company: the desktop says so when the date is earlier than the date sent (the other ticked bordereaux are still updated).
         return result == 2 ? EarlierThanSent : Updated;
@@ -154,4 +179,17 @@ public sealed class BordxDeliveryService(IDbSessions sessions, IBordxDeliveryRep
     }
 
     private static string? Blank(string? v) => string.IsNullOrWhiteSpace(v) ? null : v.Trim();
+
+    /// <summary>The desktop's "mm/yyyy" period filter: 0m → month m; 1m → month 1m and the year (the year is only used for months 10-12).</summary>
+    public static (string? Month, string? Year) Period(string? text)
+    {
+        var t = (text ?? "").Trim();
+        if (t.Length < 2 || !char.IsDigit(t[0])) return (null, null);
+        return t[0] switch
+        {
+            '0' => (t[1..2], null),
+            '1' => (t[..2], t.Length >= 7 ? t[3..7] : null),
+            _ => (null, null),
+        };
+    }
 }
