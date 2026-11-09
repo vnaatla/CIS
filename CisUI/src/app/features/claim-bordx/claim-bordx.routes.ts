@@ -12,6 +12,13 @@ export const claimBordxRoutes: Routes = [
     loadComponent: () => import('./insert-worksheet.page').then((m) => m.InsertWorksheetPage),
   },
   {
+    path: 'claim-bordx/print/bsn-summary',
+    title: 'CIS - BSN Print Summary',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxPrint, legacyForm: 'frmBSNPrintSummary' },
+    loadComponent: () => import('./bsn-summary.page').then((m) => m.BsnSummaryPage),
+  },
+  {
     path: 'claim-bordx/insert-invoice',
     title: 'CIS - Insert Invoice',
     canActivate: [accessGuard],

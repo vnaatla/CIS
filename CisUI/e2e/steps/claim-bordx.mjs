@@ -96,4 +96,12 @@ export async function claimBordx(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Invoices pending bordx"] tbody')?.textContent.includes('7486'), { timeout: 120000 })
   check(true, 'Insert Invoice: A242 registered 1-4 Aug 2021 lists invoice 7486')
+
+  // BSN-PrintSummary: KDC55481 has 772 claims.
+  await page.goto(`${base}/claim-bordx/print/bsn-summary`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordx0]')
+  await page.type('input[name=bordx0]', 'KDC55481')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="BSN bordereaux"] tbody')?.textContent.includes('772'), { timeout: 120000 })
+  check(true, 'BSN-PrintSummary: KDC55481 has 772 claims')
 }

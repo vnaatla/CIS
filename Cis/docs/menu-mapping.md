@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**119 screens to build · 67 migrated · 6 menu items without a handler or form (nothing to build).**
+**119 screens to build · 68 migrated · 6 menu items without a handler or form (nothing to build).**
 
 ## Summary
 
@@ -17,14 +17,14 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
 | [Invoice](#invoice) | 30 | 12 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
-| [Claim Bordx](#claim-bordx) | 29 | 21 | 4 |
+| [Claim Bordx](#claim-bordx) | 29 | 22 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 9 | 6 | 3 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 15 | 0 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **119** | **67** | **20** |
+| **Total** | **119** | **68** | **20** |
 
 ## Membership
 
@@ -119,7 +119,7 @@ Module page: `/claim-bordx`
 | Print Bordx | Print Bordx (AXA Affin) | frmPrintBordxAXAAffin | 124 |  | 6 | **Migrated** | `/claim-bordx/print/axa-affin` |
 | Print Bordx | Print Bordx (Time Dotcom) | frmPrintBordxTimeDotcom | 124 |  | 6 | **Migrated** | `/claim-bordx/print/time-dotcom` |
 | Print Bordx | Print Bordx (BSN) | frmPrintBordxBSN | 124 |  | 6 | **Migrated** | `/claim-bordx/print/bsn` |
-| Print Bordx | BSN-PrintSummary | frmBSNPrintSummary | 124 | Never opened | 6 | Pending | `/claim-bordx/print/bsn-summary` |
+| Print Bordx | BSN-PrintSummary | frmBSNPrintSummary | 124 | Never opened | 6 | **Migrated** | `/claim-bordx/print/bsn-summary` |
 | Print Bordx | Print Bordx (Berjaya Sompo) | frmPrintBordxBSI | 124 |  | 6 | **Migrated** | `/claim-bordx/print/berjaya-sompo` |
 | Bordx Delivery | Send to Grp. Company | FrmSendtoPayor | 125 |  | 6 | **Migrated** | `/claim-bordx/delivery/send-to-payor` |
 | Bordx Delivery | Returned Fr Grp. Company | FrmReturnPayor | 126 |  | 6 | **Migrated** | `/claim-bordx/delivery/returned` |

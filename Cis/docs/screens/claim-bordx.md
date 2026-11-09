@@ -103,9 +103,17 @@ Known desktop issues (reproduced): the Bordx row's group company holds the combo
 
 Deliberate differences: parameters instead of pasted criteria; the group company filter uses the whole code (the desktop took 3 characters, so 4-character codes such as A242 found nothing); Bordx takes the claims behind each ticked invoice (the desktop looked the invoice no. up as a case no., never found it and the save failed, which is probably why the menu item was disabled); one transaction.
 
-## Not migrated
+## BSN-PrintSummary — frmBSNPrintSummary (`/claim-bordx/print/bsn-summary`, right BordxPrint, `api/claim-bordx/bsn-summary`)
 
-- **BSN-PrintSummary (frmBSNPrintSummary)** — never opened from the menu (handler commented out) and unfinished: its only action adds empty text boxes; Search lists SP_Bordxdetails (bordx no., claims, amount, date), which Print Bordx (BSN) already shows.
+The desktop menu never opens this form (its handler is commented out); it is migrated on request.
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please Enter Bordx Refno..! `; CISWorksheet SP_Bordxdetails case 1 (as `cis.BordxBsn_Summary`): per bordx no. of BANK SIMPANAN NASIONAL members the number of claims, bordx amount and bordx date. |
+| Add Bordx | Adds another bordx no. box; every box is searched. |
+| Export / Clear | The list as CSV; Clear empties the boxes and the list. |
+
+Deliberate differences: the extra boxes are searched (on the desktop the button added text boxes that nothing read); Export added (the desktop form had no print).
 
 ## Print Bordx client variants — frmPrintBordxIBM, frmPrintBordxSPNB, frmPrintBordxAXAAffin, frmPrintBordxTimeDotcom, frmPrintBordxBSN, frmPrintBordxBSI, frmPrintBordx (`/claim-bordx/print/seb` · `prasarana` · `axa-affin` · `time-dotcom` · `bsn` · `berjaya-sompo` · `crystal`)
 

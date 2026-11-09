@@ -132,7 +132,7 @@ export const MENU: MenuModule[] = [
       { label: 'Print Bordx (AXA Affin)', path: '/claim-bordx/print/axa-affin', access: Access.BordxPrint, form: 'frmPrintBordxAXAAffin', group: 'Print Bordx', phase: 6, migrated: true },
       { label: 'Print Bordx (Time Dotcom)', path: '/claim-bordx/print/time-dotcom', access: Access.BordxPrint, form: 'frmPrintBordxTimeDotcom', group: 'Print Bordx', phase: 6, migrated: true },
       { label: 'Print Bordx (BSN)', path: '/claim-bordx/print/bsn', access: Access.BordxPrint, form: 'frmPrintBordxBSN', group: 'Print Bordx', phase: 6, migrated: true },
-      { label: 'BSN-PrintSummary', path: '/claim-bordx/print/bsn-summary', access: Access.BordxPrint, form: 'frmBSNPrintSummary', group: 'Print Bordx', desktop: 'never-opened', phase: 6 },
+      { label: 'BSN-PrintSummary', path: '/claim-bordx/print/bsn-summary', access: Access.BordxPrint, form: 'frmBSNPrintSummary', group: 'Print Bordx', desktop: 'never-opened', phase: 6, migrated: true },
       { label: 'Print Bordx (Berjaya Sompo)', path: '/claim-bordx/print/berjaya-sompo', access: Access.BordxPrint, form: 'frmPrintBordxBSI', group: 'Print Bordx', phase: 6, migrated: true },
       { label: 'Send to Grp. Company', path: '/claim-bordx/delivery/send-to-payor', access: Access.BordxSendToPayor, form: 'FrmSendtoPayor', group: 'Bordx Delivery', phase: 6, migrated: true },
       { label: 'Returned Fr Grp. Company', path: '/claim-bordx/delivery/returned', access: Access.BordxReturnedFromPayor, form: 'FrmReturnPayor', group: 'Bordx Delivery', phase: 6, migrated: true },
