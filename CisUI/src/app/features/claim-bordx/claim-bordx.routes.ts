@@ -11,4 +11,11 @@ export const claimBordxRoutes: Routes = [
     data: { access: Access.BordxInsert, legacyForm: 'frmWSBordx' },
     loadComponent: () => import('./insert-worksheet.page').then((m) => m.InsertWorksheetPage),
   },
+  {
+    path: 'claim-bordx/remove-worksheet',
+    title: 'CIS - Remove Worksheet',
+    canActivate: [accessGuard],
+    data: { access: Access.BordxRemove, legacyForm: 'FrmBordxRevise' },
+    loadComponent: () => import('./remove-worksheet.page').then((m) => m.RemoveWorksheetPage),
+  },
 ]

@@ -24,4 +24,14 @@ export async function claimBordx(page, base, check) {
   await click(page, 'Check All')
   await page.waitForFunction(() => document.querySelector('[aria-label=Totals]')?.textContent.includes('Selected: 1'), { timeout: 15000 })
   check(true, 'Insert Worksheet: CREDIT NOTE-CN for M005 lists EA12573444 and Check All ticks it')
+
+  // Remove Worksheet: bordx KIV03270 lists EA12476058 (nothing is removed).
+  await page.goto(`${base}/claim-bordx/remove-worksheet`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxNo]')
+  await page.type('input[name=bordxNo]', 'KIV03270')
+  await click(page, 'Go')
+  await page.waitForFunction(() => [...document.querySelectorAll('table[aria-label="Bordereaux worksheets"] tbody tr')].some((tr) => tr.textContent.includes('EA12476058')), {
+    timeout: 60000,
+  })
+  check(true, 'Remove Worksheet: bordx KIV03270 lists EA12476058')
 }
