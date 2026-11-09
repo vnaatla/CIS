@@ -40,7 +40,7 @@ public class PostInvClnGstDatabaseTests
         await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
         var exporter = new ReportExporter(new ExcelReportWriter(new ReportTemplateStore(Options.Create(new ReportOptions()))), new PdfReportWriter());
         var clinic = new PostInvClnService(TestDb.Sessions(), new PostInvClnRepository(), exporter);
-        var service = new PostInvClnGstService(TestDb.Sessions(), new PostInvClnGstRepository(), new PostInvClnRepository(), clinic, TimeProvider.System);
+        var service = new PostInvClnGstService(TestDb.Sessions(), new PostInvClnGstRepository(), new PostInvClnRepository(), clinic, exporter, TimeProvider.System);
         var search = new PostInvClnRequest { InvDateFrom = "04/08/2017", InvDateTo = "04/08/2017", InvoiceFrom = "059809", InvoiceTo = "059809" };
         var r = await service.SearchAsync(search);
         Assert.Equal(["6000", "84D153", "1002", "8830"], r.Lines.Select(l => l.Account).ToArray());
@@ -54,5 +54,24 @@ public class PostInvClnGstDatabaseTests
         await repo.InsertAsync(tx, new PostInvClnTick("059809", "D153", new DateTime(2017, 8, 4)), "08", "2017", "TTEST01", batch, "DEVADMIN");
         Assert.Equal(1, await tx.Sql().Connection.QuerySingleAsync<int>(
             "SELECT COUNT(*) FROM CISWorksheet.dbo.SUNPosting WHERE BatchNo = @batch AND CLNInvoiceBatch = 'TTEST01'", new { batch }, tx.Sql().Transaction));
+    }
+
+    [Fact]
+    public async Task Gst2017_search_posted_batch_tax_invoice_and_cases()
+    {
+        if (TestDb.Cis is null) return;
+        await SqlScripts.EnsureDeployedAsync(TestDb.Cis);
+        var exporter = new ReportExporter(new ExcelReportWriter(new ReportTemplateStore(Options.Create(new ReportOptions()))), new PdfReportWriter());
+        var service = new PostInvClnGstService(TestDb.Sessions(), new PostInvClnGstRepository(), new PostInvClnRepository(),
+            new PostInvClnService(TestDb.Sessions(), new PostInvClnRepository(), exporter), exporter, TimeProvider.System);
+        var open = await service.SearchAsync(new PostInvClnRequest { InvDateFrom = "01/07/2021", InvDateTo = "01/07/2021" }, true);
+        Assert.Equal(105, open.Records);
+        Assert.All(open.Lines, l => Assert.Equal("", l.PayCode));
+        var posted = await service.SearchAsync(new PostInvClnRequest { Posted = "1 - Yes", BatchFrom = "2660", BatchTo = "2660" }, true);
+        Assert.True(posted.Posted);
+        Assert.Equal(PostInvClnGstService.NotPosted, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.TaxInvoiceAsync(" "))).Message);
+        Assert.EndsWith(".xlsx", (await service.TaxInvoiceAsync("IA817065")).FileName);
+        await using var s = await TestDb.Sessions().OpenAsync();
+        Assert.NotEmpty(await new PostInvClnGstRepository().CasesAsync(s, new PostInvClnTick("0210152590", "P320", new DateTime(2021, 7, 1))));
     }
 }

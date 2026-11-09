@@ -402,11 +402,51 @@ GO
 
 -- CmdPost_Click: one SUNPosting row per posted invoice, with its own SUN invoice batch (I / T + PostingINVSEQ) under the post's batch no. (SunPostBatch).
 CREATE OR ALTER PROCEDURE cis.SunPost_InvClnGST_Insert @invoiceNo nvarchar(100), @clinic nvarchar(10), @accMonth nvarchar(2), @accYear nvarchar(4),
-    @invBatch nvarchar(20), @invDate datetime = NULL, @batchNo nvarchar(20), @user nvarchar(50) AS
+    @invBatch nvarchar(20), @invDate datetime = NULL, @batchNo nvarchar(20), @user nvarchar(50), @postType nvarchar(20) = 'InvClnGST' AS
 BEGIN
     SET NOCOUNT ON;
     INSERT CISWorksheet.dbo.SUNPosting (InvoiceNo, TransRef, InvCLNStatus, PostStatus, PostType, PostDate, PostBy, AccMonth, AccYear, CLNInvoiceBatch, CLNInvDate, BatchNo)
-    VALUES (@invoiceNo, @clinic, '1', '1', 'InvClnGST', CAST(GETDATE() AS date), @user, @accMonth, @accYear, @invBatch, @invDate, @batchNo);
+    VALUES (@invoiceNo, @clinic, '1', '1', @postType, CAST(GETDATE() AS date), @user, @accMonth, @accYear, @invBatch, @invDate, @batchNo);
+END
+GO
+
+-- Invoice Posting > Clinic (GST-2017) (frmPostingInvClnGST2017): SUN_CIS_Posting 'InvClnGST2017' (VIEW_SUN_Posting_InvClnGST_2017); posted = PostStatus only.
+CREATE OR ALTER PROCEDURE cis.SunPost_InvClnGST2017_Search @batchNo nvarchar(20) = NULL, @invBatch nvarchar(20) = NULL, @clinic nvarchar(10) = NULL,
+    @invDateFrom datetime = NULL, @invDateTo datetime = NULL, @invFrom nvarchar(100) = NULL, @invTo nvarchar(100) = NULL, @posted char(1) = '0',
+    @postDateFrom datetime = NULL, @postDateTo datetime = NULL, @batchFrom nvarchar(20) = NULL, @batchTo nvarchar(20) = NULL, @sunFrom nvarchar(20) = NULL,
+    @sunTo nvarchar(20) = NULL, @accMonth nvarchar(2) = NULL, @accYear nvarchar(4) = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ClnName, InvoiceDate, InvoiceNo, CLNAccCode, PostStatus, PostType, AccMonth, AccYear, InvCLNStatus, INVPayTo, INVAmount, ClinicCode, BatchNo, PostDate,
+        CLMPayableByMedix2C, CLMTotalActual, CLMCoPayColl, CLMMCOProcFee, CLMFFSNoGST, CLMFFSGST, CLNInvoiceBatch, SUNPosting
+    FROM CISWorksheet.dbo.VIEW_SUN_Posting_InvClnGST_2017
+    WHERE (@batchNo IS NULL OR BatchNo = @batchNo) AND (@invBatch IS NULL OR CLNInvoiceBatch = @invBatch)
+      AND (@batchNo IS NOT NULL OR @invBatch IS NOT NULL OR (
+            (@clinic IS NULL OR ClinicCode = @clinic)
+        AND (@invDateFrom IS NULL OR InvoiceDate >= @invDateFrom) AND (@invDateTo IS NULL OR InvoiceDate <= @invDateTo)
+        AND (@invFrom IS NULL OR InvoiceNo >= @invFrom) AND (@invTo IS NULL OR InvoiceNo <= @invTo)
+        AND (@posted <> '0' OR PostStatus IS NULL OR PostStatus = '0') AND (@posted <> '1' OR PostStatus = '1')
+        AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
+        AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)
+        AND (@sunFrom IS NULL OR CLNInvoiceBatch >= @sunFrom) AND (@sunTo IS NULL OR CLNInvoiceBatch <= @sunTo)
+        AND (@accMonth IS NULL OR AccMonth = @accMonth) AND (@accYear IS NULL OR AccYear = @accYear)))
+    OPTION (RECOMPILE);
+END
+GO
+
+-- CmdPost_Click (GST-2017): the cases of an invoice; each gets its own SUNPosting row.
+CREATE OR ALTER PROCEDURE cis.SunPost_InvClnGST2017_Cases @invoiceNo nvarchar(100), @clinic nvarchar(10), @invDate datetime = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT RTRIM(CASNumber) FROM dbo.CISCas WHERE InvoiceNo = @invoiceNo AND ClinicCode = @clinic AND InvoiceDate = @invDate;
+END
+GO
+
+-- cmdgenerate_Click: the clinic block of the FFS tax invoice.
+CREATE OR ALTER PROCEDURE cis.SunPost_TaxInvoiceClinic @clinic nvarchar(10) AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 1 CLNRepresentative, CLNName, CLNAdd1, CLNAdd2, CLNAdd3, CLNPhone, CLNCode FROM cis.Hdb_CLN WHERE CLNCode = @clinic;
 END
 GO
 
