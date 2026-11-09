@@ -59,6 +59,7 @@ public static class DependencyInjection
         services.AddScoped<Bordx.IBordxBsnService, Bordx.BordxBsnService>();
         services.AddScoped<Bordx.IBordxInvService, Bordx.BordxInvService>();
         services.AddScoped<Payment.IPayClinicService, Payment.PayClinicService>();
+        services.AddScoped<Payment.IPayClnPostService, Payment.PayClnPostService>();
         services.AddScoped<Payment.IPayMbmOldService, Payment.PayMbmOldService>();
         services.AddScoped<Receipt.IRcpMbmService, Receipt.RcpMbmService>();
         services.AddScoped<Receipt.IRcpMnrbService, Receipt.RcpMnrbService>();
