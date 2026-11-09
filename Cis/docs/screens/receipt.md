@@ -53,8 +53,23 @@ Known desktop issues (reproduced): the bordx column always shows `Matched` when 
 
 Deliberate differences: the file is an `.xlsx` read on the server (the desktop opened it in Excel); the claims are matched again on the server when saving; one transaction for the upload (the desktop wrote row by row and could add an extra blank receipt row for a claim without one).
 
-## Not migrated
+## Fr MNRB — FrmReceiptMNRB (`/receipt/mnrb`, right ReceiptPayor, `api/receipt/mnrb`)
 
-- **Fr MNRB (FrmReceiptMNRB)** — never opened from the desktop menu.
+The desktop menu never opens this form; it is migrated on request.
+
+| Step | Behaviour |
+|---|---|
+| Search | By bordereaux (VIEW_CISBORReceiptMNRB, grouped) or by worksheet (VIEW_CISWKSReceiptMNRB), as `cis.RcpMnrb_Search`. Scan one bordx no. / worksheet no. (`Please Enter Bordx No` / `Please Enter Worksheet No`, `Data has been uploaded!`; appended) or ranges, payor (HISDB PAY with HLTCode S), bordx status 0–5 (bordereaux) / worksheet status 0–2 (worksheet), receipt no. / date, A/C month / year ranges; `No record found!` / `No record found !`. Bordereaux rows: payor, bordx no., claim amount, received, balance, status. Worksheet rows: payor, bordx no., case, approved, receipt no. / date, status. |
+| Tick | A bordereaux or claim received in full: `Record has been paid !`; a partial bordereaux: `Record has been Partial Paid !` (it takes the claims not yet received, and its balance). |
+| Receipt amount | Different from the selected amount: `Receipt Amt & Checked Amt Are Different!` / `Please Fill in Remark.` |
+| Save | Bordereaux: `Please select at least one record to be updated! `, `Please Enter Receipt No!`, `Please Enter Receipt Date !`, `Please Enter Cheque No!`, `Please Enter Receipt Amount!`, amount ≠ selected without a remark `Please Enter Remark!`; `Do you want to update the record ?` → per claim: a ReceiptfrMNRB row (the claim's approved amount as received), the claim received (F), the bordereaux F with the receipt date → `Record Updated...`. Worksheet: its own texts → per ticked claim a ReceiptfrMNRB row when it has none, the claim F, the bordereaux F when all its claims are received, else P → `Record updated...`. Scanned lists are cleared after a save; range lists are searched again. |
+| Edit / Update | Edit, then clicking a row loads its receipt (`Payment hasn't been made!` when none); Update (`Please select the record`, `Please Enter Receipt No!`, `Invalid Receipt Date!`, `Please Enter Cheque No!`, `Please Enter Receipt Amt!`) overwrites the bordereaux's receipt rows (with the period) or the claim's row → `Record Updated...`. |
+| Export | The list as CSV. |
+
+Known desktop issues (reproduced): the bordereaux's receipt date is not changed by Update; the worksheet Update does not change the period.
+
+Deliberate differences: parameters instead of pasted criteria; one transaction per save; the selected amount and statuses are re-read on the server; in bordereaux mode the worksheet-status and worksheet-range filters are not applied (the bordereaux view has no such columns, so the desktop's query failed); the bordereaux Update finds the bordereaux's receipt rows (the desktop matched the receipt no. against the received-amount column, never found it and added an empty receipt row); a worksheet save stores the claim's approved amount as received (the desktop built the amount from three joined columns and failed).
+
+The restored data has no MNRB bordereaux (both views and ReceiptfrMNRB are empty), so the screen could only be checked for its payors, messages and SQL.
 
 The restored local data has no member debit notes (VIEW_CISReceiptFrMBM and ReceiptFrMBM are empty), so the list and the saves could only be checked for their messages and SQL, not against real rows.

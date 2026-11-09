@@ -38,4 +38,11 @@ export async function receipt(page, base, check) {
   await click(page, 'Update')
   await toast(page, 'Please Upload file..!')
   check(true, 'Upload Receipt: asks for a file, and for an upload before Update')
+
+  // Receipt from MNRB: the restored data has no MNRB bordereaux, so the payors and the scan check are exercised (nothing is saved).
+  await page.goto(`${base}/receipt/mnrb`, { waitUntil: 'domcontentloaded' })
+  await page.waitForFunction(() => document.querySelector('select[name=payor]')?.textContent.includes('ACE JERNEH'), { timeout: 60000 })
+  await click(page, 'Search')
+  await toast(page, 'Please Enter Bordx No')
+  check(true, 'Receipt from MNRB: lists the MNRB payors and asks for a bordx no.')
 }

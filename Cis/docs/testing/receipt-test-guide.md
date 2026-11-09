@@ -31,6 +31,17 @@ The restored data has no member debit notes (VIEW_CISReceiptFrMBM is empty), so 
 | F3 | `KDC55710` → Search → tick → Add | Receipt Amt 14.20 |
 | F4 | F3 → receipt no `MRTEST`, date, amount 1, cheque → Save | `Amount to paid is incorrect` / `Please key in remarks.` |
 
+## 5. Fr MNRB — `/receipt/mnrb` (FrmReceiptMNRB)
+
+The restored data has no MNRB bordereaux, so only the checks can be tried locally.
+
+| # | Action | Expected |
+|---|---|---|
+| N1 | Open the screen | the payor list has the 23 MNRB payors (e.g. JE - ACE JERNEH INSURANCE BERHAD) |
+| N2 | Bordx, Scan, blank → Search | `Please Enter Bordx No` |
+| N3 | Worksheet, untick Scan → Search | `No record found !` |
+| N4 | Save with nothing listed | `Please select at least one record to be updated! ` |
+
 ## 4. Upload Receipt — `/receipt/upload`, `/receipt/upload-multiple`
 
 Make an `.xlsx` with a header row and, from row 2: B `KIT00036`, C `EA12523998`, F `90`, G `PV1` (multiple: H `RPTESTM`, I `MXTEST`); and a row with C `NOPE`.

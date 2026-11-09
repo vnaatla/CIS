@@ -26,6 +26,13 @@ export const receiptRoutes: Routes = [
     loadComponent: () => import('./receipt-ffs.page').then((m) => m.ReceiptFfsPage),
   },
   {
+    path: 'receipt/mnrb',
+    title: 'CIS - Receipt from MNRB',
+    canActivate: [accessGuard],
+    data: { access: Access.ReceiptPayor, legacyForm: 'FrmReceiptMNRB' },
+    loadComponent: () => import('./receipt-mnrb.page').then((m) => m.ReceiptMnrbPage),
+  },
+  {
     path: 'receipt/upload',
     title: 'CIS - Upload Receipt',
     canActivate: [accessGuard],
