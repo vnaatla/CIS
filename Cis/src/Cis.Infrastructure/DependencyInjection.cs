@@ -86,6 +86,7 @@ public static class DependencyInjection
         services.AddScoped<Application.Lg.ILgRepository, Lg.LgRepository>();
         services.AddScoped<Application.Mco.IMcoListRepository, Mco.McoListRepository>();
         services.AddScoped<Application.Bordx.IBordxWsRepository, Bordx.BordxWsRepository>();
+        services.AddScoped<Application.Bordx.IBordxInvRepository, Bordx.BordxInvRepository>();
         services.AddScoped<Application.Payment.IPayClinicRepository, Payment.PayClinicRepository>();
         services.AddScoped<Application.Receipt.IRcpMbmRepository, Receipt.RcpMbmRepository>();
         services.AddScoped<Application.Receipt.IRcpMnrbRepository, Receipt.RcpMnrbRepository>();
