@@ -14,6 +14,17 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | C6 | C3 → click a row → Print PV | PV_CP100472166.xlsx |
 | C7 | (writes) C2 → tick → PV date, cheque amt = amount to pay, bank `MB - MBB`, period 10 / 2021 → Save → Yes | `Record Saved...`, new PV `CP…` listed |
 
+## 2. To Clinic - Invoice — `/payment/clinic-invoice` (frmPaymentCLNInvoice)
+
+| # | Action | Expected |
+|---|---|---|
+| I1 | Clinic `G029`, invoice year 2021–2021, month 05–05 → Search | the unpaid row and PV CP100468765 (cheque amt 7,254.15, wording "Seven Thousand Two Hundred  And Fifty Four" / " And Cents Fifteen Only") |
+| I2 | I1 → select a row → Invoices | its invoices (e.g. O210082271, I210098357) |
+| I3 | I1 → tick the PV row | `Payment has been made!` |
+| I4 | I1 → tick the unpaid row → Save without cheque no | `Please Enter Cheque Number!` |
+| I5 | PV range CP100468765 – CP100468765 → Search PV → Print PV Range | the PV's invoices; PV workbook |
+| I6 | Cheque range CHQ000010 – CHQ000005 → Search Cheques | `Please ensure cheque range entered correctly` |
+
 Clean-up after C7 (replace the PV no.; set PVSeq2013 back to the number before the test):
 
 ```sql

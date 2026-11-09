@@ -11,4 +11,11 @@ export const paymentRoutes: Routes = [
     data: { access: Access.PaymentClinic, legacyForm: 'frmPaymentClinic' },
     loadComponent: () => import('./payment-clinic.page').then((m) => m.PaymentClinicPage),
   },
+  {
+    path: 'payment/clinic-invoice',
+    title: 'CIS - Payment to Clinic - Invoice',
+    canActivate: [accessGuard],
+    data: { access: Access.PaymentClinicInvoice, legacyForm: 'frmPaymentCLNInvoice' },
+    loadComponent: () => import('./payment-clinic-invoice.page').then((m) => m.PaymentClinicInvoicePage),
+  },
 ]

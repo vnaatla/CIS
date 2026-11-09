@@ -16,4 +16,20 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic payments"] tbody')?.textContent.includes('EA12565564'), { timeout: 120000 })
   check(true, 'Payment to Clinic: unpaid cases invoiced 1-5 Aug 2021 include EA12565564')
+
+  // Payment to Clinic - Invoice: G029, May 2021 lists its paid PV CP100468765 and the unpaid month (nothing is saved).
+  await page.goto(`${base}/payment/clinic-invoice`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=clinic]')
+  await page.type('input[name=clinic]', 'G029 - GLENEAGLES')
+  await page.type('input[name=yearFrom]', '2021')
+  await page.type('input[name=yearTo]', '2021')
+  for (const n of ['monthFrom', 'monthTo'])
+    await page.evaluate((name) => {
+      const sel = document.querySelector(`select[name=${name}]`)
+      sel.value = [...sel.options].find((o) => o.textContent.trim() === '05').value
+      sel.dispatchEvent(new Event('change'))
+    }, n)
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice payments"] tbody')?.textContent.includes('CP100468765'), { timeout: 180000 })
+  check(true, 'Payment to Clinic - Invoice: G029 May 2021 lists PV CP100468765')
 }
