@@ -36,3 +36,18 @@ Deliberate differences: unticking a worksheet really leaves it out (the desktop 
 | Update | `Please Enter Bordx Date`; `Posting is Done. Update is not allowed`; Bordx date / by and the claims' bordx month / year → `BordxDate Updated Successfully..!!`. |
 
 Deliberate differences: the posting check is made again at Update on the bordx no. being updated (the desktop used the status of the last search, even if the no. was changed afterwards); both updates are in one transaction.
+
+## Bordx Delivery — FrmSendtoPayor, FrmReturnPayor, FrmSendtoAC, FrmSendtoMNRB (`/claim-bordx/delivery/send-to-payor` · `returned` · `send-to-ac` · `send-to-mnrb`, rights 125 / 126 / 127 / 125, `api/claim-bordx/delivery/{payor,returned,ac,mnrb}`)
+
+One page and one service for the four screens; they differ only in their filters, status / date columns and update.
+
+| Step | Behaviour |
+|---|---|
+| Search | Group company (Send to MNRB: payor `code - name`), scan one bordx no. (appended) or a bordx range, bordx date range, amount range, A/C month / year ranges (Send to A/C: date sent to A/C range instead), status 0 - Not Sent / 1 - Sent / 2 - Both (not on Send to A/C). Scan checks: `Please select a Group Company` (`Please select a Payor`), `Please Enter Bordx No`; `No record found!`. Lists Bordx (ClaimBordxModule cases 7 / 8 / 10, the MNRB select) with the total amount. |
+| Tick | A bordereaux already sent / returned / sent to A/C / sent to MNRB: `Record has been Updated!` (not ticked). |
+| Update | `Please select at least one record to be updated! `, `Please Enter in date`, `Do you want to update the record?` → Send to Grp. Company: BordxPayToStatus 1 + date sent; Returned: BordxPayDocFRStatus 1 + date received, except when the date is before the date sent (`Date Received from Payor cannot be ealier than Date Sent to Payor!`); Send to A/C: BordxSendToACStatus 1 + date; Send to MNRB: BordxMNRBToStatus 1 + date → `Record updated...`; the range list is searched again. |
+| Print | The list as CSV. |
+
+Known desktop issues (reproduced): amounts and A/C periods are compared as text; Send to MNRB is not on the desktop menu (never opened).
+
+Deliberate differences: parameters instead of pasted criteria; the updates of the ticked bordereaux are in one transaction; the scan duplicate check uses the bordx no. (the desktop compared the typed no. with the group company column, so a bordereaux could be listed twice); the Excel print is a CSV.

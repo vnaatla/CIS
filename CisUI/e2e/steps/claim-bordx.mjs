@@ -42,4 +42,15 @@ export async function claimBordx(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Bordx lines"] tbody')?.textContent.includes('KIV03270'), { timeout: 60000 })
   check(true, 'ClaimBordxDate: KIV03270 shows its bordx date and posting status')
+
+  // Bordx Delivery: Send to Grp. Company and Send to A/C for DAYANG ENTERPRISE SDN BHD from 01/01/2021 (nothing is updated).
+  for (const [path, label] of [['send-to-payor', 'Send to Grp. Company'], ['send-to-ac', 'Send to A/C']]) {
+    await page.goto(`${base}/claim-bordx/delivery/${path}`, { waitUntil: 'domcontentloaded' })
+    await page.waitForSelector('input[name=company]')
+    await page.type('input[name=company]', 'DAYANG ENTERPRISE SDN BHD')
+    await page.type('input[aria-label="Bordx Date From"]', '01/01/2021')
+    await click(page, 'Search')
+    await page.waitForFunction(() => document.querySelectorAll('table[aria-label="Bordereaux"] tbody tr:not(.empty-row)').length >= 17, { timeout: 60000 })
+    check(true, `${label}: DAYANG ENTERPRISE SDN BHD lists its bordereaux from 2021`)
+  }
 }

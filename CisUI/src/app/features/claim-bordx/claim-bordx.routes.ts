@@ -25,4 +25,18 @@ export const claimBordxRoutes: Routes = [
     data: { access: Access.BordxInsert, legacyForm: 'FrmBordxDate' },
     loadComponent: () => import('./bordx-date.page').then((m) => m.BordxDatePage),
   },
+  ...(
+    [
+      ['send-to-payor', 'payor', Access.BordxSendToPayor, 'FrmSendtoPayor', 'Send to Grp. Company'],
+      ['returned', 'returned', Access.BordxReturnedFromPayor, 'FrmReturnPayor', 'Returned Fr Grp. Company'],
+      ['send-to-ac', 'ac', Access.BordxSendToAc, 'FrmSendtoAC', 'Send to A/C'],
+      ['send-to-mnrb', 'mnrb', Access.BordxSendToPayor, 'FrmSendtoMNRB', 'Send to MNRB'],
+    ] as const
+  ).map(([path, kind, access, legacyForm, title]) => ({
+    path: `claim-bordx/delivery/${path}`,
+    title: `CIS - ${title}`,
+    canActivate: [accessGuard],
+    data: { access, legacyForm, kind },
+    loadComponent: () => import('./delivery.page').then((m) => m.BordxDeliveryPage),
+  })),
 ]

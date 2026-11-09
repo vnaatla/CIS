@@ -38,3 +38,16 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | D2 | `KIV03270` → Search | KIV03270, 02/08/2021, posting NO |
 | D3 | Update with no date | `Please Enter Bordx Date` |
 | D4 | (writes) New date 05/08/2021 → Update | `BordxDate Updated Successfully..!!` (restore: set it back to 02/08/2021) |
+
+## 4. Bordx Delivery — `/claim-bordx/delivery/send-to-payor`, `returned`, `send-to-ac`, `send-to-mnrb`
+
+| # | Action | Expected |
+|---|---|---|
+| B1 | Send to Grp. Company: Scan ticked, no company → Search | `Please select a Group Company` |
+| B2 | Group company `DAYANG ENTERPRISE SDN BHD`, bordx date from 01/01/2021, status 0 → Search | 17 bordereaux |
+| B3 | B2 → To Grp. Company with nothing ticked | `Please select at least one record to be updated! ` |
+| B4 | (writes) tick one → date → To Grp. Company → Yes | `Record updated...`; it disappears from status 0 |
+| B5 | Returned: same bordereaux, date earlier than the date sent | `Date Received from Payor cannot be ealier than Date Sent to Payor!` |
+| B6 | Send to A/C / Send to MNRB (payor `DC - …`): same search | the bordereaux with their A/C / MNRB dates |
+
+Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`
