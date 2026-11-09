@@ -25,6 +25,17 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | I5 | PV range CP100468765 – CP100468765 → Search PV → Print PV Range | the PV's invoices; PV workbook |
 | I6 | Cheque range CHQ000010 – CHQ000005 → Search Cheques | `Please ensure cheque range entered correctly` |
 
+## 3. To Member — `/payment/member` (frmPaymentMemberAuto08)
+
+| # | Action | Expected |
+|---|---|---|
+| M1 | Scan, blank worksheet → Search | `Please Enter Worksheet No` |
+| M2 | Scan `SLK004743875` → Search | CHOOK SHENG CAI, payable 88.00, unpaid |
+| M3 | Untick Scan, bordx status blank, PV CP100471601 – CP100471603 → Search | 7 paid rows |
+| M4 | M3 → tick a row | `Payment has been made!` |
+| M5 | M2 → tick → Save without cheque no | `Please Enter Cheque Number!` |
+| M6 | PV range CP100471601 – CP100471603 → Search PV → Print PV | one PV sheet per PV |
+
 Clean-up after C7 (replace the PV no.; set PVSeq2013 back to the number before the test):
 
 ```sql

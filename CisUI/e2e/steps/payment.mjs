@@ -32,4 +32,12 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic invoice payments"] tbody')?.textContent.includes('CP100468765'), { timeout: 180000 })
   check(true, 'Payment to Clinic - Invoice: G029 May 2021 lists PV CP100468765')
+
+  // Payment to Member: scanning SLK004743875 lists the unpaid case with the patient's name (nothing is saved).
+  await page.goto(`${base}/payment/member`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseFrom]')
+  await page.type('input[name=caseFrom]', 'SLK004743875')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Member payments"] tbody')?.textContent.includes('CHOOK SHENG CAI'), { timeout: 120000 })
+  check(true, 'Payment to Member: SLK004743875 lists CHOOK SHENG CAI')
 }
