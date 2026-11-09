@@ -23,8 +23,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="gst ? 'Invoice Posting - Clinic (GST)' : 'Invoice Posting - Clinic'"
-      [subtitle]="gst ? 'Replaces frmPostingInvoiceClnGST' : 'Replaces frmPostingInvoiceCln'">
+    <app-page-shell [title]="title" [subtitle]="'Replaces ' + form">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -68,11 +67,16 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
             <select name="period" [(ngModel)]="period"><option value=""></option>@for (p of periods(); track p) { <option [value]="p">{{ p }}</option> }</select>
           </app-field>
           <app-field label="Batch No"><input name="batchNo" [value]="batchNo()" disabled /></app-field>
-          <app-action-bar label="Post actions"><button appButton variant="primary" [busy]="posting()" (click)="post()">Post</button></app-action-bar>
+          <app-action-bar label="Post actions">
+            <button appButton variant="primary" [busy]="posting()" (click)="post()">Post</button>
+            @if (y2017) {
+              <button appButton (click)="taxInvoice()">Generate Tax Invoice</button>
+            }
+          </app-action-bar>
         </fieldset>
 
-        <app-data-grid [caption]="gst ? 'Clinic invoice postings (GST)' : 'Clinic invoice postings'" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
-          (checkedChange)="check($event)" />
+        <app-data-grid [caption]="caption" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
+          (checkedChange)="check($event)" [selectable]="true" [selectedKey]="selectedKey()" (rowSelected)="select($event)" />
         <p class="totals" aria-label="Totals">
           Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
           <strong>{{ postedList() ? 'Yes' : 'No' }}</strong>
@@ -84,9 +88,16 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
 export class PostingInvoiceClinicPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
-  /** Invoice Posting > Clinic (GST) uses the same screen (route data variant 'gst'). */
-  protected readonly gst = inject(ActivatedRoute).snapshot.data['variant'] === 'gst'
-  private readonly base = this.gst ? '/api/ac-export/invoice-clinic-gst' : CLINIC
+  /** Invoice Posting > Clinic (GST) and (GST-2017) use the same screen (route data variant 'gst' / 'gst2017'). */
+  private readonly variant = inject(ActivatedRoute).snapshot.data['variant'] as string | undefined
+  protected readonly gst = this.variant === 'gst' || this.variant === 'gst2017'
+  protected readonly y2017 = this.variant === 'gst2017'
+  private readonly base = this.y2017 ? '/api/ac-export/invoice-clinic-gst-2017' : this.gst ? '/api/ac-export/invoice-clinic-gst' : CLINIC
+  protected readonly title = this.y2017 ? 'Invoice Posting - Clinic (GST-2017)' : this.gst ? 'Invoice Posting - Clinic (GST)' : 'Invoice Posting - Clinic'
+  protected readonly form = this.y2017 ? 'frmPostingInvClnGST2017' : this.gst ? 'frmPostingInvoiceClnGST' : 'frmPostingInvoiceCln'
+  protected readonly caption = this.y2017 ? 'Clinic invoice postings (GST-2017)' : this.gst ? 'Clinic invoice postings (GST)' : 'Clinic invoice postings'
+  protected readonly selectedKey = signal<string | null>(null)
+  private selected: Line | null = null
 
   protected readonly money = (v: number) => formatMoney(v)
   protected readonly periods = signal<string[]>([])
@@ -205,6 +216,24 @@ export class PostingInvoiceClinicPage implements OnInit {
       this.notify.notify(await blobErrorMessage(e), 'error')
     } finally {
       this.posting.set(false)
+    }
+  }
+
+  protected select(x: Line): void {
+    this.selected = x
+    this.selectedKey.set(this.key(x))
+  }
+
+  /** cmdgenerate_Click (GST-2017): the FFS tax invoice of the selected line's SUN invoice batch. */
+  protected async taxInvoice(): Promise<void> {
+    if (!this.lines().length) return this.notify.notify('Please select the record', 'error')
+    const batch = s((this.selected ?? this.lines()[0])['batchNo'])
+    if (!batch) return this.notify.notify('Invoice posting is not done,Generate is not possible', 'error')
+    try {
+      saveBlob(await firstValueFrom(this.http.get(`${this.base}/tax-invoice`, { params: { invBatch: batch }, responseType: 'blob' })), `${batch}.xlsx`)
+      this.notify.notify('Tax Invoice Generated Successfully', 'success')
+    } catch (e) {
+      this.notify.notify(await blobErrorMessage(e), 'error')
     }
   }
 

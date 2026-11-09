@@ -29,3 +29,15 @@ The clinic posting screen with route variant `gst`.
 Known desktop issues (reproduced): the debit / credit totals add the payable amount for every line (an FFS invoice counts it three times as credit), not each line's amount.
 
 Deliberate differences: as the clinic screen (no group company filter, the view has no such column).
+
+## Invoice Posting > Clinic (GST-2017) — frmPostingInvClnGST2017 (`/ac-export/invoice/clinic-gst-2017`, right AcExport, `api/ac-export/invoice-clinic-gst-2017`)
+
+The GST screen (route variant `gst2017`) over SUN_CIS_Posting `InvClnGST2017` (VIEW_SUN_Posting_InvClnGST_2017, as `cis.SunPost_InvClnGST2017_Search`). Differences:
+
+| Step | Behaviour |
+|---|---|
+| Search | Posted / not posted is PostStatus only; the payor column is blank. |
+| Post | One SUNPosting row per case of each ticked invoice (CISCAS by invoice no., clinic and invoice date; the case no. as InvoiceNo), type InvClnGST2017. |
+| Generate Tax Invoice | For the selected line's SUN invoice batch (`Invoice posting is not done,Generate is not possible` when blank): the clinic (representative, name, address, phone), `FEE FOR SERVICE FOR <batch>`, the FFS fee without GST and the GST, the batch and today → `Tax Invoice Generated Successfully`. |
+
+Deliberate differences: the `HC FFS Tax Invoice.xlt` template is not available, so the tax invoice is a generated workbook downloaded in the browser (the desktop saved it on `\svr-doc\Template\FFSTaxInv\<batch>\`).

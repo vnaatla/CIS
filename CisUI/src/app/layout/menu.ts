@@ -203,7 +203,7 @@ export const MENU: MenuModule[] = [
     items: [
       { label: 'Clinic', path: '/ac-export/invoice/clinic', access: Access.AcExport, form: 'frmPostingInvoiceCln', group: 'Invoice', phase: 9, migrated: true },
       { label: 'Clinic (GST)', path: '/ac-export/invoice/clinic-gst', access: Access.AcExport, form: 'frmPostingInvoiceClnGST', group: 'Invoice', phase: 9, migrated: true },
-      { label: 'Clinic (GST-2017)', path: '/ac-export/invoice/clinic-gst-2017', access: Access.AcExport, form: 'frmPostingInvClnGST2017', group: 'Invoice', phase: 9 },
+      { label: 'Clinic (GST-2017)', path: '/ac-export/invoice/clinic-gst-2017', access: Access.AcExport, form: 'frmPostingInvClnGST2017', group: 'Invoice', phase: 9, migrated: true },
       { label: 'Clinic (GST-2017 Zeroised)', path: '/ac-export/invoice/clinic-gst-2017-zeroised', access: Access.AcExport, form: 'frmPostingInvClnGST2017Zeroised', group: 'Invoice', desktop: 'never-opened', phase: 9 },
       { label: 'Member', path: '/ac-export/invoice/member', access: Access.AcExport, form: 'frmPostingInvoiceMember', group: 'Invoice', phase: 9 },
       { label: 'Invoice Posting', path: '/ac-export/invoice/posting', access: Access.AcExport, form: 'frmInvPosting', group: 'Invoice', desktop: 'never-opened', phase: 9 },

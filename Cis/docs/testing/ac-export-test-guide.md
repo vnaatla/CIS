@@ -27,3 +27,11 @@ UPDATE CISWorksheet.dbo.PostingINVSEQ SET SEQNumber = 'A817065';
 | G3 | Tick a line → Post without invoice dates | `Please Enter Invoice Date! ` |
 
 Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = '<batch>' AND PostType = 'InvClnGST'`, then set SunPostBatch.BatchNo and PostingINVSEQ.SEQNumber back.
+
+## 3. Invoice Posting > Clinic (GST-2017) — `/ac-export/invoice/clinic-gst-2017` (frmPostingInvClnGST2017)
+
+| # | Action | Expected |
+|---|---|---|
+| Y1 | Invoice date 01/07/2021 – 01/07/2021 → Search | 105 unposted invoices (payor column blank) |
+| Y2 | Status 1 - Yes, batch 2660 – 2660 → Search | the posted invoice of C225 with SUN invoice batch IA817065 |
+| Y3 | Y2 → select a line → Generate Tax Invoice | a workbook `IA817065<timestamp>.xlsx` |
