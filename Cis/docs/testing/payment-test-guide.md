@@ -36,6 +36,15 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | M5 | M2 → tick → Save without cheque no | `Please Enter Cheque Number!` |
 | M6 | PV range CP100471601 – CP100471603 → Search PV → Print PV | one PV sheet per PV |
 
+## 4. Tracking — `/payment/tracking`, `/payment/tracking-jupiter`
+
+| # | Action | Expected |
+|---|---|---|
+| T1 | Search with no report type | `Please select a report type.` |
+| T2 | Pay to Clinic, General Listing, PV CP100472166 – CP100472166 | 21 cases (e.g. EA12401071, F097) |
+| T3 | Pay to Clinic, By PV No, same PV | 1 row, 21 cases, 1,323.90 |
+| T4 | Pay to Member, By Bordx, PV CP100471601 – CP100471603 | 1 row `Empty`, 7 cases, 1,091.00 |
+
 Clean-up after C7 (replace the PV no.; set PVSeq2013 back to the number before the test):
 
 ```sql

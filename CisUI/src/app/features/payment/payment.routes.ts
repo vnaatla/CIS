@@ -25,4 +25,18 @@ export const paymentRoutes: Routes = [
     data: { access: Access.PaymentMember, legacyForm: 'frmPaymentMemberAuto08' },
     loadComponent: () => import('./payment-member.page').then((m) => m.PaymentMemberPage),
   },
+  {
+    path: 'payment/tracking',
+    title: 'CIS - Payment Tracking',
+    canActivate: [accessGuard],
+    data: { access: Access.PaymentTracking, legacyForm: 'FrmPayment', screenTitle: 'Payment Tracking' },
+    loadComponent: () => import('./payment-tracking.page').then((m) => m.PaymentTrackingPage),
+  },
+  {
+    path: 'payment/tracking-jupiter',
+    title: 'CIS - Payment Tracking (Jupiter)',
+    canActivate: [accessGuard],
+    data: { access: Access.PaymentTrackingJupiter, legacyForm: 'frmPayment2', screenTitle: 'Payment Tracking (Jupiter)' },
+    loadComponent: () => import('./payment-tracking.page').then((m) => m.PaymentTrackingPage),
+  },
 ]

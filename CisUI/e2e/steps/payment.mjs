@@ -40,4 +40,21 @@ export async function payment(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member payments"] tbody')?.textContent.includes('CHOOK SHENG CAI'), { timeout: 120000 })
   check(true, 'Payment to Member: SLK004743875 lists CHOOK SHENG CAI')
+
+  // Payment Tracking: Pay to Clinic, By PV No for CP100472166 shows its 21 cases.
+  await page.goto(`${base}/payment/tracking`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType]')
+  await page.evaluate(() => {
+    const sel = document.querySelector('select[name=reportType]')
+    sel.value = [...sel.options].find((o) => o.textContent.trim() === 'Pay to Clinic').value
+    sel.dispatchEvent(new Event('change'))
+    const by = document.querySelector('select[name=selection]')
+    by.value = 'By PV No'
+    by.dispatchEvent(new Event('change'))
+  })
+  await page.type('input[name=pvFrom]', 'CP100472166')
+  await page.type('input[name=pvTo]', 'CP100472166')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Payment tracking"] tbody')?.textContent.includes('CP100472166'), { timeout: 120000 })
+  check(await page.evaluate(() => document.querySelector('table[aria-label="Payment tracking"] tbody').textContent.includes('21')), 'Payment Tracking: PV CP100472166 has 21 cases')
 }

@@ -33,6 +33,18 @@ Known desktop issues (reproduced): a clinic's PV takes the year of its last tick
 
 Deliberate differences: parameters instead of pasted criteria; all PVs of a save are in one transaction with the sequence locked; the clinic's cheque amount is the total of the cases paid (the desktop used the ticked rows' payable, which can include cases already on another PV); Print PV / Preview PV work (the desktop read fields its list query does not return and always failed with "Export To Excel failed"); the PV (`PV-Clinic.xlt`) and cheque (`PaymentCheque.xlt`) templates are not available, so they are generated workbooks to print on the pre-printed forms; the cheque range checks still run in order but stop at the first failing one.
 
+## Tracking / Tracking (Jupiter) — FrmPayment, frmPayment2 (`/payment/tracking`, `/payment/tracking-jupiter`, rights PaymentTracking / PaymentTrackingJupiter, `api/payment/tracking`)
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please select a report type.` (Pay to Clinic / Pay to Member); selection By Claim, By Bordx, By PV No, By Clinic, By Group Company, General Listing (CISPayment PaymentReceiptModule cases 4–9 clinic / 10–15 member, as `cis.PayTracking_Search`). Filters: claim no., group company, member no., invoice no. and date ranges, bordx, OP batch, clinic (first 4 characters), payment All / Paid / Partial Paid, PV no., PV date, amount (payable), A/C month / year ranges; `No record found!`. The general listings show the status Full / Partial; By Bordx shows `Empty` for cases without a bordereaux; total paid. |
+| View / Back | The list on the whole page. |
+| Export | The list as CSV (`Report cannot be printed without any record.`). |
+
+frmPayment2 is the same screen on the desktop's Jupiter ("Neptune") connections; the web app reads the one set of databases it is configured with.
+
+Deliberate differences: parameters instead of pasted criteria (the amounts were pasted as numbers); the columns are those of the selected listing (the desktop's two header layouts).
+
 ## To Member — frmPaymentMemberAuto08 (with frmPrintPVRange / frmPrintChequeRange in member mode) (`/payment/member`, right PaymentMember, `api/payment/member`)
 
 | Step | Behaviour |
