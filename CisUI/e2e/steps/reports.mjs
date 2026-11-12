@@ -18,4 +18,12 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Group company clinics"] tbody')?.textContent.includes('KLINIK BALA'), { timeout: 120000 })
   check(true, 'Grp. Com. Clinic Tracking: B324 lists its number of group companies')
+
+  // Claim ASCII (CIMB): bordx KIS01540, cashless -> 571 visits (the file is downloaded).
+  await page.goto(`${base}/invoice/claim-ascii/cimb`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=bordxFrom]')
+  await page.type('input[name=bordxFrom]', 'KIS01540')
+  await click(page, 'Generate')
+  await page.waitForFunction(() => document.querySelector('[aria-label="Totals"]')?.textContent.includes('571'), { timeout: 120000 })
+  check(true, 'Claim ASCII (CIMB): KIS01540 generates 571 visits')
 }

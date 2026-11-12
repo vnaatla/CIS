@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**114 screens to build · 83 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**114 screens to build · 89 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 3 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
-| [Invoice](#invoice) | 30 | 12 | 6 |
+| [Invoice](#invoice) | 30 | 18 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 22 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 2 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **114** | **83** | **18** |
+| **Total** | **114** | **89** | **18** |
 
 ## Membership
 
@@ -72,13 +72,13 @@ Module page: `/invoice`
 | Email Notification | Email Notification (Rejection) | frmEmailRejectedClaim | 117 |  | 10 | Pending | `/invoice/email/rejection` |
 | General Exclusions | General Exclusions | frmGeneralBenefitExclusion | 133 |  | 2 | Pending | `/invoice/general-exclusions` |
 | General Exclusions | General Exclusions (Enquiry) | frmGeneralBenefitExcEnq | 113 |  | 2 | **Migrated** | `/invoice/general-exclusions/enquiry` |
-| Claim ASCII | Claim ASCII (Bintulu) | frmClaimDetailsASCII | 119 |  | 10 | Pending | `/invoice/claim-ascii/bintulu` |
-| Claim ASCII | Claim ASCII (Toshiba) | frmClaimASCIIToshiba | 119 |  | 10 | Pending | `/invoice/claim-ascii/toshiba` |
-| Claim ASCII | Claim ASCII (Singer) | frmClaimASCIISinger | 119 |  | 10 | Pending | `/invoice/claim-ascii/singer` |
+| Claim ASCII | Claim ASCII (Bintulu) | frmClaimDetailsASCII | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/bintulu` |
+| Claim ASCII | Claim ASCII (Toshiba) | frmClaimASCIIToshiba | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/toshiba` |
+| Claim ASCII | Claim ASCII (Singer) | frmClaimASCIISinger | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/singer` |
 | Claim ASCII | Claim ASCII (Utusan Melayu) | frmClaimASCIIUtusan | 119 |  | 10 | Pending | `/invoice/claim-ascii/utusan` |
-| Claim ASCII | Claim ASCII (OMNI) | frmClaimDataOMNI | 119 |  | 10 | Pending | `/invoice/claim-ascii/omni` |
-| Claim ASCII | Claim ASCII (TIMS) | frmClaimASCIITIMS | 119 |  | 10 | Pending | `/invoice/claim-ascii/tims` |
-| Claim ASCII | Claim ASCII (CIMB) | frmClaimASCIICIMB | 119 |  | 10 | Pending | `/invoice/claim-ascii/cimb` |
+| Claim ASCII | Claim ASCII (OMNI) | frmClaimDataOMNI | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/omni` |
+| Claim ASCII | Claim ASCII (TIMS) | frmClaimASCIITIMS | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/tims` |
+| Claim ASCII | Claim ASCII (CIMB) | frmClaimASCIICIMB | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/cimb` |
 | Claim ASCII | Med Providers (OMNI) | frmMedProviderOMNI | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/omni-providers` |
 | Claim ASCII | Claims Data | frmClaimsdata | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/claims-data` |
 | Claim ASCII | Claims Excel (Sin Chew) | frmClaimsExcelSinChew | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/sinchew` |

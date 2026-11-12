@@ -17,3 +17,14 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | G1 | View "Group companies per clinic", clinic code B324 → Search | KLINIK BALA with its no. of group companies |
 | G2 | View "By clinic", clinic name KLINIK BALA → Search | about 1900 rows |
 | G3 | Group code ZZZZZZ → Search | `No record found!` |
+
+## 3. Claim ASCII — `/invoice/claim-ascii/{format}`
+
+| # | Screen | Action | Expected |
+|---|---|---|---|
+| A1 | Bintulu | Bordx KIV03274 – KIV03274, clinic NP → Generate | file `KIV03274(NP)<month><year>`, 78 visits |
+| A2 | Toshiba | Bordx KIV03274 – KIV03274 → Generate | `KIV03274(M-MEDIX).txt`, lines start with `M-MEDIX KIV03274` |
+| A3 | Singer | Bordx KIV03274, no "to" | `Please Enter Bordx No To ` |
+| A4 | TIMS | Bordx KDC55481 → Generate | 18 visits |
+| A5 | CIMB | Bordx KIS01540, Cashless → Generate | 571 visits |
+| A6 | OMNI | Generate | zip; the provider file marks the clinics as sent (clean-up: `UPDATE HISDB.dbo.CLN SET CLNOMNISent = NULL WHERE ...` for the listed codes) |

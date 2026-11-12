@@ -19,3 +19,21 @@ Deliberate differences: parameters instead of pasted criteria (the desktop paste
 | Print | The list as CSV (`Report cannot be printed without any record.`). |
 
 Deliberate differences: parameters instead of pasted criteria.
+
+## Claim ASCII — Bintulu, Toshiba, Singer, TIMS, CIMB, OMNI (`/invoice/claim-ascii/{format}`, right ClaimAscii, `api/reports/claim-ascii/{format}`)
+
+One page (route data `format`); Generate downloads the file and shows the visit count and total. Bintulu, Toshiba and Singer ask `Are you sure?` first. Every screen
+shows `No record found!` when nothing is selected and `File Generated Sucessfully...` after the download.
+
+| Screen | Form | Data | File |
+|---|---|---|---|
+| Bintulu | frmClaimDetailsASCII | View_ClaimDetails_ASCII for the bordx range and the clinic (`cis.ClaimAscii_Bintulu`); the clinic list is group company B003's clinics (SearchGrpCLN). `Please Enter Bordx No Fr `, `Please Enter Bordx No To `, `Please Select Clinic Name `. | `<bordx to>(<clinic>)<month><year>`: "BPSB", employee no., patient, relationship (P → E, H / W → U), visit date and time, M, seven zeros, actual, treatment reason (199 when blank), MC days, the visit date when there are MC days, two blanks — "\|"-separated, each line ending in CR. |
+| Toshiba | frmClaimASCIIToshiba | ClaimDetails_ASCII (bordx range) | `<bordx from>(M-MEDIX).txt`: fixed width (Medix `l()`: text left-aligned, numbers right-aligned): M-MEDIX, bordx no. and date, employee no., patient (dependants only), NO, visit date, Toshiba ICD and reason (else 52 Medication & Treatment), MC days, bordx amount without the decimal point, P, bordx date twice, posting id from 001001, time, blanks, 000000. |
+| Singer | frmClaimASCIISinger | ClaimDetails_ASCII (bordx range) | `CC<yymmdd of the first bordx date>01`: the name as header, CSV lines (1, bordx date, 01, IC, employee no., patient, visit date, actual, clinic code and name) ending in CR, trailer `2,<last bordx date>,01,,,,,<total>`. |
+| TIMS | frmClaimASCIITIMS | ClaimDetails_ASCII_TIMS (one bordx) and HISDB OPPlanAmount for the deductible (N/A when none) | `<today>_OUTPATIENTCLAIM.txt`: "~"-separated, 60 fields as the desktop (fees, medicines, balance, TI no. / cover id, med / injection types, reasons, days and quantities, BTBG amount, deductible, plan, marital status, G / S). |
+| CIMB | frmClaimASCIICIMB | ClaimDetails_ASCII_CIMB (one bordx), cash type C / R | `<today>CIMBMEDIX - Cashless.txt` or `- Reimbursement.txt`: fixed width as the desktop; trailer = the total actual as 18 digits. |
+| OMNI | frmClaimDataOMNI | ClaimDetails_ASCII_OMNI (the procedure ignores the bordx no.: the claims of OMNI companies not yet sent) and the panel clinics not yet sent | A zip with `<today>_OUTPATIENTCLAIM.txt` (header 01\|TPA, a 02 line per claim of an active member with a cover id, trailer 03 with count and totals) and `<today>_OUTPATIENTPROVIDER.txt` (the clinics, which are then marked CLNOMNISent = Y, in one transaction). |
+
+Known desktop issues (reproduced): TIMS writes an empty cover id (the variable is never set); the TIMS and OMNI fields joined with + lose their separator when empty; CIMB cashless lines without a visit date lose that column; the CIMB trailer rounds the total to whole ringgit; the OMNI procedure ignores the bordx no.
+
+Deliberate differences: files are downloaded (the desktop wrote them to the server's ClinicalClaimASCII folder and C:\ClinicalClaimsASCII / C:\MedicaGenClaimASCII); Bintulu / Toshiba / Singer require the "to" bordx no. (the desktop's check compared it with an empty date mask and never fired); TIMS writes a found deductible as text (the desktop added a Currency value to "~", a type mismatch that stopped the export); CIMB requires a cash type (the desktop silently wrote nothing) and shows the actual total (the desktop showed 0); the clinic can also be typed (the restored data has no clinics for B003, so Bintulu's list is empty here). The TIMS and CIMB provider-file code (CLNFile) is never called on the desktop and is not migrated.
