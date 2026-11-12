@@ -478,10 +478,52 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 11,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 12,
@@ -1799,7 +1841,7 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 29,
    "cols": [
@@ -1840,7 +1882,44 @@
   },
   "s": {
    "c": 30,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 30,
@@ -2172,14 +2251,70 @@
    "Net Premium (Prin.)",
    "Net Premium (Supp.)"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 33,
-   "special": true
+   "cols": [
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sp"
+    }
+   ]
   },
   "s": {
    "c": 34,
-   "special": true
+   "cols": [
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    }
+   ]
   },
   "helper": {
    "c": 34,
@@ -2587,10 +2722,43 @@
    "Ins Type",
    "Plan Code"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 79,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMName"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "l",
+     "v": "1"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    }
+   ]
   },
   "s": null,
   "helper": null
@@ -3320,14 +3488,109 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 173,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 174,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 174,
@@ -3354,14 +3617,117 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 175,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 176,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 176,
@@ -4118,14 +4484,83 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 117,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 118,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 118,
@@ -4147,14 +4582,75 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 115,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 116,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 116,
@@ -4177,14 +4673,83 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 121,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 122,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 122,
@@ -4206,14 +4771,75 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 119,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 120,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 120,
@@ -4236,14 +4862,83 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 125,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 126,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 126,
@@ -4265,14 +4960,75 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 123,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 124,
-   "special": true
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
   },
   "helper": {
    "c": 124,
@@ -4299,11 +5055,87 @@
   "special": true,
   "p": {
    "c": 178,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "f",
+     "n": "Principal_mbmcnt"
+    },
+    {
+     "k": "f",
+     "n": "Dependent_mbmcnt"
+    },
+    {
+     "k": "m",
+     "n": "Principal_amt"
+    },
+    {
+     "k": "m",
+     "n": "Dependent_amt"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "Subsidiary"
+    },
+    {
+     "k": "f",
+     "n": "OPAccCode"
+    }
+   ]
   },
   "s": {
    "c": 132,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "f",
+     "n": "TotalMBM"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOFee"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "Subsidiary"
+    }
+   ]
   },
   "helper": {
    "c": 133,
@@ -5037,10 +5869,52 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 144,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 145,
@@ -5113,10 +5987,48 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 142,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 143,
@@ -5187,10 +6099,56 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 148,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 149,
@@ -5268,10 +6226,52 @@
    "Net Premium (Supp.)",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 146,
-   "special": true
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
   },
   "s": {
    "c": 147,

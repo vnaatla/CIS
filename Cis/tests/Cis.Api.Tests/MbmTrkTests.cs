@@ -44,6 +44,12 @@ public class MbmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacy.Count, r.Rows.Count);
         Assert.Equal(legacy.Sum(x => (int)x.TotalP), r.Principals);
+        // A month report (Eff. Month by payor, principals): the same rows as the desktop's case 117, labelled year / zero-padded month.
+        var month = await service.SearchAsync(new MbmTrkRequest(11, "Eff. Month (By Payor)", "P", new() { ["payor"] = "DC", ["status"] = "0" }));
+        var legacyMonth = (await s.Sql().Connection.QueryAsync("HISDB.dbo.CISMBMTracking", new { strAppend = " AND PAYCode = 'DC' And MBMStatus = 'A' ", strAppendCase = 117 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        Assert.Equal(legacyMonth.Count, month.Rows.Count);
+        Assert.Matches(@"^\d{4}/\d{2}$", month.Rows[0][1]);
         Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new MbmTrkRequest(10, "Nope", "P", new()))))
             .Message);

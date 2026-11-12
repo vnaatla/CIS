@@ -11,6 +11,11 @@ const parse = (e) => {
   if ((m = /^Format\(!(\w+), "#,##0\.00"\)$/.exec(e))) return { k: 'm', n: m[1] }
   if ((m = /^"([^"]*)"$/.exec(e))) return { k: 'l', v: m[1] }
   if (e === 'TotalS') return { k: 'sc' }
+  if (e === 'TotalSMCO') return { k: 'sm' }
+  if (e === 'TotalSPrem') return { k: 'sp' }
+  if ((m = /^Format\((\w+), "#,##0\.00"\)$/.exec(e)) && !/^Total/.test(m[1])) return { k: 'm', n: m[1] }
+  if ((m = /^Format\(!(\w+), "dd\/mm\/yyyy"\)$/.exec(e))) return { k: 'd', n: m[1] }
+  if (/^!Year & "\/" & Month$/.test(e)) return { k: 'ym' }
   if (/^Format\(TotalSMCO, "#,##0\.00"\)$/.test(e)) return { k: 'sm' }
   if (/^Format\(TotalSPrem, "#,##0\.00"\)$/.test(e)) return { k: 'sp' }
   if ((m = /^!(\w+) & "([^"]*)" & "([^"]*)"$/.exec(e))) return { k: 'fl', n: m[1], v: m[2] + m[3] }

@@ -67,7 +67,8 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
 
     private static readonly CultureInfo En = CultureInfo.InvariantCulture;
 
-    /// <summary>A column of a block: f field, m money field, l literal, sc / sm / sp the supplementary count / MCO / premium merged in, fl field + suffix.</summary>
+    /// <summary>A column of a block: f field, m money field, l literal, sc / sm / sp the supplementary count / MCO / premium merged in, fl field + suffix, d date,
+    /// ym year / zero-padded month.</summary>
     internal sealed record Col(string K, string? N, string? V);
 
     internal sealed record Block(int C, bool Special, List<Col>? Cols);
@@ -117,7 +118,8 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
             var prin = await repository.RunAsync(s, e.P!.C, filters);
             List<Dictionary<string, object?>>? supp = null;
             if (type == "B" && e.Helper is not null) supp = await repository.RunAsync(s, e.Helper.C, filters);
-            var keys = e.P.Cols!.Where(c => c.K == "f" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!).ToList();
+            var keys = e.P.Cols!.Where(c => c.K is "f" or "d" or "fl" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!)
+                .Concat(e.P.Cols!.Any(c => c.K == "ym") ? ["Year", "Month"] : []).ToList();
             var merged = supp is not null && e.Helper is { Append: false }
                 ? supp.GroupBy(x => Key(x, keys)).ToDictionary(g => g.Key, g => g.First()) : null;
             foreach (var x in prin)
@@ -178,6 +180,8 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
         "m" => x.GetValueOrDefault(c.N!) is null or DBNull ? "0.00" : N(x, c.N!).ToString("#,##0.00", En),
         "l" => c.V ?? "",
         "fl" => T(x, c.N!) + c.V,
+        "d" => x.GetValueOrDefault(c.N!) is DateTime d ? d.ToString("dd/MM/yyyy", En) : T(x, c.N!),
+        "ym" => T(x, "Year") + "/" + (T(x, "Month").Length == 1 ? "0" + T(x, "Month") : T(x, "Month")),
         "sc" => supp is null ? "0" : T(supp, "TotalS"),
         "sm" => supp is null ? "0.00" : N(supp, "MCOGross").ToString("#,##0.00", En),
         "sp" => supp is null ? "0.00" : N(supp, "PremiumGross").ToString("#,##0.00", En),
