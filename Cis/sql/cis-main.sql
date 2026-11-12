@@ -1472,6 +1472,29 @@ BEGIN
 END
 GO
 
+-- E-mail notification > Providers (frmEmailNotificationProvider): View_email_Provider with parameters (clinic PVs); the invoices of a PV come from the existing
+-- CISPayment sp_ProviderInv (already parameterized).
+CREATE OR ALTER PROCEDURE cis.EmlPrv_Search @pvDateFrom datetime, @pvDateTo datetime, @pvFrom nvarchar(30) = NULL, @pvTo nvarchar(30) = NULL, @resend bit = 0,
+    @cs bit = 0 AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM CISPayment.dbo.View_email_Provider
+    WHERE PVCLNDate >= @pvDateFrom AND PVCLNDate <= @pvDateTo AND (@pvFrom IS NULL OR PVCLNNo >= @pvFrom) AND (@pvTo IS NULL OR PVCLNNo <= @pvTo)
+      AND ((@resend = 1 AND PVEmailStatus = 'Y') OR (@resend = 0 AND (PVEmailStatus = '' OR PVEmailStatus IS NULL)))
+      AND ((@cs = 0 AND SUBSTRING(PVCLNNo, 1, 2) <> 'CS') OR (@cs = 1 AND SUBSTRING(PVCLNNo, 1, 2) = 'CS'))
+    ORDER BY CLNEMAIL DESC
+    OPTION (RECOMPILE);
+END
+GO
+
+-- CmdSend_Click: the clinic PV is marked as e-mailed (the desktop sets no date here).
+CREATE OR ALTER PROCEDURE cis.EmlPrv_Mark @pvNo nvarchar(30) AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE CISPayment.dbo.Payment2CLN SET PVEmailStatus = 'Y' WHERE PVCLNNo = @pvNo;
+END
+GO
+
 -- ===== main/120_benefit_clinic.sql =====
 -- Maintenance > Benefit > Clinic (frmMaintenanceBenefitsCln) and its never-opened twin frmMaintenanceBenefitsClnNew: STDClinicBNFSpe.
 
