@@ -26,9 +26,9 @@ for (const block of menu.split(/\n  \{\n    key: /).slice(1)) {
   modules.push({ label, route, items })
 }
 
-const state = { visible: '', hidden: 'Hidden (Visible = 0)', disabled: 'Disabled (Enabled = 0)', 'never-opened': 'Never opened', nothing: 'No handler, no form', empty: 'Form with no code' }
+const state = { visible: '', hidden: 'Hidden (Visible = 0)', disabled: 'Disabled (Enabled = 0)', 'never-opened': 'Never opened', nothing: 'No handler, no form', empty: 'Form with no code', unavailable: 'Needs the SUN database (not available)' }
 const all = modules.flatMap((m) => m.items)
-const buildable = all.filter((i) => !['nothing', 'empty'].includes(i.desktop))
+const buildable = all.filter((i) => !['nothing', 'empty', 'unavailable'].includes(i.desktop))
 const lines = [
   '# Menu mapping: VB6 `MDIMain.frm` → CIS web application',
   '',
@@ -39,14 +39,14 @@ const lines = [
   'disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet',
   'calculation, cheque / PV range print, ...) are listed with that screen.',
   '',
-  `**${buildable.length} screens to build · ${buildable.filter((i) => i.migrated).length} migrated · ${all.length - buildable.length} menu items with no handler, no form or an empty form (nothing to build).**`,
+  `**${buildable.length} screens to build · ${buildable.filter((i) => i.migrated).length} migrated · ${all.length - buildable.length} menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**`,
   '',
   '## Summary',
   '',
   '| Module | Screens | Migrated | Not in the desktop menu (hidden / disabled / never opened) |',
   '|---|---:|---:|---:|',
   ...modules.map((m) => {
-    const b = m.items.filter((i) => !['nothing', 'empty'].includes(i.desktop))
+    const b = m.items.filter((i) => !['nothing', 'empty', 'unavailable'].includes(i.desktop))
     return `| [${m.label}](#${m.label.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/ /g, '-')}) | ${b.length} | ${b.filter((i) => i.migrated).length} | ${b.filter((i) => i.desktop !== 'visible').length} |`
   }),
   `| **Total** | **${buildable.length}** | **${buildable.filter((i) => i.migrated).length}** | **${buildable.filter((i) => i.desktop !== 'visible').length}** |`,
@@ -56,7 +56,7 @@ for (const m of modules) {
   lines.push(`## ${m.label}`, '', `Module page: \`${m.route}\``, '', '| Sub-menu | Menu item | VB6 form(s) | Access | Desktop | Phase | Status | Web route |', '|---|---|---|---:|---|---:|---|---|')
   for (const i of m.items)
     lines.push(
-      `| ${i.group} | ${i.label} | ${i.form.replace(/\|/g, '\\|')} | ${i.access} | ${state[i.desktop]} | ${i.phase} | ${['nothing', 'empty'].includes(i.desktop) ? 'Nothing to build' : i.migrated ? '**Migrated**' : 'Pending'} | \`${i.path}\` |`,
+      `| ${i.group} | ${i.label} | ${i.form.replace(/\|/g, '\\|')} | ${i.access} | ${state[i.desktop]} | ${i.phase} | ${['nothing', 'empty', 'unavailable'].includes(i.desktop) ? 'Nothing to build' : i.migrated ? '**Migrated**' : 'Pending'} | \`${i.path}\` |`,
     )
   lines.push('')
 }

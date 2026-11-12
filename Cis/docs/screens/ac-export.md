@@ -116,3 +116,11 @@ Deliberate differences: VIEW_Sun_Posting_BordxGrpComp takes minutes (over 4 for 
 Fixed desktop bugs: the debit is the bank account `7610` (as Search Debit) and the credit the company account (the desktop put both lines on the company account); a receipt is listed and totalled once with all its bordereaux (the desktop listed it once per bordereaux with the whole amount each time); each receipt / post date bound applies on its own.
 
 Deliberate differences: VIEW_Sun_Posting_RecFrGrpComp takes minutes (114 s for 3 rows of two months), so the procedure picks the receipts first (batch, receipt date, receipt no.) and applies the view's joins and grouping to them (about 10 s for two months); one transaction; the workbook is downloaded.
+
+## Not migrated: SUN System GST, SUN System Report, SUN System Allocation (with its account search), SUN System Allocation (New)
+
+frmSUNGSTRpt, frmSUNSystem, frmSUNSystemAllocation / frmSUNSystemSearchAcc and frmSUNSystemAllocation_New read only the SUN accounting database (the
+`SALFLDG<UHC|FW|MED|GV|TL|UHI|MS>` ledgers, `SSRFACC` accounts and the `VIEW_GST_*` views) through the `medixmasterSUNSys` connection. That database is not among
+the restored GENESIS databases, and the desktop does not open the connection either (the `medixmasterSUNSys.Open` line in SubMain.bas is commented out), so these
+screens cannot run in the desktop today. Decision (12 Nov 2026): not migrated; the menu items show "Nothing to build" (desktop state `unavailable`). They can be
+built against a configurable SUN connection once that database is available.

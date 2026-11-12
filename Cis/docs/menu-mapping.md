@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**118 screens to build · 81 migrated · 7 menu items with no handler, no form or an empty form (nothing to build).**
+**114 screens to build · 81 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -21,10 +21,10 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
-| [A/C Export](#ac-export) | 15 | 11 | 4 |
+| [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **118** | **81** | **19** |
+| **Total** | **114** | **81** | **18** |
 
 ## Membership
 
@@ -195,10 +195,10 @@ Module page: `/ac-export`
 | Bordx | Grp Company | frmPostingBordxtoGrpComp | 120 | Hidden (Visible = 0) | 9 | **Migrated** | `/ac-export/bordx/grp-company` |
 | Bordx | Grp Company (GST) | frmPostingBordxtoGrpGST | 120 |  | 9 | **Migrated** | `/ac-export/bordx/grp-company-gst` |
 | Receipt | Grp Company | frmPostingRecGrpCompany | 120 |  | 9 | **Migrated** | `/ac-export/receipt/grp-company` |
-| SUN System | SUN System GST | frmSUNGSTRpt | 120 |  | 9 | Pending | `/ac-export/sun/gst` |
-| SUN System | SUN System Report | frmSUNSystem | 120 |  | 9 | Pending | `/ac-export/sun/report` |
-| SUN System | SUN System Allocation | frmSUNSystemAllocation, frmSUNSystemSearchAcc | 120 |  | 9 | Pending | `/ac-export/sun/allocation` |
-| SUN System | SUN System Allocation (New) | frmSUNSystemAllocation_New | 120 | Never opened | 9 | Pending | `/ac-export/sun/allocation-new` |
+| SUN System | SUN System GST | frmSUNGSTRpt | 120 | Needs the SUN database (not available) | 9 | Nothing to build | `/ac-export/sun/gst` |
+| SUN System | SUN System Report | frmSUNSystem | 120 | Needs the SUN database (not available) | 9 | Nothing to build | `/ac-export/sun/report` |
+| SUN System | SUN System Allocation | frmSUNSystemAllocation, frmSUNSystemSearchAcc | 120 | Needs the SUN database (not available) | 9 | Nothing to build | `/ac-export/sun/allocation` |
+| SUN System | SUN System Allocation (New) | frmSUNSystemAllocation_New | 120 | Needs the SUN database (not available) | 9 | Nothing to build | `/ac-export/sun/allocation-new` |
 
 ## Tracking
 

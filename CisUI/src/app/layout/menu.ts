@@ -6,7 +6,7 @@ import type { IconName } from '../shared/icon.component'
  * - hidden: designer Visible = 0 · disabled: designer Enabled = 0 · never-opened: no menu item / handler commented out, the form is still in
  *   the project · nothing: menu item without a click handler and without a form (nothing to build, listed only for completeness).
  */
-export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty'
+export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty' | 'unavailable'
 
 export interface MenuItem {
   /** Desktop caption. */
@@ -212,10 +212,10 @@ export const MENU: MenuModule[] = [
       { label: 'Grp Company', path: '/ac-export/bordx/grp-company', access: Access.AcExport, form: 'frmPostingBordxtoGrpComp', group: 'Bordx', desktop: 'hidden', phase: 9, migrated: true },
       { label: 'Grp Company (GST)', path: '/ac-export/bordx/grp-company-gst', access: Access.AcExport, form: 'frmPostingBordxtoGrpGST', group: 'Bordx', phase: 9, migrated: true },
       { label: 'Grp Company', path: '/ac-export/receipt/grp-company', access: Access.AcExport, form: 'frmPostingRecGrpCompany', group: 'Receipt', phase: 9, migrated: true },
-      { label: 'SUN System GST', path: '/ac-export/sun/gst', access: Access.AcExport, form: 'frmSUNGSTRpt', group: 'SUN System', phase: 9 },
-      { label: 'SUN System Report', path: '/ac-export/sun/report', access: Access.AcExport, form: 'frmSUNSystem', group: 'SUN System', phase: 9 },
-      { label: 'SUN System Allocation', path: '/ac-export/sun/allocation', access: Access.AcExport, form: 'frmSUNSystemAllocation, frmSUNSystemSearchAcc', group: 'SUN System', phase: 9 },
-      { label: 'SUN System Allocation (New)', path: '/ac-export/sun/allocation-new', access: Access.AcExport, form: 'frmSUNSystemAllocation_New', group: 'SUN System', desktop: 'never-opened', phase: 9 },
+      { label: 'SUN System GST', path: '/ac-export/sun/gst', access: Access.AcExport, form: 'frmSUNGSTRpt', group: 'SUN System', desktop: 'unavailable', phase: 9 },
+      { label: 'SUN System Report', path: '/ac-export/sun/report', access: Access.AcExport, form: 'frmSUNSystem', group: 'SUN System', desktop: 'unavailable', phase: 9 },
+      { label: 'SUN System Allocation', path: '/ac-export/sun/allocation', access: Access.AcExport, form: 'frmSUNSystemAllocation, frmSUNSystemSearchAcc', group: 'SUN System', desktop: 'unavailable', phase: 9 },
+      { label: 'SUN System Allocation (New)', path: '/ac-export/sun/allocation-new', access: Access.AcExport, form: 'frmSUNSystemAllocation_New', group: 'SUN System', desktop: 'unavailable', phase: 9 },
     ],
   },
   {
@@ -251,7 +251,7 @@ export const MENU: MenuModule[] = [
 ]
 
 /** Items that need a screen (excludes desktop menu items without a handler and without a form). */
-export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty'
+export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty' || i.desktop === 'unavailable'
 
 /** Items that need a screen. */
 export const buildable = (m: MenuModule) => m.items.filter((i) => !nothingToBuild(i))
@@ -263,4 +263,5 @@ export const DESKTOP_STATE_TEXT: Record<DesktopState, string> = {
   'never-opened': 'Form in the project, never opened by the desktop',
   nothing: 'Menu item without a handler (nothing to build)',
   empty: 'Form in the project with no code behind it (nothing to build)',
+  unavailable: 'Needs the SUN accounting database, which is not available (the desktop connection is disabled too)',
 }
