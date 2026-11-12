@@ -51,3 +51,32 @@ BEGIN
     VALUES (@invoiceNo, @pvNo, '1', '1', 'Pay2Cln', CAST(GETDATE() AS date), @user, @accMonth, @accYear, @batchNo);
 END
 GO
+
+-- Payment Posting > Member (FrmPostingPay2MBM): SUN_CIS_Posting 'Pay2MBM' (VIEW_SUN_Posting_Pay2MBM).
+CREATE OR ALTER PROCEDURE cis.SunPost_Pay2Mbm_Search @batchNo nvarchar(20) = NULL, @company nvarchar(200) = NULL, @pvDateFrom datetime = NULL, @pvDateTo datetime = NULL,
+    @pvFrom nvarchar(30) = NULL, @pvTo nvarchar(30) = NULL, @posted char(1) = '0', @postDateFrom datetime = NULL, @postDateTo datetime = NULL,
+    @batchFrom nvarchar(20) = NULL, @batchTo nvarchar(20) = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT PostStatus, PostType, PostDate, AccMonth, AccYear, BatchNo, TransRef, GRPCoName, GRPCoCode, CoGRPAcccode, PAYCode, PVNo, PVDate, PVChequeNo, PVPayto, MBMPaidAmt,
+        Pay2MBMStatus, HISpaycode
+    FROM CISWorksheet.dbo.VIEW_SUN_Posting_Pay2MBM
+    WHERE (@batchNo IS NULL OR BatchNo = @batchNo) AND (@batchNo IS NOT NULL OR (
+            (@company IS NULL OR GRPCoName = @company) AND (@pvDateFrom IS NULL OR PVDate >= @pvDateFrom) AND (@pvDateTo IS NULL OR PVDate <= @pvDateTo)
+        AND (@pvFrom IS NULL OR PVNo >= @pvFrom) AND (@pvTo IS NULL OR PVNo <= @pvTo)
+        AND (@posted <> '0' OR ((Pay2MBMStatus IS NULL OR Pay2MBMStatus = '0') AND (PostStatus IS NULL OR PostStatus = '0')))
+        AND (@posted <> '1' OR (Pay2MBMStatus = '1' AND PostStatus = '1'))
+        AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
+        AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)))
+    OPTION (RECOMPILE);
+END
+GO
+
+-- CmdPost_Click: TransRef takes the listed PV no. without its first character (10 characters), InvoiceNo is blank, as the desktop.
+CREATE OR ALTER PROCEDURE cis.SunPost_Pay2Mbm_Insert @transRef nvarchar(30), @accMonth nvarchar(2), @accYear nvarchar(4), @batchNo nvarchar(20), @user nvarchar(50) AS
+BEGIN
+    SET NOCOUNT ON;
+    INSERT CISWorksheet.dbo.SUNPosting (InvoiceNo, TransRef, Pay2MBMStatus, PostStatus, PostType, PostDate, PostBy, AccMonth, AccYear, BatchNo)
+    VALUES ('', @transRef, '1', '1', 'Pay2MBM', CAST(GETDATE() AS date), @user, @accMonth, @accYear, @batchNo);
+END
+GO
