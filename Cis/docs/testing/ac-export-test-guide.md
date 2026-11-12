@@ -53,3 +53,12 @@ Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = 
 | P2 | Register date from 01/01/2999 | `Invoice Date cannot greater than system date ! ` |
 
 Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASInvPostUser = NULL, CASInvPostDate = NULL WHERE CASInvPostDate = '<today>' AND CASInvPostUser = '<user>'`.
+
+## 6. Payment Posting > Clinic — `/ac-export/payment/clinic` (FrmPostingPay2Cln)
+
+| # | Action | Expected |
+|---|---|---|
+| K1 | PV date 01/07/2021 – 05/07/2021 → Search | 2858 unposted PVs (about 5 s) |
+| K2 | PV date 02/07/2021, PV CP100465721 → Search | 7610 C 34.20 and 84B294 D 34.20 (KLINIK BALA) |
+| K3 | Status 1 - Yes, batch 2647 – 2647 → Search | the posted batch (3188 PVs) |
+| K4 | Tick → Post without PV dates | `Please Enter PV Date! ` |

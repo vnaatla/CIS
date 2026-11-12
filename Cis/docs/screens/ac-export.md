@@ -70,3 +70,14 @@ The desktop menu never opens this form; it is migrated on request. It is the for
 Known desktop issues (reproduced): the detail rows are matched on the register date as a day, so a registration with a time (most of them) has no debit line in the list; the register date "to" compares with the time (to include a day, enter the next day).
 
 Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded (the desktop filled the `CISTemplate\InvoicePosting` template, which is not available).
+
+## Payment Posting > Clinic — FrmPostingPay2Cln (`/ac-export/payment/clinic`, right AcExport, `api/ac-export/payment-clinic`)
+
+| Step | Behaviour |
+|---|---|
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `Pay2Cln` (VIEW_SUN_Posting_Pay2Cln, as `cis.SunPost_Pay2Cln_Search`): entity (Health Connect = payors other than SJ, default; Sihat Johor = SJ), clinic, PV date, PV no., post status, post date, batch no. Per PV: credit `7610` (`7520` for SJ) with the clinic name and debit `84` + clinic (the line Post writes); journal CP, ledger UHC (MS for SJ), amount = paid to clinic rounded to 2 places, analysis `4` + clinic. |
+| Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter PV Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked PV (TransRef = PV no., InvoiceNo = `4` + clinic, type Pay2Cln) → file `<batch> CP-PayCLN <PV from yyyyMMdd>-<PV to dd>`. |
+
+Known desktop issues (reproduced): SUNPosting.InvoiceNo holds the analysis code (`4` + clinic), not an invoice no.
+
+Deliberate differences: the group company filter is not offered (the view has no such column, so the desktop's filter failed); after a post the batch is listed through VIEW_SUN_Posting_Pay2Cln (the desktop switched to VIEW_SUN_Posting_Pay2Cln_Done, which lists no posted rows, so its list came back empty).

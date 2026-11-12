@@ -66,4 +66,15 @@ export async function acExport(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Invoice postings"] tbody')?.textContent.includes('84A'), { timeout: 120000 })
   check(true, 'Invoice Posting: invoices registered 01/08/2021 are listed with their 84 + clinic lines')
+
+  // Payment Posting > Clinic: PV CP100465721 of 02/07/2021 lists its 7610 credit and 84B294 debit (nothing is posted).
+  await page.goto(`${base}/ac-export/payment/clinic`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=pvFrom]')
+  await page.type('input[aria-label="PV Date From"]', '02/07/2021')
+  await page.type('input[aria-label="PV Date To"]', '02/07/2021')
+  await page.type('input[name=pvFrom]', 'CP100465721')
+  await page.type('input[name=pvTo]', 'CP100465721')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic payment postings"] tbody')?.textContent.includes('84B294'), { timeout: 120000 })
+  check(true, 'Payment Posting - Clinic: PV CP100465721 lists its 84B294 debit line')
 }

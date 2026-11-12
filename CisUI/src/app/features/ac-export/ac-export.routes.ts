@@ -46,4 +46,11 @@ export const acExportRoutes: Routes = [
     data: { access: Access.AcExport, legacyForm: 'frmInvPosting' },
     loadComponent: () => import('./invoice-posting.page').then((m) => m.InvoicePostingPage),
   },
+  {
+    path: 'ac-export/payment/clinic',
+    title: 'CIS - Payment Posting - Clinic',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'FrmPostingPay2Cln' },
+    loadComponent: () => import('./posting-payment-clinic.page').then((m) => m.PostingPaymentClinicPage),
+  },
 ]
