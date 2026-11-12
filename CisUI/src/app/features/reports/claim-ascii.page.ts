@@ -11,7 +11,7 @@ import { saveBlob } from '../../shared/lib/download'
 import { formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-type Format = 'bintulu' | 'toshiba' | 'singer' | 'tims' | 'cimb' | 'omni'
+type Format = 'bintulu' | 'toshiba' | 'singer' | 'tims' | 'cimb' | 'omni' | 'utusan'
 const SCREENS: Record<Format, { title: string; form: string; range: boolean; clinic: boolean; confirm: boolean }> = {
   bintulu: { title: 'Claim ASCII (Bintulu)', form: 'frmClaimDetailsASCII', range: true, clinic: true, confirm: true },
   toshiba: { title: 'Claim ASCII (Toshiba)', form: 'frmClaimASCIIToshiba', range: true, clinic: true, confirm: true },
@@ -19,6 +19,7 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
   tims: { title: 'Claim ASCII (TIMS)', form: 'frmClaimASCIITIMS', range: false, clinic: false, confirm: false },
   cimb: { title: 'Claim ASCII (CIMB)', form: 'frmClaimASCIICIMB', range: false, clinic: false, confirm: false },
   omni: { title: 'Claim ASCII (OMNI)', form: 'frmClaimDataOMNI', range: false, clinic: false, confirm: false },
+  utusan: { title: 'Claim ASCII (Utusan Melayu)', form: 'frmClaimASCIIUtusan', range: true, clinic: false, confirm: true },
 }
 
 /** Claim ASCII exports (route data `format`). */

@@ -31,6 +31,25 @@ public class ClaimAsciiRuleTests
     }
 }
 
+/// <summary>Utusan line layout (no database: the restored data has no Utusan claims and view 01A needs the missing FWHSHISDB database).</summary>
+public class ClaimAsciiUtusanTests
+{
+    [Fact]
+    public void A_dependant_line_of_type_10A_has_the_treatment_code_and_the_name()
+    {
+        var row = new Dictionary<string, object?>
+        {
+            ["MBMEmployeeNo"] = "E1", ["DateVisit"] = new DateTime(2021, 7, 2), ["CLMBordxAmt"] = 34.2m, ["ClinicCode"] = "B294", ["InvoiceNo"] = "INV1",
+            ["InvoiceDate"] = new DateTime(2021, 7, 3), ["coverid"] = "01", ["MBMCRELCode"] = "W", ["MBMCName"] = "SITI", ["CASTreatReason1"] = "304",
+        };
+        var r = ClaimAsciiService.Utusan([(11, [row])], new DateTime(2021, 7, 9));
+        Assert.Equal("20210709_BPOCLMTRH.KZULF", r.File.FileName);
+        Assert.Equal((1, 34.2m), (r.Visits, r.Total));
+        Assert.Equal("UMMB,E1,10A,02/07/2021,34.20,34.20,FINANCE,B294,,03,INV1, ,03/07/2021,,,Upload From MediExpress,I,34.20,SITI,,,,,,,,,,,,,\r\r\n",
+            Encoding.Latin1.GetString(r.File.Content));
+    }
+}
+
 /// <summary>Claim ASCII exports against the real databases (skipped without CIS_TEST_DB); OMNI's provider mark is rolled back by not being run here.</summary>
 [Collection(DatabaseCollection.Name)]
 public class ClaimAsciiDatabaseTests

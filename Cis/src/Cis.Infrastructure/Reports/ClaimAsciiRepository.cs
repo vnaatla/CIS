@@ -32,4 +32,8 @@ public sealed class ClaimAsciiRepository : IClaimAsciiRepository
 
     /// <inheritdoc />
     public Task OmniSentAsync(IDbSession session, string clinic) => session.ExecAsync("cis.ClaimAscii_OmniSent", new { clinic });
+
+    /// <inheritdoc />
+    public Task<List<Dictionary<string, object?>>> UtusanAsync(IDbSession session, int claimType, string bordxFrom, string bordxTo) =>
+        session.RowsAsync("cis.ClaimAscii_Utusan", new { @case = claimType, bordxFrom, bordxTo }, 300);
 }

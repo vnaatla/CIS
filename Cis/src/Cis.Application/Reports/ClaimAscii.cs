@@ -8,11 +8,11 @@ using FluentValidation;
 
 namespace Cis.Application.Reports;
 
-/// <summary>Claim ASCII export formats: Bintulu (frmClaimDetailsASCII), Toshiba, Singer, TIMS, CIMB, OMNI (frmClaimDataOMNI).</summary>
+/// <summary>Claim ASCII export formats: Bintulu (frmClaimDetailsASCII), Toshiba, Singer, TIMS, CIMB, OMNI (frmClaimDataOMNI), Utusan.</summary>
 public enum AsciiFormat
 {
 #pragma warning disable CS1591
-    Bintulu, Toshiba, Singer, Tims, Cimb, Omni,
+    Bintulu, Toshiba, Singer, Tims, Cimb, Omni, Utusan,
 #pragma warning restore CS1591
 }
 
@@ -44,6 +44,7 @@ public interface IClaimAsciiRepository
     Task<string?> DeductibleAsync(IDbSession session, string plan, string marital);
     Task<List<Dictionary<string, object?>>> OmniProvidersAsync(IDbSession session);
     Task OmniSentAsync(IDbSession session, string clinic);
+    Task<List<Dictionary<string, object?>>> UtusanAsync(IDbSession session, int claimType, string bordxFrom, string bordxTo);
 #pragma warning restore CS1591
 }
 
@@ -83,7 +84,7 @@ public sealed class ClaimAsciiService(IDbSessions sessions, IClaimAsciiRepositor
         var clinic = (r.Clinic ?? "").Trim();
         clinic = (clinic.Contains('-') ? clinic[..clinic.IndexOf('-')] : clinic).Trim();
         var cash = (r.CashType ?? "").Trim();
-        if (format is AsciiFormat.Bintulu or AsciiFormat.Toshiba or AsciiFormat.Singer)
+        if (format is AsciiFormat.Bintulu or AsciiFormat.Toshiba or AsciiFormat.Singer or AsciiFormat.Utusan)
         {
             if (from.Length == 0) throw new BusinessRuleException(NoFrom);
             // The desktop compared the "to" box with an empty date mask, so this check never fired.
@@ -93,6 +94,13 @@ public sealed class ClaimAsciiService(IDbSessions sessions, IClaimAsciiRepositor
         if (format == AsciiFormat.Cimb && cash is not ("C" or "R") && !cash.StartsWith('C') && !cash.StartsWith('R')) throw new BusinessRuleException(NoCashType);
         var now = clock.GetLocalNow().DateTime;
         await using var tx = await sessions.BeginAsync();
+        if (format == AsciiFormat.Utusan)
+        {
+            var parts = new List<(int, List<Dictionary<string, object?>>)>();
+            for (var c = 1; c <= 13; c++) parts.Add((c, await repository.UtusanAsync(tx, c, from, to)));
+            await tx.CommitAsync();
+            return Utusan(parts, now);
+        }
         var rows = await repository.RowsAsync(tx, format, from, to, clinic);
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         ClaimAsciiResult result;
@@ -307,6 +315,35 @@ public sealed class ClaimAsciiService(IDbSessions sessions, IClaimAsciiRepositor
             }
         }
         return new(new FileOutput(zip.ToArray(), "application/zip", $"{day}_OMNI.zip"), count, total);
+    }
+
+    private static readonly string[] UtusanTypes = ["01A", "01B", "01C", "02A", "02B", "03A", "03B", "04A", "04B", "09", "10A", "11A", "11B"];
+
+    /// <summary>frmClaimASCIIUtusan: the 13 claim-type views in order, CSV lines ending in CR. The desktop counted the visits of types 01A and 01C only and never
+    /// added up the amount; here every line is counted and the bordx amounts are totalled. As the desktop, the file is written even when no view returns a row.</summary>
+    public static ClaimAsciiResult Utusan(List<(int Case, List<Dictionary<string, object?>> Rows)> parts, DateTime now)
+    {
+        var sb = new StringBuilder();
+        int visits = 0;
+        decimal total = 0;
+        foreach (var (c, rows) in parts)
+            foreach (var x in rows)
+            {
+                var amt = T(x, "CLMBordxAmt").Length > 0 ? N(x, "CLMBordxAmt").ToString("0.00", En) : "";
+                var dependant = T(x, "coverid") != "00";
+                var reason = c == 11 ? (T(x, "CASTreatReason1") == "304" ? "03" : T(x, "CLNType") == "S" ? "02" : "01") : "";
+                var o = new StringBuilder();
+                o.Append(string.Join(',', "UMMB", T(x, "MBMEmployeeNo"), UtusanTypes[c - 1], T(x, "DateVisit"), amt, amt, "FINANCE", T(x, "ClinicCode"), "", reason))
+                    .Append(',').Append(T(x, "InvoiceNo")).Append(", ");
+                o.Append(string.Join(',', "", T(x, "InvoiceDate"), "", "", "Upload From MediExpress",
+                    dependant ? T(x, "MBMCRELCode") switch { "W" => "I", "H" => "S", _ => "A" } : "", amt)).Append(',');
+                if (dependant) o.Append(T(x, "MBMCName")).Append(',');
+                o.Append(string.Concat(Enumerable.Repeat(",", 12))).Append('\r');
+                sb.Append(o).Append("\r\n");
+                visits++;
+                total += N(x, "CLMBordxAmt");
+            }
+        return new(Text(sb, $"{now:yyyyMMdd}_BPOCLMTRH.KZULF"), visits, total);
     }
 
     private static void Add(ZipArchive a, string name, string text)

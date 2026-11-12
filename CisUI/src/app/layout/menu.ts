@@ -88,7 +88,7 @@ export const MENU: MenuModule[] = [
       { label: 'Claim ASCII (Bintulu)', path: '/invoice/claim-ascii/bintulu', access: Access.ClaimAscii, form: 'frmClaimDetailsASCII', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (Toshiba)', path: '/invoice/claim-ascii/toshiba', access: Access.ClaimAscii, form: 'frmClaimASCIIToshiba', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (Singer)', path: '/invoice/claim-ascii/singer', access: Access.ClaimAscii, form: 'frmClaimASCIISinger', group: 'Claim ASCII', phase: 10, migrated: true },
-      { label: 'Claim ASCII (Utusan Melayu)', path: '/invoice/claim-ascii/utusan', access: Access.ClaimAscii, form: 'frmClaimASCIIUtusan', group: 'Claim ASCII', phase: 10 },
+      { label: 'Claim ASCII (Utusan Melayu)', path: '/invoice/claim-ascii/utusan', access: Access.ClaimAscii, form: 'frmClaimASCIIUtusan', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (OMNI)', path: '/invoice/claim-ascii/omni', access: Access.ClaimAscii, form: 'frmClaimDataOMNI', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (TIMS)', path: '/invoice/claim-ascii/tims', access: Access.ClaimAscii, form: 'frmClaimASCIITIMS', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (CIMB)', path: '/invoice/claim-ascii/cimb', access: Access.ClaimAscii, form: 'frmClaimASCIICIMB', group: 'Claim ASCII', phase: 10, migrated: true },

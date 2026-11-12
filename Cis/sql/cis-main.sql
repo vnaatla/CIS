@@ -1221,6 +1221,21 @@ BEGIN
 END
 GO
 
+-- frmClaimASCIIUtusan: ClaimDetails_ASCII_Utusan case @case (one view per claim type) with the bordx range as parameters.
+CREATE OR ALTER PROCEDURE cis.ClaimAscii_Utusan @case int, @bordxFrom nvarchar(20), @bordxTo nvarchar(20) AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @view sysname = CASE @case WHEN 1 THEN 'View_ClaimASCII_UtusanDelEO01A' WHEN 2 THEN 'View_ClaimASCII_UtusanNorDelS01B'
+        WHEN 3 THEN 'View_ClaimASCII_UtusanCSecS01C' WHEN 4 THEN 'View_ClaimASCII_UtusanGPEO02A' WHEN 5 THEN 'View_ClaimASCII_UtusanGPDep02B'
+        WHEN 6 THEN 'View_ClaimASCII_UtusanWadFam03A' WHEN 7 THEN 'View_ClaimASCII_UtusanWadFamNE03B' WHEN 8 THEN 'View_ClaimASCII_UtusanSPEO04A'
+        WHEN 9 THEN 'View_ClaimASCII_UtusanSPDep04B' WHEN 10 THEN 'View_ClaimASCII_UtusanDental09' WHEN 11 THEN 'View_ClaimASCII_UtusanDepNE10A'
+        WHEN 12 THEN 'View_ClaimASCII_UtusanPPEO11A' WHEN 13 THEN 'View_ClaimASCII_UtusanPPDep11B' END;
+    IF @view IS NULL RETURN;
+    DECLARE @sql nvarchar(400) = N'SELECT * FROM CISWorksheet.dbo.' + QUOTENAME(@view) + N' WHERE BordxRefNo >= @f AND BordxRefNo <= @t';
+    EXEC sp_executesql @sql, N'@f nvarchar(20), @t nvarchar(20)', @f = @bordxFrom, @t = @bordxTo;
+END
+GO
+
 -- ===== main/120_benefit_clinic.sql =====
 -- Maintenance > Benefit > Clinic (frmMaintenanceBenefitsCln) and its never-opened twin frmMaintenanceBenefitsClnNew: STDClinicBNFSpe.
 

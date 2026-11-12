@@ -37,3 +37,15 @@ shows `No record found!` when nothing is selected and `File Generated Sucessfull
 Known desktop issues (reproduced): TIMS writes an empty cover id (the variable is never set); the TIMS and OMNI fields joined with + lose their separator when empty; CIMB cashless lines without a visit date lose that column; the CIMB trailer rounds the total to whole ringgit; the OMNI procedure ignores the bordx no.
 
 Deliberate differences: files are downloaded (the desktop wrote them to the server's ClinicalClaimASCII folder and C:\ClinicalClaimsASCII / C:\MedicaGenClaimASCII); Bintulu / Toshiba / Singer require the "to" bordx no. (the desktop's check compared it with an empty date mask and never fired); TIMS writes a found deductible as text (the desktop added a Currency value to "~", a type mismatch that stopped the export); CIMB requires a cash type (the desktop silently wrote nothing) and shows the actual total (the desktop showed 0); the clinic can also be typed (the restored data has no clinics for B003, so Bintulu's list is empty here). The TIMS and CIMB provider-file code (CLNFile) is never called on the desktop and is not migrated.
+
+## Claim ASCII (Utusan Melayu) — frmClaimASCIIUtusan (`/invoice/claim-ascii/utusan`, same page and API, format `utusan`)
+
+| Step | Behaviour |
+|---|---|
+| Generate | `Please Enter Bordx No Fr `, `Please Enter Bordx No To `, `Are you sure?` → ClaimDetails_ASCII_Utusan cases 1–13 (as `cis.ClaimAscii_Utusan`: one view per claim type — 01A, 01B, 01C, 02A, 02B, 03A, 03B, 04A, 04B, 09, 10A, 11A, 11B — for the bordx range) in that order into one file `<today yyyyMMdd>_BPOCLMTRH.KZULF`: UMMB, employee no., claim type, visit date, bordx amount twice, FINANCE, clinic, blank, the treatment code for 10A (reason 304 → 03, specialist clinic → 02, else 01), invoice no. followed by ", ", blank, invoice date, two blanks, "Upload From MediExpress", the dependant's relationship (W → I, H → S, else A), bordx amount, the dependant's name, twelve blanks — each line ending in CR. |
+
+Known desktop issues (reproduced): a member's own line has no name field, so its trailing columns shift by one; the file is written (empty) even when no view returns a row.
+
+Fixed desktop bugs: the visit count covered types 01A and 01C only and the total amount was never added up; both now cover every line.
+
+Local data: the restored databases have no Utusan claims, and view 01A (View_ClaimASCII_UtusanDelEO01A) refers to FWHSHISDB.dbo.MBMCoveredPersons, a database that is not restored, so Generate stops with that SQL error here (the desktop fails the same way). The line layout is covered by a unit test.

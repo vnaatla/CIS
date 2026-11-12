@@ -60,4 +60,11 @@ export const reportsRoutes: Routes = [
     data: { access: Access.ClaimAscii, legacyForm: 'frmClaimDataOMNI', format: 'omni' },
     loadComponent: () => import('./claim-ascii.page').then((m) => m.ClaimAsciiPage),
   },
+  {
+    path: 'invoice/claim-ascii/utusan',
+    title: 'CIS - Claim ASCII (utusan)',
+    canActivate: [accessGuard],
+    data: { access: Access.ClaimAscii, legacyForm: 'frmClaimASCIIUtusan', format: 'utusan' },
+    loadComponent: () => import('./claim-ascii.page').then((m) => m.ClaimAsciiPage),
+  },
 ]
