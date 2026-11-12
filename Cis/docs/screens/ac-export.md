@@ -105,3 +105,14 @@ One page (route variant `gst`).
 Known desktop issues (reproduced): on GST the bordx no. boxes are swapped (the "from" box is the upper bound); the bordx and post date filters apply only when both dates are given.
 
 Deliberate differences: VIEW_Sun_Posting_BordxGrpComp takes minutes (over 4 for 5 days, even filtered by bordx no.), so the procedure picks the bordereaux first (batch, bordx date, bordx no.) and reads the view's two branches for them with the same joins and sums (about 16 s for 5 days; checked against the view for KIS18019); one transaction; the workbook is downloaded.
+
+## Receipt Posting > Grp Company — frmPostingRecGrpCompany (`/ac-export/receipt/grp-company`, right AcExport, `api/ac-export/receipt-group`)
+
+| Step | Behaviour |
+|---|---|
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `RecGrp` (VIEW_Sun_Posting_RecFrGrpComp, as `cis.SunPost_RecGrp_Search`): entity (Health Connect / Sihat Johor), group company, receipt no., receipt date (both dates), post date (both dates), post status, batch no. Per receipt and bordereaux (as the view) a debit and a credit line on the same account: `65` + group company code for KDC bordereaux, else `65` + the payor's account code characters 3–6, else `7610`; journal CR, ledger UHC, the receipt amount, the group company, the bordx no.; the credit line is the one Post writes. Search Credit lists `65` + group company, Search Debit `7610`. `Sorry, No Record Found! `. |
+| Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Receipt Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked receipt (type RecGrp) → file `<batch> CR-GrpCompany <receipt from yyyyMMdd>-<receipt to dd>`. |
+
+Known desktop issues (reproduced): the debit and credit lines carry the same account; a receipt covering several bordereaux is listed (and totalled) once per bordereaux.
+
+Deliberate differences: VIEW_Sun_Posting_RecFrGrpComp takes minutes (114 s for 3 rows of two months), so the procedure picks the receipts first (batch, receipt date, receipt no.) and applies the view's joins and grouping to them (about 10 s for two months); one transaction; the workbook is downloaded.

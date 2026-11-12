@@ -211,7 +211,7 @@ export const MENU: MenuModule[] = [
       { label: 'Member', path: '/ac-export/payment/member', access: Access.AcExport, form: 'FrmPostingPay2MBM', group: 'Payment', phase: 9, migrated: true },
       { label: 'Grp Company', path: '/ac-export/bordx/grp-company', access: Access.AcExport, form: 'frmPostingBordxtoGrpComp', group: 'Bordx', desktop: 'hidden', phase: 9, migrated: true },
       { label: 'Grp Company (GST)', path: '/ac-export/bordx/grp-company-gst', access: Access.AcExport, form: 'frmPostingBordxtoGrpGST', group: 'Bordx', phase: 9, migrated: true },
-      { label: 'Grp Company', path: '/ac-export/receipt/grp-company', access: Access.AcExport, form: 'frmPostingRecGrpCompany', group: 'Receipt', phase: 9 },
+      { label: 'Grp Company', path: '/ac-export/receipt/grp-company', access: Access.AcExport, form: 'frmPostingRecGrpCompany', group: 'Receipt', phase: 9, migrated: true },
       { label: 'SUN System GST', path: '/ac-export/sun/gst', access: Access.AcExport, form: 'frmSUNGSTRpt', group: 'SUN System', phase: 9 },
       { label: 'SUN System Report', path: '/ac-export/sun/report', access: Access.AcExport, form: 'frmSUNSystem', group: 'SUN System', phase: 9 },
       { label: 'SUN System Allocation', path: '/ac-export/sun/allocation', access: Access.AcExport, form: 'frmSUNSystemAllocation, frmSUNSystemSearchAcc', group: 'SUN System', phase: 9 },

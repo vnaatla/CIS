@@ -79,3 +79,11 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | B2 | GST, bordx no. KIS18019 – KIS18019 → Search | 65… D and 6000 C 5,077.34 (ASIAFLEX PRODUCTS SDN. BHD.) |
 | B3 | Hidden screen, KIS18019 → Search | 6000 C 4,633.49 and 1002 C 443.85 (fee-for-service company) |
 | B4 | Status 1 - Yes, batch 2648 – 2648 → Search | the posted batch (881 bordereaux, about 30 s) |
+
+## 9. Receipt Posting > Grp Company — `/ac-export/receipt/grp-company` (frmPostingRecGrpCompany)
+
+| # | Action | Expected |
+|---|---|---|
+| E1 | Receipt date 01/06/2021 – 31/07/2021 → Search | 975 rows (about 10 s) |
+| E2 | Receipt no. RP37386 – RP37386 → Search | 4 rows (one per bordereaux), 103,547.24, PERBADANAN INSURANS DEPOSIT MALAYSIA |
+| E3 | Tick → Post without receipt dates | `Please Enter Receipt Date! ` |

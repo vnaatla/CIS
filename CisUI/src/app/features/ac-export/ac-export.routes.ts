@@ -74,4 +74,11 @@ export const acExportRoutes: Routes = [
     data: { access: Access.AcExport, legacyForm: 'frmPostingBordxtoGrpGST', variant: 'gst' },
     loadComponent: () => import('./posting-bordx-group.page').then((m) => m.PostingBordxGroupPage),
   },
+  {
+    path: 'ac-export/receipt/grp-company',
+    title: 'CIS - Receipt Posting - Grp Company',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'frmPostingRecGrpCompany' },
+    loadComponent: () => import('./posting-receipt-group.page').then((m) => m.PostingReceiptGroupPage),
+  },
 ]

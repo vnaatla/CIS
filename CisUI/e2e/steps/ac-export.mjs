@@ -97,4 +97,13 @@ export async function acExport(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Group company bordx postings"] tbody')?.textContent.includes('5,077.34'), { timeout: 120000 })
   check(true, 'Bordx Posting - Grp Company (GST): KIS18019 lists 5,077.34')
+
+  // Receipt Posting > Grp Company: receipt RP37386 lists 103,547.24 (nothing is posted).
+  await page.goto(`${base}/ac-export/receipt/grp-company`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=receiptFrom]')
+  await page.type('input[name=receiptFrom]', 'RP37386')
+  await page.type('input[name=receiptTo]', 'RP37386')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Group company receipt postings"] tbody')?.textContent.includes('103,547.24'), { timeout: 120000 })
+  check(true, 'Receipt Posting - Grp Company: RP37386 lists 103,547.24')
 }
