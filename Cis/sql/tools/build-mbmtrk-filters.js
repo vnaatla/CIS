@@ -50,5 +50,8 @@ eq('department', 'MBMDepartment'); blank('department', 'MBMDepartment')
 range('card', 'MBMCLNCardSentDate', 'datetime'); blank('card', 'MBMCLNCardSentDate')
 range('endt', 'MBMCLNEndtEffDate', 'datetime'); blank('endt', 'MBMCLNEndtEffDate')
 range('suppBordx', 'MBMBordxDate', 'datetime')
+// Detail listings only: principal type (all their queries) and the supplementary registration date (their supplementary queries).
+add('@detailPrinType nvarchar(1) = NULL', "IF @detailPrinType = 'C' SET @w += N' AND (MBMMemberType = ''P'' OR MBMMemberType = ''C'')'; IF @detailPrinType = 'S' SET @w += N' AND (MBMMemberType = ''Q'')';")
+range('suppReg', 'MBMCRegDate', 'datetime'); blank('suppReg', 'MBMCRegDate')
 fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-filters.sql', [...P.map((p) => '--PARAM ' + p), ...W.map((w) => '--WHERE ' + w)].join('\n') + '\n')
 console.log(P.length, 'params', W.length, 'where')

@@ -37,7 +37,7 @@
    "Subsidiary",
    "Billing To"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 88,
    "special": true
@@ -46,7 +46,301 @@
    "c": 90,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 88,
+   "s": 90,
+   "bp": 88,
+   "bs": 89,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "d",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicPrem"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicMCO"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "f",
+     "n": "MBMStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMDataStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMExpiredStatus"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "d",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicPrem"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicMCO"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMAccessFee"
+    },
+    {
+     "k": "f",
+     "n": "MBMStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMDataStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMExpiredStatus"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    },
+    {
+     "k": "f",
+     "n": "Subsidiary"
+    },
+    {
+     "k": "l",
+     "v": "ASO"
+    },
+    {
+     "k": "f",
+     "n": "mbmremarks"
+    },
+    {
+     "k": "f",
+     "n": "REMARK"
+    },
+    {
+     "k": "f",
+     "n": "MBMCostCenter"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMBranch"
+    },
+    {
+     "k": "f",
+     "n": "Principalname"
+    },
+    {
+     "k": "f",
+     "n": "MBMDivision"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceDate"
+    }
+   ]
+  }
  },
  {
   "type": 7,
@@ -82,7 +376,7 @@
    "State",
    "Cancelation Date"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 91,
    "special": true
@@ -91,7 +385,239 @@
    "c": 93,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 91,
+   "s": 93,
+   "bp": 91,
+   "bs": 92,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "MBMCName"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMCDOB"
+    },
+    {
+     "k": "f",
+     "n": "MBMCAgeband"
+    },
+    {
+     "k": "f",
+     "n": "MBMCSex"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicPrem"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicMCO"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "l",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicPrem"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMBasicMCO"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMAccessFee"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    }
+   ]
+  }
  },
  {
   "type": 7,
@@ -109,7 +635,7 @@
    "State",
    "Group Company"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 96,
    "special": true
@@ -118,7 +644,95 @@
    "c": 97,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 96,
+   "s": 97,
+   "bp": 96,
+   "bs": 98,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress1"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress2"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress3"
+    },
+    {
+     "k": "f",
+     "n": "MBMPostCode"
+    },
+    {
+     "k": "f",
+     "n": "CTYCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress1"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress2"
+    },
+    {
+     "k": "f",
+     "n": "MBMAddress3"
+    },
+    {
+     "k": "f",
+     "n": "MBMPostCode"
+    },
+    {
+     "k": "f",
+     "n": "CTYCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    }
+   ]
+  }
  },
  {
   "type": 7,
@@ -136,7 +750,7 @@
    "Branch Code",
    "Agent Code"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 170,
    "special": true
@@ -145,7 +759,97 @@
    "c": 171,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 170,
+   "s": 171,
+   "bp": 170,
+   "bs": 172,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCLNCardSentDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCLNCardSentDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    }
+   ]
+  }
  },
  {
   "type": 7,
@@ -170,7 +874,7 @@
    "Data Status",
    "Cancelation Date"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 88,
    "special": true
@@ -179,7 +883,153 @@
    "c": 90,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 88,
+   "s": 90,
+   "bp": 88,
+   "bs": 89,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "d",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "f",
+     "n": "MBMStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMDataStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "d",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "f",
+     "n": "MBMStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMDataStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMCancelDate"
+    }
+   ]
+  }
  },
  {
   "type": 1,
@@ -202,7 +1052,7 @@
    "Net Premium",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 31,
    "special": true
@@ -211,7 +1061,137 @@
    "c": 32,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 31,
+   "s": 32,
+   "bp": 31,
+   "bs": 32,
+   "supp": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMAccessFee"
+    }
+   ]
+  }
  },
  {
   "type": 12,
@@ -228,7 +1208,7 @@
    "DOR",
    "Gross MCO"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 127,
    "special": true
@@ -237,7 +1217,87 @@
    "c": 129,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 127,
+   "s": 129,
+   "bp": 127,
+   "bs": 128,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "d",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    }
+   ]
+  }
  },
  {
   "type": 4,
@@ -263,7 +1323,7 @@
    "MCO Date - Eff",
    "Inv Date - Bor. Date"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 77,
    "special": true
@@ -272,7 +1332,161 @@
    "c": 78,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 77,
+   "s": 78,
+   "bp": 77,
+   "bs": 78,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "f",
+     "n": "AgeDays"
+    },
+    {
+     "k": "f",
+     "n": "DelayBordx"
+    },
+    {
+     "k": "f",
+     "n": "DelayReg"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvD"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvE"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvBordx"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "RELCODE"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "f",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMValueDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMInvoiceDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "f",
+     "n": "DayInsured"
+    },
+    {
+     "k": "f",
+     "n": "AgeDays"
+    },
+    {
+     "k": "f",
+     "n": "DelayBordx"
+    },
+    {
+     "k": "f",
+     "n": "DelayReg"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvD"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvE"
+    },
+    {
+     "k": "f",
+     "n": "DelayInvBordx"
+    }
+   ]
+  }
  },
  {
   "type": 9,
@@ -291,7 +1505,7 @@
    "Renewal Ind",
    "Takeover"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 101,
    "special": true
@@ -300,7 +1514,105 @@
    "c": 102,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 101,
+   "s": 102,
+   "bp": 101,
+   "bs": 102,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMFirstJoinedDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMInstallment"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyYear"
+    },
+    {
+     "k": "f",
+     "n": "MBMRenewFlag"
+    },
+    {
+     "k": "f",
+     "n": "MBMTakeOver"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMFirstJoinedDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMInstallment"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyYear"
+    },
+    {
+     "k": "f",
+     "n": "MBMRenewFlag"
+    },
+    {
+     "k": "f",
+     "n": "MBMTakeOver"
+    }
+   ]
+  }
  },
  {
   "type": 2,
@@ -319,7 +1631,7 @@
    "Net Premium",
    "Gross Access"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 35,
    "special": true
@@ -328,7 +1640,105 @@
    "c": 36,
    "special": true
   },
-  "helper": null
+  "helper": null,
+  "detail": {
+   "p": 35,
+   "s": 36,
+   "bp": 35,
+   "bs": 36,
+   "supp": [
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "d",
+     "n": "MBMCEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMCExpDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ],
+   "prin": [
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "nm"
+    },
+    {
+     "k": "cv",
+     "n": "MBMCCoverID",
+     "v": "00"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "m",
+     "n": "MBMMCOFee"
+    },
+    {
+     "k": "m",
+     "n": "MBMPremium"
+    },
+    {
+     "k": "m",
+     "n": "MBMAccessFee"
+    }
+   ]
+  }
  },
  {
   "type": 0,

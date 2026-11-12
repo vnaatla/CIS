@@ -50,6 +50,12 @@ public class MbmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacyMonth.Count, month.Rows.Count);
         Assert.Matches(@"^\d{4}/\d{2}$", month.Rows[0][1]);
+        // A detail listing (General Listing, principals of one member): the same rows as the desktop's case 88.
+        var detail = await service.SearchAsync(new MbmTrkRequest(7, "General Listing", "P", new() { ["mbmNo"] = "WKHA3578533*01" }));
+        var legacyDetail = (await s.Sql().Connection.QueryAsync("HISDB.dbo.CISMBMTracking", new { strAppend = " AND MBMNumber = 'WKHA3578533*01'", strAppendCase = 88 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        Assert.Equal(legacyDetail.Select(x => (string)x.MBMNumber).Distinct().Count(), detail.Rows.Count);
+        Assert.Equal("WKHA3578533*01", detail.Rows[0][0]);
         Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new MbmTrkRequest(10, "Nope", "P", new()))))
             .Message);

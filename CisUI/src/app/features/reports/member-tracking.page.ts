@@ -21,6 +21,7 @@ const RANGES: { key: string; label: string; date?: boolean; blank?: boolean }[] 
   { key: 'eff', label: 'Eff. Date', date: true, blank: true }, { key: 'exp', label: 'Exp. Date', date: true, blank: true },
   { key: 'joined', label: 'Date Joined', date: true, blank: true }, { key: 'dor', label: 'DOR', date: true, blank: true }, { key: 'dob', label: 'DOB', date: true, blank: true },
   { key: 'bordx', label: 'Bordx Date', date: true, blank: true }, { key: 'suppBordx', label: 'Supp. Bordx Date', date: true },
+  { key: 'suppReg', label: 'DOR (Supp.)', date: true, blank: true },
   { key: 'cancel', label: 'Cancel Date', date: true, blank: true }, { key: 'invoiceDate', label: 'MCO Inv. Date', date: true, blank: true },
   { key: 'card', label: 'Card Sent Date', date: true, blank: true }, { key: 'endt', label: 'Endt. Eff. Date', date: true, blank: true },
   { key: 'plan', label: 'Plan Code', blank: true }, { key: 'age', label: 'Ageband', blank: true }, { key: 'ic', label: 'IC No', blank: true },
@@ -209,6 +210,7 @@ export class MemberTrackingPage implements OnInit {
       const combo = [...COMBOS.map((c) => c.key), 'ins', 'payor'].includes(k)
       filters[k] = typeof v === 'boolean' ? 'true' : combo ? code(String(v)) : String(v)
     }
+    if (this.principalType !== 'Both') filters['detailPrinType'] = code(this.principalType)
     if (this.type() === 7 && this.selection === 'General Listing (Prin. Name)')
       filters['prinType'] = `${this.memberType === 'B' ? 'Both' : this.memberType}|${this.principalType === 'Both' ? 'Both' : code(this.principalType)}`
     this.busy.set(true)

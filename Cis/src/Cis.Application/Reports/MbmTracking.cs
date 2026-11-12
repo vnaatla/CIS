@@ -75,7 +75,10 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
 
     internal sealed record Helper(int C, bool Append, List<Col>? Cols);
 
-    internal sealed record Entry(int Type, string Selection, string Routine, List<string> Headers, bool Special, Block? P, Block? S, Helper? Helper);
+    /// <summary>A detail listing (one row per member): the cases for P, S and Both (principals, supplementaries) and the columns of each loop.</summary>
+    internal sealed record Detail(int P, int S, int Bp, int Bs, List<Col> Prin, List<Col> Supp);
+
+    internal sealed record Entry(int Type, string Selection, string Routine, List<string> Headers, bool Special, Block? P, Block? S, Helper? Helper, Detail? Detail = null);
 
     private sealed record Param(string N, string T);
 
@@ -108,8 +111,11 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
         var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
         if (e.Special) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
+        // The principal type and the supplementary registration date belong to the detail listings only (their own criteria in the desktop).
+        if (e.Detail is null) foreach (var k in DetailOnly) filters.Remove(k);
         var type = (r.MemberType ?? "P").Trim().ToUpperInvariant() is var t && t.Length > 0 ? t[..1] : "P";
         await using var s = await sessions.OpenAsync();
+        if (e.Detail is not null) return await DetailAsync(s, e, type, filters);
         var rows = new List<List<string>>();
         int principals = 0, supps = 0;
         decimal mco = 0, premium = 0, access = 0;
@@ -152,6 +158,57 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         return new MbmTrkResult(e.Headers, rows, principals, supps, mco, premium, access);
     }
+
+    /// <summary>The detail listings (GeneralListing, PrintLabel, ICListing, ...): principals then supplementaries, a member (and cover id) listed once in a row.</summary>
+    private async Task<MbmTrkResult> DetailAsync(IDbSession s, Entry e, string type, Dictionary<string, object?> filters)
+    {
+        var d = e.Detail!;
+        var rows = new List<List<string>>();
+        int principals = 0, supps = 0;
+        decimal mco = 0, premium = 0, access = 0;
+        void Add(List<Dictionary<string, object?>> source, List<Col> cols, bool supp)
+        {
+            var last = "";
+            foreach (var x in source)
+            {
+                var key = T(x, "MBMNumber") + (supp ? "|" + T(x, "MBMCCoverID") : "");
+                if (key == last) continue;
+                last = key;
+                rows.Add(cols.Select(c => DetailCell(c, x)).ToList());
+                if (supp) supps++;
+                else
+                {
+                    if (T(x, "MBMMemberType") is "C" or "S") supps++; else principals++;
+                    mco += N(x, "MBMMCOFee");
+                    premium += N(x, "MBMPremium");
+                    access += N(x, "MBMAccessFee");
+                }
+            }
+        }
+        if (type == "S") Add(await repository.RunAsync(s, d.S, filters), d.Supp, true);
+        else
+        {
+            var prinFilters = filters.Where(x => !SuppOnly.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
+            Add(await repository.RunAsync(s, type == "B" ? d.Bp : d.P, prinFilters), d.Prin, false);
+            if (type == "B") Add(await repository.RunAsync(s, d.Bs, filters), d.Supp, true);
+        }
+        if (rows.Count == 0) throw new NotFoundException(NoDetailRecord);
+        return new MbmTrkResult(e.Headers, rows, principals, supps, mco, premium, access);
+    }
+
+    private static readonly string[] DetailOnly = ["detailPrinType", "suppRegFrom", "suppRegTo", "suppRegBlank"];
+    private static readonly string[] SuppOnly = ["suppRegFrom", "suppRegTo", "suppRegBlank"];
+
+    /// <summary>Desktop text of the detail listings.</summary>
+    public const string NoDetailRecord = "Sorry, No Record Found";
+
+    private static string DetailCell(Col c, IReadOnlyDictionary<string, object?> x) => c.K switch
+    {
+        "cv" => T(x, c.N!) is { Length: > 0 } v ? v : c.V ?? "",
+        "nm" => T(x, "MBMName") + (T(x, "MBMStatus") switch { "S" => " (Suspended)", "C" => " (Cancelled)", "D" => " (Deleted)", _ => "" }),
+        "d" => x.GetValueOrDefault(c.N!) is DateTime dt ? dt.ToString("dd/MM/yyyy", En) : T(x, c.N!),
+        _ => Cell(c, x, null),
+    };
 
     /// <summary>The typed filters: only known names, each converted to its parameter type.</summary>
     internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input)
