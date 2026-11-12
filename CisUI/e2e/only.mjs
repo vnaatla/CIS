@@ -7,8 +7,9 @@ import { claimBordx } from './steps/claim-bordx.mjs'
 import { payment } from './steps/payment.mjs'
 import { receipt } from './steps/receipt.mjs'
 import { acExport } from './steps/ac-export.mjs'
+import { reports } from './steps/reports.mjs'
 
-const modules = { 'claim-bordx': claimBordx, payment, receipt, 'ac-export': acExport }
+const modules = { 'claim-bordx': claimBordx, payment, receipt, 'ac-export': acExport, reports }
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
 const password = process.env.E2E_PASSWORD

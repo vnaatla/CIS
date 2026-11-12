@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**114 screens to build · 81 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**114 screens to build · 82 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -22,9 +22,9 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
-| [Tracking](#tracking) | 2 | 0 | 0 |
+| [Tracking](#tracking) | 2 | 1 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **114** | **81** | **18** |
+| **Total** | **114** | **82** | **18** |
 
 ## Membership
 
@@ -206,7 +206,7 @@ Module page: `/tracking`
 
 | Sub-menu | Menu item | VB6 form(s) | Access | Desktop | Phase | Status | Web route |
 |---|---|---|---:|---|---:|---|---|
-|  | Clinic | FrmTracking | 144 |  | 10 | Pending | `/tracking/clinic` |
+|  | Clinic | FrmTracking | 144 |  | 10 | **Migrated** | `/tracking/clinic` |
 |  | Grp. Com. Clinic | FrmTracking2 | 144 |  | 10 | Pending | `/tracking/grp-company-clinic` |
 
 ## Maintenance

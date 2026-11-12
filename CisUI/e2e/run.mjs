@@ -7,6 +7,7 @@ import { claimBordx } from './steps/claim-bordx.mjs'
 import { payment } from './steps/payment.mjs'
 import { receipt } from './steps/receipt.mjs'
 import { acExport } from './steps/ac-export.mjs'
+import { reports } from './steps/reports.mjs'
 
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
@@ -606,6 +607,9 @@ try {
 
   // 38. A/C Export (Phase 9) steps.
   await acExport(page, base, check)
+
+  // 39. Tracking and report (Phase 10) steps.
+  await reports(page, base, check)
 
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')
