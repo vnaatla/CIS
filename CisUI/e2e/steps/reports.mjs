@@ -9,4 +9,13 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinics"] tbody')?.textContent.includes('B020'), { timeout: 120000 })
   check(true, 'Clinic Tracking: clinics named like BALA include B020')
+
+  // Tracking > Grp. Com. Clinic: group companies per clinic for clinic code B324.
+  await page.goto(`${base}/tracking/grp-company-clinic`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=clinicCode]')
+  await page.evaluate(() => [...document.querySelectorAll('input[name=mode]')][3].click())
+  await page.type('input[name=clinicCode]', 'B324')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Group company clinics"] tbody')?.textContent.includes('KLINIK BALA'), { timeout: 120000 })
+  check(true, 'Grp. Com. Clinic Tracking: B324 lists its number of group companies')
 }

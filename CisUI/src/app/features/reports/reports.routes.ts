@@ -11,4 +11,11 @@ export const reportsRoutes: Routes = [
     data: { access: Access.ClinicTracking, legacyForm: 'FrmTracking' },
     loadComponent: () => import('./clinic-tracking.page').then((m) => m.ClinicTrackingPage),
   },
+  {
+    path: 'tracking/grp-company-clinic',
+    title: 'CIS - Group Company Clinic Tracking',
+    canActivate: [accessGuard],
+    data: { access: Access.ClinicTracking, legacyForm: 'FrmTracking2' },
+    loadComponent: () => import('./grp-company-clinic-tracking.page').then((m) => m.GrpCompanyClinicTrackingPage),
+  },
 ]

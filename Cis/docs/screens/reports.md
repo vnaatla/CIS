@@ -9,3 +9,13 @@
 | Print | The list as CSV. |
 
 Deliberate differences: parameters instead of pasted criteria (the desktop pasted the typed text into SQL).
+
+## Tracking > Grp. Com. Clinic — FrmTracking2 (`/tracking/grp-company-clinic`, right ClinicTracking, `api/tracking/grp-company-clinic`)
+
+| Step | Behaviour |
+|---|---|
+| Combos | Group company names (CISDB GRPCompany) and clinic names (HISDB CLN). |
+| Search | CISDB CLNTracking (VIEW_GrpCom_Clinic, as `cis.TrkGrpCln_Search`): group code and clinic code (contain), group company, clinic name. Four views: by group company (group code — `Empty` when blank —, group name, clinic code, clinic name); clinics per group company (group code, name, no. of clinics); by clinic (clinic code, name, group code, name); group companies per clinic (clinic code, name, no. of group companies). `No record found!`. |
+| Print | The list as CSV (`Report cannot be printed without any record.`). |
+
+Deliberate differences: parameters instead of pasted criteria.

@@ -225,7 +225,7 @@ export const MENU: MenuModule[] = [
     path: '/tracking',
     items: [
       { label: 'Clinic', path: '/tracking/clinic', access: Access.ClinicTracking, form: 'FrmTracking', phase: 10, migrated: true },
-      { label: 'Grp. Com. Clinic', path: '/tracking/grp-company-clinic', access: Access.ClinicTracking, form: 'FrmTracking2', phase: 10 },
+      { label: 'Grp. Com. Clinic', path: '/tracking/grp-company-clinic', access: Access.ClinicTracking, form: 'FrmTracking2', phase: 10, migrated: true },
     ],
   },
   {
