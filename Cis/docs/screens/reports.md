@@ -83,3 +83,14 @@ Fixed desktop bugs: claimability was added with OR (ignoring the other filters) 
 | Print | The list as CSV. |
 
 Deliberate differences: the e-mails go through the API's e-mail sender (SMTP, configured as `Email:Host`; in development `Email:PickupDirectory` = `D:\CIS\LocalRun\MailPickup`, where each e-mail is written as an .eml file and nothing is sent) instead of the user's Outlook; a PV is marked as e-mailed only after its e-mail has gone (the desktop marked it first, so a failed send left it marked).
+
+## Invoice > Email Notification (Providers) — frmEmailNotificationProvider (`/invoice/email/providers`, right EmailNotification, `api/email/providers`)
+
+| Step | Behaviour |
+|---|---|
+| Search | Same checks as Payment → CISPayment View_email_Provider (as `cis.EmlPrv_Search`): clinic PV date and no. ranges, status (Resend = already e-mailed), entity (PV no. CS… for Sihat Johor), ordered by e-mail descending; lists clinic code / name, PV no. / date, cheque no. / date / amount, e-mail. |
+| Send | Same checks; per ticked clinic PV the invoices from CISPayment sp_ProviderInv (PV no., case type C) in a table (invoice no. / date, cheque date, bill amount, co-payment, FFS, amount paid, totals); the sender is MAJU SIHAT for entity SJ, else HEALTH CONNECT: subject `<entity> Payment Advice - <clinic name> (<clinic code>)`, to the clinic's e-mail, BCC elaineyeow@medix.com.my plus the extra addresses, the advice with PV no., cheque no., PV amount and date banked-in; then Payment2CLN.PVEmailStatus = Y (no date, as the desktop). |
+
+Known desktop issues (reproduced): the "already e-mailed — send again?" prompt never fires (the column it checks is never filled); the BCC test compares with Null and always takes the "extra addresses" branch (same result).
+
+Deliberate differences: as Payment (the app's e-mail sender instead of Outlook).

@@ -53,3 +53,10 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | E1 | PV date 03/08/2021 – 03/08/2021, status N - New → Search | 161 PVs |
 | E2 | No status → Search | `Please Enter Status!` |
 | E3 | Tick CP100471624, send date 05/08/2021 → Send → Yes | `Emails have been sent out successfully!`; an .eml file in `D:\CIS\LocalRun\MailPickup` (development: nothing is sent); the PV now lists under R - Resend. Clean-up: `UPDATE CISPayment.dbo.Payment2MBM SET PVEmailStatus = NULL, PVEmailDate = NULL WHERE PVNo = 'CP100471624'` |
+
+## 7. Email Notification (Providers) — `/invoice/email/providers` (frmEmailNotificationProvider)
+
+| # | Action | Expected |
+|---|---|---|
+| P1 | PV date 03/08/2021 – 03/08/2021, status N - New → Search | 830 clinic PVs |
+| P2 | Tick CP100471757 (KLINIK DR AKBAR), send date 05/08/2021 → Send → Yes | .eml in `D:\CIS\LocalRun\MailPickup`; clean-up: `UPDATE CISPayment.dbo.Payment2CLN SET PVEmailStatus = NULL WHERE PVCLNNo = 'CP100471757'` |

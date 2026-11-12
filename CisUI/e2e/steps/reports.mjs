@@ -56,4 +56,16 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Payments to e-mail"] tbody')?.textContent.includes('CP100471624'), { timeout: 120000 })
   check(true, 'Email Notification (Payment): new PV CP100471624 is listed')
+
+  // Email Notification (Providers): new clinic PV CP100471757 of 03/08/2021 is listed (nothing is sent).
+  await page.goto(`${base}/invoice/email/providers`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=status]')
+  await page.type('input[aria-label="PV Date From"]', '03/08/2021')
+  await page.type('input[aria-label="PV Date To"]', '03/08/2021')
+  await page.type('input[name=pvFrom]', 'CP100471757')
+  await page.type('input[name=pvTo]', 'CP100471757')
+  await page.select('select[name=status]', 'N - New')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic payments to e-mail"] tbody')?.textContent.includes('CP100471757'), { timeout: 120000 })
+  check(true, 'Email Notification (Providers): new clinic PV CP100471757 is listed')
 }

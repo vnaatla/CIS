@@ -33,6 +33,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./email-payment.page').then((m) => m.EmailPaymentPage),
   },
   {
+    path: 'invoice/email/providers',
+    title: 'CIS - Email Notification (Providers)',
+    canActivate: [accessGuard],
+    data: { access: Access.EmailNotification, legacyForm: 'frmEmailNotificationProvider' },
+    loadComponent: () => import('./email-providers.page').then((m) => m.EmailProvidersPage),
+  },
+  {
     path: 'tracking/grp-company-clinic',
     title: 'CIS - Group Company Clinic Tracking',
     canActivate: [accessGuard],
