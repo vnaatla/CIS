@@ -31,3 +31,26 @@ BEGIN
     SELECT RTRIM(STADescription) FROM HISDB.dbo.STA;
 END
 GO
+
+-- Tracking > Grp. Com. Clinic (FrmTracking2): CISDB CLNTracking cases 1–3 (VIEW_GrpCom_Clinic). @mode 1 by group, 2 clinics per group, 3 by clinic, 4 groups per clinic.
+CREATE OR ALTER PROCEDURE cis.TrkGrpCln_Search @mode int = 1, @grpCode nvarchar(30) = NULL, @clnCode nvarchar(30) = NULL, @company nvarchar(200) = NULL,
+    @clinic nvarchar(200) = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT GRPComCode, GrpCoName, GrpComClnCode, CLNName INTO #r FROM dbo.VIEW_GrpCom_Clinic
+    WHERE (@grpCode IS NULL OR GRPComCode LIKE '%' + @grpCode + '%') AND (@clnCode IS NULL OR GrpComClnCode LIKE '%' + @clnCode + '%')
+      AND (@company IS NULL OR GrpCoName = @company) AND (@clinic IS NULL OR CLNName = @clinic);
+    IF @mode IN (1, 3) SELECT * FROM #r;
+    ELSE IF @mode = 2 SELECT GRPComCode, GrpCoName, COUNT(GrpComClnCode) AS TotalCLN FROM #r GROUP BY GRPComCode, GrpCoName;
+    ELSE SELECT GrpComClnCode, CLNName, COUNT(GRPComCode) AS TotalCom FROM #r GROUP BY GrpComClnCode, CLNName;
+END
+GO
+
+-- GRPCOMCLNComboListing: group company names and clinic names.
+CREATE OR ALTER PROCEDURE cis.TrkGrpCln_Lookups AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT RTRIM(GrpCoName) FROM dbo.GRPCompany WHERE GrpCoName IS NOT NULL;
+    SELECT RTRIM(CLNName) FROM cis.Hdb_CLN WHERE CLNName IS NOT NULL;
+END
+GO
