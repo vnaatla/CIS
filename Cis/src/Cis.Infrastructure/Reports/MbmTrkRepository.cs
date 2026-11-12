@@ -15,4 +15,7 @@ public sealed class MbmTrkRepository : IMbmTrkRepository
         p.Add("case", caseNo);
         return session.RowsAsync("cis.MbmTrk_Run", p, 600);
     }
+
+    /// <inheritdoc />
+    public Task<List<string>> LookupAsync(IDbSession session, string kind, string? key) => session.QueryAsync<string>("cis.MbmTrk_Lookup", new { kind, key });
 }

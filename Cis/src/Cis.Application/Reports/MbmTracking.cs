@@ -38,6 +38,9 @@ public interface IMbmTrkRepository
 {
     /// <summary>cis.MbmTrk_Run: one case of CISMBMTracking with the typed filters.</summary>
     Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters);
+
+    /// <summary>cis.MbmTrk_Lookup: a combo.</summary>
+    Task<List<string>> LookupAsync(IDbSession session, string kind, string? key);
 }
 
 /// <summary>Tracking > MBM Tracking (FrmNewMBMTracking).</summary>
@@ -48,6 +51,9 @@ public interface IMbmTrkService
 
     /// <summary>cmdSearch_Click.</summary>
     Task<MbmTrkResult> SearchAsync(MbmTrkRequest request);
+
+    /// <summary>A combo: states, ins, payors (key = health type), companies (key = payor), departments (key = group company).</summary>
+    Task<List<string>> LookupAsync(string kind, string? key);
 }
 
 /// <inheritdoc />
@@ -80,6 +86,16 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
     {
         using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(name) ?? throw new InvalidOperationException(name + " missing");
         return JsonSerializer.Deserialize<T>(s, Json)!;
+    }
+
+    private static readonly string[] Kinds = ["states", "ins", "payors", "companies", "departments"];
+
+    /// <inheritdoc />
+    public async Task<List<string>> LookupAsync(string kind, string? key)
+    {
+        if (!Kinds.Contains(kind)) throw new NotFoundException("Unknown list.");
+        await using var s = await sessions.OpenAsync();
+        return await repository.LookupAsync(s, kind, string.IsNullOrWhiteSpace(key) ? null : key.Trim());
     }
 
     /// <inheritdoc />
