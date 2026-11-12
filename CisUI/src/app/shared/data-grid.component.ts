@@ -59,6 +59,7 @@ const compare = (a: string | number, b: string | number) =>
               [attr.aria-selected]="selectable() ? rowKey()(row) === selectedKey() : null"
               (click)="selectable() && rowSelected.emit(row)"
               (keydown.enter)="selectable() && rowSelected.emit(row)"
+              (dblclick)="rowActivated.emit(row)"
             >
               @if (checkable()) {
                 <td class="check-cell">
@@ -128,6 +129,8 @@ export class DataGridComponent<T extends object> {
   readonly pageRequest = output<{ page: number; pageSize: number; sortKey: string | null; sortDir: 'asc' | 'desc' }>()
 
   readonly rowSelected = output<T>()
+  /** A row double-clicked (screens that open the row elsewhere, e.g. Invoice Tracking). */
+  readonly rowActivated = output<T>()
   readonly checkedChange = output<Set<string>>()
 
   private readonly sort = signal<Sort>(null)

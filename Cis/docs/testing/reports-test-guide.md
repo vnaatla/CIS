@@ -28,3 +28,13 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | A4 | TIMS | Bordx KDC55481 → Generate | 18 visits |
 | A5 | CIMB | Bordx KIS01540, Cashless → Generate | 571 visits |
 | A6 | OMNI | Generate | zip; the provider file marks the clinics as sent (clean-up: `UPDATE HISDB.dbo.CLN SET CLNOMNISent = NULL WHERE ...` for the listed codes) |
+
+## 4. Invoice > Tracking — `/invoice/tracking` (FrmInvoiceTracking)
+
+| # | Action | Expected |
+|---|---|---|
+| I1 | Case no. EA12538600 – EA12538699 → Search | about 95 rows with invoice amount / approved / BTBG totals |
+| I2 | Visit date 01/07/2021 – 01/07/2021 → Search | about 2,200 rows (about 6 s) |
+| I3 | Bordx no. KIS18019 – KIS18019 → Search | 60 rows (about 35 s) |
+| I4 | Double-click a row | Invoice Adjustment opens with that case |
+| I5 | Visit date from 31/02/2021 | `Invalid Date Format! ` |

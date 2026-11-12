@@ -49,3 +49,16 @@ Known desktop issues (reproduced): a member's own line has no name field, so its
 Fixed desktop bugs: the visit count covered types 01A and 01C only and the total amount was never added up; both now cover every line.
 
 Local data: the restored databases have no Utusan claims, and view 01A (View_ClaimASCII_UtusanDelEO01A) refers to FWHSHISDB.dbo.MBMCoveredPersons, a database that is not restored, so Generate stops with that SQL error here (the desktop fails the same way). The line layout is covered by a unit test.
+
+## Invoice > Tracking — FrmInvoiceTracking (`/invoice/tracking`, right InvoiceTracking, `api/tracking/invoice`)
+
+| Step | Behaviour |
+|---|---|
+| Combos | Payors (SearchPayor), group companies of the payor (SearchPayGrp, first 2 characters), subsidiaries and departments of the group company (HISDB SearchSubsidiary / SearchDepartment), panel clinics (SearchCLN); pay to C / M; payment status Yes / No; claimability A / R; clinic type 0 Specialised / 1 GP / 2 Others; FFS; OMNI sent; entity (Health Connect / Sihat Johor); Flex OP (OutPatient / flexCare). |
+| Search | CISWorksheet ClaimBordxModule case 25 (VIEW_Invoice_Tracking_2020, or VIEW_Invoice_Tracking_2020_BTBG when a bordx no. criterion is used), as `cis.InvTrk_Search`: ranges with "empty" boxes for case no., member no., invoice no., bordx no., plan, IC no., OP batch, OMNI ref., invoice amount, accounting month / year; pay to, clinic (or empty payee), payor, group company, patient name; case status O / D / C and Pending; claimability; bordx, visit, register, invoice, invoice registration and OP batch dates (`Invalid Date Format! `); clinic type, FFS, OMNI / TIMS company, subsidiary, department, OMNI sent, entity, Flex OP, payment status (PV of the clinic or member, with Pay To). The list shows the desktop's 80 columns (days 0 shown as 1; clinic name when paid to clinic, else the non-panel clinic; reason 5 is the diagnosis for reasons 199 / 299; fee, medicine and injection sums) with totals of invoice amount, approved and BTBG. `No record found!`. |
+| Double-click | Opens the case in Invoice > Adjustment (`/invoice/adjustment?case=`), as the desktop. |
+| Print to File | The list as CSV. |
+
+Fixed desktop bugs: claimability added `OR Claimability = …` and FFS "No" added `… OR (CLNFFSStatus …)` to the criteria, which ignored all the other filters; both are now ANDed. The accounting month / year were compared as text (10 < 9); they are compared as numbers. The bordx date filter was pasted twice (no effect). The quantity 3 column overwrote quantity 2; each now has its column.
+
+Speed: a case range or a day of visits takes 1–6 s; a bordx no. search reads the BTBG view (about 35 s for one bordereaux, as the desktop with its 15-minute timeout).

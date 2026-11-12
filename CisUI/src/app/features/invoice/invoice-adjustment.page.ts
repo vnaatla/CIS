@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, inject, signal, OnInit } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
@@ -199,12 +199,13 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
     }
   `,
 })
-export class InvoiceAdjustmentPage {
+export class InvoiceAdjustmentPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
   private readonly router = inject(Router)
   /** frmInvoiceAdjAftBordx (route data afterBordx): its own API and no pending / audit / void / claims approval. */
-  protected readonly afterBordx = inject(ActivatedRoute).snapshot.data['afterBordx'] === true
+  private readonly route = inject(ActivatedRoute)
+  protected readonly afterBordx = this.route.snapshot.data['afterBordx'] === true
   /** frmInvoiceAdjAfterPost (route data afterPost): Create makes a sub-case of a case posted to SUN. */
   protected readonly afterPost = inject(ActivatedRoute).snapshot.data['afterPost'] === true
   /** The reduced screens have no pending / audit / void / claims approval. */
@@ -248,6 +249,15 @@ export class InvoiceAdjustmentPage {
   }
 
   /** CmdGo_Click: InvoiceINFO into the form. */
+  /** Opened from Invoice Tracking (lstInvoiceTrackList_DblClick): the case no. in ?case= is loaded as by Go. */
+  ngOnInit(): void {
+    const c = this.route.snapshot.queryParamMap.get('case')
+    if (c) {
+      this.caseNo = c
+      void this.go()
+    }
+  }
+
   protected async go(): Promise<void> {
     this.caseNo = this.caseNo.trim().toUpperCase()
     if (!this.caseNo) return

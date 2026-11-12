@@ -26,4 +26,13 @@ export async function reports(page, base, check) {
   await click(page, 'Generate')
   await page.waitForFunction(() => document.querySelector('[aria-label="Totals"]')?.textContent.includes('571'), { timeout: 120000 })
   check(true, 'Claim ASCII (CIMB): KIS01540 generates 571 visits')
+
+  // Invoice > Tracking: cases EA12538600 - EA12538699.
+  await page.goto(`${base}/invoice/tracking`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('input[name=caseFrom]')
+  await page.type('input[name=caseFrom]', 'EA12538600')
+  await page.type('input[name=caseTo]', 'EA12538699')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Invoices"] tbody')?.textContent.includes('EA125386'), { timeout: 120000 })
+  check(true, 'Invoice Tracking: cases EA12538600 - EA12538699 are listed')
 }
