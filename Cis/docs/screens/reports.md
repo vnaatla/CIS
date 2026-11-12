@@ -117,3 +117,17 @@ Generate: CISDB View_CLN_OMNI panel clinics (C / Y; `cis.ClaimAscii_OmniPanel`) 
 | Claims Data | frmClaimsdata | Never opened by the desktop; its Search builds criteria but the listing routine is empty, so it lists nothing. |
 | Claims Excel (Sin Chew) | frmClaimsExcelSinChew | Never opened; the form has no code. |
 | Test Form | frmTest | A developer test form: posts a sample SOAP request to an HLA UAT web service and checks scanned-document files against a scratch table (tmp_CasFloderstatus). |
+
+## Membership > MBM Tracking — FrmNewMBMTracking (`/membership/tracking`, right MbmTracking, `api/tracking/member`) — in progress
+
+The desktop form is a report engine: 18 report types (Ageband … States), each with report choices, 73 reports in all, built from the 178 cases of HISDB CISMBMTracking.
+
+| Part | How it is migrated |
+|---|---|
+| Queries | `cis.MbmTrk_Run` (`sql/main/1140_mbm_tracking.sql`) is generated from CISMBMTracking by `sql/tools/gen-mbmtrk.js`: every case keeps the desktop's query text; the pasted criteria are replaced by a WHERE fragment built from the filters that are set, each value a parameter (`sql/tools/build-mbmtrk-filters.js` lists the ~125 filters of SearchRecord with their "empty" boxes). Checked against the desktop procedure (case 1, payor DC, active: identical). |
+| Reports | `Reports/MbmTracking.catalogue.json` is generated from the form (`sql/tools/analyse-mbmtrk*.js`, `gen-mbmtrk-catalogue.js`, `gen-mbmtrk-spec.js`): per report its principal / supplementary cases, column mapping and headers. Member type P lists the principal case, S the supplementary case, Both the principal rows with the supplementary values merged on the group keys or the supplementary rows appended, as the desktop's routines. Totals: principals, supplementaries, total, MCO, premium, access. `Please select a report type.`, `No record found!`. |
+| Combos | States, insured types, payors of the health type, group companies of the payor, departments of the group company (`cis.MbmTrk_Lookup`), and the desktop's fixed lists. |
+
+Status: 40 of the 73 reports run; the other 33 (the detail listings — General Listing ×4, Print Label, Card Sent, Agent detail, MCO invoice detail, Date, IC, Bordx details, Effective period —, the month reports, the bordx / invoice MCO and premium summaries, Top 20, Branch by agent, the group company by bordx date summaries and the principal plan reports) answer `This report is not migrated yet.` and are marked so in the report choice list.
+
+Fixed desktop bugs: the employee no. "from" box was added to an unused string (ignored); the States headers were never set (the header routine tested report type 18).

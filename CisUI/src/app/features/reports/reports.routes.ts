@@ -47,6 +47,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./email-rejection.page').then((m) => m.EmailRejectionPage),
   },
   {
+    path: 'membership/tracking',
+    title: 'CIS - MBM Tracking',
+    canActivate: [accessGuard],
+    data: { access: Access.MbmTracking, legacyForm: 'FrmNewMBMTracking' },
+    loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
+  },
+  {
     path: 'tracking/grp-company-clinic',
     title: 'CIS - Group Company Clinic Tracking',
     canActivate: [accessGuard],

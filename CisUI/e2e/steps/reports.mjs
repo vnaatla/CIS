@@ -80,4 +80,19 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Rejected claims"] tbody')?.textContent.includes('EA12514425'), { timeout: 120000 })
   check(true, 'Email Notification (Rejection): rejected claim EA12514425 is listed')
+
+  // MBM Tracking: INS Type & MBM Type by payor, principals of payor DC (active).
+  await page.goto(`${base}/membership/tracking`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType] option:nth-child(12)')
+  await page.evaluate(() => {
+    const s = document.querySelector('select[name=reportType]')
+    s.value = [...s.options].find((o) => o.textContent.trim() === 'INS Type & MBM Type').value
+    s.dispatchEvent(new Event('change'))
+  })
+  await page.waitForFunction(() => [...document.querySelectorAll('select[name=selection] option')].some((o) => o.textContent.includes('By Payor')))
+  await page.select('select[name=status]', '0 - Active')
+  await page.type('input[name=payor]', 'DC - x')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('DC'), { timeout: 180000 })
+  check(true, 'MBM Tracking: INS Type & MBM Type by payor lists payor DC')
 }
