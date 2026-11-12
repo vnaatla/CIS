@@ -38,3 +38,10 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | I3 | Bordx no. KIS18019 – KIS18019 → Search | 60 rows (about 35 s) |
 | I4 | Double-click a row | Invoice Adjustment opens with that case |
 | I5 | Visit date from 31/02/2021 | `Invalid Date Format! ` |
+
+## 5. Invoice > Tracking (Jupiter) — `/invoice/tracking-jupiter` (FrmInvoiceTracking2)
+
+| # | Action | Expected |
+|---|---|---|
+| J1 | Case no. EA12538600 – EA12538699 → Search | about 95 rows with the MS No column |
+| J2 | Same, case status O - Open | only open cases |

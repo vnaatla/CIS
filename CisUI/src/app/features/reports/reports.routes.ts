@@ -19,6 +19,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./invoice-tracking.page').then((m) => m.InvoiceTrackingPage),
   },
   {
+    path: 'invoice/tracking-jupiter',
+    title: 'CIS - Invoice Tracking (Jupiter)',
+    canActivate: [accessGuard],
+    data: { access: Access.InvoiceTrackingJupiter, legacyForm: 'FrmInvoiceTracking2', variant: 'jupiter' },
+    loadComponent: () => import('./invoice-tracking.page').then((m) => m.InvoiceTrackingPage),
+  },
+  {
     path: 'tracking/grp-company-clinic',
     title: 'CIS - Group Company Clinic Tracking',
     canActivate: [accessGuard],

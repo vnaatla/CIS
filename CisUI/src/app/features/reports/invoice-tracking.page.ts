@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -13,7 +13,6 @@ import { saveCsv } from '../../shared/lib/download'
 import { formatDate, formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-const BASE = '/api/tracking/invoice'
 type Row = Record<string, unknown>
 const s = (v: unknown) => (v == null ? '' : String(v).trim())
 const money = (k: string, label: string): GridColumn<Row> => ({ key: k, label, align: 'right', value: (x) => formatMoney(Number(x[k] ?? 0)) })
@@ -38,19 +37,22 @@ const COLUMNS: GridColumn<Row>[] = [
   t('clmcostcenter', 'Cost Centre'), t('CLMDeptName', 'Department'), t('InternalRemarks', 'Internal Remarks'),
 ]
 
-/** Invoice > Tracking (FrmInvoiceTracking). Double-click opens the case in Invoice Adjustment, as the desktop. */
+/** Invoice > Tracking (FrmInvoiceTracking) and Tracking (Jupiter) (FrmInvoiceTracking2, route data jupiter: fewer filters, one case status, MSNO).
+ * Double-click opens the case in Invoice Adjustment, as the desktop. */
 @Component({
   selector: 'app-invoice-tracking-page',
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Tracking" subtitle="Replaces FrmInvoiceTracking">
+    <app-page-shell [title]="jupiter ? 'Invoice Tracking (Jupiter)' : 'Invoice Tracking'" [subtitle]="jupiter ? 'Replaces FrmInvoiceTracking2' : 'Replaces FrmInvoiceTracking'">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Case and member</legend>
+@if (!jupiter) {
           <app-field label="Entity">
             <select name="entity" [(ngModel)]="f.entity"><option [ngValue]="0">Health Connect</option><option [ngValue]="1">Sihat Johor</option></select>
           </app-field>
+          }
           <app-field label="Case No From"><input name="caseFrom" maxlength="20" [(ngModel)]="f.caseFrom" /></app-field>
           <app-field label="Case No To"><input name="caseTo" maxlength="20" [(ngModel)]="f.caseTo" /></app-field>
           <label class="check-field"><input type="checkbox" name="caseBlank" [(ngModel)]="f.caseBlank" /> Empty</label>
@@ -65,9 +67,11 @@ const COLUMNS: GridColumn<Row>[] = [
           <app-field label="Plan From"><input name="planFrom" maxlength="20" [(ngModel)]="f.planFrom" /></app-field>
           <app-field label="Plan To"><input name="planTo" maxlength="20" [(ngModel)]="f.planTo" /></app-field>
           <label class="check-field"><input type="checkbox" name="planBlank" [(ngModel)]="f.planBlank" /> Empty</label>
+@if (!jupiter) {
           <app-field label="Flex OP">
             <select name="flex" [(ngModel)]="f.flex"><option [ngValue]="null"></option><option [ngValue]="0">OutPatient</option><option [ngValue]="1">flexCare</option></select>
           </app-field>
+          }
         </fieldset>
         <fieldset aria-label="Payor and clinic">
           <legend>Payor and clinic</legend>
@@ -81,12 +85,16 @@ const COLUMNS: GridColumn<Row>[] = [
             <datalist id="it-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="groupCompanyBlank" [(ngModel)]="f.groupCompanyBlank" /> Empty</label>
+@if (!jupiter) {
           <app-field label="Subsidiary">
             <select name="subsidiary" [(ngModel)]="f.subsidiary"><option value=""></option>@for (c of lists()['subsidiaries'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
           </app-field>
+          }
+@if (!jupiter) {
           <app-field label="Department">
             <select name="department" [(ngModel)]="f.department"><option value=""></option>@for (c of lists()['departments'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
           </app-field>
+          }
           <app-field label="Clinic" [wide]="true">
             <input name="clinic" list="it-clinics" (focus)="load('clinics')" [(ngModel)]="f.clinic" />
             <datalist id="it-clinics">@for (c of lists()['clinics'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
@@ -102,9 +110,11 @@ const COLUMNS: GridColumn<Row>[] = [
             <select name="payTo" [(ngModel)]="f.payTo"><option value=""></option><option>C - Clinic</option><option>M - Member</option></select>
           </app-field>
           <label class="check-field"><input type="checkbox" name="payToBlank" [(ngModel)]="f.payToBlank" /> Empty</label>
+@if (!jupiter) {
           <app-field label="Payment Status">
             <select name="paid" [(ngModel)]="f.paid"><option value=""></option><option>Yes</option><option>No</option></select>
           </app-field>
+          }
         </fieldset>
         <fieldset aria-label="Invoice and bordereaux">
           <legend>Invoice and bordereaux</legend>
@@ -120,6 +130,7 @@ const COLUMNS: GridColumn<Row>[] = [
           <app-field label="OP Batch From"><input name="opBatchFrom" maxlength="30" [(ngModel)]="f.opBatchFrom" /></app-field>
           <app-field label="OP Batch To"><input name="opBatchTo" maxlength="30" [(ngModel)]="f.opBatchTo" /></app-field>
           <label class="check-field"><input type="checkbox" name="opBatchBlank" [(ngModel)]="f.opBatchBlank" /> Empty</label>
+@if (!jupiter) {
           <app-field label="OMNI Ref From"><input name="omniRefFrom" maxlength="30" [(ngModel)]="f.omniRefFrom" /></app-field>
           <app-field label="OMNI Ref To"><input name="omniRefTo" maxlength="30" [(ngModel)]="f.omniRefTo" /></app-field>
           <label class="check-field"><input type="checkbox" name="omniRefBlank" [(ngModel)]="f.omniRefBlank" /> Empty</label>
@@ -128,6 +139,7 @@ const COLUMNS: GridColumn<Row>[] = [
           </app-field>
           <label class="check-field"><input type="checkbox" name="omni" [(ngModel)]="f.omni" /> OMNI company</label>
           <label class="check-field"><input type="checkbox" name="tims" [(ngModel)]="f.tims" /> TIMS company</label>
+          }
           <app-field label="A/C Month From"><input name="accMonthFrom" maxlength="2" [(ngModel)]="f.accMonthFrom" /></app-field>
           <app-field label="A/C Month To"><input name="accMonthTo" maxlength="2" [(ngModel)]="f.accMonthTo" /></app-field>
           <label class="check-field"><input type="checkbox" name="accMonthBlank" [(ngModel)]="f.accMonthBlank" /> Empty</label>
@@ -137,17 +149,23 @@ const COLUMNS: GridColumn<Row>[] = [
         </fieldset>
         <fieldset aria-label="Dates and status">
           <legend>Dates and status</legend>
-          @for (d of dates; track d.key) {
+          @for (d of jupiter ? jupiterDates : dates; track d.key) {
             <app-field [label]="d.label + ' From'"><app-date-input [name]="d.key + 'From'" [ariaLabel]="d.label + ' From'" [(ngModel)]="f[d.key + 'From']" /></app-field>
             <app-field [label]="d.label + ' To'"><app-date-input [name]="d.key + 'To'" [ariaLabel]="d.label + ' To'" [(ngModel)]="f[d.key + 'To']" /></app-field>
             @if (d.blank) { <label class="check-field"><input type="checkbox" [name]="d.key + 'Blank'" [(ngModel)]="f[d.key + 'Blank']" /> Empty</label> }
           }
+          @if (jupiter) {
+            <app-field label="Case Status">
+              <select name="status" [(ngModel)]="f.status"><option value=""></option><option>O - Open</option><option>C - Close</option><option>D - Delete</option></select>
+            </app-field>
+          } @else {
           <span class="radio-row" aria-label="Case status">
             @for (c of statuses; track c.code) {
               <label class="check-field"><input type="checkbox" [checked]="f.statuses.includes(c.code)" (change)="toggle(c.code)" /> {{ c.label }}</label>
             }
             <label class="check-field"><input type="checkbox" name="pending" [(ngModel)]="f.pending" /> Pending</label>
           </span>
+          }
           <app-field label="Claimability">
             <select name="claimability" [(ngModel)]="f.claimability"><option value=""></option><option>A - Accepted</option><option>R - Rejected</option></select>
           </app-field>
@@ -170,9 +188,15 @@ export class InvoiceTrackingPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
   private readonly router = inject(Router)
+  protected readonly jupiter = inject(ActivatedRoute).snapshot.data['variant'] === 'jupiter'
+  private readonly base = this.jupiter ? '/api/tracking/invoice-jupiter' : '/api/tracking/invoice'
 
   protected readonly fmt = (v: number) => formatMoney(v)
-  protected readonly columns = COLUMNS
+  protected readonly columns = this.jupiter ? [t('MSNO', 'MS No'), ...COLUMNS] : COLUMNS
+  protected readonly jupiterDates = [
+    { key: 'visit', label: 'Visit Date', blank: true }, { key: 'register', label: 'Register Date', blank: true },
+    { key: 'invoiceDate', label: 'Invoice Date', blank: true }, { key: 'entered', label: 'Invoice Reg Date', blank: true },
+  ]
   protected readonly dates = [
     { key: 'bordxDate', label: 'Bordx Date', blank: false }, { key: 'visit', label: 'Visit Date', blank: true }, { key: 'register', label: 'Register Date', blank: true },
     { key: 'invoiceDate', label: 'Invoice Date', blank: true }, { key: 'entered', label: 'Invoice Reg Date', blank: true }, { key: 'opBatchDate', label: 'OP Batch Date', blank: false },
@@ -200,7 +224,7 @@ export class InvoiceTrackingPage implements OnInit {
     if (!key && this.lists()[kind]) return
     try {
       const params = key ? new HttpParams().set('key', key) : undefined
-      const items = await firstValueFrom(this.http.get<string[]>(`${BASE}/lookup/${kind}`, { params }))
+      const items = await firstValueFrom(this.http.get<string[]>(`${this.base}/lookup/${kind}`, { params }))
       this.lists.update((l) => ({ ...l, [kind]: items }))
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
@@ -227,7 +251,7 @@ export class InvoiceTrackingPage implements OnInit {
     this.busy.set(true)
     this.rows.set([])
     try {
-      const r = await firstValueFrom(this.http.post<{ rows: Row[]; total: number; approved: number; btbg: number }>(`${BASE}/search`, this.f))
+      const r = await firstValueFrom(this.http.post<{ rows: Row[]; total: number; approved: number; btbg: number }>(`${this.base}/search`, this.f))
       this.rows.set(r.rows)
       this.total.set(r.total)
       this.approved.set(r.approved)

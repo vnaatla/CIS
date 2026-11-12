@@ -62,3 +62,13 @@ Local data: the restored databases have no Utusan claims, and view 01A (View_Cla
 Fixed desktop bugs: claimability added `OR Claimability = …` and FFS "No" added `… OR (CLNFFSStatus …)` to the criteria, which ignored all the other filters; both are now ANDed. The accounting month / year were compared as text (10 < 9); they are compared as numbers. The bordx date filter was pasted twice (no effect). The quantity 3 column overwrote quantity 2; each now has its column.
 
 Speed: a case range or a day of visits takes 1–6 s; a bordx no. search reads the BTBG view (about 35 s for one bordereaux, as the desktop with its 15-minute timeout).
+
+## Invoice > Tracking (Jupiter) — FrmInvoiceTracking2 (`/invoice/tracking-jupiter`, right InvoiceTrackingJupiter, `api/tracking/invoice-jupiter`)
+
+The same page as Invoice Tracking (route variant `jupiter`). The desktop runs the search on the "Neptune" (Jupiter) server; here both read the same local databases.
+
+| Step | Behaviour |
+|---|---|
+| Search | CISWorksheet ClaimBordxModule case 1 (VIEW_Invoice_Tracking_2016, or _2016_BTBG with a bordx no. criterion; MSNO = the row number within the visit month), as `cis.InvTrkJup_Search`. Its subset of Invoice Tracking's filters: no entity, Flex OP, subsidiary, department, payment status, OMNI / TIMS, OMNI ref., Pending, bordx date or OP batch date; one case status (O / C / D); the clinic is compared with the payee (INVPayee); the register date is compared with its time, as the desktop. Same columns plus MS No, same totals, double-click and Print to File. |
+
+Fixed desktop bugs: claimability was added with OR (ignoring the other filters) and on a column the 2016 view does not have (CASClaimability, a SQL error); it now filters Claimability with AND. FFS "No" and the accounting period are fixed as on Invoice Tracking.

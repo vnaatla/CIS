@@ -35,4 +35,13 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Invoices"] tbody')?.textContent.includes('EA125386'), { timeout: 120000 })
   check(true, 'Invoice Tracking: cases EA12538600 - EA12538699 are listed')
+
+  // Invoice > Tracking (Jupiter): the same cases, with the MS No column.
+  await page.goto(`${base}/invoice/tracking-jupiter`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=status]')
+  await page.type('input[name=caseFrom]', 'EA12538600')
+  await page.type('input[name=caseTo]', 'EA12538699')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Invoices"] tbody')?.textContent.includes('EA125386'), { timeout: 120000 })
+  check(true, 'Invoice Tracking (Jupiter): cases EA12538600 - EA12538699 are listed')
 }
