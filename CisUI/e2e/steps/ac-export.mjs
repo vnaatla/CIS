@@ -57,4 +57,13 @@ export async function acExport(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member invoice postings"] tbody')?.textContent.includes('82U063'), { timeout: 120000 })
   check(true, 'Invoice Posting - Member: EA12538622 lists its 82U063 line')
+
+  // Invoice Posting: unposted invoices registered 01/08/2021 include clinic A010's credit line (nothing is posted).
+  await page.goto(`${base}/ac-export/invoice/posting`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=posted]')
+  await page.type('input[aria-label="Register Date From"]', '01/08/2021')
+  await page.type('input[aria-label="Register Date To"]', '02/08/2021')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Invoice postings"] tbody')?.textContent.includes('84A'), { timeout: 120000 })
+  check(true, 'Invoice Posting: invoices registered 01/08/2021 are listed with their 84 + clinic lines')
 }

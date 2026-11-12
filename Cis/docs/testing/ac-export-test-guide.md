@@ -44,3 +44,12 @@ Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = 
 | M2 | Case EA12538622 → Search | 6000 D 178.00, 82U063 C 178.00, patient Nur Amilin Binti Man |
 | M3 | Status 1 - Yes, batch 2649 – 2649 → Search | the posted batch (9343 cases, about 20 s) |
 | M4 | Tick → Post with bordx dates but no period | `Please Keyin for Accounting Period ! ` |
+
+## 5. Invoice Posting — `/ac-export/invoice/posting` (frmInvPosting)
+
+| # | Action | Expected |
+|---|---|---|
+| P1 | Register date 01/08/2021 – 02/08/2021, status 0 - No → Search | about 1500 lines (about 13 s), e.g. `84A010` C 49.50 |
+| P2 | Register date from 01/01/2999 | `Invoice Date cannot greater than system date ! ` |
+
+Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASInvPostUser = NULL, CASInvPostDate = NULL WHERE CASInvPostDate = '<today>' AND CASInvPostUser = '<user>'`.

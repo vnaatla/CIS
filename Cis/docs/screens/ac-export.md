@@ -56,3 +56,17 @@ Known desktop issues (reproduced): Generate Tax Invoice still splits the fee int
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked case (TransRef = case no., InvoiceNo = the row's batch no., i.e. blank, type InvMBM) → file `<batch> RC-MBMInv <bordx from yyyyMMdd>-<bordx to dd>`. |
 
 Deliberate differences: VIEW_SUN_Posting_InvMBM takes over 4 minutes for a 5-day search, so the procedure picks the cases through the most selective filter given (batch, invoice date / case no., batch range, bordx no.) and applies the view's joins and conditions to them (about 15 s; a search with none of these filters reads everything, as the desktop).
+
+## Invoice Posting — frmInvPosting (`/ac-export/invoice/posting`, right AcExport, `api/ac-export/invoice-posting`)
+
+The desktop menu never opens this form; it is migrated on request. It is the form Pay Clinic Post was copied from, on the invoice posting flag (CISCas.CASInvPost).
+
+| Step | Behaviour |
+|---|---|
+| Search | Payor (first 2 characters), invoice no. range, register date range (`Invalid date format!`, `Invoice Date cannot greater than system date ! `), post status (default 0 - No) → VIEW_InvSummary_Posting (as `cis.InvPost_Search`): per summary row a credit line `84` + clinic (invoice period, payable, invoice date, RC, invoice no.), then per VIEW_Inv_Posting row of the same invoice and register date a debit line `60` + group company code (payor DC) or `60` + payor (bordx no.); register period YYMM, group company, bordx no. characters 4–8, posted Yes / No, post user / date; debit / credit totals. |
+| Post | VIEW_Inv_Posting with the status and the criteria (`cis.InvPost_Rows`) as `6000` D (bordx no.) and `84` + clinic C (clinic name) lines in a workbook; with status 0 - No the cases of each invoice and clinic get CASInvPost 1, the user and today. |
+| Print to File | The listed lines as a workbook. |
+
+Known desktop issues (reproduced): the detail rows are matched on the register date as a day, so a registration with a time (most of them) has no debit line in the list; the register date "to" compares with the time (to include a day, enter the next day).
+
+Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded (the desktop filled the `CISTemplate\InvoicePosting` template, which is not available).
