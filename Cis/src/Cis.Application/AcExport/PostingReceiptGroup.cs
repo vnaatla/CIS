@@ -119,38 +119,42 @@ public sealed class PostRecGrpService(IDbSessions sessions, IPostRecGrpRepositor
         return (result, export.Export(result, $"{batch} CR-GrpCompany {from:yyyyMMdd}-{to:dd}"));
     }
 
-    /// <summary>GrpCompListing: per receipt row a debit and a credit line on the same account (65 + group company for KDC bordereaux, else 65 + the payor's account
-    /// code characters 3–6, else 7610), as the desktop; the credit line is the one Post writes. Search Credit lists 65 + group company, Search Debit 7610.</summary>
+    /// <summary>GrpCompListing: per receipt a debit 7610 (as Search Debit) and a credit on the company account (65 + group company for KDC bordereaux, else 65 + the
+    /// payor's account code characters 3–6, else 65 + group company); the credit line is the one Post writes. The desktop put both lines on the company account and
+    /// listed (and totalled) a receipt once per bordereaux; here each receipt is listed once with its bordereaux. Search Credit lists 65 + group company, Search
+    /// Debit 7610.</summary>
     public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind)
     {
         var lines = new List<PostingLine>();
         decimal total = 0;
         var posted = false;
-        foreach (var x in rows)
+        foreach (var g in rows.GroupBy(x => T(x, "ReceiptNo")))
         {
+            var x = g.FirstOrDefault(r => T(r, "BordxRefNo").StartsWith("KDC", StringComparison.Ordinal)) ?? g.First();
             var isPosted = T(x, "RecGrpCompStatus") == "1";
             posted |= isPosted;
             var bordx = T(x, "BordxRefNo");
             var date = x.GetValueOrDefault("ReceiptDate") as DateTime?;
             var amount = N(x, "CheckAmt");
             var acc = T(x, "PAYAccCode");
-            var account = bordx.StartsWith("KDC", StringComparison.Ordinal) ? "65" + T(x, "GRPCoCode")
-                : acc.Length > 0 ? "65" + (acc.Length >= 3 ? acc.Substring(2, Math.Min(4, acc.Length - 2)) : "") : "7610";
+            var account = bordx.StartsWith("KDC", StringComparison.Ordinal) || acc.Length < 3 ? "65" + T(x, "GRPCoCode")
+                : "65" + acc.Substring(2, Math.Min(4, acc.Length - 2));
+            var allBordx = string.Join(", ", g.Select(r => T(r, "BordxRefNo")).Where(b => b.Length > 0).Distinct());
             PostingLine Line(string a, string dc, bool postLine) => new(isPosted, "CR", "UHC", T(x, "BatchNo"),
                 T(x, "AccMonth") + T(x, "AccYear") == "" ? "" : $"{T(x, "AccMonth")}/{T(x, "AccYear")}", date?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "",
                 T(x, "ReceiptNo"), a, amount, dc, "", T(x, "PAYCode"), T(x, "GRPCoCode"), postLine, date, T(x, "MBMGroupCompany"))
             {
-                Extra = new Dictionary<string, string> { ["Bordx"] = bordx },
+                Extra = new Dictionary<string, string> { ["Bordx"] = allBordx },
             };
             if (kind == "G")
             {
-                lines.Add(Line(account, "D", false));
+                lines.Add(Line("7610", "D", false));
                 lines.Add(Line(account, "C", true));
             }
             else lines.Add(kind == "C" ? Line("65" + T(x, "GRPCoCode"), "C", false) : Line("7610", "D", false));
             total += amount;
         }
-        return new PostingResult(lines, total, total, rows.Count, posted);
+        return new PostingResult(lines, total, total, lines.Select(l => l.Reference).Distinct().Count(), posted);
     }
 
     private static PostRecGrpFilter Filter(PostRecGrpRequest r, string? batch)
@@ -159,11 +163,10 @@ public sealed class PostRecGrpService(IDbSessions sessions, IPostRecGrpRepositor
         var to = Date(r.ReceiptDateTo);
         var postFrom = Date(r.PostDateFrom);
         var postTo = Date(r.PostDateTo);
-        var both = from is not null && to is not null;
-        var bothPost = postFrom is not null && postTo is not null;
+        // Each date bound applies on its own (the desktop applied the receipt and post dates only when both were given).
         var posted = (r.Posted ?? "").Trim();
-        return new PostRecGrpFilter(batch, Blank(r.GroupCompany), Blank(r.ReceiptFrom), Blank(r.ReceiptTo), both ? from : null, both ? to : null, bothPost ? postFrom : null,
-            bothPost ? postTo : null, posted.Length > 0 ? posted[..1] : "", Blank(r.BatchFrom), Blank(r.BatchTo), r.Entity == 1);
+        return new PostRecGrpFilter(batch, Blank(r.GroupCompany), Blank(r.ReceiptFrom), Blank(r.ReceiptTo), from, to, postFrom, postTo,
+            posted.Length > 0 ? posted[..1] : "", Blank(r.BatchFrom), Blank(r.BatchTo), r.Entity == 1);
     }
 
     private static string Kind(string? k) => (k ?? "G").Trim().ToUpperInvariant() switch { "D" => "D", "C" => "C", _ => "G" };

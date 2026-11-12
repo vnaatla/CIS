@@ -41,7 +41,7 @@ public sealed class PostPayMbmRequestValidator : Common.RequestValidator<PostPay
     }
 }
 
-/// <summary>Post: the search, the accounting period and the ticked PV nos. (as listed: without the first character).</summary>
+/// <summary>Post: the search, the accounting period and the ticked PV nos.</summary>
 public sealed record PostPayMbmPostRequest(PostPayMbmRequest Search, string? Period, List<string> Ticked);
 
 /// <summary>Lengths.</summary>
@@ -102,7 +102,7 @@ public sealed class PostPayMbmService(IDbSessions sessions, IPostPayMbmRepositor
         var period = (r.Period ?? "").Trim();
         if (period.Length < 7) throw new BusinessRuleException(PostPayClnService.NoPeriod);
         await using var tx = await sessions.BeginAsync();
-        var open = (await repository.SearchAsync(tx, Filter(r.Search with { Posted = "0 - No" }, null))).Select(x => Listed(T(x, "PVNo")))
+        var open = (await repository.SearchAsync(tx, Filter(r.Search with { Posted = "0 - No" }, null))).Select(x => T(x, "PVNo"))
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
         if (r.Ticked.Any(t => !open.Contains(t.Trim()))) throw new BusinessRuleException(PostInvClnService.Posted);
         var batch = await numbers.NextBatchAsync(tx);
@@ -113,11 +113,8 @@ public sealed class PostPayMbmService(IDbSessions sessions, IPostPayMbmRepositor
         return (result, export.Export(result, $"{batch} CP-PayMBM {pvFrom:yyyyMMdd}-{pvTo:dd}"));
     }
 
-    /// <summary>The PV no. as the desktop lists (and posts) it: without the first character, 10 characters.</summary>
-    public static string Listed(string pvNo) => pvNo.Length <= 1 ? "" : pvNo.Substring(1, Math.Min(10, pvNo.Length - 1));
-
     /// <summary>MBMPayListing: per PV a credit line 7610 (the payee; the line Post writes) and a debit line 82 + group company; journal CP, analysis 1R. Search Debit
-    /// lists the 82 line and, as the desktop, adds it to the credit total.</summary>
+    /// lists the 82 line, Search Credit the 7610 line.</summary>
     public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind)
     {
         var lines = new List<PostingLine>();
@@ -133,7 +130,7 @@ public sealed class PostPayMbmService(IDbSessions sessions, IPostPayMbmRepositor
             var desc = T(x, "PVPayto");
             if (desc.Length > 25) desc = desc[..25];
             PostingLine Line(string account, string dc, bool postLine) => new(isPosted, "CP", "UHC", T(x, "BatchNo"), period,
-                pv?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "", Listed(T(x, "PVNo")), account, amount, dc, "1R", T(x, "PAYCode"), T(x, "GRPCoCode"), postLine,
+                pv?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "", T(x, "PVNo"), account, amount, dc, "1R", T(x, "PAYCode"), T(x, "GRPCoCode"), postLine,
                 pv, desc);
             if (kind == "G")
             {
@@ -145,7 +142,8 @@ public sealed class PostPayMbmService(IDbSessions sessions, IPostPayMbmRepositor
             else
             {
                 lines.Add(kind == "D" ? Line("82" + T(x, "GRPCoCode"), "D", false) : Line("7610", "C", false));
-                credit += amount;
+                // The desktop added Search Debit's 82 lines to the credit total.
+                if (kind == "D") debit += amount; else credit += amount;
             }
         }
         return new PostingResult(lines, debit, credit, rows.Count, posted);

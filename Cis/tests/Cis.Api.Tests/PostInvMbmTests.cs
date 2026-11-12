@@ -22,7 +22,7 @@ public class PostInvMbmRuleTests
         Assert.Equal([("6000", "D", 178m, false), ("82U063", "C", 175m, false), ("4040", "C", 3m, true)],
             g.Lines.Select(l => (l.Account, l.DebitCredit, l.Amount, l.PostLine)).ToList());
         Assert.Equal("2351", g.Lines[0].Extra!["Member"]);
-        Assert.Equal([("82U063", 178m), ("82U063", 175m)], PostInvMbmService.Lines([row], "C").Lines.Select(l => (l.Account, l.Amount)).ToList());
+        Assert.Equal([("82U063", 175m), ("4040", 3m)], PostInvMbmService.Lines([row], "C").Lines.Select(l => (l.Account, l.Amount)).ToList());
         Assert.Single(PostInvMbmService.Lines([row], "D").Lines);
     }
 }

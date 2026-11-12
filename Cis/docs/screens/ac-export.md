@@ -13,7 +13,7 @@ Batch numbers: the posting screens use one of two desktop sequences, both locked
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! ` (from and to), `Please Select Accounting Period ! `; `Do you want to Post record(s) ?` → a batch no. (PostingINVSEQ) and a SUNPosting row per ticked invoice (InvoiceNo, clinic as TransRef, status 1, type InvCln, today, user, A/C month / year, batch no., invoice date) → the batch's lines are listed → the posting workbook `<batch> RC-CLNInv <bordx from yyyyMMdd>-<bordx to dd>` → `Record(s) Posted Sucessfully... ! `. |
 | Print to File | The listed lines as a workbook (`Report cannot be printed without any record.`). |
 
-Known desktop issues (reproduced): the bordx month and year are compared separately (e.g. 12/2020 – 01/2021 finds nothing).
+Fixed desktop bugs: the bordx month and year are compared as one period (the desktop compared them separately, so 12/2020 – 01/2021 found nothing).
 
 Deliberate differences: parameters instead of pasted criteria; the group company filter is not offered (VIEW_SUN_Posting_InvCln has no group company column, so the desktop's filter failed); the ticked invoices are checked to be still unposted on the server; one transaction with the sequence locked; the posting workbook is downloaded (the desktop saved it on `\\Mars\accounts\Account Journal Import\JIS CLN Not Posted\`).
 
@@ -26,7 +26,7 @@ The clinic posting screen with route variant `gst`.
 | Search | SUN_CIS_Posting `InvClnGST` (VIEW_SUN_Posting_InvClnGST, as `cis.SunPost_InvClnGST_Search`): clinic, invoice date and no., post status, post date, batch no., SUN invoice no. (CLNInvoiceBatch), posted A/C period. Line date = today, the batch column shows the SUN invoice batch. No FFS fee: `84` + clinic C and `6000` D (payable). With an FFS fee (MCO processing fee): `6000` D (actual − co-pay, the line Post writes), `84` + clinic C (payable), `1002` C (the fee × 94.34 % from 01/04/2015, else the whole fee) and `8830` C (the GST, fee − 1002 amount). |
 | Post | As the clinic screen, but `Please Enter Invoice Date! ` (invoice dates instead of bordx dates). Batch no. from SunPostBatch; each invoice gets a SUN invoice batch `T` (FFS fee with GST) or `I` + PostingINVSEQ; SUNPosting rows with type InvClnGST; file `<batch> RC-CLNInv <invoice from yyyyMMdd>-<invoice to dd>`. |
 
-Known desktop issues (reproduced): the debit / credit totals add the payable amount for every line (an FFS invoice counts it three times as credit), not each line's amount.
+Fixed desktop bugs: each line adds its own amount to the debit / credit totals (the desktop added the payable amount for every line, so an FFS invoice counted it three times as credit).
 
 Deliberate differences: as the clinic screen (no group company filter, the view has no such column).
 
@@ -46,13 +46,13 @@ Deliberate differences: the `HC FFS Tax Invoice.xlt` template is not available, 
 
 The desktop menu never opens this form; it is migrated as GST-2017 with one difference: in the list the whole FFS fee goes to `1002` and the `8830` GST line is 0.00 (route variant `zeroised`). Post (type InvClnGST2017, a `T` SUN invoice batch for FFS invoices) and Generate Tax Invoice are those of GST-2017.
 
-Known desktop issues (reproduced): Generate Tax Invoice still splits the fee into 94.34 % and GST, unlike the zeroised list.
+Fixed desktop bugs: Generate Tax Invoice shows the fee without GST, as the zeroised list (the desktop still split it into 94.34 % and GST).
 
 ## Invoice Posting > Member — frmPostingInvoiceMember (`/ac-export/invoice/member`, right AcExport, `api/ac-export/invoice-member`)
 
 | Step | Behaviour |
 |---|---|
-| Search / Search Debit / Search Credit | SUN_CIS_Posting `InvMBM` (VIEW_SUN_Posting_InvMBM, as `cis.SunPost_InvMbm_Search`): group company, invoice date, case no., post status, post date, batch no., bordx date, bordx no., invoice registration period. Per case: `6000` D (actual = payable to member), `82` + group company code C (actual − postage) and, with postage, `4040` C (postage); journal RC, ledger UHC, analysis 1R, the patient (member or covered person, 25 characters), bordx period YYMM, bordx no., the member no.'s last 4 digits. Search Credit lists `82` with the actual and, with postage, `82` again with actual − postage, as the desktop. |
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `InvMBM` (VIEW_SUN_Posting_InvMBM, as `cis.SunPost_InvMbm_Search`): group company, invoice date, case no., post status, post date, batch no., bordx date, bordx no., invoice registration period. Per case: `6000` D (actual = payable to member), `82` + group company code C (actual − postage) and, with postage, `4040` C (postage); journal RC, ledger UHC, analysis 1R, the patient (member or covered person, 25 characters), bordx period YYMM, bordx no., the member no.'s last 4 digits. Search Credit lists the `82` (actual − postage) and `4040` lines (the desktop listed `82` twice, with the actual and with actual − postage). |
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked case (TransRef = case no., InvoiceNo = the row's batch no., i.e. blank, type InvMBM) → file `<batch> RC-MBMInv <bordx from yyyyMMdd>-<bordx to dd>`. |
 
 Deliberate differences: VIEW_SUN_Posting_InvMBM takes over 4 minutes for a 5-day search, so the procedure picks the cases through the most selective filter given (batch, invoice date / case no., batch range, bordx no.) and applies the view's joins and conditions to them (about 15 s; a search with none of these filters reads everything, as the desktop).
@@ -67,7 +67,7 @@ The desktop menu never opens this form; it is migrated on request. It is the for
 | Post | VIEW_Inv_Posting with the status and the criteria (`cis.InvPost_Rows`) as `6000` D (bordx no.) and `84` + clinic C (clinic name) lines in a workbook; with status 0 - No the cases of each invoice and clinic get CASInvPost 1, the user and today. |
 | Print to File | The listed lines as a workbook. |
 
-Known desktop issues (reproduced): the detail rows are matched on the register date as a day, so a registration with a time (most of them) has no debit line in the list; the register date "to" compares with the time (to include a day, enter the next day).
+Fixed desktop bugs: the detail rows are matched on the register day of both rows (the desktop compared the detail's full register date with the day, so a registration with a time — most of them — had no debit line); the register date "to" includes the whole day.
 
 Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded (the desktop filled the `CISTemplate\InvoicePosting` template, which is not available).
 
@@ -78,7 +78,7 @@ Deliberate differences: parameters instead of pasted criteria; one transaction; 
 | Search / Search Debit / Search Credit | SUN_CIS_Posting `Pay2Cln` (VIEW_SUN_Posting_Pay2Cln, as `cis.SunPost_Pay2Cln_Search`): entity (Health Connect = payors other than SJ, default; Sihat Johor = SJ), clinic, PV date, PV no., post status, post date, batch no. Per PV: credit `7610` (`7520` for SJ) with the clinic name and debit `84` + clinic (the line Post writes); journal CP, ledger UHC (MS for SJ), amount = paid to clinic rounded to 2 places, analysis `4` + clinic. |
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter PV Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked PV (TransRef = PV no., InvoiceNo = `4` + clinic, type Pay2Cln) → file `<batch> CP-PayCLN <PV from yyyyMMdd>-<PV to dd>`. |
 
-Known desktop issues (reproduced): SUNPosting.InvoiceNo holds the analysis code (`4` + clinic), not an invoice no.
+Kept as the desktop: SUNPosting.InvoiceNo holds the analysis code (`4` + clinic); nothing reads it for clinic payments (the views match on TransRef), so the stored value stays as in the existing postings.
 
 Deliberate differences: the group company filter is not offered (the view has no such column, so the desktop's filter failed); after a post the batch is listed through VIEW_SUN_Posting_Pay2Cln (the desktop switched to VIEW_SUN_Posting_Pay2Cln_Done, which lists no posted rows, so its list came back empty).
 
@@ -86,10 +86,10 @@ Deliberate differences: the group company filter is not offered (the view has no
 
 | Step | Behaviour |
 |---|---|
-| Search / Search Debit / Search Credit | SUN_CIS_Posting `Pay2MBM` (VIEW_SUN_Posting_Pay2MBM, as `cis.SunPost_Pay2Mbm_Search`): group company, PV date, PV no., post status, post date, batch no. Per PV: credit `7610` with the payee (the line Post writes) and debit `82` + group company; journal CP, ledger UHC, analysis 1R; the PV no. is shown without its first character (10 characters). |
-| Post | As the clinic payment screen (`Please Enter PV Date! `, `Please Keyin for Accounting Period ! `) → a SunPostBatch batch no. and a SUNPosting row per ticked PV (TransRef = the shortened PV no., InvoiceNo blank, type Pay2MBM) → file `<batch> CP-PayMBM <PV from yyyyMMdd>-<PV to dd>`. |
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `Pay2MBM` (VIEW_SUN_Posting_Pay2MBM, as `cis.SunPost_Pay2Mbm_Search`): group company, PV date, PV no., post status, post date, batch no. Per PV: credit `7610` with the payee (the line Post writes) and debit `82` + group company; journal CP, ledger UHC, analysis 1R; the full PV no. |
+| Post | As the clinic payment screen (`Please Enter PV Date! `, `Please Keyin for Accounting Period ! `) → a SunPostBatch batch no. and a SUNPosting row per ticked PV (TransRef = the PV no., InvoiceNo blank, type Pay2MBM) → file `<batch> CP-PayMBM <PV from yyyyMMdd>-<PV to dd>`. |
 
-Known desktop issues (reproduced): the view matches SUNPosting.TransRef to the full PV no., but the desktop (and the existing postings, e.g. batch 2654: `P100463241`) writes it without the first character, so a posted member PV still lists as not posted; Search Debit adds its 82 lines to the credit total.
+Fixed desktop bugs: Post stores the full PV no. in SUNPosting.TransRef and the list shows the full PV no. The desktop dropped its first character, which the view never matches, so a posted member PV kept listing as not posted and could be posted again; postings made that way (e.g. batch 2654: `P100463241`) are now recognised as posted too. Search Debit adds its 82 lines to the debit total (the desktop added them to the credit total).
 
 Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded.
 
@@ -102,7 +102,7 @@ One page (route variant `gst`).
 | Search / Search Debit / Search Credit | SUN_CIS_Posting `BordxGrp` (VIEW_Sun_Posting_BordxGrpComp, as `cis.SunPost_BordxGrp_Search`): group company, bordx no., bordx date (both dates), post date (both dates), post status, batch no.; GST also the entity (Health Connect / Sihat Johor). Per bordereaux a debit line `65` + account (KDC — and on GST KCN — bordereaux: the company code; else the payor's CIS account code, on the hidden screen its characters 3–6; on GST GAS MALAYSIA BERHAD `65A002`; else the payor) and a credit `6000` (the line Post writes); journal BI, ledger UHC, payor (or `1RE` when paid to member). Description: GST `year/month-` + subsidiary (debit) or group company; hidden `YYMM-` + group company from the print month / year (25 characters). The hidden screen adds a credit `1002` for the MCO fee of fee-for-service (F) companies and then credits 6000 with the payable to clinic. Search Debit (group account) / Credit (6000) list actual − co-pay. `Sorry, No Record Found! `. |
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked bordereaux (TransRef = bordx no., type BordxGrp) → the posting workbook. |
 
-Known desktop issues (reproduced): on GST the bordx no. boxes are swapped (the "from" box is the upper bound); the bordx and post date filters apply only when both dates are given.
+Fixed desktop bugs: the bordx no. boxes are used as labelled (the desktop's GST screen swapped them); each bordx / post date bound applies on its own (the desktop applied them only when both dates were given).
 
 Deliberate differences: VIEW_Sun_Posting_BordxGrpComp takes minutes (over 4 for 5 days, even filtered by bordx no.), so the procedure picks the bordereaux first (batch, bordx date, bordx no.) and reads the view's two branches for them with the same joins and sums (about 16 s for 5 days; checked against the view for KIS18019); one transaction; the workbook is downloaded.
 
@@ -110,9 +110,9 @@ Deliberate differences: VIEW_Sun_Posting_BordxGrpComp takes minutes (over 4 for 
 
 | Step | Behaviour |
 |---|---|
-| Search / Search Debit / Search Credit | SUN_CIS_Posting `RecGrp` (VIEW_Sun_Posting_RecFrGrpComp, as `cis.SunPost_RecGrp_Search`): entity (Health Connect / Sihat Johor), group company, receipt no., receipt date (both dates), post date (both dates), post status, batch no. Per receipt and bordereaux (as the view) a debit and a credit line on the same account: `65` + group company code for KDC bordereaux, else `65` + the payor's account code characters 3–6, else `7610`; journal CR, ledger UHC, the receipt amount, the group company, the bordx no.; the credit line is the one Post writes. Search Credit lists `65` + group company, Search Debit `7610`. `Sorry, No Record Found! `. |
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `RecGrp` (VIEW_Sun_Posting_RecFrGrpComp, as `cis.SunPost_RecGrp_Search`): entity (Health Connect / Sihat Johor), group company, receipt no., receipt date (both dates), post date (both dates), post status, batch no. Per receipt a debit `7610` and a credit on the company account: `65` + group company code for KDC bordereaux, else `65` + the payor's account code characters 3–6, else `65` + group company code; journal CR, ledger UHC, the receipt amount, the group company, the bordx no.; the credit line is the one Post writes. Search Credit lists `65` + group company, Search Debit `7610`. `Sorry, No Record Found! `. |
 | Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Receipt Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked receipt (type RecGrp) → file `<batch> CR-GrpCompany <receipt from yyyyMMdd>-<receipt to dd>`. |
 
-Known desktop issues (reproduced): the debit and credit lines carry the same account; a receipt covering several bordereaux is listed (and totalled) once per bordereaux.
+Fixed desktop bugs: the debit is the bank account `7610` (as Search Debit) and the credit the company account (the desktop put both lines on the company account); a receipt is listed and totalled once with all its bordereaux (the desktop listed it once per bordereaux with the whole amount each time); each receipt / post date bound applies on its own.
 
 Deliberate differences: VIEW_Sun_Posting_RecFrGrpComp takes minutes (114 s for 3 rows of two months), so the procedure picks the receipts first (batch, receipt date, receipt no.) and applies the view's joins and grouping to them (about 10 s for two months); one transaction; the workbook is downloaded.

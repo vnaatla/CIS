@@ -327,7 +327,8 @@ BEGIN
 END
 GO
 
--- SearchRecord: @posted 0 / 1 as cboPostStatus. The bordx month and year are compared separately, as the desktop. @company is not applied: the view has no
+-- SearchRecord: @posted 0 / 1 as cboPostStatus. The bordx month and year are compared as one period (the desktop compared them separately, so 12/2020 – 01/2021
+-- found nothing). @company is not applied: the view has no
 -- group company column (the desktop's filter on MBMGroupCompany failed).
 CREATE OR ALTER PROCEDURE cis.SunPost_InvCln_Search @batchNo nvarchar(20) = NULL, @clinic nvarchar(10) = NULL, @company nvarchar(200) = NULL,
     @invDateFrom datetime = NULL, @invDateTo datetime = NULL, @invFrom nvarchar(100) = NULL, @invTo nvarchar(100) = NULL, @posted char(1) = '0',
@@ -348,8 +349,10 @@ BEGIN
         AND (@posted <> '1' OR (InvCLNStatus = '1' AND PostStatus = '1'))
         AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
         AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)
-        AND (@bordxMonthFrom IS NULL OR BordxMonth >= @bordxMonthFrom) AND (@bordxMonthTo IS NULL OR BordxMonth <= @bordxMonthTo)
-        AND (@bordxYearFrom IS NULL OR BordxYear >= @bordxYearFrom) AND (@bordxYearTo IS NULL OR BordxYear <= @bordxYearTo)
+        AND (@bordxYearFrom IS NULL OR TRY_CAST(BordxYear AS int) * 100 + TRY_CAST(BordxMonth AS int)
+            >= TRY_CAST(@bordxYearFrom AS int) * 100 + TRY_CAST(@bordxMonthFrom AS int))
+        AND (@bordxYearTo IS NULL OR TRY_CAST(BordxYear AS int) * 100 + TRY_CAST(BordxMonth AS int)
+            <= TRY_CAST(@bordxYearTo AS int) * 100 + TRY_CAST(@bordxMonthTo AS int))
         AND (@accMonth IS NULL OR AccMonth = @accMonth) AND (@accYear IS NULL OR AccYear = @accYear)
         AND (@pvDateFrom IS NULL OR PVCLNDate >= @pvDateFrom) AND (@pvDateTo IS NULL OR PVCLNDate <= @pvDateTo)))
     OPTION (RECOMPILE);
@@ -741,7 +744,8 @@ GO
 SET QUOTED_IDENTIFIER ON;
 GO
 
--- INVPostListing: the summary rows, then the detail rows of each (invoice no. and the register date's day; as the desktop, a registration with a time never matches).
+-- INVPostListing: the summary rows, then the detail rows of each (invoice no. and the register day; the desktop compared the detail's full register date with
+-- the day, so a registration with a time had no debit line). The register date "to" includes the whole day.
 CREATE OR ALTER PROCEDURE cis.InvPost_Search @payCode nvarchar(10) = NULL, @invFrom nvarchar(100) = NULL, @invTo nvarchar(100) = NULL, @regFrom datetime = NULL,
     @regTo datetime = NULL, @posted char(1) = NULL AS
 BEGIN
@@ -750,12 +754,16 @@ BEGIN
     INTO #s
     FROM CISWorksheet.dbo.VIEW_InvSummary_Posting
     WHERE (@payCode IS NULL OR PAYCode = @payCode) AND (@invFrom IS NULL OR InvoiceNo >= @invFrom) AND (@invTo IS NULL OR InvoiceNo <= @invTo)
-      AND (@regFrom IS NULL OR RegisterDate >= @regFrom) AND (@regTo IS NULL OR RegisterDate <= @regTo) AND (@posted IS NULL OR CASInvPost = @posted)
+      AND (@regFrom IS NULL OR RegisterDate >= @regFrom) AND (@regTo IS NULL OR RegisterDate < DATEADD(day, 1, CAST(@regTo AS date))) AND (@posted IS NULL OR CASInvPost = @posted)
     OPTION (RECOMPILE);
     SELECT * FROM #s;
     SELECT d.InvoiceNo AS SumInvoiceNo, s.RegisterDate AS SumRegisterDate, d.PAYCode, d.CLMPayableByMedix2C, d.InvoiceNo, d.CASInvPostUser, d.CASInvPostDate, d.InvoiceDate,
         d.BordxRefNo, d.ClinicCode, d.CLNName, d.RegisterDate, d.GRPCoCode, d.CASInvPost
-    FROM #s s JOIN CISWorksheet.dbo.VIEW_Inv_Posting d ON d.InvoiceNo = s.InvoiceNo AND d.RegisterDate = CAST(CAST(s.RegisterDate AS date) AS datetime)
+    FROM CISWorksheet.dbo.VIEW_Inv_Posting d
+    JOIN #s s ON d.InvoiceNo = s.InvoiceNo AND d.RegisterDate >= CAST(CAST(s.RegisterDate AS date) AS datetime)
+        AND d.RegisterDate < DATEADD(day, 1, CAST(CAST(s.RegisterDate AS date) AS datetime))
+    WHERE d.RegisterDate >= (SELECT CAST(CAST(MIN(RegisterDate) AS date) AS datetime) FROM #s)
+      AND d.RegisterDate < (SELECT DATEADD(day, 1, CAST(CAST(MAX(RegisterDate) AS date) AS datetime)) FROM #s)
     OPTION (RECOMPILE);
 END
 GO
@@ -768,7 +776,7 @@ BEGIN
     SELECT PAYCode, CLMPayableByMedix2C, InvoiceNo, MBMGroupCompany, InvoiceDate, BordxRefNo, ClinicCode, CLNName, RegisterDate, GRPCoCode, CASInvPost
     FROM CISWorksheet.dbo.VIEW_Inv_Posting
     WHERE CASInvPost = @posted AND (@payCode IS NULL OR PAYCode = @payCode) AND (@invFrom IS NULL OR InvoiceNo >= @invFrom) AND (@invTo IS NULL OR InvoiceNo <= @invTo)
-      AND (@regFrom IS NULL OR RegisterDate >= @regFrom) AND (@regTo IS NULL OR RegisterDate <= @regTo)
+      AND (@regFrom IS NULL OR RegisterDate >= @regFrom) AND (@regTo IS NULL OR RegisterDate < DATEADD(day, 1, CAST(@regTo AS date)))
     OPTION (RECOMPILE);
 END
 GO
@@ -837,27 +845,39 @@ BEGIN
 END
 GO
 
--- Payment Posting > Member (FrmPostingPay2MBM): SUN_CIS_Posting 'Pay2MBM' (VIEW_SUN_Posting_Pay2MBM).
+-- Payment Posting > Member (FrmPostingPay2MBM): SUN_CIS_Posting 'Pay2MBM' (VIEW_SUN_Posting_Pay2MBM). The view matches SUNPosting.TransRef to the full PV no., but the
+-- desktop posted the PV no. without its first character (e.g. P100463241 for CP100463241), so such postings are looked up as well; new posts store the full PV no.
 CREATE OR ALTER PROCEDURE cis.SunPost_Pay2Mbm_Search @batchNo nvarchar(20) = NULL, @company nvarchar(200) = NULL, @pvDateFrom datetime = NULL, @pvDateTo datetime = NULL,
     @pvFrom nvarchar(30) = NULL, @pvTo nvarchar(30) = NULL, @posted char(1) = '0', @postDateFrom datetime = NULL, @postDateTo datetime = NULL,
     @batchFrom nvarchar(20) = NULL, @batchTo nvarchar(20) = NULL AS
 BEGIN
     SET NOCOUNT ON;
+    CREATE TABLE #t (TransRef nvarchar(30) PRIMARY KEY);
+    IF @batchNo IS NOT NULL
+        INSERT #t SELECT DISTINCT TransRef FROM CISWorksheet.dbo.SUNPosting WHERE BatchNo = @batchNo AND PostType = 'Pay2MBM' AND TransRef IS NOT NULL;
     SELECT PostStatus, PostType, PostDate, AccMonth, AccYear, BatchNo, TransRef, GRPCoName, GRPCoCode, CoGRPAcccode, PAYCode, PVNo, PVDate, PVChequeNo, PVPayto, MBMPaidAmt,
         Pay2MBMStatus, HISpaycode
+    INTO #v
     FROM CISWorksheet.dbo.VIEW_SUN_Posting_Pay2MBM
-    WHERE (@batchNo IS NULL OR BatchNo = @batchNo) AND (@batchNo IS NOT NULL OR (
+    WHERE (@batchNo IS NULL OR PVNo IN (SELECT TransRef FROM #t) OR SUBSTRING(PVNo, 2, 10) IN (SELECT TransRef FROM #t))
+      AND (@batchNo IS NOT NULL OR (
             (@company IS NULL OR GRPCoName = @company) AND (@pvDateFrom IS NULL OR PVDate >= @pvDateFrom) AND (@pvDateTo IS NULL OR PVDate <= @pvDateTo)
-        AND (@pvFrom IS NULL OR PVNo >= @pvFrom) AND (@pvTo IS NULL OR PVNo <= @pvTo)
-        AND (@posted <> '0' OR ((Pay2MBMStatus IS NULL OR Pay2MBMStatus = '0') AND (PostStatus IS NULL OR PostStatus = '0')))
+        AND (@pvFrom IS NULL OR PVNo >= @pvFrom) AND (@pvTo IS NULL OR PVNo <= @pvTo)))
+    OPTION (RECOMPILE);
+    UPDATE v SET PostStatus = s.PostStatus, PostType = s.PostType, PostDate = s.PostDate, AccMonth = s.AccMonth, AccYear = s.AccYear, BatchNo = s.BatchNo,
+        TransRef = s.TransRef, Pay2MBMStatus = s.Pay2MBMStatus
+    FROM #v v JOIN CISWorksheet.dbo.SUNPosting s ON s.PostType = 'Pay2MBM' AND s.TransRef = SUBSTRING(v.PVNo, 2, 10)
+    WHERE v.TransRef IS NULL;
+    SELECT * FROM #v
+    WHERE (@batchNo IS NULL OR BatchNo = @batchNo) AND (@batchNo IS NOT NULL OR (
+            (@posted <> '0' OR ((Pay2MBMStatus IS NULL OR Pay2MBMStatus = '0') AND (PostStatus IS NULL OR PostStatus = '0')))
         AND (@posted <> '1' OR (Pay2MBMStatus = '1' AND PostStatus = '1'))
         AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
-        AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)))
-    OPTION (RECOMPILE);
+        AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)));
 END
 GO
 
--- CmdPost_Click: TransRef takes the listed PV no. without its first character (10 characters), InvoiceNo is blank, as the desktop.
+-- CmdPost_Click: TransRef takes the full PV no. (the desktop dropped its first character, so the view never saw the PV as posted), InvoiceNo is blank.
 CREATE OR ALTER PROCEDURE cis.SunPost_Pay2Mbm_Insert @transRef nvarchar(30), @accMonth nvarchar(2), @accYear nvarchar(4), @batchNo nvarchar(20), @user nvarchar(50) AS
 BEGIN
     SET NOCOUNT ON;

@@ -49,7 +49,7 @@ Clean-up after a real post: `DELETE CISWorksheet.dbo.SUNPosting WHERE BatchNo = 
 
 | # | Action | Expected |
 |---|---|---|
-| P1 | Register date 01/08/2021 – 02/08/2021, status 0 - No → Search | about 1500 lines (about 13 s), e.g. `84A010` C 49.50 |
+| P1 | Register date 01/08/2021 – 01/08/2021, status 0 - No → Search | credit `84` + clinic lines with their `60…` debit lines (about 13 s), e.g. `84A010` C 49.50 |
 | P2 | Register date from 01/01/2999 | `Invoice Date cannot greater than system date ! ` |
 
 Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASInvPostUser = NULL, CASInvPostDate = NULL WHERE CASInvPostDate = '<today>' AND CASInvPostUser = '<user>'`.
@@ -68,7 +68,8 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | # | Action | Expected |
 |---|---|---|
 | R1 | PV date 01/07/2021 – 05/07/2021 → Search | 529 PVs (about 4 s) |
-| R2 | PV date 01/07/2021, PV CP100464273 → Search | 7610 C 260.00 (HATIBUL-UMAM BIN BASRI) and 82A014 D 260.00, PV shown as P100464273 |
+| R2 | PV date 01/07/2021, PV CP100464273 → Search | 7610 C 260.00 (HATIBUL-UMAM BIN BASRI) and 82A014 D 260.00 |
+| R2b | Status 1 - Yes, PV date 22/06/2021, PV CP100462686 → Search | listed as posted (batch 2654, posted by the desktop as P100462686) |
 | R3 | Tick → Post without a period | `Please Keyin for Accounting Period ! ` |
 
 ## 8. Bordx Posting > Grp Company (GST) / Grp Company — `/ac-export/bordx/grp-company-gst`, `/ac-export/bordx/grp-company`
@@ -85,5 +86,5 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | # | Action | Expected |
 |---|---|---|
 | E1 | Receipt date 01/06/2021 – 31/07/2021 → Search | 975 rows (about 10 s) |
-| E2 | Receipt no. RP37386 – RP37386 → Search | 4 rows (one per bordereaux), 103,547.24, PERBADANAN INSURANS DEPOSIT MALAYSIA |
+| E2 | Receipt no. RP37386 – RP37386 → Search | one receipt: `7610` D and `65P262` C 103,547.24 (PERBADANAN INSURANS DEPOSIT MALAYSIA), its 4 bordereaux listed together |
 | E3 | Tick → Post without receipt dates | `Please Enter Receipt Date! ` |

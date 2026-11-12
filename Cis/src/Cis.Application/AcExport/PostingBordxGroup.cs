@@ -180,21 +180,13 @@ public sealed class PostBordxGrpService(IDbSessions sessions, IPostBordxGrpRepos
 
     private static string Mid(string v, int start, int length) => v.Length < start ? "" : v.Substring(start - 1, Math.Min(length, v.Length - start + 1));
 
-    /// <summary>SearchRecord. The GST screen swaps the bordx no. boxes (the "from" box is the upper bound), as the desktop.</summary>
+    /// <summary>SearchRecord. The bordx no. boxes are used as labelled (the desktop's GST screen swapped them) and each date bound applies on its own (the desktop
+    /// applied the bordx and post dates only when both were given).</summary>
     private static PostBordxGrpFilter Filter(PostBordxGrpRequest r, string? batch, bool gst)
     {
-        var from = Date(r.BordxDateFrom);
-        var to = Date(r.BordxDateTo);
-        var postFrom = Date(r.PostDateFrom);
-        var postTo = Date(r.PostDateTo);
-        var bothBordx = from is not null && to is not null;
-        var bothPost = postFrom is not null && postTo is not null;
-        var (bordxFrom, bordxTo) = gst
-            ? (Blank(r.BordxFrom) is null ? null : Blank(r.BordxTo), Blank(r.BordxTo) is null ? null : Blank(r.BordxFrom))
-            : (Blank(r.BordxFrom), Blank(r.BordxTo));
         var posted = (r.Posted ?? "").Trim();
-        return new PostBordxGrpFilter(batch, Blank(r.GroupCompany), bordxFrom, bordxTo, bothBordx ? from : null, bothBordx ? to : null, bothPost ? postFrom : null,
-            bothPost ? postTo : null, posted.Length > 0 ? posted[..1] : "", Blank(r.BatchFrom), Blank(r.BatchTo), gst ? r.Entity == 1 : null);
+        return new PostBordxGrpFilter(batch, Blank(r.GroupCompany), Blank(r.BordxFrom), Blank(r.BordxTo), Date(r.BordxDateFrom), Date(r.BordxDateTo),
+            Date(r.PostDateFrom), Date(r.PostDateTo), posted.Length > 0 ? posted[..1] : "", Blank(r.BatchFrom), Blank(r.BatchTo), gst ? r.Entity == 1 : null);
     }
 
     private static string Kind(string? k) => (k ?? "G").Trim().ToUpperInvariant() switch { "D" => "D", "C" => "C", _ => "G" };

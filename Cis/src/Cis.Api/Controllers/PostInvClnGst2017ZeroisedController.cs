@@ -33,11 +33,11 @@ public sealed class PostInvClnGst2017ZeroisedController(IPostInvClnGstService po
         return File(f.Content, f.ContentType, f.FileName);
     }
 
-    /// <summary>Generate: the FFS tax invoice (with the GST split, as the desktop).</summary>
+    /// <summary>Generate: the FFS tax invoice, without GST as the zeroised list.</summary>
     [HttpGet("tax-invoice")]
     public async Task<FileContentResult> TaxInvoice([FromQuery] string? invBatch)
     {
-        var f = await posting.TaxInvoiceAsync(invBatch);
+        var f = await posting.TaxInvoiceAsync(invBatch, true);
         return File(f.Content, f.ContentType, f.FileName);
     }
 }

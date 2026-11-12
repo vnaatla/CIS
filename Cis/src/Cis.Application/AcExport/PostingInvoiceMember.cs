@@ -141,7 +141,8 @@ public sealed class PostInvMbmService(IDbSessions sessions, IPostInvMbmRepositor
     }
 
     /// <summary>MBMInvListing: debit 6000 (actual), credit 82 + group company (actual − postage) and, with postage, credit 4040 (postage); the last line is the one Post
-    /// writes. Search Credit repeats the 82 line (actual, then actual − postage) when there is postage, as the desktop.</summary>
+    /// writes. Search Debit / Credit list one side of the same lines (the desktop's Search Credit listed the 82 line twice, with the actual and with actual − postage,
+    /// when there was postage).</summary>
     public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind)
     {
         var lines = new List<PostingLine>();
@@ -153,7 +154,6 @@ public sealed class PostInvMbmService(IDbSessions sessions, IPostInvMbmRepositor
             posted |= isPosted;
             var actual = N(x, "CLMTotalActual");
             var postage = N(x, "CLMPostageFee");
-            var loop = (kind == "G" ? 2 : 1) + (postage > 0 && kind != "D" ? 1 : 0);
             var member = T(x, "MBMNumber");
             var star = member.IndexOf('*');
             var last4 = (star < 0 ? member : member[..star]) is var m && m.Length > 4 ? m[^4..] : (star < 0 ? member : member[..star]);
@@ -162,13 +162,18 @@ public sealed class PostInvMbmService(IDbSessions sessions, IPostInvMbmRepositor
             var period = T(x, "AccMonth") + T(x, "AccYear") == "" ? "" : $"{T(x, "AccMonth")}/{T(x, "AccYear")}";
             var inv = x.GetValueOrDefault("InvoiceDate") as DateTime?;
             var bordxDate = (x.GetValueOrDefault("BordxDate") as DateTime?)?.ToString("yyMM", CultureInfo.InvariantCulture) ?? "";
-            var (account, dc, amount) = kind == "C" ? ("82" + T(x, "GRPCoCode"), "C", actual) : ("6000", "D", actual);
-            for (var aa = 1; aa <= loop; aa++)
+            var set = new List<(string Account, string Dc, decimal Amount)>();
+            if (kind is "G" or "D") set.Add(("6000", "D", actual));
+            if (kind is "G" or "C")
             {
-                if (aa > 1)
-                    (account, dc, amount) = aa == 2 ? ("82" + T(x, "GRPCoCode"), "C", actual - postage) : ("4040", "C", postage);
+                set.Add(("82" + T(x, "GRPCoCode"), "C", actual - postage));
+                if (postage > 0) set.Add(("4040", "C", postage));
+            }
+            for (var aa = 1; aa <= set.Count; aa++)
+            {
+                var (account, dc, amount) = set[aa - 1];
                 lines.Add(new PostingLine(isPosted, "RC", "UHC", T(x, "BatchNo"), period, inv?.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture) ?? "", T(x, "CASNumber"),
-                    account, amount, dc, "1R", T(x, "PAYCode"), T(x, "GRPCoCode"), kind == "G" && aa == loop, inv, desc)
+                    account, amount, dc, "1R", T(x, "PAYCode"), T(x, "GRPCoCode"), kind == "G" && aa == set.Count, inv, desc)
                 {
                     Extra = new Dictionary<string, string> { ["BordxPeriod"] = bordxDate, ["Bordx"] = T(x, "INVBordxRefNo"), ["Member"] = last4 },
                 });

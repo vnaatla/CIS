@@ -39,7 +39,8 @@ BEGIN
 END
 GO
 
--- SearchRecord: @posted 0 / 1 as cboPostStatus. The bordx month and year are compared separately, as the desktop. @company is not applied: the view has no
+-- SearchRecord: @posted 0 / 1 as cboPostStatus. The bordx month and year are compared as one period (the desktop compared them separately, so 12/2020 – 01/2021
+-- found nothing). @company is not applied: the view has no
 -- group company column (the desktop's filter on MBMGroupCompany failed).
 CREATE OR ALTER PROCEDURE cis.SunPost_InvCln_Search @batchNo nvarchar(20) = NULL, @clinic nvarchar(10) = NULL, @company nvarchar(200) = NULL,
     @invDateFrom datetime = NULL, @invDateTo datetime = NULL, @invFrom nvarchar(100) = NULL, @invTo nvarchar(100) = NULL, @posted char(1) = '0',
@@ -60,8 +61,10 @@ BEGIN
         AND (@posted <> '1' OR (InvCLNStatus = '1' AND PostStatus = '1'))
         AND (@postDateFrom IS NULL OR PostDate >= @postDateFrom) AND (@postDateTo IS NULL OR PostDate <= @postDateTo)
         AND (@batchFrom IS NULL OR BatchNo >= @batchFrom) AND (@batchTo IS NULL OR BatchNo <= @batchTo)
-        AND (@bordxMonthFrom IS NULL OR BordxMonth >= @bordxMonthFrom) AND (@bordxMonthTo IS NULL OR BordxMonth <= @bordxMonthTo)
-        AND (@bordxYearFrom IS NULL OR BordxYear >= @bordxYearFrom) AND (@bordxYearTo IS NULL OR BordxYear <= @bordxYearTo)
+        AND (@bordxYearFrom IS NULL OR TRY_CAST(BordxYear AS int) * 100 + TRY_CAST(BordxMonth AS int)
+            >= TRY_CAST(@bordxYearFrom AS int) * 100 + TRY_CAST(@bordxMonthFrom AS int))
+        AND (@bordxYearTo IS NULL OR TRY_CAST(BordxYear AS int) * 100 + TRY_CAST(BordxMonth AS int)
+            <= TRY_CAST(@bordxYearTo AS int) * 100 + TRY_CAST(@bordxMonthTo AS int))
         AND (@accMonth IS NULL OR AccMonth = @accMonth) AND (@accYear IS NULL OR AccYear = @accYear)
         AND (@pvDateFrom IS NULL OR PVCLNDate >= @pvDateFrom) AND (@pvDateTo IS NULL OR PVCLNDate <= @pvDateTo)))
     OPTION (RECOMPILE);

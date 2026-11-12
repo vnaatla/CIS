@@ -12,16 +12,20 @@ namespace Cis.Api.Tests;
 public class PostRecGrpRuleTests
 {
     [Fact]
-    public void Both_lines_use_the_same_account_as_the_desktop()
+    public void A_receipt_debits_the_bank_and_credits_the_company_account_once()
     {
         var row = new Dictionary<string, object?>
         {
             ["ReceiptNo"] = "RP37386", ["BordxRefNo"] = "KIS1", ["PAYAccCode"] = "63A011", ["GRPCoCode"] = "P262", ["CheckAmt"] = 103547.24m, ["PAYCode"] = "AN",
         };
         var r = PostRecGrpService.Lines([row], "G");
-        Assert.Equal([("65A011", "D", false), ("65A011", "C", true)], r.Lines.Select(l => (l.Account, l.DebitCredit, l.PostLine)).ToList());
+        Assert.Equal([("7610", "D", false), ("65A011", "C", true)], r.Lines.Select(l => (l.Account, l.DebitCredit, l.PostLine)).ToList());
+        var second = new Dictionary<string, object?>(row) { ["BordxRefNo"] = "KIS2" };
+        var twice = PostRecGrpService.Lines([row, second], "G");
+        Assert.Equal((2, 1, 103547.24m), (twice.Lines.Count, twice.Records, twice.Credit));
+        Assert.Equal("KIS1, KIS2", twice.Lines[0].Extra!["Bordx"]);
         row["BordxRefNo"] = "KDC54665";
-        Assert.Equal("65P262", PostRecGrpService.Lines([row], "G").Lines[0].Account);
+        Assert.Equal("65P262", PostRecGrpService.Lines([row], "G").Lines[1].Account);
         Assert.Equal(("7610", "D"), (PostRecGrpService.Lines([row], "D").Lines[0].Account, PostRecGrpService.Lines([row], "D").Lines[0].DebitCredit));
     }
 }
@@ -39,8 +43,9 @@ public class PostRecGrpDatabaseTests
         var service = new PostRecGrpService(TestDb.Sessions(), new PostRecGrpRepository(), new PostInvClnGstRepository(),
             new PostInvClnService(TestDb.Sessions(), new PostInvClnRepository(), exporter));
         var r = await service.SearchAsync(new PostRecGrpRequest { ReceiptFrom = "RP37386", ReceiptTo = "RP37386" });
-        Assert.Equal(4, r.Records);
-        Assert.All(r.Lines, l => Assert.Equal(103547.24m, l.Amount));
+        Assert.Equal(1, r.Records);
+        Assert.Equal(2, r.Lines.Count);
+        Assert.Equal(103547.24m, r.Credit);
         Assert.Equal(PostRecGrpService.NoReceiptDate, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.PostAsync(
             new PostRecGrpPostRequest(new PostRecGrpRequest(), "07/2021", ["RP37386"]), "DEVADMIN"))).Message);
 

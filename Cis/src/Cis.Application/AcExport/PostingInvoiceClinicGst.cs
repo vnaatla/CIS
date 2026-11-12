@@ -32,7 +32,7 @@ public interface IPostInvClnGstService
     Task<(PostingResult Result, FileOutput File)> PostAsync(PostInvClnPostRequest request, string user, bool y2017 = false, bool zeroised = false);
 
     /// <summary>cmdgenerate_Click (GST-2017): the FFS tax invoice of a posted SUN invoice batch.</summary>
-    Task<FileOutput> TaxInvoiceAsync(string? invBatch);
+    Task<FileOutput> TaxInvoiceAsync(string? invBatch, bool zeroised = false);
 }
 
 /// <inheritdoc />
@@ -86,13 +86,13 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
     }
 
     /// <inheritdoc />
-    public async Task<FileOutput> TaxInvoiceAsync(string? invBatch)
+    public async Task<FileOutput> TaxInvoiceAsync(string? invBatch, bool zeroised = false)
     {
         if (string.IsNullOrWhiteSpace(invBatch)) throw new BusinessRuleException(NotPosted);
         await using var s = await sessions.OpenAsync();
         var row = (await repository.SearchAsync(s, new PostInvClnGstFilter(null, null, null, null, null, null, "", null, null, null, null, null, null, null, null), true,
             invBatch.Trim())).FirstOrDefault() ?? throw new BusinessRuleException(PostInvClnService.NoSelection);
-        var (noGst, gst) = Split(N(row, "CLMMCOProcFee"), Today);
+        var (noGst, gst) = Split(N(row, "CLMMCOProcFee"), Today, zeroised);
         var cln = await repository.ClinicAsync(s, T(row, "ClinicCode")) ?? [];
         var lines = new List<IReadOnlyDictionary<string, object?>>
         {
@@ -122,8 +122,7 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
     }
 
     /// <summary>ClnInvListing (GST): no FFS fee → credit 84 + clinic and debit 6000 (payable); with an FFS fee → debit 6000 (actual − co-pay), credit 84 + clinic
-    /// (payable), credit 1002 (the FFS fee without GST, or the whole fee before GST) and credit 8830 (the GST). The totals add the payable amount for every line,
-    /// as the desktop.</summary>
+    /// (payable), credit 1002 (the FFS fee without GST, or the whole fee before GST) and credit 8830 (the GST). Each line adds its own amount to the totals.</summary>
     public static PostingResult Lines(List<Dictionary<string, object?>> rows, string kind, DateTime today, bool y2017 = false, bool zeroised = false)
     {
         var lines = new List<PostingLine>();
@@ -151,7 +150,8 @@ public sealed class PostInvClnGstService(IDbSessions sessions, IPostInvClnGstRep
             foreach (var l in set.Where(l => kind == "G" || l.DebitCredit == kind))
             {
                 lines.Add(kind == "G" ? l : l with { PostLine = false });
-                if (l.DebitCredit == "C") credit += payable; else debit += payable;
+                // Each line adds its own amount (the desktop added the payable amount for every line).
+                if (l.DebitCredit == "C") credit += l.Amount; else debit += l.Amount;
             }
         }
         return new PostingResult(lines, debit, credit, rows.Count, posted);
