@@ -11,8 +11,8 @@ import { saveBlob } from '../../shared/lib/download'
 import { formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-type Format = 'bintulu' | 'toshiba' | 'singer' | 'tims' | 'cimb' | 'omni' | 'utusan'
-const SCREENS: Record<Format, { title: string; form: string; range: boolean; clinic: boolean; confirm: boolean }> = {
+type Format = 'bintulu' | 'toshiba' | 'singer' | 'tims' | 'cimb' | 'omni' | 'utusan' | 'omniproviders'
+const SCREENS: Record<Format, { title: string; form: string; range: boolean; clinic: boolean; confirm: boolean; noBordx?: boolean }> = {
   bintulu: { title: 'Claim ASCII (Bintulu)', form: 'frmClaimDetailsASCII', range: true, clinic: true, confirm: true },
   toshiba: { title: 'Claim ASCII (Toshiba)', form: 'frmClaimASCIIToshiba', range: true, clinic: true, confirm: true },
   singer: { title: 'Claim ASCII (Singer)', form: 'frmClaimASCIISinger', range: true, clinic: false, confirm: true },
@@ -20,6 +20,7 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
   cimb: { title: 'Claim ASCII (CIMB)', form: 'frmClaimASCIICIMB', range: false, clinic: false, confirm: false },
   omni: { title: 'Claim ASCII (OMNI)', form: 'frmClaimDataOMNI', range: false, clinic: false, confirm: false },
   utusan: { title: 'Claim ASCII (Utusan Melayu)', form: 'frmClaimASCIIUtusan', range: true, clinic: false, confirm: true },
+  omniproviders: { title: 'Med Providers (OMNI)', form: 'frmMedProviderOMNI', range: false, clinic: false, confirm: false, noBordx: true },
 }
 
 /** Claim ASCII exports (route data `format`). */
@@ -32,7 +33,9 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
       <div class="screen-form">
         <fieldset aria-label="Generate">
           <legend>Generate</legend>
-          <app-field [label]="screen.range ? 'Bordx No From' : 'Bordx No'"><input name="bordxFrom" maxlength="20" [(ngModel)]="f.bordxFrom" /></app-field>
+          @if (!screen.noBordx) {
+            <app-field [label]="screen.range ? 'Bordx No From' : 'Bordx No'"><input name="bordxFrom" maxlength="20" [(ngModel)]="f.bordxFrom" /></app-field>
+          }
           @if (screen.range) {
             <app-field label="Bordx No To"><input name="bordxTo" maxlength="20" [(ngModel)]="f.bordxTo" /></app-field>
           }

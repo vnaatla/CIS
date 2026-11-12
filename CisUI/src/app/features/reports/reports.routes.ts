@@ -96,6 +96,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./claim-ascii.page').then((m) => m.ClaimAsciiPage),
   },
   {
+    path: 'invoice/claim-ascii/omni-providers',
+    title: 'CIS - Med Providers (OMNI)',
+    canActivate: [accessGuard],
+    data: { access: Access.ClaimAscii, legacyForm: 'frmMedProviderOMNI', format: 'omniproviders' },
+    loadComponent: () => import('./claim-ascii.page').then((m) => m.ClaimAsciiPage),
+  },
+  {
     path: 'invoice/claim-ascii/utusan',
     title: 'CIS - Claim ASCII (utusan)',
     canActivate: [accessGuard],

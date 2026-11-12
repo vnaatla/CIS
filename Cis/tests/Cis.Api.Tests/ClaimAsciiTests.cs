@@ -70,6 +70,9 @@ public class ClaimAsciiDatabaseTests
         Assert.Equal(t.Visits, s.Visits);
         Assert.Equal(18, (await service.GenerateAsync(AsciiFormat.Tims, new ClaimAsciiRequest("KDC55481", null, null, null))).Visits);
         Assert.Equal(571, (await service.GenerateAsync(AsciiFormat.Cimb, new ClaimAsciiRequest("KIS01540", null, null, "C - Cashless"))).Visits);
+        var p = await service.GenerateAsync(AsciiFormat.OmniProviders, new ClaimAsciiRequest(null, null, null, null));
+        Assert.True(p.Visits > 100);
+        Assert.StartsWith("01|TPA|", Encoding.Latin1.GetString(p.File.Content));
         Assert.Equal(ClaimAsciiService.NoTo,
             (await Assert.ThrowsAsync<BusinessRuleException>(() => service.GenerateAsync(AsciiFormat.Singer, new ClaimAsciiRequest("KIV03274", "", null, null)))).Message);
         Assert.Equal(ClaimAsciiService.NoRecord,

@@ -18,6 +18,7 @@ public sealed class ClaimAsciiRepository : IClaimAsciiRepository
             session.RowsAsync("CISWorksheet.dbo.ClaimDetails_ASCII", new { BordxRefNoFrom = bordxFrom, BordxRefNoTo = bordxTo }, 300),
         AsciiFormat.Tims => session.RowsAsync("CISWorksheet.dbo.ClaimDetails_ASCII_TIMS", new { BordxRefNoFrom = bordxFrom }, 300),
         AsciiFormat.Cimb => session.RowsAsync("CISWorksheet.dbo.ClaimDetails_ASCII_CIMB", new { BordxRefNoFrom = bordxFrom }, 300),
+        AsciiFormat.OmniProviders => session.RowsAsync("cis.ClaimAscii_OmniPanel", null, 300),
         _ => session.RowsAsync("CISWorksheet.dbo.ClaimDetails_ASCII_OMNI", new { BordxRefNoFrom = bordxFrom }, 300),
     };
 

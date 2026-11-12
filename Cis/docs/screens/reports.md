@@ -105,3 +105,15 @@ Deliberate differences: as Payment (the app's e-mail sender instead of Outlook).
 | Print | The list as CSV. |
 
 Deliberate differences: e-mails go through the app's e-mail sender (see Payment); the desktop's plain-text body is sent as HTML with line breaks (the sender takes HTML); the BSN letters are downloaded as text files in a zip (the desktop wrote Word documents to C:\Template\RejectedMails); a non-BSN claim without an e-mail is refused with `Please check member's email!` (Outlook failed on it).
+
+## Med Providers (OMNI) — frmMedProviderOMNI (`/invoice/claim-ascii/omni-providers`, never opened by the desktop menu, format `omniproviders`)
+
+Generate: CISDB View_CLN_OMNI panel clinics (C / Y; `cis.ClaimAscii_OmniPanel`) → `<today>_OUTPATIENTPROVIDER.txt` (01|TPA|date, a 02 line per clinic with code, name, phone, address, city, postcode, MALAYSIA, 2, N, Y, trailer 03|count). `No record found!`. Unlike the OMNI claim export, nothing is marked as sent (as the desktop).
+
+## Not migrated (nothing to build)
+
+| Menu item | Form | Why |
+|---|---|---|
+| Claims Data | frmClaimsdata | Never opened by the desktop; its Search builds criteria but the listing routine is empty, so it lists nothing. |
+| Claims Excel (Sin Chew) | frmClaimsExcelSinChew | Never opened; the form has no code. |
+| Test Form | frmTest | A developer test form: posts a sample SOAP request to an HLA UAT web service and checks scanned-document files against a scratch table (tmp_CasFloderstatus). |

@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**114 screens to build · 95 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**111 screens to build · 96 migrated · 14 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 3 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
-| [Invoice](#invoice) | 30 | 24 | 6 |
+| [Invoice](#invoice) | 28 | 25 | 4 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 22 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
@@ -23,8 +23,8 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 2 | 0 |
-| [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **114** | **95** | **18** |
+| [Maintenance](#maintenance) | 10 | 10 | 1 |
+| **Total** | **111** | **96** | **16** |
 
 ## Membership
 
@@ -79,9 +79,9 @@ Module page: `/invoice`
 | Claim ASCII | Claim ASCII (OMNI) | frmClaimDataOMNI | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/omni` |
 | Claim ASCII | Claim ASCII (TIMS) | frmClaimASCIITIMS | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/tims` |
 | Claim ASCII | Claim ASCII (CIMB) | frmClaimASCIICIMB | 119 |  | 10 | **Migrated** | `/invoice/claim-ascii/cimb` |
-| Claim ASCII | Med Providers (OMNI) | frmMedProviderOMNI | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/omni-providers` |
-| Claim ASCII | Claims Data | frmClaimsdata | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/claims-data` |
-| Claim ASCII | Claims Excel (Sin Chew) | frmClaimsExcelSinChew | 119 | Never opened | 10 | Pending | `/invoice/claim-ascii/sinchew` |
+| Claim ASCII | Med Providers (OMNI) | frmMedProviderOMNI | 119 | Never opened | 10 | **Migrated** | `/invoice/claim-ascii/omni-providers` |
+| Claim ASCII | Claims Data | frmClaimsdata | 119 | Form with no code | 10 | Nothing to build | `/invoice/claim-ascii/claims-data` |
+| Claim ASCII | Claims Excel (Sin Chew) | frmClaimsExcelSinChew | 119 | Form with no code | 10 | Nothing to build | `/invoice/claim-ascii/sinchew` |
 | Dental | Dental | — (no form in the project) | 117 | No handler, no form | 11 | Nothing to build | `/invoice/dental` |
 | Dental | Dental Member | — (no form in the project) | 117 | No handler, no form | 11 | Nothing to build | `/invoice/dental-member` |
 | Dental | Dental Adjustment | — (no form in the project) | 117 | No handler, no form | 11 | Nothing to build | `/invoice/dental-adjustment` |
@@ -226,7 +226,7 @@ Module page: `/maintenance`
 | Benefit | Dental | frmMaintenanceBNFDental | 141 |  | 1 | **Migrated** | `/maintenance/benefit/dental` |
 | Other | Check Item | frmCheckingItems | 143 |  | 1 | **Migrated** | `/maintenance/check-item` |
 | Other | DataTransfer | — | 143 | No handler, no form | 1 | Nothing to build | `/maintenance/data-transfer` |
-| Other | Test Form | frmTest | 143 |  | 11 | Pending | `/maintenance/test-form` |
+| Other | Test Form | frmTest | 143 | Developer test form | 11 | Nothing to build | `/maintenance/test-form` |
 
 ## Not in this table
 

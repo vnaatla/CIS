@@ -6,7 +6,7 @@ import type { IconName } from '../shared/icon.component'
  * - hidden: designer Visible = 0 · disabled: designer Enabled = 0 · never-opened: no menu item / handler commented out, the form is still in
  *   the project · nothing: menu item without a click handler and without a form (nothing to build, listed only for completeness).
  */
-export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty' | 'unavailable'
+export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty' | 'unavailable' | 'test'
 
 export interface MenuItem {
   /** Desktop caption. */
@@ -92,9 +92,9 @@ export const MENU: MenuModule[] = [
       { label: 'Claim ASCII (OMNI)', path: '/invoice/claim-ascii/omni', access: Access.ClaimAscii, form: 'frmClaimDataOMNI', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (TIMS)', path: '/invoice/claim-ascii/tims', access: Access.ClaimAscii, form: 'frmClaimASCIITIMS', group: 'Claim ASCII', phase: 10, migrated: true },
       { label: 'Claim ASCII (CIMB)', path: '/invoice/claim-ascii/cimb', access: Access.ClaimAscii, form: 'frmClaimASCIICIMB', group: 'Claim ASCII', phase: 10, migrated: true },
-      { label: 'Med Providers (OMNI)', path: '/invoice/claim-ascii/omni-providers', access: Access.ClaimAscii, form: 'frmMedProviderOMNI', group: 'Claim ASCII', desktop: 'never-opened', phase: 10 },
-      { label: 'Claims Data', path: '/invoice/claim-ascii/claims-data', access: Access.ClaimAscii, form: 'frmClaimsdata', group: 'Claim ASCII', desktop: 'never-opened', phase: 10 },
-      { label: 'Claims Excel (Sin Chew)', path: '/invoice/claim-ascii/sinchew', access: Access.ClaimAscii, form: 'frmClaimsExcelSinChew', group: 'Claim ASCII', desktop: 'never-opened', phase: 10 },
+      { label: 'Med Providers (OMNI)', path: '/invoice/claim-ascii/omni-providers', access: Access.ClaimAscii, form: 'frmMedProviderOMNI', group: 'Claim ASCII', desktop: 'never-opened', phase: 10, migrated: true },
+      { label: 'Claims Data', path: '/invoice/claim-ascii/claims-data', access: Access.ClaimAscii, form: 'frmClaimsdata', group: 'Claim ASCII', desktop: 'empty', phase: 10 },
+      { label: 'Claims Excel (Sin Chew)', path: '/invoice/claim-ascii/sinchew', access: Access.ClaimAscii, form: 'frmClaimsExcelSinChew', group: 'Claim ASCII', desktop: 'empty', phase: 10 },
       { label: 'Dental', path: '/invoice/dental', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
       { label: 'Dental Member', path: '/invoice/dental-member', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
       { label: 'Dental Adjustment', path: '/invoice/dental-adjustment', access: Access.InvoiceClinic, form: '— (no form in the project)', group: 'Dental', desktop: 'nothing', phase: 11 },
@@ -245,13 +245,13 @@ export const MENU: MenuModule[] = [
       { label: 'Dental', path: '/maintenance/benefit/dental', access: Access.MaintenanceBenefitMember, form: 'frmMaintenanceBNFDental', group: 'Benefit', phase: 1, migrated: true },
       { label: 'Check Item', path: '/maintenance/check-item', access: Access.MaintenanceCheckItem, form: 'frmCheckingItems', group: 'Other', phase: 1, migrated: true },
       { label: 'DataTransfer', path: '/maintenance/data-transfer', access: Access.MaintenanceCheckItem, form: '—', group: 'Other', desktop: 'nothing', phase: 1 },
-      { label: 'Test Form', path: '/maintenance/test-form', access: Access.MaintenanceCheckItem, form: 'frmTest', group: 'Other', phase: 11 },
+      { label: 'Test Form', path: '/maintenance/test-form', access: Access.MaintenanceCheckItem, form: 'frmTest', group: 'Other', desktop: 'test', phase: 11 },
     ],
   },
 ]
 
 /** Items that need a screen (excludes desktop menu items without a handler and without a form). */
-export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty' || i.desktop === 'unavailable'
+export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty' || i.desktop === 'unavailable' || i.desktop === 'test'
 
 /** Items that need a screen. */
 export const buildable = (m: MenuModule) => m.items.filter((i) => !nothingToBuild(i))
@@ -264,4 +264,5 @@ export const DESKTOP_STATE_TEXT: Record<DesktopState, string> = {
   nothing: 'Menu item without a handler (nothing to build)',
   empty: 'Form in the project with no code behind it (nothing to build)',
   unavailable: 'Needs the SUN accounting database, which is not available (the desktop connection is disabled too)',
+  test: 'A developer test form (calls a test web service and checks a scratch table), nothing to build',
 }

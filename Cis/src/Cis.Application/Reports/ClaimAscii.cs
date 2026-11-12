@@ -8,11 +8,11 @@ using FluentValidation;
 
 namespace Cis.Application.Reports;
 
-/// <summary>Claim ASCII export formats: Bintulu (frmClaimDetailsASCII), Toshiba, Singer, TIMS, CIMB, OMNI (frmClaimDataOMNI), Utusan.</summary>
+/// <summary>Claim ASCII export formats: Bintulu (frmClaimDetailsASCII), Toshiba, Singer, TIMS, CIMB, OMNI (frmClaimDataOMNI), Utusan, OMNI providers (frmMedProviderOMNI).</summary>
 public enum AsciiFormat
 {
 #pragma warning disable CS1591
-    Bintulu, Toshiba, Singer, Tims, Cimb, Omni, Utusan,
+    Bintulu, Toshiba, Singer, Tims, Cimb, Omni, Utusan, OmniProviders,
 #pragma warning restore CS1591
 }
 
@@ -119,6 +119,7 @@ public sealed class ClaimAsciiService(IDbSessions sessions, IClaimAsciiRepositor
                 result = Tims(rows, deductibles, now);
                 break;
             case AsciiFormat.Cimb: result = Cimb(rows, cash[..1], now); break;
+            case AsciiFormat.OmniProviders: result = OmniProviders(rows, now); break;
             default:
                 var providers = await repository.OmniProvidersAsync(tx);
                 foreach (var p in providers) await repository.OmniSentAsync(tx, Raw(p, "CLNCode").Trim());
@@ -344,6 +345,18 @@ public sealed class ClaimAsciiService(IDbSessions sessions, IClaimAsciiRepositor
                 total += N(x, "CLMBordxAmt");
             }
         return new(Text(sb, $"{now:yyyyMMdd}_BPOCLMTRH.KZULF"), visits, total);
+    }
+
+    /// <summary>frmMedProviderOMNI: the provider file of the panel clinics (header 01|TPA, a 02 line per clinic, trailer 03 with the count).</summary>
+    public static ClaimAsciiResult OmniProviders(List<Dictionary<string, object?>> rows, DateTime now)
+    {
+        var day = now.ToString("yyyyMMdd", En);
+        var p = new StringBuilder($"01|TPA|{day}\r\n");
+        foreach (var c in rows)
+            p.Append(string.Join('|', "02", "N", T(c, "CLNCode"), T(c, "CLNName"), T(c, "CLNPhone"), T(c, "CLNAdd1"), T(c, "CLNAdd2"), T(c, "CLNAdd3"), T(c, "CLNCity"),
+                T(c, "CLNPostCode"), "", "MALAYSIA", "2", "N", "Y")).Append("\r\n");
+        p.Append($"03|{rows.Count}\r\n");
+        return new(Text(p, $"{day}_OUTPATIENTPROVIDER.txt"), rows.Count, 0);
     }
 
     private static void Add(ZipArchive a, string name, string text)

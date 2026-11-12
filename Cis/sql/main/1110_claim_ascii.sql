@@ -59,3 +59,11 @@ BEGIN
     EXEC sp_executesql @sql, N'@f nvarchar(20), @t nvarchar(20)', @f = @bordxFrom, @t = @bordxTo;
 END
 GO
+
+-- frmMedProviderOMNI (never opened by the desktop): the panel clinics of View_CLN_OMNI (nothing is marked as sent).
+CREATE OR ALTER PROCEDURE cis.ClaimAscii_OmniPanel AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM dbo.View_CLN_OMNI WHERE CLNPanel = 'C' OR CLNPanel = 'Y';
+END
+GO

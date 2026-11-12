@@ -1236,6 +1236,14 @@ BEGIN
 END
 GO
 
+-- frmMedProviderOMNI (never opened by the desktop): the panel clinics of View_CLN_OMNI (nothing is marked as sent).
+CREATE OR ALTER PROCEDURE cis.ClaimAscii_OmniPanel AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT * FROM dbo.View_CLN_OMNI WHERE CLNPanel = 'C' OR CLNPanel = 'Y';
+END
+GO
+
 -- ===== main/1120_invoice_tracking.sql =====
 -- Tracking > Invoice (FrmInvoiceTracking): CISWorksheet ClaimBordxModule case 25 (VIEW_Invoice_Tracking_2020, or VIEW_Invoice_Tracking_2020_BTBG when a bordx no.
 -- criterion is used) with the pasted criteria replaced by parameters. The "blank" switches (@...Blank = 1) are the desktop's "empty" check boxes.
