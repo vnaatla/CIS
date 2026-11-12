@@ -25,4 +25,10 @@
     <InternalsVisibleTo Include="Cis.Api.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Member tracking report catalogue and filter list, generated from the VB6 form and procedure (Cis/sql/tools). -->
+    <EmbeddedResource Include="Reports\MbmTracking.catalogue.json" LogicalName="MbmTracking.catalogue.json" />
+    <EmbeddedResource Include="Reports\MbmTracking.params.json" LogicalName="MbmTracking.params.json" />
+  </ItemGroup>
+
 </Project>

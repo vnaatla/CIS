@@ -1,0 +1,5881 @@
+[
+ {
+  "type": 7,
+  "selection": "General Listing (Details)",
+  "routine": "GeneralListing",
+  "headers": [
+   "Member No",
+   "Policy No",
+   "Ins Type",
+   "Plan Code",
+   "Grp Company",
+   "Department",
+   "Employee No",
+   "Name",
+   "I/C No",
+   "DOB",
+   "Age band",
+   "Sex",
+   "Race Code",
+   "Cover ID",
+   "Relation",
+   "Bordx Date",
+   "Register Date",
+   "Eff Date",
+   "Exp Date",
+   "Day Insured",
+   "Gross Premium",
+   "Net Premium",
+   "Basic MCO",
+   "Gross MCO",
+   "Gross Access",
+   "Policy Status",
+   "Data Status",
+   "Expired Status",
+   "State",
+   "Cancelation Date",
+   "Subsidiary",
+   "Billing To"
+  ],
+  "special": true,
+  "p": {
+   "c": 88,
+   "special": true
+  },
+  "s": {
+   "c": 90,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "General Listing (Prin. Name)",
+  "routine": "GeneralListing2",
+  "headers": [
+   "Member No",
+   "Policy No",
+   "Ins Type",
+   "Plan Code",
+   "Grp Company",
+   "Department",
+   "Employee No",
+   "Prin Name",
+   "Prin Age",
+   "Prin DOB",
+   "Prin Sex",
+   "Supp Name",
+   "Supp ID",
+   "Supp DOB",
+   "Supp Age",
+   "Supp Sex",
+   "Rel",
+   "Bordx Date",
+   "Eff Date",
+   "Exp Date",
+   "Day Insured",
+   "Gross Premium",
+   "Net Premium",
+   "Basic MCO",
+   "Gross MCO",
+   "Gross Access",
+   "State",
+   "Cancelation Date"
+  ],
+  "special": true,
+  "p": {
+   "c": 91,
+   "special": true
+  },
+  "s": {
+   "c": 93,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "Print Label",
+  "routine": "PrintLabel",
+  "headers": [
+   "Member No",
+   "Policy No",
+   "Member Name",
+   "Address 1",
+   "Address 2",
+   "Address 3",
+   "Post Code",
+   "City",
+   "State",
+   "Group Company"
+  ],
+  "special": true,
+  "p": {
+   "c": 96,
+   "special": true
+  },
+  "s": {
+   "c": 97,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "Card Sent Date Listing",
+  "routine": "CardSentListing",
+  "headers": [
+   "Member No",
+   "Covered ID",
+   "Policy No",
+   "Member Name",
+   "Bordx Date",
+   "Invoice Date",
+   "Card Sent Date",
+   "Effective Date",
+   "Branch Code",
+   "Agent Code"
+  ],
+  "special": true,
+  "p": {
+   "c": 170,
+   "special": true
+  },
+  "s": {
+   "c": 171,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "General Listing",
+  "routine": "GeneralListing4",
+  "headers": [
+   "Member No",
+   "Policy No",
+   "Ins Type",
+   "Plan Code",
+   "Name",
+   "I/C No",
+   "DOB",
+   "Cover ID",
+   "Relation",
+   "Bordx Date",
+   "Eff Date",
+   "Exp Date",
+   "Net Premium",
+   "Net MCO",
+   "Policy Status",
+   "Data Status",
+   "Cancelation Date"
+  ],
+  "special": true,
+  "p": {
+   "c": 88,
+   "special": true
+  },
+  "s": {
+   "c": 90,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 1,
+  "selection": "Detail Listing",
+  "routine": "AgentGeneralListing",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "Policy No",
+   "Member No",
+   "Cover ID",
+   "Name",
+   "Eff. Date",
+   "Exp. Date",
+   "Day Insured",
+   "Health Type",
+   "Insured Type",
+   "Plan Code",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 31,
+   "special": true
+  },
+  "s": {
+   "c": 32,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Detail Listing",
+  "routine": "MCOInvoice",
+  "headers": [
+   "Member No",
+   "Member Name",
+   "Policy No",
+   "Invoice No",
+   "Invoice Date",
+   "Bordx Date",
+   "Batch No",
+   "DOR",
+   "Gross MCO"
+  ],
+  "special": true,
+  "p": {
+   "c": 127,
+   "special": true
+  },
+  "s": {
+   "c": 129,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "",
+  "routine": "CheckDate",
+  "headers": [
+   "Member No",
+   "Cover ID",
+   "Relation",
+   "Policy No",
+   "Member Name",
+   "DOB",
+   "Bordx Date",
+   "DOR",
+   "Inv Date",
+   "Eff Date",
+   "Exp Date",
+   "Exp - Eff Date",
+   "Eff Date - DOB",
+   "Bor. Date - Eff Date",
+   "DOR - Eff Date",
+   "MCO Date - DOR",
+   "MCO Date - Eff",
+   "Inv Date - Bor. Date"
+  ],
+  "special": true,
+  "p": {
+   "c": 77,
+   "special": true
+  },
+  "s": {
+   "c": 78,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 9,
+  "selection": "General Listing",
+  "routine": "ICListing",
+  "headers": [
+   "Member No",
+   "Covered ID",
+   "I/C No",
+   "Member Name",
+   "Eff Date",
+   "Exp Date",
+   "Date Join",
+   "Prem Mode",
+   "Policy Year",
+   "Renewal Ind",
+   "Takeover"
+  ],
+  "special": true,
+  "p": {
+   "c": 101,
+   "special": true
+  },
+  "s": {
+   "c": 102,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 2,
+  "selection": "Details Listing",
+  "routine": "BordxDateListing",
+  "headers": [
+   "Bordx Date",
+   "Batch No",
+   "Policy No",
+   "Member No",
+   "Member Name",
+   "Covered Id",
+   "Eff Date",
+   "Exp Date",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 35,
+   "special": true
+  },
+  "s": {
+   "c": 36,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 0,
+  "selection": "By HLT, INS (By Payor Supp.)",
+  "routine": "AgebandListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Insured Type",
+   "Age Band",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 1,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 2,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 2,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By HLT, INS (By Payor Prin.)",
+  "routine": "AgebandListing2",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 11,
+   "special": true
+  },
+  "s": {
+   "c": 12,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 12,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By HLT, INS (All Payor Supp.)",
+  "routine": "AgebandListingAllPayor",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Age Band",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 9,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 10,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 10,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By HLT, INS (All Payor Prin.)",
+  "routine": "AgebandListingAllPayor2",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 7,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 8,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 8,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By HLT Type (Supp.)",
+  "routine": "AgebandbyHLT",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Age Band",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 5,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 6,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 6,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By HLT Type (Prin.)",
+  "routine": "AgebandbyHLT2",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 3,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 4,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 4,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By INS Type (Supp.)",
+  "routine": "AgebandbyINS",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Age Band",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 15,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 16,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 16,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 0,
+  "selection": "By INS Type (Prin.)",
+  "routine": "AgebandbyINS2",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 13,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 14,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 14,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "General Summary",
+  "routine": "AgentSummary",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 27,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 28,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 28,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "By Race",
+  "routine": "AgentByRace",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "Race Code",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 25,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 26,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 26,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "By Insured Type",
+  "routine": "AgentByInsured",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "Health Type",
+   "Insured Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 17,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 18,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 18,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "By Plan No (Supp.)",
+  "routine": "AgentByPlan",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "Insured Type",
+   "Plan Code",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 23,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 24,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 24,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 1,
+  "selection": "By Payor",
+  "routine": "AgentByPayor",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 19,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 20,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 20,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "Top 20 Summary",
+  "routine": "AgentTopSummary",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 29,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 30,
+   "special": true
+  },
+  "helper": {
+   "c": 30,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 1,
+  "selection": "By Plan No (Prin.)",
+  "routine": "AgentByPlan2",
+  "headers": [
+   "Payor",
+   "Agent No",
+   "Insured Type",
+   "Plan No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 21,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 22,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 22,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 2,
+  "selection": "Summary",
+  "routine": "BordxSum",
+  "headers": [
+   "Payor",
+   "Bordx Date",
+   "Batch No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 57,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 58,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMBordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMBatchNo"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 58,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 2,
+  "selection": "INS Type & MBM Type (MCO)",
+  "routine": "BordxMCOSum",
+  "headers": [
+   "Payor",
+   "Bordx Date",
+   "IC$",
+   "IA$",
+   "F$",
+   "GC$",
+   "GA$",
+   "H$",
+   "FS$",
+   "HS$",
+   "Total MCO",
+   "ICP",
+   "IAP",
+   "FP",
+   "GCP",
+   "GAP",
+   "HP",
+   "FS",
+   "HS",
+   "Total Member"
+  ],
+  "special": true,
+  "p": {
+   "c": 37,
+   "special": true
+  },
+  "s": {
+   "c": 38,
+   "special": true
+  },
+  "helper": {
+   "c": 39,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 2,
+  "selection": "INS Type & MBM Type (Premium)",
+  "routine": "BordxPremiumSum",
+  "headers": [
+   "Payor",
+   "Bordx Date",
+   "IC$",
+   "IA$",
+   "FP$",
+   "FS$",
+   "GC$",
+   "GA$",
+   "HP$",
+   "HS$",
+   "Total Premium",
+   "ICP",
+   "IAP",
+   "FP",
+   "FS",
+   "GCP",
+   "GAP",
+   "HP",
+   "HS",
+   "Total Member"
+  ],
+  "special": true,
+  "p": {
+   "c": 47,
+   "special": true
+  },
+  "s": {
+   "c": 56,
+   "special": true
+  },
+  "helper": {
+   "c": 48,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 2,
+  "selection": "By DOR",
+  "routine": "BordxByDOR",
+  "headers": [
+   "DOR",
+   "Bordx Date",
+   "Batch No",
+   "No of Principal",
+   "No of Supplementary",
+   "Net Premium (Prin.)",
+   "Net Premium (Supp.)"
+  ],
+  "special": true,
+  "p": {
+   "c": 33,
+   "special": true
+  },
+  "s": {
+   "c": 34,
+   "special": true
+  },
+  "helper": {
+   "c": 34,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 3,
+  "selection": "General Summary",
+  "routine": "BranchListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Branch",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 75,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 76,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 76,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 3,
+  "selection": "By Payor",
+  "routine": "BranchPayor",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "Branch",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 75,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 76,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 76,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 3,
+  "selection": "All Payor",
+  "routine": "BranchPayorAll",
+  "headers": [
+   "Health Type",
+   "Branch",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 59,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 60,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "BRNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 60,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 3,
+  "selection": "By Agent",
+  "routine": "BranchByAgent",
+  "headers": [
+   "Branch",
+   "Agent Code",
+   "Ind. Policy",
+   "Family Policy",
+   "Grp Ind. Policy",
+   "Grp Family Policy",
+   "Total Policies",
+   "Ind. Premium",
+   "Family Premium",
+   "Grp Ind. Premium",
+   "Grp Family Premium",
+   "Total Premium",
+   "No of Claims (Ind.)",
+   "No of Claims (Family)",
+   "No of Claims (Grp Ind.)",
+   "No of Claims (Grp Family)",
+   "Total No of Claims",
+   "Claims Paid Ind.",
+   "Claims Paid Family",
+   "Claims Paid Grp Ind.",
+   "Claims Paid Grp Family",
+   "Total Claims Paid",
+   "Overall Policy Claims",
+   "Overall Loss/Claims"
+  ],
+  "special": true,
+  "p": {
+   "c": 61,
+   "special": true
+  },
+  "s": {
+   "c": 62,
+   "special": true
+  },
+  "helper": {
+   "c": 63,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 5,
+  "selection": "General Summary",
+  "routine": "EffPeriodSum",
+  "headers": [
+   "Effective Days",
+   "No of Principal",
+   "No of Supplementary"
+  ],
+  "special": true,
+  "p": {
+   "c": 80,
+   "special": true
+  },
+  "s": {
+   "c": 81,
+   "special": true
+  },
+  "helper": null
+ },
+ {
+  "type": 5,
+  "selection": "Details Listing",
+  "routine": "EffPeriodDetail",
+  "headers": [
+   "Member No",
+   "Policy No",
+   "Principal Name",
+   "Eff Date",
+   "Exp Date",
+   "Eff Day",
+   "Ins Type",
+   "Plan Code"
+  ],
+  "special": true,
+  "p": {
+   "c": 79,
+   "special": true
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "By Payor based on Supp.",
+  "routine": "SexListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Sex",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 85,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 87,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 87,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 6,
+  "selection": "All Payor based on Supp.",
+  "routine": "SexListingAllPayor",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Sex",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 82,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 84,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 84,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 6,
+  "selection": "By Payor based on Prin.",
+  "routine": "SexListing2",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Sex",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 85,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 86,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinSex"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 86,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 6,
+  "selection": "All Payor based on Prin.",
+  "routine": "SexListingAllPayor2",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Sex",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO(Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 82,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 83,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinSex"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 83,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 8,
+  "selection": "Summary",
+  "routine": "GroupCompanySummary",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "Group Company",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 166,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 167,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 167,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 8,
+  "selection": "Summary (By Department)",
+  "routine": "GroupCompanySummaryByDept",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "Group Company",
+   "Department",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 168,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 169,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 169,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 8,
+  "selection": "Summary (By Bordx Date)",
+  "routine": "GroupCompanySummaryByBordxDate",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "Group Company",
+   "Bordx Date",
+   "Batch No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 173,
+   "special": true
+  },
+  "s": {
+   "c": 174,
+   "special": true
+  },
+  "helper": {
+   "c": 174,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 8,
+  "selection": "Summary (By Department, Bordx Date)",
+  "routine": "GroupCompanySummaryDeptByBordxDate",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "Group Company",
+   "Department",
+   "Bordx Date",
+   "Batch No",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 175,
+   "special": true
+  },
+  "s": {
+   "c": 176,
+   "special": true
+  },
+  "helper": {
+   "c": 176,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 9,
+  "selection": "Policy Year Summary",
+  "routine": "ICBYPolYear",
+  "headers": [
+   "Policy Year",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 103,
+   "cols": [
+    {
+     "k": "f",
+     "n": "MBMPolicyYear"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 104,
+   "cols": [
+    {
+     "k": "f",
+     "n": "MBMPolicyYear"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 104,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 9,
+  "selection": "Expiry Summary",
+  "routine": "ICBYExpiry",
+  "headers": [
+   "Payor",
+   "Expiry",
+   "Ins Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 99,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMExpiredStatus"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 100,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMExpiredStatus"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 100,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 9,
+  "selection": "Renewal Summary",
+  "routine": "ICBYRenewal",
+  "headers": [
+   "Payor",
+   "Renewal",
+   "Ins Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 107,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMRenewFlag"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 108,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMRenewFlag"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 108,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 9,
+  "selection": "Takeover Summary",
+  "routine": "ICBYTakeover",
+  "headers": [
+   "Payor",
+   "Takeover",
+   "Ins Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 109,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMTakeOver"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 110,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMTakeOver"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 110,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 9,
+  "selection": "Pre Mode Summary",
+  "routine": "ICBYPreMode",
+  "headers": [
+   "Payor",
+   "Premium Mode",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 105,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMInstallment"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 106,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMInstallment"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 106,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 10,
+  "selection": "By Payor",
+  "routine": "INSMBMListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 113,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 114,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 114,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 10,
+  "selection": "All Payor",
+  "routine": "INSMBMListingAllPayor",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 111,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 112,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 112,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Eff. Month (By Payor)",
+  "routine": "EffMonthPayor",
+  "headers": [
+   "Payor",
+   "Eff. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 117,
+   "special": true
+  },
+  "s": {
+   "c": 118,
+   "special": true
+  },
+  "helper": {
+   "c": 118,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Eff. Month (All Payor)",
+  "routine": "EffMonthAllPayor",
+  "headers": [
+   "Eff. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 115,
+   "special": true
+  },
+  "s": {
+   "c": 116,
+   "special": true
+  },
+  "helper": {
+   "c": 116,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Exp. Month (By Payor)",
+  "routine": "ExpMonthPayor",
+  "headers": [
+   "Payor",
+   "Exp. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 121,
+   "special": true
+  },
+  "s": {
+   "c": 122,
+   "special": true
+  },
+  "helper": {
+   "c": 122,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Exp. Month (All Payor)",
+  "routine": "ExpMonthAllPayor",
+  "headers": [
+   "Exp. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 119,
+   "special": true
+  },
+  "s": {
+   "c": 120,
+   "special": true
+  },
+  "helper": {
+   "c": 120,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Reg. Month (By Payor)",
+  "routine": "RegMonthPayor",
+  "headers": [
+   "Payor",
+   "Reg. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 125,
+   "special": true
+  },
+  "s": {
+   "c": 126,
+   "special": true
+  },
+  "helper": {
+   "c": 126,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 11,
+  "selection": "Reg. Month (All Payor)",
+  "routine": "RegMonthAllPayor",
+  "headers": [
+   "Reg. Month",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 123,
+   "special": true
+  },
+  "s": {
+   "c": 124,
+   "special": true
+  },
+  "helper": {
+   "c": 124,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 12,
+  "selection": "Summary",
+  "routine": "MCOInvoiceSum",
+  "headers": [
+   "Payor",
+   "Invoice No",
+   "Invoice Date",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Gross MCO (Supp.)",
+   "Group Company",
+   "Subsidiary",
+   "Account Code"
+  ],
+  "special": true,
+  "p": {
+   "c": 178,
+   "special": true
+  },
+  "s": {
+   "c": 132,
+   "special": true
+  },
+  "helper": {
+   "c": 133,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 12,
+  "selection": "INS Type & MBM Type (MCO)",
+  "routine": "InvoiceMCOSum",
+  "headers": [
+   "Payor",
+   "Invoice No",
+   "Invoice Date",
+   "IC$",
+   "IA$",
+   "F$",
+   "GC$",
+   "GA$",
+   "H$",
+   "FS$",
+   "HS$",
+   "Total MCO",
+   "ICP",
+   "IAP",
+   "FP",
+   "GCP",
+   "GAP",
+   "HP",
+   "FS",
+   "HS",
+   "Total Member"
+  ],
+  "special": true,
+  "p": {
+   "c": 130,
+   "special": true
+  },
+  "s": {
+   "c": 131,
+   "special": true
+  },
+  "helper": {
+   "c": 132,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 12,
+  "selection": "INS Type & MBM Type (Premium)",
+  "routine": "InvoicePremiumSum",
+  "headers": [
+   "Payor",
+   "Invoice No",
+   "Invoice Date",
+   "IC$",
+   "IA$",
+   "FP$",
+   "FS$",
+   "GC$",
+   "GA$",
+   "HP$",
+   "HS$",
+   "Total Premium",
+   "ICP",
+   "IAP",
+   "FP",
+   "FS",
+   "GCP",
+   "GAP",
+   "HP",
+   "HS",
+   "Total Member"
+  ],
+  "special": true,
+  "p": {
+   "c": 130,
+   "special": true
+  },
+  "s": {
+   "c": 131,
+   "special": true
+  },
+  "helper": {
+   "c": 134,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 13,
+  "selection": "",
+  "routine": "PayorListing",
+  "headers": [
+   "Health Type",
+   "Payor",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 136,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 137,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 137,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS (By Payor Supp.)",
+  "routine": "PlanListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 144,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 145,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 145,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS (All Payor Supp.)",
+  "routine": "PlanListing3",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 142,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 143,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 143,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS, AGE (By Payor Supp.)",
+  "routine": "PlanListing2",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "Ageband",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 148,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 151,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 151,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "PAYCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS, AGE (All Payor Supp.)",
+  "routine": "PlanListing4",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "Ageband",
+   "No of Policy",
+   "Gross MCO",
+   "Net Premium",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 146,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (P)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 150,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 150,
+   "append": true,
+   "cols": [
+    {
+     "k": "fl",
+     "n": "HLTCode",
+     "v": " (S)"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS (By Payor Prin.)",
+  "routine": "PlanListingBYP",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 144,
+   "special": true
+  },
+  "s": {
+   "c": 145,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 145,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS (All Payor Prin.)",
+  "routine": "PlanListingBYP3",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 142,
+   "special": true
+  },
+  "s": {
+   "c": 143,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 143,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS, AGE (By Payor Prin.)",
+  "routine": "PlanListingBYP2",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 148,
+   "special": true
+  },
+  "s": {
+   "c": 149,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 149,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 14,
+  "selection": "By HLT, INS, AGE (All Payor Prin.)",
+  "routine": "PlanListingBYP4",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Plan Code",
+   "Ageband",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": true,
+  "p": {
+   "c": 146,
+   "special": true
+  },
+  "s": {
+   "c": 147,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "PrinAGECode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 147,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 15,
+  "selection": "",
+  "routine": "PolicyGrpComListing",
+  "headers": [
+   "Payor",
+   "Policy No",
+   "Group Company",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 152,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 153,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 153,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 16,
+  "selection": "By Payor",
+  "routine": "RaceListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "Ins Type",
+   "Race Code",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 156,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 157,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 157,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 16,
+  "selection": "All Payor",
+  "routine": "RaceListingAllPayor",
+  "headers": [
+   "Health Type",
+   "Ins Type",
+   "Race Code",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 154,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 155,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "RACCode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 155,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 17,
+  "selection": "By Payor",
+  "routine": "StateListing",
+  "headers": [
+   "Payor",
+   "Health Type",
+   "State",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 164,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 165,
+   "cols": [
+    {
+     "k": "f",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 165,
+   "append": false,
+   "cols": null
+  }
+ },
+ {
+  "type": 17,
+  "selection": "All Payor",
+  "routine": "StateListingAllPayor",
+  "headers": [
+   "Health Type",
+   "State",
+   "No of Principal",
+   "No of Supplementary",
+   "Gross MCO (Prin.)",
+   "Net Premium (Prin.)",
+   "Gross MCO (Supp.)",
+   "Net Premium (Supp.)",
+   "Gross Access"
+  ],
+  "special": false,
+  "p": {
+   "c": 162,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "TotalP"
+    },
+    {
+     "k": "sc"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "sm"
+    },
+    {
+     "k": "sp"
+    },
+    {
+     "k": "m",
+     "n": "EAFee"
+    }
+   ]
+  },
+  "s": {
+   "c": 163,
+   "cols": [
+    {
+     "k": "f",
+     "n": "HLTCode"
+    },
+    {
+     "k": "f",
+     "n": "STACode"
+    },
+    {
+     "k": "l",
+     "v": "0"
+    },
+    {
+     "k": "f",
+     "n": "TotalS"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    },
+    {
+     "k": "m",
+     "n": "MCOGross"
+    },
+    {
+     "k": "m",
+     "n": "PremiumGross"
+    },
+    {
+     "k": "l",
+     "v": "0.00"
+    }
+   ]
+  },
+  "helper": {
+   "c": 163,
+   "append": false,
+   "cols": null
+  }
+ }
+]

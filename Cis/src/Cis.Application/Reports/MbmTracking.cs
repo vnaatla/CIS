@@ -1,0 +1,179 @@
+using System.Globalization;
+using System.Reflection;
+using System.Text.Json;
+using Cis.Application.Abstractions;
+using Cis.Application.Invoice;
+using Cis.Domain.Errors;
+using FluentValidation;
+
+namespace Cis.Application.Reports;
+
+/// <summary>Tracking > MBM Tracking search (FrmNewMBMTracking cmdSearch_Click / SearchRecord).</summary>
+/// <param name="ReportType">CboReportType index (0 Ageband … 17 States).</param>
+/// <param name="Selection">CboRptSelection text ("" for the types without choices).</param>
+/// <param name="MemberType">CboMbmType: P (principal), S (supplementary), B (both).</param>
+/// <param name="Filters">The criteria by name (the cis.MbmTrk_Run parameters without "@"); dates as dd/MM/yyyy, flags as true / false.</param>
+public sealed record MbmTrkRequest(int ReportType, string? Selection, string? MemberType, Dictionary<string, string?> Filters);
+
+/// <summary>Lengths.</summary>
+public sealed class MbmTrkRequestValidator : Common.RequestValidator<MbmTrkRequest>
+{
+    /// <summary>Defines the rules.</summary>
+    public MbmTrkRequestValidator()
+    {
+        RuleFor(r => r.ReportType).InclusiveBetween(0, 17);
+        RuleFor(r => r.Selection).MaximumLength(100);
+        RuleFor(r => r.Filters).Must(f => f.Count <= 200 && f.All(x => x.Key.Length <= 40 && (x.Value ?? "").Length <= 300));
+    }
+}
+
+/// <summary>A report's rows (as displayed) and its totals.</summary>
+public sealed record MbmTrkResult(List<string> Headers, List<List<string>> Rows, int Principals, int Supplementaries, decimal Mco, decimal Premium, decimal Access);
+
+/// <summary>A report of the catalogue (report type, choice).</summary>
+public sealed record MbmTrkReport(int Type, string Selection, bool Migrated);
+
+/// <summary>Data access.</summary>
+public interface IMbmTrkRepository
+{
+    /// <summary>cis.MbmTrk_Run: one case of CISMBMTracking with the typed filters.</summary>
+    Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters);
+}
+
+/// <summary>Tracking > MBM Tracking (FrmNewMBMTracking).</summary>
+public interface IMbmTrkService
+{
+    /// <summary>The report catalogue (type, choice, whether it is migrated).</summary>
+    IReadOnlyList<MbmTrkReport> Reports();
+
+    /// <summary>cmdSearch_Click.</summary>
+    Task<MbmTrkResult> SearchAsync(MbmTrkRequest request);
+}
+
+/// <inheritdoc />
+public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository repository) : IMbmTrkService
+{
+    /// <summary>Desktop texts.</summary>
+    public const string NoReport = "Please select a report type.", NoRecord = "No record found!", BadDate = "Invalid Date Format! ";
+
+    /// <summary>Not a desktop text: the report is in the catalogue but not ported yet.</summary>
+    public const string Pending = "This report is not migrated yet.";
+
+    private static readonly CultureInfo En = CultureInfo.InvariantCulture;
+
+    /// <summary>A column of a block: f field, m money field, l literal, sc / sm / sp the supplementary count / MCO / premium merged in, fl field + suffix.</summary>
+    internal sealed record Col(string K, string? N, string? V);
+
+    internal sealed record Block(int C, bool Special, List<Col>? Cols);
+
+    internal sealed record Helper(int C, bool Append, List<Col>? Cols);
+
+    internal sealed record Entry(int Type, string Selection, string Routine, List<string> Headers, bool Special, Block? P, Block? S, Helper? Helper);
+
+    private sealed record Param(string N, string T);
+
+    private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
+    internal static readonly List<Entry> Catalogue = Load<List<Entry>>("MbmTracking.catalogue.json");
+    private static readonly Dictionary<string, string> Params = Load<List<Param>>("MbmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
+
+    private static T Load<T>(string name)
+    {
+        using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(name) ?? throw new InvalidOperationException(name + " missing");
+        return JsonSerializer.Deserialize<T>(s, Json)!;
+    }
+
+    /// <inheritdoc />
+    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special)).ToList();
+
+    /// <inheritdoc />
+    public async Task<MbmTrkResult> SearchAsync(MbmTrkRequest r)
+    {
+        var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
+        if (e.Special) throw new BusinessRuleException(Pending);
+        var filters = Filters(r.Filters);
+        var type = (r.MemberType ?? "P").Trim().ToUpperInvariant() is var t && t.Length > 0 ? t[..1] : "P";
+        await using var s = await sessions.OpenAsync();
+        var rows = new List<List<string>>();
+        int principals = 0, supps = 0;
+        decimal mco = 0, premium = 0, access = 0;
+        if (type is "P" or "B")
+        {
+            var prin = await repository.RunAsync(s, e.P!.C, filters);
+            List<Dictionary<string, object?>>? supp = null;
+            if (type == "B" && e.Helper is not null) supp = await repository.RunAsync(s, e.Helper.C, filters);
+            var keys = e.P.Cols!.Where(c => c.K == "f" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!).ToList();
+            var merged = supp is not null && e.Helper is { Append: false }
+                ? supp.GroupBy(x => Key(x, keys)).ToDictionary(g => g.Key, g => g.First()) : null;
+            foreach (var x in prin)
+            {
+                var m = merged?.GetValueOrDefault(Key(x, keys));
+                rows.Add(e.P.Cols!.Select(c => Cell(c, x, m)).ToList());
+                principals += (int)N(x, "TotalP");
+                mco += N(x, "MCOGross") + (m is null ? 0 : N(m, "MCOGross"));
+                premium += N(x, "PremiumGross") + (m is null ? 0 : N(m, "PremiumGross"));
+                access += N(x, "EAFee");
+                if (m is not null) supps += (int)N(m, "TotalS");
+            }
+            if (supp is not null && e.Helper is { Append: true, Cols: not null })
+                foreach (var x in supp)
+                {
+                    rows.Add(e.Helper.Cols.Select(c => Cell(c, x, null)).ToList());
+                    supps += (int)N(x, "TotalS");
+                    mco += N(x, "MCOGross");
+                    premium += N(x, "PremiumGross");
+                }
+        }
+        else if (e.S is { Cols: not null })
+            foreach (var x in await repository.RunAsync(s, e.S.C, filters))
+            {
+                rows.Add(e.S.Cols.Select(c => Cell(c, x, null)).ToList());
+                supps += (int)N(x, "TotalS");
+                mco += N(x, "MCOGross");
+                premium += N(x, "PremiumGross");
+            }
+        if (rows.Count == 0) throw new NotFoundException(NoRecord);
+        return new MbmTrkResult(e.Headers, rows, principals, supps, mco, premium, access);
+    }
+
+    /// <summary>The typed filters: only known names, each converted to its parameter type.</summary>
+    internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input)
+    {
+        var p = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
+        foreach (var (k, raw) in input)
+        {
+            if (!Params.TryGetValue(k, out var type) || string.IsNullOrWhiteSpace(raw)) continue;
+            var v = raw.Trim();
+            p[k] = type switch
+            {
+                "bit" => bool.TryParse(v, out var b) ? b : v == "1",
+                "datetime" => ClinicInvoiceRules.Date(v) ?? throw new BusinessRuleException(BadDate),
+                "money" => decimal.TryParse(v, NumberStyles.Number, En, out var d) ? d : throw new BusinessRuleException("Invalid amount."),
+                _ => v,
+            };
+        }
+        return p;
+    }
+
+    private static string Key(IReadOnlyDictionary<string, object?> r, List<string> keys) => string.Join("\u0001", keys.Select(k => T(r, k)));
+
+    private static string Cell(Col c, IReadOnlyDictionary<string, object?> x, IReadOnlyDictionary<string, object?>? supp) => c.K switch
+    {
+        "f" => T(x, c.N!),
+        "m" => x.GetValueOrDefault(c.N!) is null or DBNull ? "0.00" : N(x, c.N!).ToString("#,##0.00", En),
+        "l" => c.V ?? "",
+        "fl" => T(x, c.N!) + c.V,
+        "sc" => supp is null ? "0" : T(supp, "TotalS"),
+        "sm" => supp is null ? "0.00" : N(supp, "MCOGross").ToString("#,##0.00", En),
+        "sp" => supp is null ? "0.00" : N(supp, "PremiumGross").ToString("#,##0.00", En),
+        _ => "",
+    };
+
+    private static string T(IReadOnlyDictionary<string, object?> r, string k) => r.GetValueOrDefault(k) switch
+    {
+        null or DBNull => "",
+        DateTime d => d.ToString("dd/MM/yyyy", En),
+        var o => Convert.ToString(o, En)!.Trim(),
+    };
+
+    private static decimal N(IReadOnlyDictionary<string, object?> r, string k) => decimal.TryParse(T(r, k), NumberStyles.Any, En, out var d) ? d : 0;
+}
