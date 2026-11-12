@@ -60,6 +60,7 @@ public static class DependencyInjection
         services.AddScoped<Bordx.IBordxInvService, Bordx.BordxInvService>();
         services.AddScoped<Payment.IPayClinicService, Payment.PayClinicService>();
         services.AddScoped<AcExport.IPostInvClnService, AcExport.PostInvClnService>();
+        services.AddScoped<Reports.ITrkClnService, Reports.TrkClnService>();
         services.AddScoped<AcExport.IPostRecGrpService, AcExport.PostRecGrpService>();
         services.AddScoped<AcExport.IPostBordxGrpService, AcExport.PostBordxGrpService>();
         services.AddScoped<AcExport.IPostPayMbmService, AcExport.PostPayMbmService>();
