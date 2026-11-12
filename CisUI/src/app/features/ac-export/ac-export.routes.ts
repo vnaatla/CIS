@@ -60,4 +60,18 @@ export const acExportRoutes: Routes = [
     data: { access: Access.AcExport, legacyForm: 'FrmPostingPay2MBM' },
     loadComponent: () => import('./posting-payment-member.page').then((m) => m.PostingPaymentMemberPage),
   },
+  {
+    path: 'ac-export/bordx/grp-company',
+    title: 'CIS - Bordx Posting - Grp Company',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'frmPostingBordxtoGrpComp' },
+    loadComponent: () => import('./posting-bordx-group.page').then((m) => m.PostingBordxGroupPage),
+  },
+  {
+    path: 'ac-export/bordx/grp-company-gst',
+    title: 'CIS - Bordx Posting - Grp Company (GST)',
+    canActivate: [accessGuard],
+    data: { access: Access.AcExport, legacyForm: 'frmPostingBordxtoGrpGST', variant: 'gst' },
+    loadComponent: () => import('./posting-bordx-group.page').then((m) => m.PostingBordxGroupPage),
+  },
 ]

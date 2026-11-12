@@ -70,3 +70,12 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | R1 | PV date 01/07/2021 – 05/07/2021 → Search | 529 PVs (about 4 s) |
 | R2 | PV date 01/07/2021, PV CP100464273 → Search | 7610 C 260.00 (HATIBUL-UMAM BIN BASRI) and 82A014 D 260.00, PV shown as P100464273 |
 | R3 | Tick → Post without a period | `Please Keyin for Accounting Period ! ` |
+
+## 8. Bordx Posting > Grp Company (GST) / Grp Company — `/ac-export/bordx/grp-company-gst`, `/ac-export/bordx/grp-company`
+
+| # | Action | Expected |
+|---|---|---|
+| B1 | GST, bordx date 01/07/2021 – 05/07/2021 → Search | 76 bordereaux (about 16 s) |
+| B2 | GST, bordx no. KIS18019 – KIS18019 → Search | 65… D and 6000 C 5,077.34 (ASIAFLEX PRODUCTS SDN. BHD.) |
+| B3 | Hidden screen, KIS18019 → Search | 6000 C 4,633.49 and 1002 C 443.85 (fee-for-service company) |
+| B4 | Status 1 - Yes, batch 2648 – 2648 → Search | the posted batch (881 bordereaux, about 30 s) |

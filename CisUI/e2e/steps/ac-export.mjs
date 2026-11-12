@@ -88,4 +88,13 @@ export async function acExport(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member payment postings"] tbody')?.textContent.includes('82A014'), { timeout: 120000 })
   check(true, 'Payment Posting - Member: PV CP100464273 lists its 82A014 debit line')
+
+  // Bordx Posting > Grp Company (GST): bordereaux KIS18019 lists its 6000 credit (nothing is posted).
+  await page.goto(`${base}/ac-export/bordx/grp-company-gst`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=entity]')
+  await page.type('input[name=bordxFrom]', 'KIS18019')
+  await page.type('input[name=bordxTo]', 'KIS18019')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Group company bordx postings"] tbody')?.textContent.includes('5,077.34'), { timeout: 120000 })
+  check(true, 'Bordx Posting - Grp Company (GST): KIS18019 lists 5,077.34')
 }

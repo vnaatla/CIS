@@ -92,3 +92,16 @@ Deliberate differences: the group company filter is not offered (the view has no
 Known desktop issues (reproduced): the view matches SUNPosting.TransRef to the full PV no., but the desktop (and the existing postings, e.g. batch 2654: `P100463241`) writes it without the first character, so a posted member PV still lists as not posted; Search Debit adds its 82 lines to the credit total.
 
 Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded.
+
+## Bordx Posting > Grp Company (GST) — frmPostingBordxtoGrpGST (`/ac-export/bordx/grp-company-gst`, `api/ac-export/bordx-group-gst`) and Grp Company — frmPostingBordxtoGrpComp (`/ac-export/bordx/grp-company`, hidden in the desktop menu, `api/ac-export/bordx-group`)
+
+One page (route variant `gst`).
+
+| Step | Behaviour |
+|---|---|
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `BordxGrp` (VIEW_Sun_Posting_BordxGrpComp, as `cis.SunPost_BordxGrp_Search`): group company, bordx no., bordx date (both dates), post date (both dates), post status, batch no.; GST also the entity (Health Connect / Sihat Johor). Per bordereaux a debit line `65` + account (KDC — and on GST KCN — bordereaux: the company code; else the payor's CIS account code, on the hidden screen its characters 3–6; on GST GAS MALAYSIA BERHAD `65A002`; else the payor) and a credit `6000` (the line Post writes); journal BI, ledger UHC, payor (or `1RE` when paid to member). Description: GST `year/month-` + subsidiary (debit) or group company; hidden `YYMM-` + group company from the print month / year (25 characters). The hidden screen adds a credit `1002` for the MCO fee of fee-for-service (F) companies and then credits 6000 with the payable to clinic. Search Debit (group account) / Credit (6000) list actual − co-pay. `Sorry, No Record Found! `. |
+| Post | `Please select the record`, `Record(s) has been posted ! `, `Please Enter Bordx Date! `, `Please Keyin for Accounting Period ! `; `Do you want to Post record(s) ?` → a SunPostBatch batch no. and a SUNPosting row per ticked bordereaux (TransRef = bordx no., type BordxGrp) → the posting workbook. |
+
+Known desktop issues (reproduced): on GST the bordx no. boxes are swapped (the "from" box is the upper bound); the bordx and post date filters apply only when both dates are given.
+
+Deliberate differences: VIEW_Sun_Posting_BordxGrpComp takes minutes (over 4 for 5 days, even filtered by bordx no.), so the procedure picks the bordereaux first (batch, bordx date, bordx no.) and reads the view's two branches for them with the same joins and sums (about 16 s for 5 days; checked against the view for KIS18019); one transaction; the workbook is downloaded.

@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**118 screens to build · 78 migrated · 7 menu items with no handler, no form or an empty form (nothing to build).**
+**118 screens to build · 80 migrated · 7 menu items with no handler, no form or an empty form (nothing to build).**
 
 ## Summary
 
@@ -21,10 +21,10 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
-| [A/C Export](#ac-export) | 15 | 8 | 4 |
+| [A/C Export](#ac-export) | 15 | 10 | 4 |
 | [Tracking](#tracking) | 2 | 0 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **118** | **78** | **19** |
+| **Total** | **118** | **80** | **19** |
 
 ## Membership
 
@@ -192,8 +192,8 @@ Module page: `/ac-export`
 | Invoice | Invoice Posting | frmInvPosting | 120 | Never opened | 9 | **Migrated** | `/ac-export/invoice/posting` |
 | Payment | Clinic | FrmPostingPay2Cln | 120 |  | 9 | **Migrated** | `/ac-export/payment/clinic` |
 | Payment | Member | FrmPostingPay2MBM | 120 |  | 9 | **Migrated** | `/ac-export/payment/member` |
-| Bordx | Grp Company | frmPostingBordxtoGrpComp | 120 | Hidden (Visible = 0) | 9 | Pending | `/ac-export/bordx/grp-company` |
-| Bordx | Grp Company (GST) | frmPostingBordxtoGrpGST | 120 |  | 9 | Pending | `/ac-export/bordx/grp-company-gst` |
+| Bordx | Grp Company | frmPostingBordxtoGrpComp | 120 | Hidden (Visible = 0) | 9 | **Migrated** | `/ac-export/bordx/grp-company` |
+| Bordx | Grp Company (GST) | frmPostingBordxtoGrpGST | 120 |  | 9 | **Migrated** | `/ac-export/bordx/grp-company-gst` |
 | Receipt | Grp Company | frmPostingRecGrpCompany | 120 |  | 9 | Pending | `/ac-export/receipt/grp-company` |
 | SUN System | SUN System GST | frmSUNGSTRpt | 120 |  | 9 | Pending | `/ac-export/sun/gst` |
 | SUN System | SUN System Report | frmSUNSystem | 120 |  | 9 | Pending | `/ac-export/sun/report` |
