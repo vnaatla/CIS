@@ -81,3 +81,14 @@ Deliberate differences: parameters instead of pasted criteria; one transaction; 
 Known desktop issues (reproduced): SUNPosting.InvoiceNo holds the analysis code (`4` + clinic), not an invoice no.
 
 Deliberate differences: the group company filter is not offered (the view has no such column, so the desktop's filter failed); after a post the batch is listed through VIEW_SUN_Posting_Pay2Cln (the desktop switched to VIEW_SUN_Posting_Pay2Cln_Done, which lists no posted rows, so its list came back empty).
+
+## Payment Posting > Member — FrmPostingPay2MBM (`/ac-export/payment/member`, right AcExport, `api/ac-export/payment-member`)
+
+| Step | Behaviour |
+|---|---|
+| Search / Search Debit / Search Credit | SUN_CIS_Posting `Pay2MBM` (VIEW_SUN_Posting_Pay2MBM, as `cis.SunPost_Pay2Mbm_Search`): group company, PV date, PV no., post status, post date, batch no. Per PV: credit `7610` with the payee (the line Post writes) and debit `82` + group company; journal CP, ledger UHC, analysis 1R; the PV no. is shown without its first character (10 characters). |
+| Post | As the clinic payment screen (`Please Enter PV Date! `, `Please Keyin for Accounting Period ! `) → a SunPostBatch batch no. and a SUNPosting row per ticked PV (TransRef = the shortened PV no., InvoiceNo blank, type Pay2MBM) → file `<batch> CP-PayMBM <PV from yyyyMMdd>-<PV to dd>`. |
+
+Known desktop issues (reproduced): the view matches SUNPosting.TransRef to the full PV no., but the desktop (and the existing postings, e.g. batch 2654: `P100463241`) writes it without the first character, so a posted member PV still lists as not posted; Search Debit adds its 82 lines to the credit total.
+
+Deliberate differences: parameters instead of pasted criteria; one transaction; the posting workbook is downloaded.

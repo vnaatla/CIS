@@ -62,3 +62,11 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | K2 | PV date 02/07/2021, PV CP100465721 → Search | 7610 C 34.20 and 84B294 D 34.20 (KLINIK BALA) |
 | K3 | Status 1 - Yes, batch 2647 – 2647 → Search | the posted batch (3188 PVs) |
 | K4 | Tick → Post without PV dates | `Please Enter PV Date! ` |
+
+## 7. Payment Posting > Member — `/ac-export/payment/member` (FrmPostingPay2MBM)
+
+| # | Action | Expected |
+|---|---|---|
+| R1 | PV date 01/07/2021 – 05/07/2021 → Search | 529 PVs (about 4 s) |
+| R2 | PV date 01/07/2021, PV CP100464273 → Search | 7610 C 260.00 (HATIBUL-UMAM BIN BASRI) and 82A014 D 260.00, PV shown as P100464273 |
+| R3 | Tick → Post without a period | `Please Keyin for Accounting Period ! ` |
