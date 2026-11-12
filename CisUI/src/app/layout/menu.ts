@@ -82,7 +82,7 @@ export const MENU: MenuModule[] = [
       { label: 'Adjustment (After Bordx)', path: '/invoice/adjustment-after-bordx', access: Access.InvoiceAdjustmentAfterBordx, form: 'frmInvoiceAdjAftBordx', group: 'Clinic', phase: 3, migrated: true },
       { label: 'Email Notification (Payment)', path: '/invoice/email/payment', access: Access.EmailNotification, form: 'frmEmailNotification', group: 'Email Notification', phase: 10, migrated: true },
       { label: 'Email Notification (Providers)', path: '/invoice/email/providers', access: Access.EmailNotification, form: 'frmEmailNotificationProvider', group: 'Email Notification', phase: 10, migrated: true },
-      { label: 'Email Notification (Rejection)', path: '/invoice/email/rejection', access: Access.EmailNotification, form: 'frmEmailRejectedClaim', group: 'Email Notification', phase: 10 },
+      { label: 'Email Notification (Rejection)', path: '/invoice/email/rejection', access: Access.EmailNotification, form: 'frmEmailRejectedClaim', group: 'Email Notification', phase: 10, migrated: true },
       { label: 'General Exclusions', path: '/invoice/general-exclusions', access: Access.GeneralExclusions, form: 'frmGeneralBenefitExclusion', group: 'General Exclusions', phase: 2 },
       { label: 'General Exclusions (Enquiry)', path: '/invoice/general-exclusions/enquiry', access: Access.GeneralExclusionsEnquiry, form: 'frmGeneralBenefitExcEnq', group: 'General Exclusions', phase: 2, migrated: true },
       { label: 'Claim ASCII (Bintulu)', path: '/invoice/claim-ascii/bintulu', access: Access.ClaimAscii, form: 'frmClaimDetailsASCII', group: 'Claim ASCII', phase: 10, migrated: true },

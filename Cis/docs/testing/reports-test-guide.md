@@ -60,3 +60,11 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 |---|---|---|
 | P1 | PV date 03/08/2021 – 03/08/2021, status N - New → Search | 830 clinic PVs |
 | P2 | Tick CP100471757 (KLINIK DR AKBAR), send date 05/08/2021 → Send → Yes | .eml in `D:\CIS\LocalRun\MailPickup`; clean-up: `UPDATE CISPayment.dbo.Payment2CLN SET PVEmailStatus = NULL WHERE PVCLNNo = 'CP100471757'` |
+
+## 8. Email Notification (Rejection) — `/invoice/email/rejection` (frmEmailRejectedClaim)
+
+| # | Action | Expected |
+|---|---|---|
+| R1 | Registration date 01/07/2021 – 31/07/2021, status N - New → Search | about 2,000 claims (about 8 s) |
+| R2 | Registration 01/07/2021 – 02/07/2021, case EA12514425 → Search | Ooi Chee Leong, United Overseas Bank, "duplicated" |
+| R3 | Tick EA12514425 → Send → Yes | .eml in `D:\CIS\LocalRun\MailPickup`; clean-up: `UPDATE CISDB.dbo.CISCas SET CASEmailRejStatus = NULL WHERE CASNumber = 'EA12514425'` |

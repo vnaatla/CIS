@@ -94,3 +94,14 @@ Deliberate differences: the e-mails go through the API's e-mail sender (SMTP, co
 Known desktop issues (reproduced): the "already e-mailed — send again?" prompt never fires (the column it checks is never filled); the BCC test compares with Null and always takes the "extra addresses" branch (same result).
 
 Deliberate differences: as Payment (the app's e-mail sender instead of Outlook).
+
+## Invoice > Email Notification (Rejection) — frmEmailRejectedClaim (`/invoice/email/rejection`, right EmailNotification, `api/email/rejection`)
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please Enter Registration Date From!`, `Please Enter Registration Date To!`, `Please Enter Status!` → CISPayment EmailNotification case 2 (as `cis.EmlRej_Search`: the members' claims with bordx memo N): register date range (compared with its time, so the "to" day is excluded after midnight, as the desktop), case no. range, status (Resend = already notified), group company. `No record found !`. |
+| Tick | A claim already notified asks `Email has been sent to the member! Do you want to send again?`. |
+| Send | `Please select the record`, `Do you want to start sending email(s) ?` → per ticked claim: BANK SIMPANAN NASIONAL members with no e-mail or a "bsn…" e-mail get a letter (`<member no.> _ <member name>`, the desktop's text without the regards), all other claims an e-mail (subject `CLAIM - <patient>(Ref No : <case no.>)`, BCC foo@medix.com.my, the claim details, reason and action, the 14-day / 30-day notes); every ticked claim gets CISCas.CASEmailRejStatus = Y. `Emails have been sent out successfully!`. |
+| Print | The list as CSV. |
+
+Deliberate differences: e-mails go through the app's e-mail sender (see Payment); the desktop's plain-text body is sent as HTML with line breaks (the sender takes HTML); the BSN letters are downloaded as text files in a zip (the desktop wrote Word documents to C:\Template\RejectedMails); a non-BSN claim without an e-mail is refused with `Please check member's email!` (Outlook failed on it).

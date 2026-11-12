@@ -40,6 +40,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./email-providers.page').then((m) => m.EmailProvidersPage),
   },
   {
+    path: 'invoice/email/rejection',
+    title: 'CIS - Email Notification (Rejection)',
+    canActivate: [accessGuard],
+    data: { access: Access.EmailNotification, legacyForm: 'frmEmailRejectedClaim' },
+    loadComponent: () => import('./email-rejection.page').then((m) => m.EmailRejectionPage),
+  },
+  {
     path: 'tracking/grp-company-clinic',
     title: 'CIS - Group Company Clinic Tracking',
     canActivate: [accessGuard],

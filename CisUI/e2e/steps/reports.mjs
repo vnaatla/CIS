@@ -68,4 +68,16 @@ export async function reports(page, base, check) {
   await click(page, 'Search')
   await page.waitForFunction(() => document.querySelector('table[aria-label="Clinic payments to e-mail"] tbody')?.textContent.includes('CP100471757'), { timeout: 120000 })
   check(true, 'Email Notification (Providers): new clinic PV CP100471757 is listed')
+
+  // Email Notification (Rejection): rejected claim EA12514425 registered 01/07/2021 is listed (nothing is sent).
+  await page.goto(`${base}/invoice/email/rejection`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=status]')
+  await page.type('input[aria-label="Registration Date From"]', '01/07/2021')
+  await page.type('input[aria-label="Registration Date To"]', '02/07/2021')
+  await page.type('input[name=caseFrom]', 'EA12514425')
+  await page.type('input[name=caseTo]', 'EA12514425')
+  await page.select('select[name=status]', 'N - New')
+  await click(page, 'Search')
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Rejected claims"] tbody')?.textContent.includes('EA12514425'), { timeout: 120000 })
+  check(true, 'Email Notification (Rejection): rejected claim EA12514425 is listed')
 }
