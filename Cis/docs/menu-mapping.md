@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**114 screens to build · 92 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**114 screens to build · 93 migrated · 11 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -15,7 +15,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 |---|---:|---:|---:|
 | [Membership](#membership) | 8 | 3 | 1 |
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
-| [Invoice](#invoice) | 30 | 21 | 6 |
+| [Invoice](#invoice) | 30 | 22 | 6 |
 | [Claim](#claim) | 1 | 1 | 0 |
 | [Claim Bordx](#claim-bordx) | 29 | 22 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
@@ -24,7 +24,7 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 2 | 0 |
 | [Maintenance](#maintenance) | 11 | 10 | 1 |
-| **Total** | **114** | **92** | **18** |
+| **Total** | **114** | **93** | **18** |
 
 ## Membership
 
@@ -67,7 +67,7 @@ Module page: `/invoice`
 | Clinic | Enquiry | FrmInvoiceEnq | 119 |  | 3 | **Migrated** | `/invoice/enquiry` |
 | Clinic | Batch Transfer | FrmInvoiceBatchNoUpd | 119 |  | 3 | **Migrated** | `/invoice/batch-transfer` |
 | Clinic | Adjustment (After Bordx) | frmInvoiceAdjAftBordx | 179 |  | 3 | **Migrated** | `/invoice/adjustment-after-bordx` |
-| Email Notification | Email Notification (Payment) | frmEmailNotification | 117 |  | 10 | Pending | `/invoice/email/payment` |
+| Email Notification | Email Notification (Payment) | frmEmailNotification | 117 |  | 10 | **Migrated** | `/invoice/email/payment` |
 | Email Notification | Email Notification (Providers) | frmEmailNotificationProvider | 117 |  | 10 | Pending | `/invoice/email/providers` |
 | Email Notification | Email Notification (Rejection) | frmEmailRejectedClaim | 117 |  | 10 | Pending | `/invoice/email/rejection` |
 | General Exclusions | General Exclusions | frmGeneralBenefitExclusion | 133 |  | 2 | Pending | `/invoice/general-exclusions` |

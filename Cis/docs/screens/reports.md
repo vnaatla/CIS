@@ -72,3 +72,14 @@ The same page as Invoice Tracking (route variant `jupiter`). The desktop runs th
 | Search | CISWorksheet ClaimBordxModule case 1 (VIEW_Invoice_Tracking_2016, or _2016_BTBG with a bordx no. criterion; MSNO = the row number within the visit month), as `cis.InvTrkJup_Search`. Its subset of Invoice Tracking's filters: no entity, Flex OP, subsidiary, department, payment status, OMNI / TIMS, OMNI ref., Pending, bordx date or OP batch date; one case status (O / C / D); the clinic is compared with the payee (INVPayee); the register date is compared with its time, as the desktop. Same columns plus MS No, same totals, double-click and Print to File. |
 
 Fixed desktop bugs: claimability was added with OR (ignoring the other filters) and on a column the 2016 view does not have (CASClaimability, a SQL error); it now filters Claimability with AND. FFS "No" and the accounting period are fixed as on Invoice Tracking.
+
+## Invoice > Email Notification (Payment) — frmEmailNotification (`/invoice/email/payment`, right EmailNotification, `api/email/payment`)
+
+| Step | Behaviour |
+|---|---|
+| Search | `Please Enter PV Date From!`, `Please Enter PV Date To!`, `Please Enter Status!` (N - New / R - Resend), `Invalid date format!` → CISPayment View_Email_notification (as `cis.EmlPay_Search`): PV date range, PV no. range, status (Resend = already e-mailed), group company, entity (PV no. CS… for Sihat Johor), ordered by e-mail descending; the claimant is the covered person for dependants. `No record found !`. |
+| Tick / Check all | A member without an e-mail cannot be ticked (`Please check member's email!`); Check all ticks the rows with an e-mail (`Please search a record.` when nothing is listed). |
+| Send | `Please enter send date`, `Please select the record`, `Do you want to start sending email(s) ?` → per ticked PV the payment advice e-mail as the desktop's: subject `<member name> (<member no.>) - <PV no.>`, to the member's e-mail, BCC elaineyeow@medix.com.my plus the extra BCC addresses, the HTML advice (PV no., date submitted, incurred and paid amounts, date banked-in = the send date, bank account) and the table of the PV's claims (View_Email_Details) with totals; then Payment2MBM.PVEmailStatus = Y and PVEmailDate = today. `Emails have been sent out successfully!`. |
+| Print | The list as CSV. |
+
+Deliberate differences: the e-mails go through the API's e-mail sender (SMTP, configured as `Email:Host`; in development `Email:PickupDirectory` = `D:\CIS\LocalRun\MailPickup`, where each e-mail is written as an .eml file and nothing is sent) instead of the user's Outlook; a PV is marked as e-mailed only after its e-mail has gone (the desktop marked it first, so a failed send left it marked).

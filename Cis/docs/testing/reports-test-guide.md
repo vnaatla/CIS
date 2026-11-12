@@ -45,3 +45,11 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 |---|---|---|
 | J1 | Case no. EA12538600 – EA12538699 → Search | about 95 rows with the MS No column |
 | J2 | Same, case status O - Open | only open cases |
+
+## 6. Email Notification (Payment) — `/invoice/email/payment` (frmEmailNotification)
+
+| # | Action | Expected |
+|---|---|---|
+| E1 | PV date 03/08/2021 – 03/08/2021, status N - New → Search | 161 PVs |
+| E2 | No status → Search | `Please Enter Status!` |
+| E3 | Tick CP100471624, send date 05/08/2021 → Send → Yes | `Emails have been sent out successfully!`; an .eml file in `D:\CIS\LocalRun\MailPickup` (development: nothing is sent); the PV now lists under R - Resend. Clean-up: `UPDATE CISPayment.dbo.Payment2MBM SET PVEmailStatus = NULL, PVEmailDate = NULL WHERE PVNo = 'CP100471624'` |
