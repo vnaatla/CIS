@@ -70,3 +70,40 @@ BEGIN
     UPDATE CISPayment.dbo.Payment2CLN SET PVEmailStatus = 'Y' WHERE PVCLNNo = @pvNo;
 END
 GO
+
+-- E-mail notification > Rejection (frmEmailRejectedClaim): CISPayment EmailNotification case 2 (rejected claims of members, bordx memo N) with parameters.
+CREATE OR ALTER PROCEDURE cis.EmlRej_Search @regFrom datetime, @regTo datetime, @caseFrom nvarchar(20) = NULL, @caseTo nvarchar(20) = NULL, @resend bit = 0,
+    @company nvarchar(200) = NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT MBM.MBMName, CASE WHEN CISCas.CoverID = '00' THEN MBM.MBMName ELSE MBMCoveredPersons.MBMCName END AS PatientName,
+        MBM.MBMIcBcPp, MBMOthers.MBMGroupCompany, Claim.CLMTotalActual, Claim.CLMBordxAmt, CISCas.NPClinic, CISCas.CoverID, CISCas.MBMnumber,
+        CISCas.ClinicCode, MBMTwo.MBMEmail, CISCas.InvoiceReceiptDate, CISCas.RepudiationReason, CISCas.Claimability, CISCas.CASEmailRejStatus,
+        CISCas.InvoiceNo, CISCas.DateVisit, CISCas.RegisterDate, CISCas.CASNumber, CISCas.CASRepAction, CISCas.CASRepAmt, Claim.CLMBordxMemo, MBM.MBMPolicyNo,
+        MBMOthers.MBMEmployeeNo
+    FROM HISDB.dbo.MBMTwo
+    LEFT JOIN CISDB.dbo.CISCas ON CISCas.MBMnumber = MBMTwo.MBMNumber
+    INNER JOIN CISWorksheet.dbo.Claim ON CISCas.CASNumber = Claim.CASNumber
+    LEFT JOIN HISDB.dbo.MBM ON MBMTwo.MBMNumber = MBM.MBMNumber
+    LEFT JOIN HISDB.dbo.MBMOthers ON MBM.MBMNumber = MBMOthers.MBMNumber
+    LEFT JOIN HISDB.dbo.MBMCoveredPersons ON MBMCoveredPersons.MBMCNumber = MBM.MBMNumber AND MBMCoveredPersons.MBMCCoverID = CISCas.CoverID
+    WHERE CISCas.RegisterDate >= @regFrom AND CISCas.RegisterDate <= @regTo
+      AND (@caseFrom IS NULL OR CISCas.CASNumber >= @caseFrom) AND (@caseTo IS NULL OR CISCas.CASNumber <= @caseTo)
+      AND ((@resend = 1 AND CISCas.CASEmailRejStatus = 'Y') OR (@resend = 0 AND (CISCas.CASEmailRejStatus = '' OR CISCas.CASEmailRejStatus IS NULL)))
+      AND (@company IS NULL OR MBMOthers.MBMGroupCompany = @company)
+    GROUP BY MBM.MBMName, MBM.MBMIcBcPp, MBMOthers.MBMGroupCompany, Claim.CLMTotalActual, Claim.CLMBordxAmt, CISCas.NPClinic, CISCas.CoverID, MBMCoveredPersons.MBMCName,
+        CISCas.MBMnumber, CISCas.ClinicCode, MBMTwo.MBMEmail, CISCas.InvoiceReceiptDate, CISCas.RepudiationReason, CISCas.Claimability, CISCas.CASEmailRejStatus,
+        CISCas.InvoiceNo, CISCas.DateVisit, CISCas.RegisterDate, CISCas.CASNumber, CISCas.CASRepAction, CISCas.CASRepAmt, Claim.CLMBordxMemo, MBM.MBMPolicyNo,
+        MBMOthers.MBMEmployeeNo
+    HAVING Claim.CLMBordxMemo = 'N'
+    OPTION (RECOMPILE);
+END
+GO
+
+-- CmdSend_Click: the case is marked as notified.
+CREATE OR ALTER PROCEDURE cis.EmlRej_Mark @casNumber nvarchar(20) AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE dbo.CISCas SET CASEmailRejStatus = 'Y' WHERE CASNumber = @casNumber;
+END
+GO
