@@ -35,6 +35,8 @@ public sealed record InvTrkRequest
     /// <summary>Case statuses ticked: O, D, C.</summary>
     public List<string> Statuses { get; init; } = [];
     public bool Pending { get; init; }
+    /// <summary>Tracking (Jupiter): the single case status combo (O / C / D).</summary>
+    public string? Status { get; init; }
     public string? Claimability { get; init; }
     public string? PlanFrom { get; init; }
     public string? PlanTo { get; init; }
@@ -130,7 +132,7 @@ public interface IInvTrkRepository
 {
 #pragma warning disable CS1591
     Task<List<string>> LookupAsync(IDbSession session, string kind, string? key);
-    Task<List<Dictionary<string, object?>>> SearchAsync(IDbSession session, IReadOnlyDictionary<string, object?> parameters);
+    Task<List<Dictionary<string, object?>>> SearchAsync(IDbSession session, IReadOnlyDictionary<string, object?> parameters, bool jupiter);
 #pragma warning restore CS1591
 }
 
@@ -140,8 +142,8 @@ public interface IInvTrkService
     /// <summary>Combos: clinics, payors, companies (of a payor), subsidiaries / departments (of a group company).</summary>
     Task<List<string>> LookupAsync(string kind, string? key);
 
-    /// <summary>cmdSearch_Click.</summary>
-    Task<InvTrkResult> SearchAsync(InvTrkRequest request);
+    /// <summary>cmdSearch_Click; <paramref name="jupiter"/> = FrmInvoiceTracking2 (ClaimBordxModule case 1).</summary>
+    Task<InvTrkResult> SearchAsync(InvTrkRequest request, bool jupiter = false);
 }
 
 /// <inheritdoc />
@@ -161,11 +163,12 @@ public sealed class InvTrkService(IDbSessions sessions, IInvTrkRepository reposi
     }
 
     /// <inheritdoc />
-    public async Task<InvTrkResult> SearchAsync(InvTrkRequest r)
+    public async Task<InvTrkResult> SearchAsync(InvTrkRequest r, bool jupiter = false)
     {
         var p = Parameters(r);
+        if (jupiter) p["status"] = string.IsNullOrWhiteSpace(r.Status) ? null : r.Status.Trim()[..1];
         await using var s = await sessions.OpenAsync();
-        var rows = await repository.SearchAsync(s, p);
+        var rows = await repository.SearchAsync(s, p, jupiter);
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         decimal total = 0, approved = 0, btbg = 0;
         foreach (var x in rows)

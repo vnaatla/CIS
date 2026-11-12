@@ -35,6 +35,8 @@ public class InvTrkDatabaseTests
         Assert.True(r.Rows.Count > 50);
         Assert.All(r.Rows, x => Assert.InRange(string.CompareOrdinal(((string)x["CASNumber"]!).Trim(), "EA12538600"), 0, int.MaxValue));
         Assert.True(r.Total > 0);
+        var j = await service.SearchAsync(new InvTrkRequest { CaseFrom = "EA12538600", CaseTo = "EA12538699", Status = "O - Open" }, true);
+        Assert.All(j.Rows, x => Assert.True(x.ContainsKey("MSNO")));
         Assert.Equal(InvTrkService.BadDate, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.SearchAsync(new InvTrkRequest { VisitFrom = "31/02/2021" }))).Message);
         Assert.Equal(InvTrkService.NoRecord, (await Assert.ThrowsAsync<NotFoundException>(() => service.SearchAsync(new InvTrkRequest { CaseFrom = "ZZ", CaseTo = "ZZ" }))).Message);
     }

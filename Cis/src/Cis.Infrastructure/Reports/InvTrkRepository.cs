@@ -12,6 +12,6 @@ public sealed class InvTrkRepository : IInvTrkRepository
     public Task<List<string>> LookupAsync(IDbSession session, string kind, string? key) => session.QueryAsync<string>("cis.InvTrk_Lookup", new { kind, key });
 
     /// <inheritdoc />
-    public Task<List<Dictionary<string, object?>>> SearchAsync(IDbSession session, IReadOnlyDictionary<string, object?> parameters) =>
-        session.RowsAsync("cis.InvTrk_Search", new DynamicParameters(parameters), 900);
+    public Task<List<Dictionary<string, object?>>> SearchAsync(IDbSession session, IReadOnlyDictionary<string, object?> parameters, bool jupiter) =>
+        session.RowsAsync(jupiter ? "cis.InvTrkJup_Search" : "cis.InvTrk_Search", new DynamicParameters(parameters), 900);
 }

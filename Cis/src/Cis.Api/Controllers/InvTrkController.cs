@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cis.Api.Controllers;
 
 /// <summary>Invoice > Tracking: the shared actions.</summary>
-public abstract class InvTrkControllerBase(IInvTrkService tracking) : ApiControllerBase
+public abstract class InvTrkControllerBase(IInvTrkService tracking, bool jupiter) : ApiControllerBase
 {
     /// <summary>A combo: clinics, payors, companies (key = payor), subsidiaries / departments (key = group company).</summary>
     [HttpGet("lookup/{kind}")]
@@ -15,11 +15,16 @@ public abstract class InvTrkControllerBase(IInvTrkService tracking) : ApiControl
 
     /// <summary>Search.</summary>
     [HttpPost("search")]
-    public Task<InvTrkResult> Search(InvTrkRequest request) => tracking.SearchAsync(request);
+    public Task<InvTrkResult> Search(InvTrkRequest request) => tracking.SearchAsync(request, jupiter);
 }
 
 /// <summary>Invoice > Tracking (FrmInvoiceTracking).</summary>
 [Route("api/tracking/invoice")]
 [RequireAccess(AccessRight.InvoiceTracking)]
-public sealed class InvTrkController(IInvTrkService tracking) : InvTrkControllerBase(tracking);
+public sealed class InvTrkController(IInvTrkService tracking) : InvTrkControllerBase(tracking, false);
+
+/// <summary>Invoice > Tracking (Jupiter) (FrmInvoiceTracking2): ClaimBordxModule case 1 on the Jupiter server; here the same databases.</summary>
+[Route("api/tracking/invoice-jupiter")]
+[RequireAccess(AccessRight.InvoiceTrackingJupiter)]
+public sealed class InvTrkJupiterController(IInvTrkService tracking) : InvTrkControllerBase(tracking, true);
 
