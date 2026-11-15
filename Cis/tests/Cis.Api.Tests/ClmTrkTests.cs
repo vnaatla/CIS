@@ -18,6 +18,18 @@ public class ClmTrkRuleTests
     }
 
     [Fact]
+    public void The_variant_screens_offer_their_own_report_types()
+    {
+        var service = new ClmTrkService(null!, null!);
+        Assert.DoesNotContain(service.Reports("simple"), r => r.Type > 19);
+        Assert.DoesNotContain(service.Reports("jupiter"), r => r.Type > 20);
+        Assert.DoesNotContain(service.Reports("jupitersimple"), r => r.Type > 18);
+        Assert.DoesNotContain(service.Reports("sun"), r => r.Type > 22);
+        // Simple: type 7 is General Listing; its Without Remarks listing differs from the main form's and is not ported yet.
+        Assert.Contains(service.Reports("simple"), r => r.Type == 7 && r.Selection == "Without Remarks" && !r.Migrated);
+    }
+
+    [Fact]
     public void Only_known_filters_are_passed_typed()
     {
         var f = ClmTrkService.Filters(new() { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["approvedFrom"] = "10", ["nope"] = "x" });
@@ -74,6 +86,11 @@ public class ClmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Count(), monthly.Rows.Count);
         Assert.Matches(@"^\d{2}/07/2021-\w+day$", monthly.Rows[0][1]);
         Assert.All(service.Reports(), x => Assert.True(x.Migrated, $"{x.Type} {x.Selection}"));
+        // Simple: CISClaimTracking_Simple (no DC -> DC / EA rewrite), Ageband summary = its case 14.
+        var simple = await service.SearchAsync(new ClmTrkRequest(1, "Summary", new() { ["payor"] = "EA", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" }), "simple");
+        Assert.Equal((await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking_Simple",
+            new { strAppend = " AND PAYCode = 'EA' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'", strAppendCase = 14 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Count(), simple.Rows.Count);
         var day = new Dictionary<string, string?> { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" };
         async Task<List<dynamic>> Legacy(int c, string append) => (await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
             new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'" + append, strAppendCase = c },

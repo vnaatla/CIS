@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -11,10 +12,19 @@ import { FieldComponent } from '../../shared/field.component'
 import { saveCsv } from '../../shared/lib/download'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-const BASE = '/api/tracking/claim'
 type Row = Record<string, string>
 const TYPES = ['Admission', 'Ageband', 'Agent No', 'Bordx', 'Clinic', 'Clinic Group', 'Department', 'Diagnosis', 'Gender', 'General Listing', 'Group Company', 'I/C',
   'Insured Type', 'Invoice Listing', 'MC', 'Month', 'Monthly Reports', 'Payor', 'Plan Code', 'Policy', 'Race', 'State', 'Utilization', 'Verification of Claims']
+const SIMPLE_TYPES = ['Admission', 'Ageband', 'Bordx', 'Clinic', 'Department', 'Diagnosis', 'Gender', 'General Listing', 'Group Company', 'I/C', 'Insured Type', 'MC',
+  'Month', 'Monthly Reports', 'Payor', 'Plan Code', 'Policy', 'Race', 'State', 'Utilization']
+/** The variant forms: their API base, title, form and report types (as each form's combo). */
+const VARIANTS: Record<string, { base: string; title: string; form: string; types: string[] }> = {
+  main: { base: '/api/tracking/claim', title: 'Claim Tracking', form: 'frmClaimRpt', types: TYPES },
+  simple: { base: '/api/tracking/claim-simple', title: 'Claim Tracking (Simple)', form: 'frmClaimRptSimple', types: SIMPLE_TYPES },
+  jupiter: { base: '/api/tracking/claim-jupiter', title: 'Claim Tracking (Jupiter)', form: 'frmNewClaimRpt', types: TYPES.filter((x) => x !== 'Invoice Listing').slice(0, 21) },
+  jupitersimple: { base: '/api/tracking/claim-jupiter-simple', title: 'Claim Tracking (Jupiter - Simple)', form: 'frmNewClaimRptSimpleJup', types: SIMPLE_TYPES.slice(0, 19) },
+  sun: { base: '/api/tracking/claim-sun', title: 'Claim Tracking (SUN System)', form: 'frmClaimRptSUN', types: TYPES.slice(0, 23) },
+}
 const RANGES: { key: string; label: string; date?: boolean; blank?: boolean }[] = [
   { key: 'dov', label: 'DOV', date: true, blank: true }, { key: 'dor', label: 'DOR', date: true, blank: true }, { key: 'dow', label: 'Claim Open Date', date: true, blank: true },
   { key: 'invoiceDate', label: 'Invoice Date', date: true, blank: true }, { key: 'bordxDate', label: 'Bordx Date', date: true, blank: true },
@@ -48,13 +58,13 @@ const TEXTS = [{ key: 'agent', label: 'Agent Code', blank: true }, { key: 'polic
   { key: 'branch', label: 'Branch' }, { key: 'year', label: 'Year (DOV)' }]
 const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : v).trim()
 
-/** Claim / Bordx > Claim Tracking (frmClaimRpt). */
+/** Claim / Bordx > Claim Tracking (frmClaimRpt) and its variants (route data variant: simple, jupiter, jupitersimple, sun). */
 @Component({
   selector: 'app-claim-tracking-page',
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Claim Tracking" subtitle="Replaces frmClaimRpt">
+    <app-page-shell [title]="v.title" [subtitle]="'Replaces ' + v.form">
       <div class="screen-form">
         <fieldset aria-label="Report">
           <legend>Report</legend>
@@ -154,8 +164,9 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
 export class ClaimTrackingPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
+  protected readonly v = VARIANTS[inject(ActivatedRoute).snapshot.data['variant'] ?? 'main']
 
-  protected readonly types = TYPES
+  protected readonly types = this.v.types
   protected readonly ranges = RANGES
   protected readonly combos = COMBOS
   protected readonly texts = TEXTS
@@ -181,7 +192,7 @@ export class ClaimTrackingPage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.reports.set(await firstValueFrom(this.http.get<{ type: number; selection: string; migrated: boolean }[]>(`${BASE}/reports`)))
+      this.reports.set(await firstValueFrom(this.http.get<{ type: number; selection: string; migrated: boolean }[]>(`${this.v.base}/reports`)))
       await Promise.all([this.load('polstatus'), this.load('states')])
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
@@ -192,7 +203,7 @@ export class ClaimTrackingPage implements OnInit {
     if (!key && this.lists()[kind]) return
     const params = key ? new HttpParams().set('key', key) : undefined
     try {
-      const items = await firstValueFrom(this.http.get<string[]>(`${BASE}/lookup/${kind}`, { params }))
+      const items = await firstValueFrom(this.http.get<string[]>(`${this.v.base}/lookup/${kind}`, { params }))
       this.lists.update((l) => ({ ...l, [kind]: items }))
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
@@ -237,7 +248,7 @@ export class ClaimTrackingPage implements OnInit {
     this.busy.set(true)
     this.rows.set([])
     try {
-      const r = await firstValueFrom(this.http.post<{ headers: string[]; rows: string[][]; records: number }>(`${BASE}/search`,
+      const r = await firstValueFrom(this.http.post<{ headers: string[]; rows: string[][]; records: number }>(`${this.v.base}/search`,
         { reportType: this.type(), selection: this.selection, filters }))
       this.headers.set(r.headers)
       this.rows.set(r.rows.map((cells) => Object.fromEntries(cells.map((c, i) => [`c${i}`, c]))))

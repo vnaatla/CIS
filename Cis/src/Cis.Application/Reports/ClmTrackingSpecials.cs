@@ -136,14 +136,14 @@ public sealed partial class ClmTrkService
             var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase) { ["clinicType"] = clinicType };
             f.Remove("treatmentFrom"); f.Remove("treatmentTo"); f.Remove("treatmentBlank");
             if (code.Length == 0) f["treatmentBlank"] = true; else { f["treatmentFrom"] = code; f["treatmentTo"] = code; }
-            var r = (await repository.RunAsync(s, 11, f)).FirstOrDefault();
+            var r = (await RunAsync(s, 11, f)).FirstOrDefault();
             return r is null ? (0, 0) : (MbmTrkService.N(r, "Total"), MbmTrkService.N(r, "TotalApproved") - MbmTrkService.N(r, "ClmNonGPFee"));
         }
         static string Num(decimal v) => v.ToString(CultureInfo.InvariantCulture);
         static string Avg(decimal amount, decimal visits, bool or) => (or ? amount > 0 || visits > 0 : amount > 0 && visits > 0) && visits != 0 ? R2(amount / visits) : "0";
         var rows = new List<List<string>>();
         decimal runningBill = 0;
-        foreach (var x in await repository.RunAsync(s, 6, filters))
+        foreach (var x in await RunAsync(s, 6, filters))
         {
             var code = F(x, "CASTreatReason1");
             var desc = reasons.GetValueOrDefault(code) ?? "";
@@ -184,7 +184,7 @@ public sealed partial class ClmTrkService
         List<string>? row = null;
         string member = "\u0001";
         decimal claims = 0, times = 0, days = 0, approved = 0, topUp = 0;
-        foreach (var x in await repository.RunAsync(s, separate ? 44 : 5, filters))
+        foreach (var x in await RunAsync(s, separate ? 44 : 5, filters))
         {
             var y = F(x, "AnnLmtIND") == "Y";
             if (separate || F(x, "MBMNumber") != member)
@@ -221,7 +221,7 @@ public sealed partial class ClmTrkService
     {
         if (e.Routine == "DailyVisitListing")
             // Admission > Daily Report (case 34): the visits numbered 1, 2, ... (the desktop's counter was never reset, so it kept counting across searches).
-            return (await repository.RunAsync(s, 34, filters)).Select((x, i) => new List<string>
+            return (await RunAsync(s, 34, filters)).Select((x, i) => new List<string>
             {
                 (i + 1).ToString(En), F(x, "CASNumber"), F(x, "MBMNumber"), F(x, "MBMPolicyNo"), F(x, "PatientName"), D(x, "DateVisit"), F(x, "ClinicCode"),
                 F(x, "CLNName"), F(x, "CASTreatReason1"), F(x, "MCDays"),
@@ -236,8 +236,8 @@ public sealed partial class ClmTrkService
             if (from is null) throw new Domain.Errors.BusinessRuleException(NoDov);
             // Per payor (case 35) its visit days in order (case 96): "<date>-<weekday>" and the visits, up to 31 days. The desktop did not clear the previous
             // payor's days, so a payor with fewer days showed the remaining days of the one before; here each payor shows its own days.
-            var days = (await repository.RunAsync(s, 96, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.Take(31).ToList());
-            return (await repository.RunAsync(s, 35, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
+            var days = (await RunAsync(s, 96, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.Take(31).ToList());
+            return (await RunAsync(s, 35, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
             {
                 var row = new List<string> { F(x, "PAYCode") };
                 foreach (var d in days.GetValueOrDefault(F(x, "PAYCode")) ?? [])
@@ -253,8 +253,8 @@ public sealed partial class ClmTrkService
         {
             // Admission > YTD Report: the year is required; per payor (case 36) the visits of each month 1-12 (case 97, the first row of a month).
             if (!filters.ContainsKey("year")) throw new Domain.Errors.BusinessRuleException(NoYear);
-            var months = (await repository.RunAsync(s, 97, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.ToList());
-            return (await repository.RunAsync(s, 36, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
+            var months = (await RunAsync(s, 97, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.ToList());
+            return (await RunAsync(s, 36, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
             {
                 var mine = months.GetValueOrDefault(F(x, "PAYCode")) ?? [];
                 var row = new List<string> { F(x, "PAYCode") };
@@ -275,11 +275,11 @@ public sealed partial class ClmTrkService
                 if (userPanel is not null && userPanel == "C" != panel) return [];
                 var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase);
                 if (panel) f["panel"] = "C"; else f["nonPanel"] = true;
-                return (await repository.RunAsync(s, c, f)).GroupBy(x => F(x, key)).ToDictionary(g => g.Key, g => (IReadOnlyDictionary<string, object?>)g.First());
+                return (await RunAsync(s, c, f)).GroupBy(x => F(x, key)).ToDictionary(g => g.Key, g => (IReadOnlyDictionary<string, object?>)g.First());
             }
             var panelRows = await Part(byType ? 31 : 12, true);
             var nonPanelRows = await Part(byType ? 32 : 33, false);
-            return (await repository.RunAsync(s, byType ? 24 : 82, filters)).Select(x =>
+            return (await RunAsync(s, byType ? 24 : 82, filters)).Select(x =>
             {
                 var p = panelRows.GetValueOrDefault(F(x, key));
                 var n = nonPanelRows.GetValueOrDefault(F(x, key));
@@ -298,9 +298,9 @@ public sealed partial class ClmTrkService
             string K(IReadOnlyDictionary<string, object?> x) => string.Join("\u0001", keys.Select(k => F(x, k)));
             var gp = new Dictionary<string, string>();
             var spAmt = new Dictionary<string, string>();
-            foreach (var x in await repository.RunAsync(s, member ? 108 : 107, filters))
+            foreach (var x in await RunAsync(s, member ? 108 : 107, filters))
                 (F(x, "CLNType") == "S" ? spAmt : gp)[K(x)] = M(MbmTrkService.N(x, "CLMTotalActual") - MbmTrkService.N(x, "ClmNonGPFee"));
-            return (await repository.RunAsync(s, member ? 4 : 3, filters)).Select(x => member
+            return (await RunAsync(s, member ? 4 : 3, filters)).Select(x => member
                 ? new List<string> { Fe(x, "MBMDepartment"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"), Has(x, "TotalVisit") ? F(x, "TotalVisit") : "0",
                     Has(x, "MCTimes") ? F(x, "MCTimes") : "0", Has(x, "MCDays") ? F(x, "MCDays") : "0", M0(x, "CLMTotalActual"), gp.GetValueOrDefault(K(x)) ?? "",
                     spAmt.GetValueOrDefault(K(x)) ?? "" }
@@ -314,6 +314,6 @@ public sealed partial class ClmTrkService
         var reasons = sp.Reasons
             ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
             : new Dictionary<string, string>();
-        return (await repository.RunAsync(s, sp.Case, filters)).Select(x => sp.Map(x, reasons)).ToList();
+        return (await RunAsync(s, sp.Case, filters)).Select(x => sp.Map(x, reasons)).ToList();
     }
 }

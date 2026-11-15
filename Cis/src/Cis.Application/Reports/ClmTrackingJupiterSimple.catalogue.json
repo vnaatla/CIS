@@ -1,0 +1,4645 @@
+[
+ {
+  "type": 0,
+  "selection": "Daily Report",
+  "routine": "DailyVisitListing",
+  "headers": [
+   "No",
+   "Claim No",
+   "Member No",
+   "Policy No",
+   "Patient Name",
+   "DOV",
+   "Clinic Code",
+   "Clinic Name",
+   "Treatment Code",
+   "MC Days"
+  ],
+  "special": true,
+  "p": {
+   "c": 34,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    34
+   ],
+   "calls": [],
+   "bad": [
+    "intloop"
+   ]
+  }
+ },
+ {
+  "type": 0,
+  "selection": "Monthly Report",
+  "routine": "MonthyReportListing",
+  "headers": [
+   "Payor",
+   "Date 1",
+   "Total",
+   "Date 2",
+   "Total",
+   "Date 3",
+   "Total",
+   "Date 4",
+   "Total",
+   "Date 5",
+   "Total",
+   "Date 6",
+   "Total",
+   "Date 7",
+   "Total",
+   "Date 8",
+   "Total",
+   "Date 9",
+   "Total",
+   "Date 10",
+   "Total",
+   "Date 11",
+   "Total",
+   "Date 12",
+   "Total",
+   "Date 13",
+   "Total",
+   "Date 14",
+   "Total",
+   "Date 15",
+   "Total",
+   "Date 16",
+   "Total",
+   "Date 17",
+   "Total",
+   "Date 18",
+   "Total",
+   "Date 19",
+   "Total",
+   "Date 20",
+   "Total",
+   "Date 21",
+   "Total",
+   "Date 22",
+   "Total",
+   "Date 23",
+   "Total",
+   "Date 24",
+   "Total",
+   "Date 25",
+   "Total",
+   "Date 26",
+   "Total",
+   "Date 27",
+   "Total",
+   "Date 28",
+   "Total",
+   "Date 29",
+   "Total",
+   "Date 30",
+   "Total",
+   "Date 31",
+   "Total"
+  ],
+  "special": true,
+  "p": {
+   "c": 35,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    35
+   ],
+   "calls": [
+    "SearchVisitRecords"
+   ],
+   "bad": [
+    "AdmissionDate1 & \"-\" & Day1",
+    "Total1",
+    "AdmissionDate2 & \"-\" & Day2",
+    "Total2"
+   ]
+  }
+ },
+ {
+  "type": 1,
+  "selection": "Summary",
+  "routine": "AgeGroupListing",
+  "headers": [
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 14,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 1,
+  "selection": "By Gender",
+  "routine": "AgeGenderListing",
+  "headers": [
+   "Gender",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 13,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 1,
+  "selection": "By Insured Type",
+  "routine": "AgeInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 15,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 1,
+  "selection": "By Race",
+  "routine": "AgeRaceListing",
+  "headers": [
+   "Race Code",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 21,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 1,
+  "selection": "By Plan Code",
+  "routine": "AgePlanListing",
+  "headers": [
+   "Insured Type",
+   "Plan Code",
+   "Age Band",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 20,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 2,
+  "selection": "Summary Bordx",
+  "routine": "BordxNoListing",
+  "headers": [
+   "Bordx No",
+   "Bordx Date",
+   "No of Visit",
+   "Actual Amt",
+   "Approved Amt",
+   "Bordx Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 7,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "Bordxrefno"
+    },
+    {
+     "k": "d",
+     "n": "BordxDate"
+    },
+    {
+     "k": "f",
+     "n": "BordxNoClaims"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "BordxClaimAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 2,
+  "selection": "Bordx (By Grp Company)",
+  "routine": "BordxNoGrpListing",
+  "headers": [
+   "Group Company",
+   "Bordx No",
+   "Bordx Date",
+   "No of Visit",
+   "Actual Amt",
+   "Approved Amt",
+   "Bordx Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 8,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "Bordxrefno"
+    },
+    {
+     "k": "d",
+     "n": "BordxDate"
+    },
+    {
+     "k": "f",
+     "n": "BordxNoClaims"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "BordxClaimAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 2,
+  "selection": "Bordx (By Grp Company & Department)",
+  "routine": "BordxNoDeptListing",
+  "headers": [
+   "Department",
+   "Group Company",
+   "Bordx No",
+   "Bordx Date",
+   "No of Visit",
+   "Actual Amt",
+   "Approved Amt",
+   "Bordx Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 9,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "Bordxrefno"
+    },
+    {
+     "k": "d",
+     "n": "BordxDate"
+    },
+    {
+     "k": "f",
+     "n": "BordxNoClaims"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "BordxClaimAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 3,
+  "selection": "General Summary (By Payor)",
+  "routine": "CLNSumListing",
+  "headers": [
+   "Payor",
+   "Clinic Code",
+   "Clinic Name",
+   "No of Visit",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 26,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 3,
+  "selection": "General Summary (All)",
+  "routine": "CLNSumListing2",
+  "headers": [
+   "Clinic Code",
+   "Clinic Name",
+   "Clinic Type",
+   "Location",
+   "No of Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved",
+   "%MC",
+   "Days Per MC"
+  ],
+  "special": true,
+  "p": {
+   "c": 27,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    27
+   ],
+   "calls": [],
+   "bad": [
+    "Round(!MCTimes / !Total * 100, 2)",
+    "Round(!MCDays / !MCTimes, 2)"
+   ]
+  }
+ },
+ {
+  "type": 3,
+  "selection": "Detail Listing",
+  "routine": "CLNDetailListing",
+  "headers": [
+   "Payor",
+   "Clinic Code",
+   "Clinic Name",
+   "Claim No",
+   "Member No",
+   "Covered ID",
+   "Patient Name",
+   "Bill Amt",
+   "Approved Amt",
+   "Member Amt",
+   "DOV",
+   "Case Status",
+   "Claimability",
+   "Treatment Code",
+   "MC Days"
+  ],
+  "special": false,
+  "p": {
+   "c": 25,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "CasNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "coverid"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalActual"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "CLMRecoveryPaidByM"
+    },
+    {
+     "k": "d",
+     "n": "DateVisit"
+    },
+    {
+     "k": "f",
+     "n": "CASStatus"
+    },
+    {
+     "k": "f",
+     "n": "Claimability"
+    },
+    {
+     "k": "f",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 3,
+  "selection": "By Treatment Reason",
+  "routine": "CLNByDiag",
+  "headers": [
+   "Clinic Code",
+   "Clinic Name",
+   "Treatment Code",
+   "Description",
+   "No of Visit",
+   "Bill Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 23,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 3,
+  "selection": "By Clinic Type",
+  "routine": "CLNByType",
+  "headers": [
+   "Clinic Type",
+   "No of Claims",
+   "Total Amt Claims"
+  ],
+  "special": false,
+  "p": {
+   "c": 24,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CLNType"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 3,
+  "selection": "By Clinic Type & Clinic Panel",
+  "routine": "CLNByTypePanel",
+  "headers": [
+   "Clinic Type",
+   "No of Claims (Panel)",
+   "Amt Claims (Panel)",
+   "No of Claims (Non-Panel)",
+   "Amt Claims (Non-Panel)",
+   "Total No of Claims",
+   "Total Amt Claims"
+  ],
+  "special": true,
+  "p": {
+   "c": 24,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    24,
+    31,
+    32
+   ],
+   "calls": [
+    "CalCLMAmt"
+   ],
+   "bad": [
+    "CDbl(Record.SubItems(1)) + CDbl(Record.SubItems(3))",
+    "Format(CDbl(Record.SubItems(2)) + CDbl(Record.SubItems(4)), \"#,##0.00\")"
+   ]
+  }
+ },
+ {
+  "type": 3,
+  "selection": "General Summary (By Grp Company)",
+  "routine": "CLNSumListing3",
+  "headers": [
+   "Group Company",
+   "Clinic Code",
+   "Clinic Name",
+   "No of Visit",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 28,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Summary (By Visit)",
+  "routine": "DepartmentByVisit",
+  "headers": [
+   "Department",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 45,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Summary (By MC)",
+  "routine": "DepartmentByMC",
+  "headers": [
+   "Department",
+   "MC Days",
+   "No of MC",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 41,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "NoofMC"
+    },
+    {
+     "k": "mp",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Employee Utilization",
+  "routine": "DepartmentByEmp",
+  "headers": [
+   "Department",
+   "Mem_No.",
+   "Name",
+   "Staff No.",
+   "Ann_Lmt",
+   "App_Amt",
+   "Bal Amt",
+   "O/S Utilization (%)"
+  ],
+  "special": false,
+  "p": {
+   "c": 39,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "fe",
+     "n": "MBMName"
+    },
+    {
+     "k": "fe",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "f",
+     "n": "AnnLimit"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "CLMBalanceLimit"
+    },
+    {
+     "k": "pct",
+     "n": "CLMBalanceLimit",
+     "v": "AnnLimit"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Illness Utilization",
+  "routine": "DepartmentByIllness",
+  "headers": [
+   "Department",
+   "Illness",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 40,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "fe",
+     "n": "ReasonDesc"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Clinic Utilization",
+  "routine": "DepartmentByClinic",
+  "headers": [
+   "Department",
+   "Clinic",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 37,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Department Utilization",
+  "routine": "DepartmentByDept",
+  "headers": [
+   "Department",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 38,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "MC Times Analysis",
+  "routine": "DepartmentByMCTimes",
+  "headers": [
+   "Department",
+   "MC Times",
+   "Visit",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 43,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "MC Days Analysis",
+  "routine": "DepartmentByMCDays",
+  "headers": [
+   "Department",
+   "MC Days",
+   "Visit",
+   "MC Times",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 42,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 4,
+  "selection": "Visit Analysis",
+  "routine": "DepartmentByVisit1",
+  "headers": [
+   "Department",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 46,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 5,
+  "selection": "Top 20 by Claims",
+  "routine": "FinalDiagListing",
+  "headers": [
+   "Treatment Code",
+   "Description",
+   "No of Visit",
+   "MC Days",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 104,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 5,
+  "selection": "Top 20 by Amount",
+  "routine": "FinalDiagListing",
+  "headers": [
+   "Treatment Code",
+   "Description",
+   "No of Visit",
+   "MC Days",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 105,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 5,
+  "selection": "General Summary",
+  "routine": "FinalDiagListing",
+  "headers": [
+   "Treatment Code",
+   "Description",
+   "No of Visit",
+   "MC Days",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 106,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 5,
+  "selection": "By Clinic",
+  "routine": "FinalDiagbyHos",
+  "headers": [
+   "Treatment Code",
+   "Description",
+   "Clinic Code",
+   "Clinic Name",
+   "No of Visit",
+   "MC Days",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 103,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "Summary",
+  "routine": "SexListing",
+  "headers": [
+   "Sex",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 100,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "By Ageband",
+  "routine": "SexAgebandListing",
+  "headers": [
+   "Gender",
+   "Age Band",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 99,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "By Insured Type",
+  "routine": "SexInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Gender",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 69,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "By Race",
+  "routine": "SexRaceListing",
+  "headers": [
+   "Race Code",
+   "Gender",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 102,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 6,
+  "selection": "By Plan Code",
+  "routine": "SexPlanListing",
+  "headers": [
+   "Insured Type",
+   "Plan Code",
+   "Gender",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 101,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "Without Remarks",
+  "routine": "ResultListing",
+  "headers": [
+   "Payor",
+   "Claim No",
+   "BordxNo",
+   "Bordx Date",
+   "Member No",
+   "Policy No",
+   "Covered ID",
+   "Prin. Name",
+   "Patient Name",
+   "Prin. IC No",
+   "Prin. Sex",
+   "Prin. Ageband",
+   "Prin. DOB",
+   "Patient IC No",
+   "Patient Sex",
+   "Patient Ageband",
+   "Patient DOB",
+   "Insured Type",
+   "Plan Code",
+   "Clinic Code",
+   "Clinic Name",
+   "Treatment Code",
+   "Description",
+   "Bill Amt",
+   "Approved Amt",
+   "Recovery Amt",
+   "Premium Amt",
+   "Case Status",
+   "Claimability",
+   "Policy Status",
+   "Data Status",
+   "DOV",
+   "DOR",
+   "MC Days",
+   "Worksheet Date",
+   "Payor Eff. Date",
+   "Payor Exp. Date",
+   "Department",
+   "PayType",
+   "GP Amt",
+   "SP Amt",
+   "Insured Amt"
+  ],
+  "special": true,
+  "p": {
+   "c": 93,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    93
+   ],
+   "calls": [],
+   "bad": [
+    "Format(!CLMTotalActual - IIf(IsNumeric(!ClmNonGPFee) = True, !ClmNonGPFee, 0), \"##,#0.00\")",
+    "IIf(Len(!ClmNonGPFee), Format(!ClmNonGPFee, \"#,##0.00;(#,##0.00)\"), \"0.00\")"
+   ]
+  }
+ },
+ {
+  "type": 7,
+  "selection": "With Remarks",
+  "routine": "ResultListing2",
+  "headers": [
+   "Payor",
+   "Claim No",
+   "BordxNo",
+   "Bordx Date",
+   "Member No",
+   "Policy No",
+   "Covered ID",
+   "Prin. Name",
+   "Patient Name",
+   "Prin. IC No",
+   "Prin. Sex",
+   "Prin. Ageband",
+   "Prin. DOB",
+   "Patient IC No",
+   "Patient Sex",
+   "Patient Ageband",
+   "Patient DOB",
+   "Insured Type",
+   "Plan Code",
+   "Clinic Code",
+   "Clinic Name",
+   "Treatment Code",
+   "Description",
+   "Bill Amt",
+   "Approved Amt",
+   "Recovery Amt",
+   "Premium Amt",
+   "Case Status",
+   "Claimability",
+   "Policy Status",
+   "Data Status",
+   "DOV",
+   "DOR",
+   "MC Days",
+   "Worksheet Date",
+   "Payor Eff. Date",
+   "Payor Exp. Date",
+   "Remarks"
+  ],
+  "special": false,
+  "p": {
+   "c": 94,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "CasNumber"
+    },
+    {
+     "k": "f",
+     "n": "Bordxrefno"
+    },
+    {
+     "k": "d",
+     "n": "BordxDate"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "coverid"
+    },
+    {
+     "k": "f",
+     "n": "MBMName"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "f",
+     "n": "MBMIcBcPp"
+    },
+    {
+     "k": "f",
+     "n": "MBMSex"
+    },
+    {
+     "k": "f",
+     "n": "AgeCode"
+    },
+    {
+     "k": "d",
+     "n": "MBMDOB"
+    },
+    {
+     "k": "f",
+     "n": "IcNo"
+    },
+    {
+     "k": "f",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "AgeBand"
+    },
+    {
+     "k": "d",
+     "n": "DOB"
+    },
+    {
+     "k": "f",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "f",
+     "n": "CLNName"
+    },
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "fe",
+     "n": "CASDiagnosis5"
+    },
+    {
+     "k": "mp",
+     "n": "CLMTotalActual"
+    },
+    {
+     "k": "mp",
+     "n": "CLMTotalApproved"
+    },
+    {
+     "k": "mp",
+     "n": "CLMPayableByMedix2M"
+    },
+    {
+     "k": "mp",
+     "n": "MBMCLNPremium"
+    },
+    {
+     "k": "f",
+     "n": "CASStatus"
+    },
+    {
+     "k": "f",
+     "n": "Claimability"
+    },
+    {
+     "k": "f",
+     "n": "MBMStatus"
+    },
+    {
+     "k": "f",
+     "n": "MBMDataStatus"
+    },
+    {
+     "k": "d",
+     "n": "DateVisit"
+    },
+    {
+     "k": "d",
+     "n": "RegisterDate"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "d",
+     "n": "ClaimOpenDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEffDate"
+    },
+    {
+     "k": "d",
+     "n": "MBMPayorEXPDate"
+    },
+    {
+     "k": "f",
+     "n": "Remarks"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 7,
+  "selection": "By No of Visits",
+  "routine": "ResultListing3",
+  "headers": [
+   "No of Visits",
+   "Patient IC No",
+   "Member No",
+   "Patient Name",
+   "Plan Code",
+   "Amt Claims"
+  ],
+  "special": false,
+  "p": {
+   "c": 95,
+   "cols": [
+    {
+     "k": "f",
+     "n": "NoofVisits"
+    },
+    {
+     "k": "f",
+     "n": "IcNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "General Summary (By Payor)",
+  "routine": "GRPCOMSumListing",
+  "headers": [
+   "Payor",
+   "Group Company",
+   "No of Visit",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 63,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "General Summary (By Grp Company)",
+  "routine": "GRPCOMSumListing2",
+  "headers": [
+   "Group Company",
+   "No of Visit",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 64,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Detail Listing",
+  "routine": "GRPCOMDetailListing",
+  "headers": [
+   "Payor",
+   "Group Company",
+   "Claim No",
+   "Member No",
+   "Covered ID",
+   "Patient Name",
+   "Bill Amt",
+   "Approved Amt",
+   "Member Amt",
+   "DOV",
+   "Case Status",
+   "Claimability",
+   "Treatment Code",
+   "MC Days"
+  ],
+  "special": false,
+  "p": {
+   "c": 57,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "CasNumber"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "coverid"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalActual"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "CLMRecoveryPaidByM"
+    },
+    {
+     "k": "d",
+     "n": "DateVisit"
+    },
+    {
+     "k": "f",
+     "n": "CASStatus"
+    },
+    {
+     "k": "f",
+     "n": "Claimability"
+    },
+    {
+     "k": "f",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Employee Utilization",
+  "routine": "GRPCOMEmpUtilizeListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Mem_No.",
+   "Name",
+   "Staff No.",
+   "Ann_Lmt",
+   "App_Amt",
+   "Bal Amt",
+   "O/S Utilization (%)"
+  ],
+  "special": false,
+  "p": {
+   "c": 58,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "fe",
+     "n": "MBMName"
+    },
+    {
+     "k": "fe",
+     "n": "MBMEmployeeNo"
+    },
+    {
+     "k": "f",
+     "n": "AnnLimit"
+    },
+    {
+     "k": "m",
+     "n": "CLMTotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "CLMBalanceLimit"
+    },
+    {
+     "k": "pct",
+     "n": "CLMBalanceLimit",
+     "v": "AnnLimit"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Illness Utilization",
+  "routine": "GRPCOMIllnessListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Illness",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 60,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "fe",
+     "n": "ReasonDesc"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Clinic Utilization",
+  "routine": "GRPCOMClinicListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Clinic",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 55,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Department Utilization",
+  "routine": "GRPCOMDeptListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 56,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "MC Times Analysis",
+  "routine": "GRPCOMMCTimesListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "MC Times",
+   "Visit",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 62,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "MC Days Analysis",
+  "routine": "GRPCOMMCDaysListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "MC Days",
+   "Visit",
+   "MC Times",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 61,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Visit Analysis",
+  "routine": "GRPCOMVisitListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 65,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 8,
+  "selection": "Group Company",
+  "routine": "GRPCOMGrpCOMListing",
+  "headers": [
+   "Group Company",
+   "Department",
+   "Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "App Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 59,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "Visit"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "BillAmt"
+    },
+    {
+     "k": "m",
+     "n": "AppAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 9,
+  "selection": "",
+  "routine": "ICSummary",
+  "headers": [
+   "I/C No",
+   "Patient Name",
+   "No of Visit",
+   "Actual Amt",
+   "Approved Amt",
+   "O/S Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 66,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "IcNo"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "f",
+     "n": "TotalClaim"
+    },
+    {
+     "k": "m",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "ApprovedAmt"
+    },
+    {
+     "k": "m",
+     "n": "OSAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 10,
+  "selection": "Summary",
+  "routine": "INSListing",
+  "headers": [
+   "Payor",
+   "Ins Type",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 67,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 10,
+  "selection": "By Plan Code",
+  "routine": "PlanInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Plan Type",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 68,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 10,
+  "selection": "By Ageband",
+  "routine": "AgeInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 15,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 10,
+  "selection": "By Gender",
+  "routine": "SexInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Gender",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 69,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 10,
+  "selection": "By Race",
+  "routine": "RaceInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Race Code",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 70,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 11,
+  "selection": "Summary",
+  "routine": "MCSummary",
+  "headers": [
+   "MC Days",
+   "No of MC",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 71,
+   "cols": [
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "NoofMC"
+    },
+    {
+     "k": "mp",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 11,
+  "selection": "Summary (By Clinic)",
+  "routine": "MCSummary2",
+  "headers": [
+   "Clinic Code",
+   "Clinic Name",
+   "MC Days",
+   "No of MC",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 72,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "f",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "NoofMC"
+    },
+    {
+     "k": "mp",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 11,
+  "selection": "Summary (By Grp Company)",
+  "routine": "MCSummary3",
+  "headers": [
+   "Group Company",
+   "MC Days",
+   "No of MC",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 73,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "NoofMC"
+    },
+    {
+     "k": "mp",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 11,
+  "selection": "Summary (By Diag.)",
+  "routine": "MCSummary4",
+  "headers": [
+   "Treatment Code",
+   "Descriptions",
+   "MC Days",
+   "No of MC",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 74,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "f",
+     "n": "NoofMC"
+    },
+    {
+     "k": "mp",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "mp",
+     "n": "AmtClaims"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Eff. Month (By Payor)",
+  "routine": "EffMthSummary",
+  "headers": [
+   "Payor",
+   "Eff. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 47,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Eff. Month (All Payor)",
+  "routine": "EffMthSummary2",
+  "headers": [
+   "Eff. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 48,
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Exp. Month (By Payor)",
+  "routine": "ExpMthSummary",
+  "headers": [
+   "Payor",
+   "Exp. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 49,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Exp. Month (All Payor)",
+  "routine": "ExpMthSummary2",
+  "headers": [
+   "Exp. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 50,
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Visit Month (By Payor)",
+  "routine": "VisitMthSummary",
+  "headers": [
+   "Payor",
+   "Visit Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 51,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Visit Month (All Payor)",
+  "routine": "VisitMthSummary2",
+  "headers": [
+   "Visit Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 52,
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Reg. Month (By Payor)",
+  "routine": "RegMthSummary",
+  "headers": [
+   "Payor",
+   "Reg. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 53,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 12,
+  "selection": "Reg. Month (All Payor)",
+  "routine": "RegMthSummary2",
+  "headers": [
+   "Reg. Month",
+   "No of Visit",
+   "MC Days",
+   "Bill Amt",
+   "Approved Amt",
+   "Average Bill",
+   "Average Approved"
+  ],
+  "special": false,
+  "p": {
+   "c": 54,
+   "cols": [
+    {
+     "k": "ym"
+    },
+    {
+     "k": "f",
+     "n": "Total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "avg",
+     "n": "TotalActual",
+     "v": "Total"
+    },
+    {
+     "k": "avg",
+     "n": "TotalApproved",
+     "v": "Total"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 13,
+  "selection": "Utilization (By Member)",
+  "routine": "ReportMBMGeneralListing",
+  "headers": [
+   "Department",
+   "Member No",
+   "Cover ID",
+   "Member Name",
+   "Total Visit",
+   "MC Times",
+   "MC Days",
+   "Claim Amt",
+   "GP Amt",
+   "SP Amt",
+   "Insurance Claims"
+  ],
+  "special": true,
+  "p": {
+   "c": 4,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    4,
+    108
+   ],
+   "calls": [
+    "CalGPSPAmt"
+   ],
+   "bad": []
+  }
+ },
+ {
+  "type": 13,
+  "selection": "Claims Listing",
+  "routine": "ReportCLMGeneralListing",
+  "headers": [
+   "Department",
+   "Claim No",
+   "Bordx No",
+   "Bordx Date",
+   "Member No",
+   "Cover ID",
+   "Patient Name",
+   "Clinic Code",
+   "Clinic Name",
+   "PayType",
+   "Treatment Code",
+   "Description",
+   "Bill Amt",
+   "GP Amt",
+   "SP Amt",
+   "Insured Amt",
+   "DOV",
+   "MC Days"
+  ],
+  "special": true,
+  "p": {
+   "c": 1,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    1
+   ],
+   "calls": [],
+   "bad": [
+    "Format(!CLMTotalActual - IIf(IsNumeric(!ClmNonGPFee) = True, !ClmNonGPFee, 0), \"##,#0.00\")"
+   ]
+  }
+ },
+ {
+  "type": 13,
+  "selection": "Summary (by Clinics)",
+  "routine": "ReportCLNSummary",
+  "headers": [
+   "Clinic Code",
+   "Clinic Name",
+   "Clinic Type",
+   "No of Visit",
+   "MC Times",
+   "MC Days",
+   "Bill Amt",
+   "Average Bill",
+   "% MCs",
+   "Days per MC"
+  ],
+  "special": true,
+  "p": {
+   "c": 2,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    2
+   ],
+   "calls": [],
+   "bad": [
+    "Format(IIf(Len(!NoofVisit) And !NoofVisit <> 0, !BillAmt / !NoofVisit, \"0.00\"), \"#,##0.00\")",
+    "Format(IIf(Len(!NoofVisit) And !NoofVisit <> 0, Round((!MCTimes / !NoofVisit) * 100, 2), 0))",
+    "Format(IIf(Len(!MCTimes) And !MCTimes <> 0, !MCDays / !MCTimes, 0), \"#,##0.00\")"
+   ]
+  }
+ },
+ {
+  "type": 13,
+  "selection": "Summary (by Illness)",
+  "routine": "ReportIllnessSummary",
+  "headers": [
+   "Code",
+   "Description",
+   "GP Visits",
+   "SP Visits",
+   "Total Visits",
+   "GP Amt",
+   "SP Amt",
+   "Insurance Claims",
+   "Bill Amt",
+   "%",
+   "Avg GP Cost",
+   "Avg SP Cost",
+   "Avg Cost"
+  ],
+  "special": true,
+  "p": {
+   "c": 6,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    6,
+    11
+   ],
+   "calls": [
+    "CalGPAmt",
+    "CalSPAmt"
+   ],
+   "bad": [
+    "(CDbl(IIf(IsNumeric(Record.SubItems(2)), Record.SubItems(2), 0)) + CDbl(IIf(IsNumeric(Record.SubItems(3)), Record.SubItems(3), 0)))",
+    "Round((!CLMTotalActual / TotalBill) * 100, 2)",
+    "Round((Record.SubItems(5) / Record.SubItems(2)), 2)",
+    "Round((Record.SubItems(6) / Record.SubItems(3)), 2)"
+   ]
+  }
+ },
+ {
+  "type": 13,
+  "selection": "Departmental Bordx",
+  "routine": "ReportDepartmentalBordx",
+  "headers": [
+   "Department",
+   "Bordx No.",
+   "Bordx Date",
+   "Bill Amt",
+   "GP Amt",
+   "SP Amt",
+   "Insurance Claims"
+  ],
+  "special": true,
+  "p": {
+   "c": 3,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    3,
+    107
+   ],
+   "calls": [
+    "CalGPSPAmt"
+   ],
+   "bad": []
+  }
+ },
+ {
+  "type": 13,
+  "selection": "O/S Utilized (Combined)",
+  "routine": "ReportMBMSummaryOS",
+  "headers": [
+   "Department",
+   "Member No",
+   "Member Name (Principal)",
+   "Total Visit",
+   "MC Times",
+   "MC Days",
+   "Annual limit",
+   "Topup Amount",
+   "Claim Amt",
+   "Balance Limit",
+   "Percentage Utilized (%)"
+  ],
+  "special": true,
+  "p": {
+   "c": 5,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    5
+   ],
+   "calls": [],
+   "bad": [
+    "TotalClaim",
+    "MCTimes",
+    "MCDays",
+    "IIf(IsNumeric(!TopupAmt), Format(!TopupAmt, \"#,##0.00\"), 0)"
+   ]
+  }
+ },
+ {
+  "type": 13,
+  "selection": "O/S Utilized (Separate)",
+  "routine": "ReportMBMSummaryOS1",
+  "headers": [
+   "Department",
+   "Member No",
+   "Cover ID",
+   "Patient Name",
+   "Total Visit",
+   "MC Times",
+   "MC Days",
+   "Annual limit",
+   "Topup Amount",
+   "Claim Amt",
+   "Balance Limit",
+   "Percentage Utilized (%)"
+  ],
+  "special": true,
+  "p": {
+   "c": 44,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    44
+   ],
+   "calls": [],
+   "bad": [
+    "TotalClaim",
+    "MCTimes",
+    "MCDays",
+    "IIf(IsNumeric(!TopupAmt), Format(!TopupAmt, \"#,##0.00\"), 0)"
+   ]
+  }
+ },
+ {
+  "type": 14,
+  "selection": "",
+  "routine": "PayorListing",
+  "headers": [
+   "Payor",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 80,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "General Summary with Premium",
+  "routine": "PlanPremiumListing",
+  "headers": [
+   "Payor",
+   "Plan Type",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt",
+   "Total Basic Premium Amt",
+   "Total Premium Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 85,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    },
+    {
+     "k": "m",
+     "n": "BasicPremium"
+    },
+    {
+     "k": "m",
+     "n": "Premium"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "General Summary",
+  "routine": "PlanListing",
+  "headers": [
+   "Payor",
+   "Plan Type",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 84,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "Top 10 Clinics",
+  "routine": "PlanTopHosListing",
+  "headers": [
+   "Payor",
+   "Plan Type",
+   "Clinic Code",
+   "Clinic Name",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 87,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "ClinicCode"
+    },
+    {
+     "k": "fe",
+     "n": "CLNName"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "Top 10 Treatment Reasons",
+  "routine": "PlanTopDiagListing",
+  "headers": [
+   "Payor",
+   "Plan Type",
+   "Treatment Code",
+   "Descriptions",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 86,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "l",
+     "v": ""
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "By Ageband",
+  "routine": "PlanAgebandListing",
+  "headers": [
+   "Payor",
+   "Plan Type",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 81,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "By Insured Type",
+  "routine": "PlanInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Plan Type",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 68,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "By Insured Type & Ageband",
+  "routine": "PlanInsuredListing2",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Plan Type",
+   "Ageband",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 83,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 15,
+  "selection": "By Clinic Panel",
+  "routine": "PlanByPanel",
+  "headers": [
+   "Plan No",
+   "Claim Amt",
+   "Panel Amt",
+   "Non-Panel Amt"
+  ],
+  "special": true,
+  "p": {
+   "c": 82,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    82,
+    12,
+    33
+   ],
+   "calls": [
+    "CalPanelAmt"
+   ],
+   "bad": []
+  }
+ },
+ {
+  "type": 16,
+  "selection": "",
+  "routine": "PolGRPCOMListing",
+  "headers": [
+   "Payor",
+   "Policy No",
+   "Group Company",
+   "No of Visit",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 88,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMPolicyNo"
+    },
+    {
+     "k": "f",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "TotalApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 17,
+  "selection": "Summary",
+  "routine": "RaceListing",
+  "headers": [
+   "Race Code",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 90,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 17,
+  "selection": "By Ageband",
+  "routine": "RaceAgebandListing",
+  "headers": [
+   "Race Code",
+   "Age Band",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 89,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "fe",
+     "n": "AgeBand"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 17,
+  "selection": "By Insured Type",
+  "routine": "RaceInsuredListing",
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Race Code",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 70,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 17,
+  "selection": "By Gender",
+  "routine": "RaceSexListing",
+  "headers": [
+   "Race Code",
+   "Sex",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 92,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "fe",
+     "n": "Sex"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 17,
+  "selection": "By Plan Code",
+  "routine": "RacePlanListing",
+  "headers": [
+   "Insured Type",
+   "Plan No",
+   "Race Code",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 91,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "INSCode"
+    },
+    {
+     "k": "fe",
+     "n": "PLNCode"
+    },
+    {
+     "k": "fe",
+     "n": "RACCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 18,
+  "selection": "",
+  "routine": "StateListing",
+  "headers": [
+   "Payor",
+   "State",
+   "No of Visit",
+   "Total Actual Amt",
+   "Total Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 98,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "STACode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 19,
+  "selection": "Summary (By Payor)",
+  "routine": "MemberSummaryByPayor",
+  "headers": [
+   "Payor",
+   "Grp Company Code",
+   "Member No",
+   "Patient Name",
+   "Plan Code",
+   "No of Visit",
+   "MC Days",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 77,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "GRPCoCode"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "f",
+     "n": "PLNCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalClaim"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "ApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 19,
+  "selection": "Summary (All)",
+  "routine": "MemberSummary",
+  "headers": [
+   "Member No",
+   "No of Visit",
+   "MC Days",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 75,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "TotalClaim"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "ApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 19,
+  "selection": "Summary (By Grp Company)",
+  "routine": "MemberSummaryByGrpCompany",
+  "headers": [
+   "Group Company",
+   "Member No",
+   "No of Visit",
+   "MC Days",
+   "Actual Amt",
+   "Approved Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 76,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMGroupCompany"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "TotalClaim"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "ActualAmt"
+    },
+    {
+     "k": "m",
+     "n": "ApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 19,
+  "selection": "O/S Utilized",
+  "routine": "MemberSummaryOS",
+  "headers": [
+   "Department",
+   "Member No",
+   "Covered ID",
+   "Member Name",
+   "Total Visit",
+   "MC Times",
+   "MC Days",
+   "Claim Amt"
+  ],
+  "special": false,
+  "p": {
+   "c": 78,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "MBMDepartment"
+    },
+    {
+     "k": "f",
+     "n": "MBMNumber"
+    },
+    {
+     "k": "f",
+     "n": "coverid"
+    },
+    {
+     "k": "f",
+     "n": "PatientName"
+    },
+    {
+     "k": "f",
+     "n": "TotalClaim"
+    },
+    {
+     "k": "f",
+     "n": "MCTimes"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "ApprovedAmt"
+    }
+   ]
+  },
+  "s": null,
+  "helper": null
+ },
+ {
+  "type": 19,
+  "selection": "Summary (By Illness)",
+  "routine": "UtilizationByIllness",
+  "headers": [
+   "Treatment Code",
+   "Description",
+   "No of Visits (GP)",
+   "No of Visits (SP)",
+   "No of Visits (Others)",
+   "Total Visits",
+   "GP Amt",
+   "SP Amt",
+   "Others Amt",
+   "Non GP Amt",
+   "Total Bill Amt",
+   "Total Approved Amt",
+   "Average Cost (GP)",
+   "Average Cost (SP)",
+   "Average Cost (Others)",
+   "Total Average Cost"
+  ],
+  "special": true,
+  "p": {
+   "c": 6,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    6,
+    11
+   ],
+   "calls": [
+    "CalGPAmt",
+    "CalSPAmt",
+    "CalOthersAmt"
+   ],
+   "bad": [
+    "Round((Record.SubItems(6) / Record.SubItems(2)), 2)",
+    "Round((Record.SubItems(7) / Record.SubItems(3)), 2)",
+    "Round((Record.SubItems(8) / Record.SubItems(4)), 2)",
+    "Round((Record.SubItems(11) / Record.SubItems(5)), 2)"
+   ]
+  }
+ },
+ {
+  "type": 19,
+  "selection": "Summary (By Member)",
+  "routine": "UtilizationByMBM",
+  "headers": [
+   "Member No",
+   "Pricipal Name",
+   "Total Visits",
+   "MC Times",
+   "MC Days",
+   "Annual Limit",
+   "Bill Amt",
+   "Approved Amt",
+   "Balance Limit"
+  ],
+  "special": true,
+  "p": {
+   "c": 79,
+   "special": true
+  },
+  "s": null,
+  "helper": null,
+  "why": {
+   "cases": [
+    79
+   ],
+   "calls": [],
+   "bad": [
+    "Format(Record.SubItems(5) - Record.SubItems(7), \"#,##0.00\")"
+   ]
+  }
+ }
+]

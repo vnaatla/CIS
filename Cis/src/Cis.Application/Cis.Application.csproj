@@ -33,6 +33,10 @@
     <EmbeddedResource Include="Reports\MbmTrackingSimple.catalogue.json" LogicalName="MbmTrackingSimple.catalogue.json" />
     <EmbeddedResource Include="Reports\MbmTrackingJupiterSimple.catalogue.json" LogicalName="MbmTrackingJupiterSimple.catalogue.json" />
     <EmbeddedResource Include="Reports\ClmTracking.catalogue.json" LogicalName="ClmTracking.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTrackingSimple.catalogue.json" LogicalName="ClmTrackingSimple.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTrackingJupiter.catalogue.json" LogicalName="ClmTrackingJupiter.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTrackingJupiterSimple.catalogue.json" LogicalName="ClmTrackingJupiterSimple.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTrackingSun.catalogue.json" LogicalName="ClmTrackingSun.catalogue.json" />
     <EmbeddedResource Include="Reports\ClmTracking.params.json" LogicalName="ClmTracking.params.json" />
   </ItemGroup>
 

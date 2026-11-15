@@ -30,7 +30,11 @@ public sealed record ClmTrkResult(List<string> Headers, List<List<string>> Rows,
 public interface IClmTrkRepository
 {
     /// <summary>cis.ClmTrk_Run: one case of CISClaimTracking with the typed filters.</summary>
-    Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters);
+    /// <param name="session">The session.</param>
+    /// <param name="caseNo">The case.</param>
+    /// <param name="filters">The typed filters.</param>
+    /// <param name="proc">cis.ClmTrk_Run (CISClaimTracking) or cis.ClmTrkSimple_Run (CISClaimTracking_Simple).</param>
+    Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters, string proc = "cis.ClmTrk_Run");
 
     /// <summary>cis.ClmTrk_Lookup: a combo.</summary>
     Task<List<string>> LookupAsync(IDbSession session, string kind, string? key);
@@ -40,10 +44,13 @@ public interface IClmTrkRepository
 public interface IClmTrkService
 {
     /// <summary>The report catalogue (type, choice, whether it is migrated).</summary>
-    IReadOnlyList<MbmTrkReport> Reports();
+    /// <param name="variant">main, simple, jupiter, jupitersimple or sun.</param>
+    IReadOnlyList<MbmTrkReport> Reports(string variant = "main");
 
     /// <summary>CmdSearch_Click.</summary>
-    Task<ClmTrkResult> SearchAsync(ClmTrkRequest request);
+    /// <param name="request">The search.</param>
+    /// <param name="variant">main, simple, jupiter, jupitersimple or sun.</param>
+    Task<ClmTrkResult> SearchAsync(ClmTrkRequest request, string variant = "main");
 
     /// <summary>A combo: polstatus, states, clinicgroups, clinics, payors (key = health type), companies (key = payor), departments (key = group company).</summary>
     Task<List<string>> LookupAsync(string kind, string? key);
@@ -53,6 +60,36 @@ public interface IClmTrkService
 public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepository repository) : IClmTrkService
 {
     internal static readonly List<Entry> Catalogue = Load<List<Entry>>("ClmTracking.catalogue.json");
+
+    /// <summary>The catalogue of each variant form (generated from that form by sql/tools/analyse-clmtrk.js).</summary>
+    internal static readonly Dictionary<string, List<Entry>> Catalogues = new()
+    {
+        ["main"] = Catalogue,
+        ["simple"] = Load<List<Entry>>("ClmTrackingSimple.catalogue.json"),
+        ["jupiter"] = Load<List<Entry>>("ClmTrackingJupiter.catalogue.json"),
+        ["jupitersimple"] = Load<List<Entry>>("ClmTrackingJupiterSimple.catalogue.json"),
+        ["sun"] = Load<List<Entry>>("ClmTrackingSun.catalogue.json"),
+    };
+
+    /// <summary>Per variant: its procedure, the last report type its combo offers, and the hand-ported listings whose code differs in that form and are not ported yet.</summary>
+    private static readonly Dictionary<string, (string Proc, int MaxType, string[] Pending)> Variants = new()
+    {
+        ["main"] = ("cis.ClmTrk_Run", 23, []),
+        ["simple"] = ("cis.ClmTrkSimple_Run", 19, ["ResultListing", "ReportCLMGeneralListing", "ReportMBMSummaryOS", "ReportMBMSummaryOS1", "ReportMBMGeneralListing"]),
+        ["jupiter"] = ("cis.ClmTrk_Run", 20, ["ResultListing", "ReportMBMGeneralListing"]),
+        ["jupitersimple"] = ("cis.ClmTrkSimple_Run", 18, ["ResultListing", "ReportCLMGeneralListing", "ReportMBMSummaryOS", "ReportMBMSummaryOS1", "ReportMBMGeneralListing"]),
+        ["sun"] = ("cis.ClmTrk_Run", 22, ["ResultListing"]),
+    };
+
+    /// <summary>The procedure of the variant being searched (the service is scoped to one request).</summary>
+    private string proc = "cis.ClmTrk_Run";
+
+    private Task<List<Dictionary<string, object?>>> RunAsync(IDbSession s, int caseNo, IReadOnlyDictionary<string, object?> filters) => repository.RunAsync(s, caseNo, filters, proc);
+
+    private static (string Proc, int MaxType, string[] Pending) VariantOf(string variant) =>
+        Variants.TryGetValue(variant, out var v) ? v : throw new NotFoundException("Unknown tracking screen.");
+
+    private static bool Runs(Entry e, string variant) => (!e.Special || IsHandPorted(e.Routine)) && !VariantOf(variant).Pending.Contains(e.Routine);
     private static readonly Dictionary<string, string> Params = Load<List<Param>>("ClmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
 
     private static readonly string[] Kinds = ["polstatus", "states", "clinicgroups", "clinics", "payors", "companies", "departments"];
@@ -66,16 +103,21 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || IsHandPorted(e.Routine))).ToList();
+    public IReadOnlyList<MbmTrkReport> Reports(string variant = "main") =>
+        Catalogues[variant is var v && Variants.ContainsKey(v) ? v : throw new NotFoundException("Unknown tracking screen.")]
+            .Where(e => e.Type <= Variants[variant].MaxType).Select(e => new MbmTrkReport(e.Type, e.Selection, Runs(e, variant))).ToList();
 
     /// <summary>The typed filters (only the known names).</summary>
     internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input) => MbmTrkService.Filters(input, Params);
 
     /// <inheritdoc />
-    public async Task<ClmTrkResult> SearchAsync(ClmTrkRequest r)
+    public async Task<ClmTrkResult> SearchAsync(ClmTrkRequest r, string variant = "main")
     {
-        var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
-        if (e.Special && !IsHandPorted(e.Routine)) throw new BusinessRuleException(Pending);
+        var vv = VariantOf(variant);
+        proc = vv.Proc;
+        if (r.ReportType > vv.MaxType) throw new BusinessRuleException(NoReport);
+        var e = Catalogues[variant].FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
+        if (!Runs(e, variant)) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
         await using var s = await sessions.OpenAsync();
         if (e.Special)
@@ -89,7 +131,7 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
             ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
             : null;
         string Value(Col c, IReadOnlyDictionary<string, object?> x) => c.K == "tr" ? reasons!.GetValueOrDefault(T(x, c.N!)) ?? "" : Cell(c, x, null);
-        var rows = (await repository.RunAsync(s, e.P.C, filters)).Select(x => e.P.Cols!.Select(c => Value(c, x)).ToList()).ToList();
+        var rows = (await RunAsync(s, e.P.C, filters)).Select(x => e.P.Cols!.Select(c => Value(c, x)).ToList()).ToList();
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         return new ClmTrkResult(e.Headers, rows, rows.Count);
     }

@@ -64,5 +64,8 @@ eq('payTo', 'INVPayTo', 'nvarchar(1)')
 add('@vsAmt bit = 0', `IF @vsAmt = 1 SET @w += N' AND VSAmt <> 0';`)
 eq('deptSelection', 'MBMDepartment')
 add('@ieInvoice bit = 0', `IF @ieInvoice = 1 SET @w += N' AND substring(InvoiceNo,1,2)=''IE'' ';`)
+// The Simple procedure (CISClaimTracking_Simple) has no DC -> DC / EA rewrite: its payor filter is a plain comparison.
+const simple = [...P.map((p) => '--PARAM ' + p), ...W.map((w) => '--WHERE ' + (w.startsWith("IF @payor = 'DC'") ? "IF @payor IS NOT NULL SET @w += N' AND PAYCode = @payor';" : w))]
+fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/clmtrk-simple-filters.sql', simple.join('\n') + '\n')
 fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/clmtrk-filters.sql', [...P.map((p) => '--PARAM ' + p), ...W.map((w) => '--WHERE ' + w)].join('\n') + '\n')
 console.log(P.length, 'params', W.length, 'where')

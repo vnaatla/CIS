@@ -1,7 +1,9 @@
 // frmClaimRpt -> Cis/src/Cis.Application/Reports/ClmTracking.catalogue.json: report type / choice -> listing routine -> case(s), columns, headers.
 // Same column kinds as the member tracking catalogue (gen-mbmtrk-spec.js); routines that do not fit are marked special.
 const fs = require('fs')
-const lines = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/p10/frmClaimRpt.txt', 'utf8').split(/\r?\n/)
+const FORM = process.env.TRK_FORM || 'frmClaimRpt'
+const CAT = process.env.TRK_CAT || 'ClmTracking.catalogue.json'
+const lines = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/p10/' + FORM + '.txt', 'utf8').split(/\r?\n/)
 const body = {}
 let cur = null
 for (const l of lines) {
@@ -90,6 +92,6 @@ const out = dispatch.map((d) => {
     p: special ? { c: cases[0] ?? 0, special: true } : { c: cases[0], cols: spec }, s: null, helper: null,
     why: special ? { cases, calls: [...new Set(calls)], bad: [first, ...Object.values(cols)].filter((x) => parse(x) === null).slice(0, 4) } : undefined }
 })
-fs.writeFileSync('D:/CIS/Cis/src/Cis.Application/Reports/ClmTracking.catalogue.json', JSON.stringify(out, null, 1))
+fs.writeFileSync('D:/CIS/Cis/src/Cis.Application/Reports/' + CAT, JSON.stringify(out, null, 1))
 console.log(out.length, 'reports;', out.filter((r) => !r.special).length, 'generic; no headers:', out.filter((r) => !r.headers.length).map((r) => `${r.type}|${r.selection}`).join(', '))
 for (const r of out.filter((r) => r.special)) console.log(' ', r.type, r.selection, r.routine, JSON.stringify(r.why).slice(0, 160))

@@ -9,11 +9,11 @@ namespace Cis.Infrastructure.Reports;
 public sealed class ClmTrkRepository : IClmTrkRepository
 {
     /// <inheritdoc />
-    public Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters)
+    public Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters, string proc = "cis.ClmTrk_Run")
     {
         var p = new DynamicParameters(filters);
         p.Add("case", caseNo);
-        return session.RowsAsync("cis.ClmTrk_Run", p, 600);
+        return session.RowsAsync(proc is "cis.ClmTrk_Run" or "cis.ClmTrkSimple_Run" ? proc : throw new ArgumentException(proc), p, 600);
     }
 
     /// <inheritdoc />
