@@ -167,6 +167,46 @@ public sealed partial class ClmTrkService
         return rows;
     }
 
+    /// <summary>The Simple forms' O/S Utilized reports: no MCO fee column; the balance is the annual limit plus the top-up less the row's approved amount, and the
+    /// utilisation is the approved amount over the limit plus the top-up. Combined (case 5): one row per member, consecutive rows summed; separate (case 44): one row
+    /// per row with cover id and patient (its utilisation test reads the balance column, so it runs when the limit applies).</summary>
+    private async Task<List<List<string>>> SimpleOsRowsAsync(IDbSession s, bool separate, Dictionary<string, object?> filters)
+    {
+        var rows = new List<List<string>>();
+        List<string>? row = null;
+        var member = "\u0001";
+        decimal claims = 0, times = 0, days = 0, approved = 0, topUp = 0;
+        var o = separate ? 1 : 0;
+        foreach (var x in await RunAsync(s, separate ? 44 : 5, filters))
+        {
+            var y = F(x, "AnnLmtIND") == "Y";
+            if (separate || F(x, "MBMNumber") != member)
+            {
+                member = F(x, "MBMNumber");
+                topUp = Has(x, "TopupAmt") ? R2m(MbmTrkService.N(x, "TopupAmt")) : 0;
+                var limit = MbmTrkService.N(x, "AnnLimit");
+                row = [Fe(x, "MBMDepartment"), F(x, "MBMNumber")];
+                row.AddRange(separate ? [F(x, "coverid"), F(x, "PatientName")] : [F(x, "MBMName")]);
+                row.AddRange(["", "", "", y ? M0(x, "AnnLimit") : "FULL", Has(x, "TopupAmt") ? M(topUp) : "0", "",
+                    y ? M(limit + topUp - MbmTrkService.N(x, "ApprovedAmt")) : "FULL", "FULL"]);
+                rows.Add(row);
+                claims = times = days = approved = 0;
+            }
+            claims += MbmTrkService.N(x, "TotalClaim");
+            times += MbmTrkService.N(x, "MCTimes");
+            days += MbmTrkService.N(x, "MCDays");
+            approved += R2m(MbmTrkService.N(x, "ApprovedAmt"));
+            row![3 + o] = Has(x, "TotalClaim") ? ((int)claims).ToString(En) : "0";
+            row[4 + o] = Has(x, "MCTimes") ? ((int)times).ToString(En) : "0";
+            row[5 + o] = Has(x, "MCDays") ? ((int)days).ToString(En) : "0";
+            row[8 + o] = Has(x, "ApprovedAmt") ? M(approved) : "0.00";
+            var basis = MbmTrkService.N(x, "AnnLimit") + topUp;
+            var applies = separate ? row[10] != "FULL" : row[6] != "FULL";
+            row[10 + o] = !applies ? "FULL" : approved > 0 && basis != 0 ? M(Math.Round(approved / basis * 100, 2, MidpointRounding.ToEven)) : separate && approved > 0 ? "0" : "0.00";
+        }
+        return rows;
+    }
+
     /// <summary>Utilisation % of the annual limit (with a negative top-up added back), as the O/S Utilized reports.</summary>
     private static decimal? Util(decimal approved, decimal topUp, IReadOnlyDictionary<string, object?> x)
     {
@@ -303,7 +343,7 @@ public sealed partial class ClmTrkService
             return (await RunAsync(s, member ? 4 : 3, filters)).Select(x => member
                 ? new List<string> { Fe(x, "MBMDepartment"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"), Has(x, "TotalVisit") ? F(x, "TotalVisit") : "0",
                     Has(x, "MCTimes") ? F(x, "MCTimes") : "0", Has(x, "MCDays") ? F(x, "MCDays") : "0", M0(x, "CLMTotalActual"), gp.GetValueOrDefault(K(x)) ?? "",
-                    spAmt.GetValueOrDefault(K(x)) ?? "" }
+                    spAmt.GetValueOrDefault(K(x)) ?? "" }.Concat(variant == "main" || variant == "sun" ? [] : [Has(x, "ClmNonGPFee") ? M(MbmTrkService.N(x, "ClmNonGPFee")) : "0.00"]).ToList()
                 : new List<string> { Fe(x, "MBMDepartment"), F(x, "Bordxrefno"), D(x, "BordxDate"), M0(x, "CLMTotalActual"), gp.GetValueOrDefault(K(x)) ?? "",
                     spAmt.GetValueOrDefault(K(x)) ?? "", M0(x, "ClmNonGPFee") }).ToList();
         }
@@ -314,6 +354,36 @@ public sealed partial class ClmTrkService
         var reasons = sp.Reasons
             ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
             : new Dictionary<string, string>();
+        if (e.Routine is "ReportMBMSummaryOS" or "ReportMBMSummaryOS1" && variant is "simple" or "jupitersimple")
+            return await SimpleOsRowsAsync(s, e.Routine == "ReportMBMSummaryOS1", filters);
+        if (e.Routine == "ReportCLMGeneralListing" && variant is "simple" or "jupitersimple")
+            // Monthly Reports > Claims Listing (Simple): reason 1 only (016 / 032 show the free-text diagnosis), the GP / SP amounts from the bill amount.
+            return (await RunAsync(s, 1, filters)).Select(x =>
+            {
+                var reason = F(x, "CASTreatReason1");
+                var (code, desc) = reason is "016" or "032" ? (reason, F(x, "CASDiagnosis5")) : reason.Length > 0 ? (reason, F(x, "ReasonDesc")) : ("Empty", "Empty");
+                var net = M(MbmTrkService.N(x, "CLMTotalActual") - MbmTrkService.N(x, "ClmNonGPFee"));
+                var specialist = F(x, "CLNType") == "S";
+                return new List<string>
+                {
+                    Fe(x, "MBMDepartment"), Fe(x, "CASNumber"), F(x, "Bordxrefno"), D(x, "BordxDate"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"),
+                    F(x, "ClinicCode"), F(x, "CLNName"), F(x, "INVPayTo"), code, desc, Has(x, "CLMTotalActual") ? M(MbmTrkService.N(x, "CLMTotalActual")) : "",
+                    specialist ? "0.00" : net, specialist ? net : "0.00", M0(x, "ClmNonGPFee"), D(x, "DateVisit"), Has(x, "MCDays") ? F(x, "MCDays") : "0",
+                };
+            }).ToList();
+        if (e.Routine == "ResultListing" && variant != "main")
+        {
+            // General Listing > Without Remarks by form: Simple / Jupiter list the first 42 columns only; SUN reads case 112 and adds the clinic invoice batch,
+            // the clinic PV no. and date before the BTBG columns.
+            var sun = variant == "sun";
+            return (await RunAsync(s, sun ? 112 : sp.Case, filters)).Select(x =>
+            {
+                var row = sp.Map(x, reasons);
+                if (!sun) return row.Take(42).ToList();
+                row.InsertRange(51, [F(x, "CLNInvoiceBatch"), F(x, "PVCLNNo"), D(x, "PVCLNDate")]);
+                return row;
+            }).ToList();
+        }
         return (await RunAsync(s, sp.Case, filters)).Select(x => sp.Map(x, reasons)).ToList();
     }
 }

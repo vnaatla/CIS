@@ -147,4 +147,10 @@ export async function reports(page, base, check) {
   if (!hcRes.ok()) console.log('Head Count search:', hcRes.status(), (await hcRes.text()).slice(0, 300))
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('July'), { timeout: 30000 })
   check(true, 'MBM Tracking (Simple): Head Count lists July 2021')
+
+  // Claim Tracking (Simple): its own report types (Bordx is type 2) and CISClaimTracking_Simple.
+  await page.goto(`${base}/claim-bordx/claim-tracking/simple`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType] option:nth-child(20)')
+  const simpleTypes = await page.evaluate(() => [...document.querySelectorAll('select[name=reportType] option')].map((x) => x.textContent.trim()))
+  check(simpleTypes[3] === 'Bordx' && !simpleTypes.includes('Agent No'), 'Claim Tracking (Simple): offers its own report types')
 }

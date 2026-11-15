@@ -6,7 +6,7 @@ import type { IconName } from '../shared/icon.component'
  * - hidden: designer Visible = 0 · disabled: designer Enabled = 0 · never-opened: no menu item / handler commented out, the form is still in
  *   the project · nothing: menu item without a click handler and without a form (nothing to build, listed only for completeness).
  */
-export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty' | 'unavailable' | 'test'
+export type DesktopState = 'visible' | 'hidden' | 'disabled' | 'never-opened' | 'nothing' | 'empty' | 'unavailable' | 'test' | 'superseded'
 
 export interface MenuItem {
   /** Desktop caption. */
@@ -50,7 +50,7 @@ export const MENU: MenuModule[] = [
       { label: 'MBM Tracking (Simple)', path: '/membership/tracking-simple', access: Access.MbmTracking, form: 'frmNewMBMTrackingSimple', group: 'Tracking', phase: 10, migrated: true },
       { label: 'MBM Tracking (Jupiter)', path: '/membership/tracking-jupiter', access: Access.MbmTrackingJupiter, form: 'FrmNewMBMTracking2', group: 'Tracking', phase: 10, migrated: true },
       { label: 'MBM Tracking (Jupiter - Simple)', path: '/membership/tracking-jupiter-simple', access: Access.MbmTrackingJupiter, form: 'frmNewMBMTrackingRepSimple', group: 'Tracking', phase: 10, migrated: true },
-      { label: 'MBM Tracking (old)', path: '/membership/tracking-legacy', access: Access.MbmTracking, form: 'FrmMBMTracking', group: 'Tracking', desktop: 'never-opened', phase: 10 },
+      { label: 'MBM Tracking (old)', path: '/membership/tracking-legacy', access: Access.MbmTracking, form: 'FrmMBMTracking', group: 'Tracking', desktop: 'superseded', phase: 10 },
     ],
   },
   {
@@ -143,12 +143,12 @@ export const MENU: MenuModule[] = [
       { label: 'Outstanding Bordx', path: '/claim-bordx/monitoring/outstanding', access: Access.BordxOutstanding, form: 'FrmOSBordx', group: 'Monitoring', phase: 6, migrated: true },
       { label: 'Bordx & Worksheet', path: '/claim-bordx/monitoring/bordx-worksheet', access: Access.BordxWorksheet, form: 'FrmBordxWks', group: 'Monitoring', phase: 6, migrated: true },
       { label: 'Claim Tracking', path: '/claim-bordx/claim-tracking/standard', access: Access.ClaimTracking, form: 'frmClaimRpt', group: 'Claim Tracking', phase: 10, migrated: true },
-      { label: 'Claim Tracking (Simple)', path: '/claim-bordx/claim-tracking/simple', access: Access.ClaimTracking, form: 'frmClaimRptSimple', group: 'Claim Tracking', phase: 10 },
+      { label: 'Claim Tracking (Simple)', path: '/claim-bordx/claim-tracking/simple', access: Access.ClaimTracking, form: 'frmClaimRptSimple', group: 'Claim Tracking', phase: 10, migrated: true },
       { label: 'Claim Tracking 2', path: '/claim-bordx/claim-tracking/v2', access: Access.ClaimTracking2, form: 'FrmClaimRpt2', group: 'Claim Tracking', phase: 10 },
-      { label: 'Claim Tracking (Jupiter)', path: '/claim-bordx/claim-tracking/jupiter', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRpt', group: 'Claim Tracking', phase: 10 },
-      { label: 'Claim Tracking (Jupiter - Simple)', path: '/claim-bordx/claim-tracking/jupiter-simple', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRptSimpleJup', group: 'Claim Tracking', phase: 10 },
+      { label: 'Claim Tracking (Jupiter)', path: '/claim-bordx/claim-tracking/jupiter', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRpt', group: 'Claim Tracking', phase: 10, migrated: true },
+      { label: 'Claim Tracking (Jupiter - Simple)', path: '/claim-bordx/claim-tracking/jupiter-simple', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRptSimpleJup', group: 'Claim Tracking', phase: 10, migrated: true },
       { label: 'Claim Tracking 2 (Jupiter)', path: '/claim-bordx/claim-tracking/v2-jupiter', access: Access.ClaimTracking2Jupiter, form: 'FrmNewClaimRpt2', group: 'Claim Tracking', phase: 10 },
-      { label: 'Claim Tracking (SUN System)', path: '/claim-bordx/claim-tracking/sun', access: Access.ClaimTracking, form: 'frmClaimRptSUN', group: 'Claim Tracking', phase: 10 },
+      { label: 'Claim Tracking (SUN System)', path: '/claim-bordx/claim-tracking/sun', access: Access.ClaimTracking, form: 'frmClaimRptSUN', group: 'Claim Tracking', phase: 10, migrated: true },
       { label: 'ClaimBordxDate', path: '/claim-bordx/bordx-date', access: Access.BordxInsert, form: 'FrmBordxDate', group: 'Bordx', phase: 6, migrated: true },
     ],
   },
@@ -251,7 +251,7 @@ export const MENU: MenuModule[] = [
 ]
 
 /** Items that need a screen (excludes desktop menu items without a handler and without a form). */
-export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty' || i.desktop === 'unavailable' || i.desktop === 'test'
+export const nothingToBuild = (i: MenuItem) => i.desktop === 'nothing' || i.desktop === 'empty' || i.desktop === 'unavailable' || i.desktop === 'test' || i.desktop === 'superseded'
 
 /** Items that need a screen. */
 export const buildable = (m: MenuModule) => m.items.filter((i) => !nothingToBuild(i))
@@ -265,4 +265,5 @@ export const DESKTOP_STATE_TEXT: Record<DesktopState, string> = {
   empty: 'Form in the project with no code behind it (nothing to build)',
   unavailable: 'Needs the SUN accounting database, which is not available (the desktop connection is disabled too)',
   test: 'A developer test form (calls a test web service and checks a scratch table), nothing to build',
+  superseded: 'Never opened: an older copy of a migrated screen (same reports, inline SQL), nothing to build',
 }

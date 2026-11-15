@@ -166,3 +166,16 @@ The member tracking page and engine on HISDB CISMBMTracking_Simple (the same cas
 
 - Simple adds report type 18 Head Count (bindHeadcount): HISDB ActiveHeadcount_CIS between the Head Count dates (`cis.MbmTrk_Headcount`, `1143_mbm_tracking_headcount.sql`): month, payor, principal / dependant / total head count. Known desktop issue: its Excel export tested report type 22 and could never run; Print saves the list as the other reports.
 - Jupiter - Simple offers report types 0 – 16 only (its combo has no States); the desktop read the Jupiter server.
+
+## Claim Tracking variants — Simple, Jupiter, Jupiter - Simple, SUN System (`/claim-bordx/claim-tracking/simple|jupiter|jupiter-simple|sun`)
+
+The claim tracking page and engine with each form's own catalogue (`sql/tools/analyse-clmtrk.js` with TRK_FORM / TRK_CAT: `ClmTrackingSimple`, `ClmTrackingJupiter`, `ClmTrackingJupiterSimple`, `ClmTrackingSun`) and its report types (each form's combo):
+
+| Screen | Form | Procedure | Report types | Differences ported |
+|---|---|---|---|---|
+| Simple | frmClaimRptSimple | CISClaimTracking_Simple (`cis.ClmTrkSimple_Run`, `1152_claim_tracking_simple.sql`; its `_Simple` views, no DC → DC / EA rewrite; checked: case 14 identical) | 20 (no Agent No, Clinic Group, Invoice, Verification) | General listing without remarks (columns 0 – 41), claims listing (reason 1 only, GP / SP from the bill amount), O/S utilized combined / separate (no MCO fee column; balance = limit + top-up − approved; utilisation over limit + top-up), utilization by member (+ non-GP fee) |
+| Jupiter | frmNewClaimRpt | CISClaimTracking | 21 (no Invoice, Utilization, Verification) | general listing without remarks (columns 0 – 41), utilization by member (+ non-GP fee) |
+| Jupiter - Simple | frmNewClaimRptSimpleJup | CISClaimTracking_Simple | 19 (Simple without Utilization) | as Simple |
+| SUN System | frmClaimRptSUN | CISClaimTracking | 23 (no Verification) | general listing without remarks from case 112 with the clinic invoice batch, PV no. and PV date |
+
+The desktop read the Jupiter (Neptune) server for the Jupiter screens; here the same databases. MBM Tracking (old) (FrmMBMTracking, never opened) is an older inline-SQL copy of MBM Tracking: nothing to build.

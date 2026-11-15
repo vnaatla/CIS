@@ -7,24 +7,24 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**111 screens to build · 101 migrated · 14 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**110 screens to build · 105 migrated · 15 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
 | Module | Screens | Migrated | Not in the desktop menu (hidden / disabled / never opened) |
 |---|---:|---:|---:|
-| [Membership](#membership) | 8 | 7 | 1 |
+| [Membership](#membership) | 7 | 7 | 0 |
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
 | [Invoice](#invoice) | 28 | 25 | 4 |
 | [Claim](#claim) | 1 | 1 | 0 |
-| [Claim Bordx](#claim-bordx) | 29 | 23 | 4 |
+| [Claim Bordx](#claim-bordx) | 29 | 27 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 2 | 0 |
 | [Maintenance](#maintenance) | 10 | 10 | 1 |
-| **Total** | **111** | **101** | **16** |
+| **Total** | **110** | **105** | **15** |
 
 ## Membership
 
@@ -39,7 +39,7 @@ Module page: `/membership`
 | Tracking | MBM Tracking (Simple) | frmNewMBMTrackingSimple | 114 |  | 10 | **Migrated** | `/membership/tracking-simple` |
 | Tracking | MBM Tracking (Jupiter) | FrmNewMBMTracking2 | 160 |  | 10 | **Migrated** | `/membership/tracking-jupiter` |
 | Tracking | MBM Tracking (Jupiter - Simple) | frmNewMBMTrackingRepSimple | 160 |  | 10 | **Migrated** | `/membership/tracking-jupiter-simple` |
-| Tracking | MBM Tracking (old) | FrmMBMTracking | 114 | Never opened | 10 | Pending | `/membership/tracking-legacy` |
+| Tracking | MBM Tracking (old) | FrmMBMTracking | 114 | Older copy, never opened | 10 | Nothing to build | `/membership/tracking-legacy` |
 
 ## MCO Fees
 
@@ -130,12 +130,12 @@ Module page: `/claim-bordx`
 | Monitoring | Outstanding Bordx | FrmOSBordx | 130 |  | 6 | **Migrated** | `/claim-bordx/monitoring/outstanding` |
 | Monitoring | Bordx & Worksheet | FrmBordxWks | 131 |  | 6 | **Migrated** | `/claim-bordx/monitoring/bordx-worksheet` |
 | Claim Tracking | Claim Tracking | frmClaimRpt | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/standard` |
-| Claim Tracking | Claim Tracking (Simple) | frmClaimRptSimple | 132 |  | 10 | Pending | `/claim-bordx/claim-tracking/simple` |
+| Claim Tracking | Claim Tracking (Simple) | frmClaimRptSimple | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/simple` |
 | Claim Tracking | Claim Tracking 2 | FrmClaimRpt2 | 120 |  | 10 | Pending | `/claim-bordx/claim-tracking/v2` |
-| Claim Tracking | Claim Tracking (Jupiter) | frmNewClaimRpt | 163 |  | 10 | Pending | `/claim-bordx/claim-tracking/jupiter` |
-| Claim Tracking | Claim Tracking (Jupiter - Simple) | frmNewClaimRptSimpleJup | 163 |  | 10 | Pending | `/claim-bordx/claim-tracking/jupiter-simple` |
+| Claim Tracking | Claim Tracking (Jupiter) | frmNewClaimRpt | 163 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/jupiter` |
+| Claim Tracking | Claim Tracking (Jupiter - Simple) | frmNewClaimRptSimpleJup | 163 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/jupiter-simple` |
 | Claim Tracking | Claim Tracking 2 (Jupiter) | FrmNewClaimRpt2 | 164 |  | 10 | Pending | `/claim-bordx/claim-tracking/v2-jupiter` |
-| Claim Tracking | Claim Tracking (SUN System) | frmClaimRptSUN | 132 |  | 10 | Pending | `/claim-bordx/claim-tracking/sun` |
+| Claim Tracking | Claim Tracking (SUN System) | frmClaimRptSUN | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/sun` |
 | Bordx | ClaimBordxDate | FrmBordxDate | 122 |  | 6 | **Migrated** | `/claim-bordx/bordx-date` |
 
 ## LG & Audit

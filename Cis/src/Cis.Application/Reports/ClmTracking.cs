@@ -75,14 +75,17 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
     private static readonly Dictionary<string, (string Proc, int MaxType, string[] Pending)> Variants = new()
     {
         ["main"] = ("cis.ClmTrk_Run", 23, []),
-        ["simple"] = ("cis.ClmTrkSimple_Run", 19, ["ResultListing", "ReportCLMGeneralListing", "ReportMBMSummaryOS", "ReportMBMSummaryOS1", "ReportMBMGeneralListing"]),
-        ["jupiter"] = ("cis.ClmTrk_Run", 20, ["ResultListing", "ReportMBMGeneralListing"]),
-        ["jupitersimple"] = ("cis.ClmTrkSimple_Run", 18, ["ResultListing", "ReportCLMGeneralListing", "ReportMBMSummaryOS", "ReportMBMSummaryOS1", "ReportMBMGeneralListing"]),
-        ["sun"] = ("cis.ClmTrk_Run", 22, ["ResultListing"]),
+        ["simple"] = ("cis.ClmTrkSimple_Run", 19, []),
+        ["jupiter"] = ("cis.ClmTrk_Run", 20, []),
+        ["jupitersimple"] = ("cis.ClmTrkSimple_Run", 18, []),
+        ["sun"] = ("cis.ClmTrk_Run", 22, []),
     };
 
     /// <summary>The procedure of the variant being searched (the service is scoped to one request).</summary>
     private string proc = "cis.ClmTrk_Run";
+
+    /// <summary>The variant being searched (for the listings whose columns differ by form).</summary>
+    private string variant = "main";
 
     private Task<List<Dictionary<string, object?>>> RunAsync(IDbSession s, int caseNo, IReadOnlyDictionary<string, object?> filters) => repository.RunAsync(s, caseNo, filters, proc);
 
@@ -115,6 +118,7 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
     {
         var vv = VariantOf(variant);
         proc = vv.Proc;
+        this.variant = variant;
         if (r.ReportType > vv.MaxType) throw new BusinessRuleException(NoReport);
         var e = Catalogues[variant].FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
         if (!Runs(e, variant)) throw new BusinessRuleException(Pending);

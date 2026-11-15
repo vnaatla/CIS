@@ -25,8 +25,10 @@ public class ClmTrkRuleTests
         Assert.DoesNotContain(service.Reports("jupiter"), r => r.Type > 20);
         Assert.DoesNotContain(service.Reports("jupitersimple"), r => r.Type > 18);
         Assert.DoesNotContain(service.Reports("sun"), r => r.Type > 22);
-        // Simple: type 7 is General Listing; its Without Remarks listing differs from the main form's and is not ported yet.
-        Assert.Contains(service.Reports("simple"), r => r.Type == 7 && r.Selection == "Without Remarks" && !r.Migrated);
+        // Every report of every variant runs (Simple: type 7 is General Listing, with its own Without Remarks columns).
+        foreach (var v in new[] { "simple", "jupiter", "jupitersimple", "sun" })
+            Assert.All(service.Reports(v), r => Assert.True(r.Migrated, $"{v} {r.Type} {r.Selection}"));
+        Assert.Contains(service.Reports("simple"), r => r.Type == 7 && r.Selection == "Without Remarks");
     }
 
     [Fact]
