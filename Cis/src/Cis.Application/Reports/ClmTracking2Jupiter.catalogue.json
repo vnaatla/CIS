@@ -1,0 +1,5392 @@
+[
+ {
+  "basis": 1,
+  "report": 4,
+  "name": "Claim",
+  "routine": "ActualClaim",
+  "c": 5,
+  "cols": [
+   {
+    "k": "f",
+    "n": "CasNumber"
+   },
+   {
+    "k": "f",
+    "n": "MBMNumber"
+   },
+   {
+    "k": "f",
+    "n": "PatientName"
+   },
+   {
+    "k": "d",
+    "n": "DateVisit"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Claim No",
+   "Member No",
+   "Patient Name",
+   "DOV",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 5,
+  "name": "Insured Type & Plan",
+  "routine": "ActualInsPlan",
+  "c": 12,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "PLNCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Plan Type",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 6,
+  "name": "Insured Type & Ageband",
+  "routine": "ActualInsAge",
+  "c": 11,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "AgeBand",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 7,
+  "name": "Insured Type & Gender",
+  "routine": "ActualInsSex",
+  "c": 15,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Sex",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 8,
+  "name": "Ageband",
+  "routine": "ActualAgeband",
+  "c": 1,
+  "cols": [
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Ageband",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 9,
+  "name": "Gender",
+  "routine": "ActualSex",
+  "c": 18,
+  "cols": [
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Sex",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 10,
+  "name": "Ageband & Gender",
+  "routine": "ActualAgebandSex",
+  "c": 3,
+  "cols": [
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "AgeBand",
+   "Sex",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 11,
+  "name": "Final Diagnosis",
+  "routine": "ActualFinalDiag",
+  "c": 8,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "CASTreatReason1"
+   },
+   {
+    "k": "fe",
+    "n": "ReasonDesc"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Diagnosis",
+   "Description",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 12,
+  "name": "Clinic",
+  "routine": "ActualClinic",
+  "c": 7,
+  "cols": [
+   {
+    "k": "f",
+    "n": "ClinicCode"
+   },
+   {
+    "k": "f",
+    "n": "CLNName"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Clinic Code",
+   "Clinic Name",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 13,
+  "name": "Payor",
+  "routine": "ActualPayor",
+  "c": 16,
+  "cols": [
+   {
+    "k": "f",
+    "n": "PAYCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Payor",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 14,
+  "name": "Payor, Insured Type & Plan",
+  "routine": "ActualPayorInsPlan",
+  "c": 17,
+  "cols": [
+   {
+    "k": "f",
+    "n": "PAYCode"
+   },
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "PLNCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Payor",
+   "Insured Type",
+   "Plan Type",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 15,
+  "name": "Group Company",
+  "routine": "ActualGrpCompany",
+  "c": 9,
+  "cols": [
+   {
+    "k": "f",
+    "n": "MBMGroupCompany"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Group Company",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 16,
+  "name": "Insured Type & Relation",
+  "routine": "ActualInsRelation",
+  "c": 13,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "Relation"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Relation",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 17,
+  "name": "Insured Type",
+  "routine": "ActualIns",
+  "c": 10,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 18,
+  "name": "Bordx No",
+  "routine": "ActualBordxNo",
+  "c": 4,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "Bordxrefno"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Bordx No",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 19,
+  "name": "Policy Year",
+  "routine": "ActualPolYear",
+  "c": 14,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "MBMPolicyYear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Policy Year",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 1,
+  "report": 20,
+  "name": "Takeover",
+  "routine": "ActualTakeover",
+  "c": 19,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "MBMTakeOver"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Take Over",
+   "101(GPFeeBasicMed)",
+   "102(GPFeeMedInj)",
+   "103(GPFeeLTMed)",
+   "104(SPFeeBasicMed)",
+   "105(SPFeeMedInj)",
+   "201(XRay)",
+   "202(UltraSound)",
+   "203(ECG)",
+   "204(Dressing)",
+   "205(Bebulizer)",
+   "206(ID)",
+   "207(TSSTO)",
+   "208(MinorSurgery)",
+   "209(POthers)",
+   "301(BloodDrawing)",
+   "302(BloodGlucose)",
+   "303(Urine)",
+   "304(PapSmear)",
+   "305(LOthers)",
+   "401(DTPPolio)",
+   "402(DTPPolioHIB)",
+   "403(HepatitisB)",
+   "404(MMR)",
+   "405(IOthers)",
+   "501(Dental)",
+   "502(Maternity)",
+   "503(PRVCheckup)",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 4,
+  "name": "Claim",
+  "routine": "ApprovedClaim",
+  "c": 23,
+  "cols": [
+   {
+    "k": "f",
+    "n": "CasNumber"
+   },
+   {
+    "k": "f",
+    "n": "MBMNumber"
+   },
+   {
+    "k": "f",
+    "n": "PatientName"
+   },
+   {
+    "k": "d",
+    "n": "DateVisit"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Claim No",
+   "Member No",
+   "Patient Name",
+   "DOV",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 5,
+  "name": "Insured Type & Plan",
+  "routine": "ApprovedInsPlan",
+  "c": 29,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "PLNCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Plan No",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 6,
+  "name": "Insured Type & Ageband",
+  "routine": "ApprovedInsAge",
+  "c": 28,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Ageband",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 7,
+  "name": "Insured Type & Gender",
+  "routine": "ApprovedInsSex",
+  "c": 31,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Sex",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 8,
+  "name": "Ageband",
+  "routine": "ApprovedAgeband",
+  "c": 20,
+  "cols": [
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Ageband",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 9,
+  "name": "Gender",
+  "routine": "ApprovedSex",
+  "c": 35,
+  "cols": [
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Sex",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 10,
+  "name": "Ageband & Gender",
+  "routine": "ApprovedAgebandSex",
+  "c": 21,
+  "cols": [
+   {
+    "k": "f",
+    "n": "AgeBand"
+   },
+   {
+    "k": "f",
+    "n": "Sex"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Ageband",
+   "Sex",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 11,
+  "name": "Final Diagnosis",
+  "routine": "ApprovedFinalDiag",
+  "c": 25,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "CASTreatReason1"
+   },
+   {
+    "k": "fe",
+    "n": "ReasonDesc"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Final Diag",
+   "Description",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 12,
+  "name": "Clinic",
+  "routine": "ApprovedClinic",
+  "c": 24,
+  "cols": [
+   {
+    "k": "f",
+    "n": "ClinicCode"
+   },
+   {
+    "k": "f",
+    "n": "CLNName"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Hospital",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total",
+   ""
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 13,
+  "name": "Payor",
+  "routine": "ApprovedPayor",
+  "c": 32,
+  "cols": [
+   {
+    "k": "f",
+    "n": "PAYCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Claim Type",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 14,
+  "name": "Payor, Insured Type & Plan",
+  "routine": "ApprovedPayorInsPlan",
+  "c": 33,
+  "cols": [
+   {
+    "k": "f",
+    "n": "PAYCode"
+   },
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "PLNCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Claim Nature",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total",
+   "",
+   ""
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 15,
+  "name": "Group Company",
+  "routine": "ApprovedGrpCompany",
+  "c": 26,
+  "cols": [
+   {
+    "k": "f",
+    "n": "MBMGroupCompany"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Claim Nature",
+   "Sex",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 16,
+  "name": "Insured Type & Relation",
+  "routine": "ApprovedInsRelation",
+  "c": 30,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "f",
+    "n": "Relation"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "Relation",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 17,
+  "name": "Insured Type",
+  "routine": "ApprovedIns",
+  "c": 27,
+  "cols": [
+   {
+    "k": "f",
+    "n": "INSCode"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Insured Type",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 18,
+  "name": "Bordx No",
+  "routine": "ApprovedBordxNo",
+  "c": 22,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "Bordxrefno"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Bordx No",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 19,
+  "name": "Policy Year",
+  "routine": "ApprovedPolYear",
+  "c": 34,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "MBMPolicyYear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Policy Year",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ },
+ {
+  "basis": 2,
+  "report": 20,
+  "name": "Takeover",
+  "routine": "ApprovedTakeover",
+  "c": 36,
+  "cols": [
+   {
+    "k": "fe",
+    "n": "MBMTakeOver"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeBasicMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMGPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeMedInj"
+   },
+   {
+    "k": "m0",
+    "n": "CLMSPFeeLTMed"
+   },
+   {
+    "k": "m0",
+    "n": "CLMXRay"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUltraSound"
+   },
+   {
+    "k": "m0",
+    "n": "CLMECG"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDressing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMNebulizer"
+   },
+   {
+    "k": "m0",
+    "n": "CLMID"
+   },
+   {
+    "k": "m0",
+    "n": "CLMTSSTO"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMinorSurgery"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodDrawing"
+   },
+   {
+    "k": "m0",
+    "n": "CLMBloodGlucose"
+   },
+   {
+    "k": "m0",
+    "n": "CLMUrine"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPapSmear"
+   },
+   {
+    "k": "m0",
+    "n": "CLMLOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolio"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDTPPolioHIB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMHepatitisB"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMMR"
+   },
+   {
+    "k": "m0",
+    "n": "CLMIOthers"
+   },
+   {
+    "k": "m0",
+    "n": "CLMDental"
+   },
+   {
+    "k": "m0",
+    "n": "CLMMaternity"
+   },
+   {
+    "k": "m0",
+    "n": "CLMPRVCheckup"
+   },
+   {
+    "k": "sum"
+   }
+  ],
+  "headers": [
+   "Takeover",
+   "101(R&B)",
+   "102(ICU)",
+   "103(HSS)",
+   "104(OT)",
+   "201(PRE-DIAG)",
+   "202(SURG)",
+   "203(ANAEST)",
+   "301(PRE-SPEC)",
+   "302(PHYS VISIT)",
+   "303(POST)",
+   "401(OP)",
+   "402(AMBUL)",
+   "403(PHYSIO)",
+   "404(KID&CAN)",
+   "405(KID)",
+   "406(CAN)",
+   "501(ORGAN)",
+   "601(GOVT.INC)",
+   "701(GUARDIAN)",
+   "801(MED REP)",
+   "802(TEL)",
+   "803(ADMIN)",
+   "901(OTHERS)",
+   "902(MATERNITY)",
+   "903(OTHERS)",
+   "Sub-Total",
+   "Limit Exceeded",
+   "Total"
+  ]
+ }
+]

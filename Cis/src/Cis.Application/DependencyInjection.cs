@@ -62,6 +62,7 @@ public static class DependencyInjection
         services.AddScoped<AcExport.IPostInvClnService, AcExport.PostInvClnService>();
         services.AddScoped<Reports.ITrkClnService, Reports.TrkClnService>();
         services.AddScoped<Reports.IClmTrkService, Reports.ClmTrkService>();
+        services.AddScoped<Reports.IClmTrk2Service, Reports.ClmTrk2Service>();
         services.AddScoped<Reports.IMbmTrkService, Reports.MbmTrkService>();
         services.AddScoped<Reports.IEmlRejService, Reports.EmlRejService>();
         services.AddScoped<Reports.IEmlPrvService, Reports.EmlPrvService>();

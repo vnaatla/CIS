@@ -38,6 +38,9 @@
     <EmbeddedResource Include="Reports\ClmTrackingJupiterSimple.catalogue.json" LogicalName="ClmTrackingJupiterSimple.catalogue.json" />
     <EmbeddedResource Include="Reports\ClmTrackingSun.catalogue.json" LogicalName="ClmTrackingSun.catalogue.json" />
     <EmbeddedResource Include="Reports\ClmTracking.params.json" LogicalName="ClmTracking.params.json" />
+    <EmbeddedResource Include="Reports\ClmTracking2.catalogue.json" LogicalName="ClmTracking2.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTracking2Jupiter.catalogue.json" LogicalName="ClmTracking2Jupiter.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTracking2.params.json" LogicalName="ClmTracking2.params.json" />
   </ItemGroup>
 
 </Project>

@@ -4,12 +4,14 @@ const P = []; const W = []
 const add = (p, w) => { P.push(p); if (w) W.push(w) }
 const blank = (name, col) => add(`@${name}Blank bit = 0`, `IF @${name}Blank = 1 SET @w += N' AND (${col} IS NULL OR ${col} = '''')';`)
 const eq = (name, col, type = 'nvarchar(200)') => add(`@${name} ${type} = NULL`, `IF @${name} IS NOT NULL SET @w += N' AND ${col} = @${name}';`)
-const like = (name, col) => add(`@${name} nvarchar(200) = NULL`, `IF @${name} IS NOT NULL SET @w += N' AND ${col} LIKE ''%'' + @${name} + ''%''';`)
+// The Jupiter copy (FrmNewClaimRpt2) compares agent / policy / patient exactly (@exact = 1); FrmClaimRpt2 with LIKE.
+const like = (name, col) => add(`@${name} nvarchar(200) = NULL`, `IF @${name} IS NOT NULL SET @w += CASE WHEN @exact = 1 THEN N' AND ${col} = @${name}' ELSE N' AND ${col} LIKE ''%'' + @${name} + ''%''' END;`)
 const range = (name, col, type = 'nvarchar(50)') => {
   add(`@${name}From ${type} = NULL`, `IF @${name}From IS NOT NULL SET @w += N' AND ${col} >= @${name}From';`)
   add(`@${name}To ${type} = NULL`, `IF @${name}To IS NOT NULL SET @w += N' AND ${col} <= @${name}To';`)
 }
 const choice = (name, cases) => add(`@${name} nvarchar(10) = NULL`, `IF @${name} IS NOT NULL SET @w += CASE @${name} ${cases.map(([v, f]) => `WHEN '${v}' THEN N'${f.replace(/'/g, "''")}'`).join(' ')} ELSE N'' END;`)
+add('@exact bit = 0')
 eq('hlt', 'HLTCode', 'nvarchar(1)'); blank('hlt', 'HLTCode')
 eq('ins', 'INSCode', 'nvarchar(1)'); blank('ins', 'INSCode')
 // Member type x supplementary type: this form uses MBMPatientCovID (frmClaimRpt: CoverID).
