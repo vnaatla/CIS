@@ -59,16 +59,18 @@ const out = dispatch.map((d) => {
   const b = body[d.routine] ?? []
   const cases = [...new Set(b.map((l) => /strAppendCase = "(\d+)"/.exec(l)?.[1]).filter(Boolean).map(Number))]
   const calls = b.map((l) => /^Call (\w+)/.exec(l.trim())?.[1]).filter(Boolean)
-  let first = null; const cols = {}
+  let first = null; const cols = {}; const firstAlts = []; const alts = {}
   for (const l of b) {
     const f = /ListItems\.Add\(, , (.*)\)$/.exec(l)
-    if (f && first === null) first = f[1]
+    if (f) { if (first === null) first = f[1]; firstAlts.push(f[1]) }
     const s = /\.SubItems\((\d+)\) = (.*)$/.exec(l)
-    if (s && !(s[1] in cols)) cols[s[1]] = s[2]
+    if (s) { if (!(s[1] in cols)) cols[s[1]] = s[2]; (alts[s[1]] ??= []).push(s[2]) }
   }
+  // A field column whose other branch writes "Empty" (blank values) is shown as "Empty" when blank, as the desktop.
+  const withEmpty = (c, list) => c && c.k === 'f' && (list ?? []).some((x) => x.trim() === '"Empty"') ? { k: 'fe', n: c.n } : c
   const n = Math.max(0, ...Object.keys(cols).map(Number))
-  const spec = [parse(first)]
-  for (let i = 1; i <= n; i++) spec.push(cols[i] === undefined ? { k: 'l', v: '' } : parse(cols[i]))
+  const spec = [withEmpty(parse(first), firstAlts)]
+  for (let i = 1; i <= n; i++) spec.push(cols[i] === undefined ? { k: 'l', v: '' } : withEmpty(parse(cols[i]), alts[i]))
   const special = cases.length !== 1 || calls.length > 0 || spec.some((c) => c === null)
   return { type: d.type, selection: d.selection, routine: d.routine, headers: headers(headerOf[d.type], d.selection), special,
     p: special ? { c: cases[0] ?? 0, special: true } : { c: cases[0], cols: spec }, s: null, helper: null,

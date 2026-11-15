@@ -26,6 +26,8 @@ const block = (b) => {
   const n = Math.max(0, ...Object.keys(b.cols).map(Number))
   const cols = [parse(b.first)]
   for (let i = 1; i <= n; i++) cols.push(b.cols[i] === undefined ? { k: 'l', v: '' } : parse(b.cols[i]))
+  // A field column whose other branch writes "Empty" shows "Empty" when blank, as the desktop.
+  for (const i of b.empty ?? []) if (cols[i] && cols[i].k === 'f') cols[i] = { k: 'fe', n: cols[i].n }
   return cols.some((c) => c === null) || !b.first ? { c: b.c, special: true } : { c: b.c, cols }
 }
 const out = cat.map((r) => {

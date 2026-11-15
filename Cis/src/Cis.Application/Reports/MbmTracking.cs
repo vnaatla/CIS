@@ -125,7 +125,7 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
             var prin = await repository.RunAsync(s, e.P!.C, filters);
             List<Dictionary<string, object?>>? supp = null;
             if (type == "B" && e.Helper is not null) supp = await repository.RunAsync(s, e.Helper.C, filters);
-            var keys = e.P.Cols!.Where(c => c.K is "f" or "d" or "fl" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!)
+            var keys = e.P.Cols!.Where(c => c.K is "f" or "fe" or "d" or "fl" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!)
                 .Concat(e.P.Cols!.Any(c => c.K == "ym") ? ["Year", "Month"] : []).ToList();
             var merged = supp is not null && e.Helper is { Append: false }
                 ? supp.GroupBy(x => Key(x, keys)).ToDictionary(g => g.Key, g => g.First()) : null;
@@ -237,6 +237,7 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
 
     internal static string Cell(Col c, IReadOnlyDictionary<string, object?> x, IReadOnlyDictionary<string, object?>? supp) => c.K switch
     {
+        "fe" => T(x, c.N!) is { Length: > 0 } v ? v : "Empty",
         "mp" => x.GetValueOrDefault(c.N!) is null or DBNull ? "" : N(x, c.N!).ToString("#,##0.00;(#,##0.00)", En),
         "avg" => N(x, c.V!) == 0 ? "" : Math.Round(N(x, c.N!) / N(x, c.V!), 2, MidpointRounding.ToEven).ToString("#,##0.00", En),
         "pct" => N(x, c.V!) == 0 ? "" : Math.Round(N(x, c.N!) / N(x, c.V!) * 100, 0, MidpointRounding.ToEven).ToString(En),
