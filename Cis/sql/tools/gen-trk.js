@@ -9,10 +9,12 @@ const CFG = {
     title: 'Tracking > MBM Tracking (Simple) (frmNewMBMTrackingSimple and its Jupiter copy): the {n} cases of HISDB CISMBMTracking_Simple' },
   claimsimple: { src: T + 'CISClaimTracking_Simple.sql', filters: T + 'clmtrk-simple-filters.sql', out: 'D:/CIS/Cis/sql/main/1152_claim_tracking_simple.sql', proc: 'cis.ClmTrkSimple_Run', db: 'CISWorksheet',
     title: 'Claim / Bordx > Claim Tracking (Simple) (frmClaimRptSimple and its Jupiter copy): the {n} cases of CISWorksheet CISClaimTracking_Simple' },
+  claim2: { src: T + 'CISClaimTracking2.sql', filters: T + 'ct2-filters.sql', out: 'D:/CIS/Cis/sql/main/1154_claim_tracking2.sql', proc: 'cis.ClmTrk2_Run', db: 'CISWorksheet',
+    title: 'Claim / Bordx > Claim Tracking 2 (FrmClaimRpt2 and its Jupiter copy): the {n} cases of CISWorksheet CISClaimTracking2' },
   claim: { src: T + 'CISClaimTracking.sql', filters: T + 'clmtrk-filters.sql', out: 'D:/CIS/Cis/sql/main/1150_claim_tracking.sql', proc: 'cis.ClmTrk_Run', db: 'CISWorksheet',
     title: 'Claim / Bordx > Claim Tracking (frmClaimRpt and its variants): the {n} cases of CISWorksheet CISClaimTracking' },
 }[process.argv[2]]
-if (!CFG) throw new Error('usage: node gen-trk.js mbm | mbmsimple | claim | claimsimple')
+if (!CFG) throw new Error('usage: node gen-trk.js mbm | mbmsimple | claim | claimsimple | claim2')
 // Any carriage return (CISClaimTracking_Simple has stray \r\r\r\n) becomes a newline.
 const src = fs.readFileSync(CFG.src, 'utf8').replace(/\r\n?/g, '\n')
 const parts = src.split(/\n\s*if @strAppendCase = (\d+)\s*\n/)
