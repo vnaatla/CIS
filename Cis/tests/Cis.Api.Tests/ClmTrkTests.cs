@@ -57,6 +57,12 @@ public class ClmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacyList.Count, list.Rows.Count);
         Assert.Equal(54, list.Rows[0].Count);
+        // O/S utilized (combined): consecutive rows of a member make one row, as the desktop's case 5 loop.
+        var os = await service.SearchAsync(new ClmTrkRequest(16, "O/S Utilized (Combined)", new() { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" }));
+        var legacyOs = (await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
+            new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'", strAppendCase = 5 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Select(x => (string)x.MBMNumber).ToList();
+        Assert.Equal(legacyOs.Where((m, i) => i == 0 || m != legacyOs[i - 1]).Count(), os.Rows.Count);
         Assert.Equal(MbmTrkService.Pending, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new ClmTrkRequest(0, "Daily Report", new())))).Message);
     }

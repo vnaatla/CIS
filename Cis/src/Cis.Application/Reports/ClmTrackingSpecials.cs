@@ -111,11 +111,67 @@ public sealed partial class ClmTrkService
         }),
     };
 
+    /// <summary>The listings built from several rows per output row or several queries.</summary>
+    private static readonly string[] Composite = ["ReportMBMSummaryOS", "ReportMBMSummaryOS1"];
+
     /// <summary>Whether a catalogue entry is ported by hand here.</summary>
-    internal static bool IsHandPorted(string routine) => Specials.ContainsKey(routine);
+    internal static bool IsHandPorted(string routine) => Specials.ContainsKey(routine) || Composite.Contains(routine);
+
+    private static decimal R2m(decimal v) => Math.Round(v, 2, MidpointRounding.AwayFromZero);
+
+    /// <summary>Utilisation % of the annual limit (with a negative top-up added back), as the O/S Utilized reports.</summary>
+    private static decimal? Util(decimal approved, decimal topUp, IReadOnlyDictionary<string, object?> x)
+    {
+        var limit = MbmTrkService.N(x, "AnnLimit");
+        var used = topUp < 0 ? -topUp + approved : approved;
+        return limit > 0 ? Math.Round(used / limit * 100, 2, MidpointRounding.ToEven) : 0;
+    }
+
+    /// <summary>ReportMBMSummaryOS (combined, case 5): one row per member (consecutive rows summed); ReportMBMSummaryOS1 (separate, case 44): one row per row,
+    /// with cover id and patient. Known desktop issue kept in OS1: its "FULL" test reads the MCO fee column, so the utilisation is always computed.</summary>
+    private async Task<List<List<string>>> CompositeRowsAsync(IDbSession s, Entry e, Dictionary<string, object?> filters)
+    {
+        var separate = e.Routine == "ReportMBMSummaryOS1";
+        var rows = new List<List<string>>();
+        List<string>? row = null;
+        string member = "\u0001";
+        decimal claims = 0, times = 0, days = 0, approved = 0, topUp = 0;
+        foreach (var x in await repository.RunAsync(s, separate ? 44 : 5, filters))
+        {
+            var y = F(x, "AnnLmtIND") == "Y";
+            if (separate || F(x, "MBMNumber") != member)
+            {
+                member = F(x, "MBMNumber");
+                topUp = y && Has(x, "TopUpAmt") ? R2m(MbmTrkService.N(x, "TopUpAmt")) : 0;
+                row = separate
+                    ? [Fe(x, "MBMDepartment"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"), "", "", "", y ? M0(x, "AnnLimit") : "FULL",
+                        y ? M0(x, "TopUpAmt") : "FULL", "", M0(x, "CLMMCOProcFee"), y ? M(MbmTrkService.N(x, "MBMCLNBalLmt")) : "FULL", "FULL"]
+                    : [Fe(x, "MBMDepartment"), F(x, "MBMNumber"), F(x, "MBMName"), "", "", "", y ? M0(x, "AnnLimit") : "FULL",
+                        y && Has(x, "TopUpAmt") ? M(MbmTrkService.N(x, "TopUpAmt")) : "0.00", "", M0(x, "CLMMCOProcFee"),
+                        y ? M(MbmTrkService.N(x, "MBMCLNBalLmt")) : "FULL", y ? "" : "FULL"];
+                rows.Add(row);
+                claims = times = days = approved = 0;
+            }
+            var o = separate ? 1 : 0;
+            claims += MbmTrkService.N(x, "TotalClaim");
+            times += MbmTrkService.N(x, "MCTimes");
+            days += MbmTrkService.N(x, "MCDays");
+            approved += R2m(MbmTrkService.N(x, "ApprovedAmt"));
+            row![3 + o] = Has(x, "TotalClaim") ? ((int)claims).ToString(En) : "0";
+            row[4 + o] = Has(x, "MCTimes") ? ((int)times).ToString(En) : "0";
+            row[5 + o] = Has(x, "MCDays") ? ((int)days).ToString(En) : "0";
+            row[8 + o] = Has(x, "ApprovedAmt") ? M(approved) : "0.00";
+            var util = 11 + o;
+            if (!separate && row[6] == "FULL") row[util] = "FULL";
+            else if (approved > 0) row[util] = separate && !Has(x, "AnnLimit") ? "0" : M(Util(approved, topUp, x)!.Value);
+            else row[util] = "0.00";
+        }
+        return rows;
+    }
 
     private async Task<List<List<string>>> SpecialRowsAsync(IDbSession s, Entry e, Dictionary<string, object?> filters)
     {
+        if (Composite.Contains(e.Routine)) return await CompositeRowsAsync(s, e, filters);
         var sp = Specials[e.Routine];
         var reasons = sp.Reasons
             ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
