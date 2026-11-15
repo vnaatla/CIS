@@ -80,13 +80,13 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
 
     internal sealed record Entry(int Type, string Selection, string Routine, List<string> Headers, bool Special, Block? P, Block? S, Helper? Helper, Detail? Detail = null);
 
-    private sealed record Param(string N, string T);
+    internal sealed record Param(string N, string T);
 
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     internal static readonly List<Entry> Catalogue = Load<List<Entry>>("MbmTracking.catalogue.json");
     private static readonly Dictionary<string, string> Params = Load<List<Param>>("MbmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
 
-    private static T Load<T>(string name)
+    internal static T Load<T>(string name)
     {
         using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream(name) ?? throw new InvalidOperationException(name + " missing");
         return JsonSerializer.Deserialize<T>(s, Json)!;
@@ -212,12 +212,15 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
     };
 
     /// <summary>The typed filters: only known names, each converted to its parameter type.</summary>
-    internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input)
+    internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input) => Filters(input, Params);
+
+    /// <summary>The typed filters for a given parameter list (name -> SQL type).</summary>
+    internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input, IReadOnlyDictionary<string, string> types)
     {
         var p = new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
         foreach (var (k, raw) in input)
         {
-            if (!Params.TryGetValue(k, out var type) || string.IsNullOrWhiteSpace(raw)) continue;
+            if (!types.TryGetValue(k, out var type) || string.IsNullOrWhiteSpace(raw)) continue;
             var v = raw.Trim();
             p[k] = type switch
             {
@@ -232,8 +235,12 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
 
     private static string Key(IReadOnlyDictionary<string, object?> r, List<string> keys) => string.Join("\u0001", keys.Select(k => T(r, k)));
 
-    private static string Cell(Col c, IReadOnlyDictionary<string, object?> x, IReadOnlyDictionary<string, object?>? supp) => c.K switch
+    internal static string Cell(Col c, IReadOnlyDictionary<string, object?> x, IReadOnlyDictionary<string, object?>? supp) => c.K switch
     {
+        "mp" => x.GetValueOrDefault(c.N!) is null or DBNull ? "" : N(x, c.N!).ToString("#,##0.00;(#,##0.00)", En),
+        "avg" => N(x, c.V!) == 0 ? "" : Math.Round(N(x, c.N!) / N(x, c.V!), 2, MidpointRounding.ToEven).ToString("#,##0.00", En),
+        "pct" => N(x, c.V!) == 0 ? "" : Math.Round(N(x, c.N!) / N(x, c.V!) * 100, 0, MidpointRounding.ToEven).ToString(En),
+        "cat" => T(x, c.N!.Split('|')[0]) + c.V + T(x, c.N!.Split('|')[1]),
         "f" => T(x, c.N!),
         "m" => x.GetValueOrDefault(c.N!) is null or DBNull ? "0.00" : N(x, c.N!).ToString("#,##0.00", En),
         "l" => c.V ?? "",
@@ -246,12 +253,12 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
         _ => "",
     };
 
-    private static string T(IReadOnlyDictionary<string, object?> r, string k) => r.GetValueOrDefault(k) switch
+    internal static string T(IReadOnlyDictionary<string, object?> r, string k) => r.GetValueOrDefault(k) switch
     {
         null or DBNull => "",
         DateTime d => d.ToString("dd/MM/yyyy", En),
         var o => Convert.ToString(o, En)!.Trim(),
     };
 
-    private static decimal N(IReadOnlyDictionary<string, object?> r, string k) => decimal.TryParse(T(r, k), NumberStyles.Any, En, out var d) ? d : 0;
+    internal static decimal N(IReadOnlyDictionary<string, object?> r, string k) => decimal.TryParse(T(r, k), NumberStyles.Any, En, out var d) ? d : 0;
 }

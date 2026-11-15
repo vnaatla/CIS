@@ -29,6 +29,8 @@
     <!-- Member tracking report catalogue and filter list, generated from the VB6 form and procedure (Cis/sql/tools). -->
     <EmbeddedResource Include="Reports\MbmTracking.catalogue.json" LogicalName="MbmTracking.catalogue.json" />
     <EmbeddedResource Include="Reports\MbmTracking.params.json" LogicalName="MbmTracking.params.json" />
+    <EmbeddedResource Include="Reports\ClmTracking.catalogue.json" LogicalName="ClmTracking.catalogue.json" />
+    <EmbeddedResource Include="Reports\ClmTracking.params.json" LogicalName="ClmTracking.params.json" />
   </ItemGroup>
 
 </Project>
