@@ -63,7 +63,17 @@ public class ClmTrkDatabaseTests
             new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'", strAppendCase = 5 },
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Select(x => (string)x.MBMNumber).ToList();
         Assert.Equal(legacyOs.Where((m, i) => i == 0 || m != legacyOs[i - 1]).Count(), os.Rows.Count);
+        // Admission reports: the desktop's checks, and the monthly report's payors (case 35) with their days.
+        Assert.Equal(ClmTrkService.SameMonth, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.SearchAsync(new ClmTrkRequest(0, "Monthly Report",
+            new() { ["dovFrom"] = "30/06/2021", ["dovTo"] = "01/07/2021" })))).Message);
+        Assert.Equal(ClmTrkService.NoDov, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.SearchAsync(new ClmTrkRequest(0, "Monthly Report", new())))).Message);
+        Assert.Equal(ClmTrkService.NoYear, (await Assert.ThrowsAsync<BusinessRuleException>(() => service.SearchAsync(new ClmTrkRequest(0, "YTD Report", new())))).Message);
+        var monthly = await service.SearchAsync(new ClmTrkRequest(0, "Monthly Report", new() { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "03/07/2021" }));
+        Assert.Equal((await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
+            new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/03/2021'", strAppendCase = 35 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Count(), monthly.Rows.Count);
+        Assert.Matches(@"^\d{2}/07/2021-\w+day$", monthly.Rows[0][1]);
         Assert.Equal(MbmTrkService.Pending, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
-            service.SearchAsync(new ClmTrkRequest(0, "Daily Report", new())))).Message);
+            service.SearchAsync(new ClmTrkRequest(4, "By Clinic Type & Clinic Panel", new())))).Message);
     }
 }

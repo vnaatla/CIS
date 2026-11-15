@@ -112,7 +112,10 @@ public sealed partial class ClmTrkService
     };
 
     /// <summary>The listings built from several rows per output row or several queries.</summary>
-    private static readonly string[] Composite = ["ReportMBMSummaryOS", "ReportMBMSummaryOS1"];
+    private static readonly string[] Composite = ["ReportMBMSummaryOS", "ReportMBMSummaryOS1", "DailyVisitListing", "MonthyReportListing", "YearListing"];
+
+    /// <summary>Desktop texts of the admission reports.</summary>
+    public const string SameMonth = "Must key in same Month", NoDov = "Date of Visit can't be empty", NoYear = "Please enter Year";
 
     /// <summary>Whether a catalogue entry is ported by hand here.</summary>
     internal static bool IsHandPorted(string routine) => Specials.ContainsKey(routine) || Composite.Contains(routine);
@@ -171,6 +174,49 @@ public sealed partial class ClmTrkService
 
     private async Task<List<List<string>>> SpecialRowsAsync(IDbSession s, Entry e, Dictionary<string, object?> filters)
     {
+        if (e.Routine == "DailyVisitListing")
+            // Admission > Daily Report (case 34): the visits numbered 1, 2, ... (the desktop's counter was never reset, so it kept counting across searches).
+            return (await repository.RunAsync(s, 34, filters)).Select((x, i) => new List<string>
+            {
+                (i + 1).ToString(En), F(x, "CASNumber"), F(x, "MBMNumber"), F(x, "MBMPolicyNo"), F(x, "PatientName"), D(x, "DateVisit"), F(x, "ClinicCode"),
+                F(x, "CLNName"), F(x, "CASTreatReason1"), F(x, "MCDays"),
+            }).ToList();
+        if (e.Routine == "MonthyReportListing")
+        {
+            // Admission > Monthly Report: DOV from / to in the same month (the desktop compared the mm/yyyy of the two boxes first).
+            var from = filters.GetValueOrDefault("dovFrom") as DateTime?;
+            var to = filters.GetValueOrDefault("dovTo") as DateTime?;
+            if ((from is null) != (to is null) || (from is not null && (from.Value.Month != to!.Value.Month || from.Value.Year != to.Value.Year)))
+                throw new Domain.Errors.BusinessRuleException(SameMonth);
+            if (from is null) throw new Domain.Errors.BusinessRuleException(NoDov);
+            // Per payor (case 35) its visit days in order (case 96): "<date>-<weekday>" and the visits, up to 31 days. The desktop did not clear the previous
+            // payor's days, so a payor with fewer days showed the remaining days of the one before; here each payor shows its own days.
+            var days = (await repository.RunAsync(s, 96, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.Take(31).ToList());
+            return (await repository.RunAsync(s, 35, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
+            {
+                var row = new List<string> { F(x, "PAYCode") };
+                foreach (var d in days.GetValueOrDefault(F(x, "PAYCode")) ?? [])
+                {
+                    var dov = d.GetValueOrDefault("DateVisit") as DateTime?;
+                    row.Add(dov is { } v ? v.ToString("dd/MM/yyyy", En) + "-" + v.DayOfWeek : "");
+                    row.Add(F(d, "Total"));
+                }
+                return row;
+            }).ToList();
+        }
+        if (e.Routine == "YearListing")
+        {
+            // Admission > YTD Report: the year is required; per payor (case 36) the visits of each month 1-12 (case 97, the first row of a month).
+            if (!filters.ContainsKey("year")) throw new Domain.Errors.BusinessRuleException(NoYear);
+            var months = (await repository.RunAsync(s, 97, filters)).GroupBy(x => F(x, "PAYCode")).ToDictionary(g => g.Key, g => g.ToList());
+            return (await repository.RunAsync(s, 36, filters)).Where(x => Has(x, "PAYCode")).Select(x =>
+            {
+                var mine = months.GetValueOrDefault(F(x, "PAYCode")) ?? [];
+                var row = new List<string> { F(x, "PAYCode") };
+                for (var m = 1; m <= 12; m++) row.Add(mine.FirstOrDefault(r => F(r, "Month") == m.ToString(En)) is { } r ? F(r, "TotalCases") : "");
+                return row;
+            }).ToList();
+        }
         if (Composite.Contains(e.Routine)) return await CompositeRowsAsync(s, e, filters);
         var sp = Specials[e.Routine];
         var reasons = sp.Reasons
