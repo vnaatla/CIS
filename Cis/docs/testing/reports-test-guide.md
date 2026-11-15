@@ -82,3 +82,12 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | T1 | INS Type & MBM Type / By Payor, member type P, status 0 - Active, payor DC → Search | the same rows as `EXEC HISDB.dbo.CISMBMTracking N' AND PAYCode = ''DC'' And MBMStatus = ''A'' ', 113` (about 15 s) |
 | T2 | No report type → Search | `Please select a report type.` |
 | T3 | A report marked "not migrated yet" → Search | `This report is not migrated yet.` |
+
+## 11. Claim Tracking — `/claim-bordx/claim-tracking/standard` (frmClaimRpt)
+
+| # | Action | Expected |
+|---|---|---|
+| C1 | Ageband / Summary, payor DC, DOV 01/07/2021 – 01/07/2021 → Search | the same age bands and counts as `EXEC CISWorksheet.dbo.CISClaimTracking N' AND PAYCode = ''DC'' And DateVisit >= ''07/01/2021'' And DateVisit <= ''07/01/2021''', 14` (DC includes EA) |
+| C2 | Admission / Monthly Report, DOV 30/06/2021 – 01/07/2021 | `Must key in same Month` |
+| C3 | Admission / YTD Report without a year | `Please enter Year` |
+| C4 | General Listing / Without Remarks, payor DC, DOV 01/07/2021 | one row per claim, 54 columns |

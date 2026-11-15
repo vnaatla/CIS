@@ -142,7 +142,7 @@ export const MENU: MenuModule[] = [
       { label: 'Bordx Control', path: '/claim-bordx/monitoring/control', access: Access.BordxControl, form: 'FrmBordxControl', group: 'Monitoring', phase: 6, migrated: true },
       { label: 'Outstanding Bordx', path: '/claim-bordx/monitoring/outstanding', access: Access.BordxOutstanding, form: 'FrmOSBordx', group: 'Monitoring', phase: 6, migrated: true },
       { label: 'Bordx & Worksheet', path: '/claim-bordx/monitoring/bordx-worksheet', access: Access.BordxWorksheet, form: 'FrmBordxWks', group: 'Monitoring', phase: 6, migrated: true },
-      { label: 'Claim Tracking', path: '/claim-bordx/claim-tracking/standard', access: Access.ClaimTracking, form: 'frmClaimRpt', group: 'Claim Tracking', phase: 10 },
+      { label: 'Claim Tracking', path: '/claim-bordx/claim-tracking/standard', access: Access.ClaimTracking, form: 'frmClaimRpt', group: 'Claim Tracking', phase: 10, migrated: true },
       { label: 'Claim Tracking (Simple)', path: '/claim-bordx/claim-tracking/simple', access: Access.ClaimTracking, form: 'frmClaimRptSimple', group: 'Claim Tracking', phase: 10 },
       { label: 'Claim Tracking 2', path: '/claim-bordx/claim-tracking/v2', access: Access.ClaimTracking2, form: 'FrmClaimRpt2', group: 'Claim Tracking', phase: 10 },
       { label: 'Claim Tracking (Jupiter)', path: '/claim-bordx/claim-tracking/jupiter', access: Access.ClaimTrackingJupiter, form: 'frmNewClaimRpt', group: 'Claim Tracking', phase: 10 },

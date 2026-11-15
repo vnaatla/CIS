@@ -51,6 +51,8 @@ range('ic', 'ICNo', 'nvarchar(30)'); blank('ic', 'ICNo')
 range('mbmIc', 'MBMIcBcPp', 'nvarchar(30)'); blank('mbmIc', 'MBMIcBcPp')
 range('actual', 'CLMTotalActual', 'money'); range('approved', 'CLMTotalApproved', 'money'); range('osUtilized', 'OSUtilized', 'money')
 choice('panel', [['C', " AND CLNPanel = 'C'"], ['Y', " AND CLNPanel = 'Y'"]])
+// The clinic type / plan code by panel reports' non-panel figures (CLNByTypePanel, PlanByPanel).
+add('@nonPanel bit = 0', "IF @nonPanel = 1 SET @w += N' AND (CLNPanel <> ''C'' OR CLNPanel IS NULL OR CLNPanel = '''')';")
 choice('pending', [['N', " AND (CLMPending = 'N' OR CLMPending = '' OR CLMPending IS NULL)"], ['Y', " AND CLMPending = 'Y'"]])
 eq('year', 'DOVYear', 'nvarchar(4)')
 range('invoice', 'InvoiceNo', 'nvarchar(50)'); blank('invoice', 'InvoiceNo')

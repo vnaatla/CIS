@@ -112,7 +112,7 @@ public sealed partial class ClmTrkService
     };
 
     /// <summary>The listings built from several rows per output row or several queries.</summary>
-    private static readonly string[] Composite = ["ReportMBMSummaryOS", "ReportMBMSummaryOS1", "DailyVisitListing", "MonthyReportListing", "YearListing"];
+    private static readonly string[] Composite = ["ReportMBMSummaryOS", "ReportMBMSummaryOS1", "DailyVisitListing", "MonthyReportListing", "YearListing", "CLNByTypePanel", "PlanByPanel", "ReportMBMGeneralListing", "ReportDepartmentalBordx", "ReportIllnessSummary", "UtilizationByIllness"];
 
     /// <summary>Desktop texts of the admission reports.</summary>
     public const string SameMonth = "Must key in same Month", NoDov = "Date of Visit can't be empty", NoYear = "Please enter Year";
@@ -121,6 +121,51 @@ public sealed partial class ClmTrkService
     internal static bool IsHandPorted(string routine) => Specials.ContainsKey(routine) || Composite.Contains(routine);
 
     private static decimal R2m(decimal v) => Math.Round(v, 2, MidpointRounding.AwayFromZero);
+
+    /// <summary>Monthly Reports > Summary (by Illness) and Utilization > Summary (By Illness): per treatment reason (case 6) its description, bill and non-GP
+    /// amounts, and the GP / SP (/ others) visits and amounts from case 11 for that reason and clinic type, with the averages. Case 11 has no reason column, so
+    /// it runs per reason as the desktop. The desktop's helpers tested report types 15 / 21 (the reports are 16 / 22) and left these columns empty; they are
+    /// filled here. Known desktop issue kept: the illness summary's % is of the running bill total (the rows above and this one).</summary>
+    private async Task<List<List<string>>> IllnessRowsAsync(IDbSession s, bool utilization, Dictionary<string, object?> filters)
+    {
+        var reasons = (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1]);
+        var userType = filters.GetValueOrDefault("clinicType") as string;
+        async Task<(decimal Visits, decimal Amount)> Part(string code, string clinicType)
+        {
+            if (userType is not null && userType != clinicType) return (0, 0);
+            var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase) { ["clinicType"] = clinicType };
+            f.Remove("treatmentFrom"); f.Remove("treatmentTo"); f.Remove("treatmentBlank");
+            if (code.Length == 0) f["treatmentBlank"] = true; else { f["treatmentFrom"] = code; f["treatmentTo"] = code; }
+            var r = (await repository.RunAsync(s, 11, f)).FirstOrDefault();
+            return r is null ? (0, 0) : (MbmTrkService.N(r, "Total"), MbmTrkService.N(r, "TotalApproved") - MbmTrkService.N(r, "ClmNonGPFee"));
+        }
+        static string Num(decimal v) => v.ToString(CultureInfo.InvariantCulture);
+        static string Avg(decimal amount, decimal visits, bool or) => (or ? amount > 0 || visits > 0 : amount > 0 && visits > 0) && visits != 0 ? R2(amount / visits) : "0";
+        var rows = new List<List<string>>();
+        decimal runningBill = 0;
+        foreach (var x in await repository.RunAsync(s, 6, filters))
+        {
+            var code = F(x, "CASTreatReason1");
+            var desc = reasons.GetValueOrDefault(code) ?? "";
+            var (gv, ga) = await Part(code, "1");
+            var (sv, sa) = await Part(code, "0");
+            if (!utilization)
+            {
+                runningBill += MbmTrkService.N(x, "CLMTotalActual");
+                var bill = MbmTrkService.N(x, "CLMTotalActual");
+                rows.Add([Fe(x, "CASTreatReason1"), desc, Num(gv), Num(sv), Num(gv + sv), M(ga), M(sa), M0(x, "ClmNonGPFee"),
+                    Has(x, "CLMTotalActual") ? M(bill) : "0.00", Has(x, "CLMTotalActual") && runningBill != 0 ? R2(bill / runningBill * 100) : "0.00",
+                    Avg(ga, gv, false), Avg(sa, sv, false), Avg(ga + sa, gv + sv, false)]);
+            }
+            else
+            {
+                var (ov, oa) = await Part(code, "2");
+                rows.Add([Fe(x, "CASTreatReason1"), desc, Num(gv), Num(sv), Num(ov), Num(gv + sv + ov), M(ga), M(sa), M(oa), M0(x, "ClmNonGPFee"),
+                    M0(x, "CLMTotalActual"), Num(ga + sa + oa), Avg(ga, gv, true), Avg(sa, sv, true), Avg(oa, ov, true), Avg(ga + sa + oa, gv + sv + ov, true)]);
+            }
+        }
+        return rows;
+    }
 
     /// <summary>Utilisation % of the annual limit (with a negative top-up added back), as the O/S Utilized reports.</summary>
     private static decimal? Util(decimal approved, decimal topUp, IReadOnlyDictionary<string, object?> x)
@@ -217,6 +262,53 @@ public sealed partial class ClmTrkService
                 return row;
             }).ToList();
         }
+        if (e.Routine is "CLNByTypePanel" or "PlanByPanel")
+        {
+            // Clinic type (case 24) / plan code (case 82) rows with their panel (cases 31 / 12, CLNPanel C) and non-panel (32 / 33) claims and amounts.
+            // The desktop ran the two queries per row with the row's type / plan added; each runs once here, joined on it. The user's own panel criterion was
+            // appended too: panel C leaves no non-panel rows, panel Y no panel rows.
+            var byType = e.Routine == "CLNByTypePanel";
+            var key = byType ? "CLNType" : "PLNCode";
+            var userPanel = filters.GetValueOrDefault("panel") as string;
+            async Task<Dictionary<string, IReadOnlyDictionary<string, object?>>> Part(int c, bool panel)
+            {
+                if (userPanel is not null && userPanel == "C" != panel) return [];
+                var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase);
+                if (panel) f["panel"] = "C"; else f["nonPanel"] = true;
+                return (await repository.RunAsync(s, c, f)).GroupBy(x => F(x, key)).ToDictionary(g => g.Key, g => (IReadOnlyDictionary<string, object?>)g.First());
+            }
+            var panelRows = await Part(byType ? 31 : 12, true);
+            var nonPanelRows = await Part(byType ? 32 : 33, false);
+            return (await repository.RunAsync(s, byType ? 24 : 82, filters)).Select(x =>
+            {
+                var p = panelRows.GetValueOrDefault(F(x, key));
+                var n = nonPanelRows.GetValueOrDefault(F(x, key));
+                decimal Of(IReadOnlyDictionary<string, object?>? r, string k) => r is null ? 0 : MbmTrkService.N(r, k);
+                if (!byType) return new List<string> { Fe(x, "PLNCode"), M0(x, "TotalApprovedAmt"), M(Of(p, "TotalPanelAmt")), M(Of(n, "TotalNonPanelAmt")) };
+                decimal pc = Of(p, "TotalClaimP"), pa = Of(p, "TotalPanelAmt"), nc = Of(n, "TotalClaimNP"), na = Of(n, "TotalNonPanelAmt");
+                return new List<string> { Fe(x, "CLNType"), ((int)pc).ToString(En), M(pa), ((int)nc).ToString(En), M(na), ((int)(pc + nc)).ToString(En), M(pa + na) };
+            }).ToList();
+        }
+        if (e.Routine is "ReportMBMGeneralListing" or "ReportDepartmentalBordx")
+        {
+            // Monthly Reports > Utilization (By Member) (case 4 + case 108) / Departmental Bordx (case 3 + case 107): the GP and SP amounts (bill less non-GP fee)
+            // by clinic type. The desktop's helper tested report type 15 (Monthly Reports is 16), so these columns stayed empty there; they are filled here.
+            var member = e.Routine == "ReportMBMGeneralListing";
+            string[] keys = member ? ["MBMDepartment", "MBMNumber", "CoverID"] : ["MBMDepartment", "BordxRefNo"];
+            string K(IReadOnlyDictionary<string, object?> x) => string.Join("\u0001", keys.Select(k => F(x, k)));
+            var gp = new Dictionary<string, string>();
+            var spAmt = new Dictionary<string, string>();
+            foreach (var x in await repository.RunAsync(s, member ? 108 : 107, filters))
+                (F(x, "CLNType") == "S" ? spAmt : gp)[K(x)] = M(MbmTrkService.N(x, "CLMTotalActual") - MbmTrkService.N(x, "ClmNonGPFee"));
+            return (await repository.RunAsync(s, member ? 4 : 3, filters)).Select(x => member
+                ? new List<string> { Fe(x, "MBMDepartment"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"), Has(x, "TotalVisit") ? F(x, "TotalVisit") : "0",
+                    Has(x, "MCTimes") ? F(x, "MCTimes") : "0", Has(x, "MCDays") ? F(x, "MCDays") : "0", M0(x, "CLMTotalActual"), gp.GetValueOrDefault(K(x)) ?? "",
+                    spAmt.GetValueOrDefault(K(x)) ?? "" }
+                : new List<string> { Fe(x, "MBMDepartment"), F(x, "Bordxrefno"), D(x, "BordxDate"), M0(x, "CLMTotalActual"), gp.GetValueOrDefault(K(x)) ?? "",
+                    spAmt.GetValueOrDefault(K(x)) ?? "", M0(x, "ClmNonGPFee") }).ToList();
+        }
+        if (e.Routine is "ReportIllnessSummary" or "UtilizationByIllness")
+            return await IllnessRowsAsync(s, e.Routine == "UtilizationByIllness", filters);
         if (Composite.Contains(e.Routine)) return await CompositeRowsAsync(s, e, filters);
         var sp = Specials[e.Routine];
         var reasons = sp.Reasons

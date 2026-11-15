@@ -95,7 +95,7 @@ export async function reports(page, base, check) {
   const searched = page.waitForResponse((r) => r.url().includes('/api/tracking/member/search'), { timeout: 240000 })
   await click(page, 'Search')
   const res = await searched
-  if (!res.ok()) console.log('MBM Tracking search:', res.status(), (await res.text()).slice(0, 300))
+  if (!res.ok()) console.log('MBM Tracking search:', res.status(), (await res.text()).slice(0, 300), res.request().postData())
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('DC'), { timeout: 30000 })
   check(true, 'MBM Tracking: INS Type & MBM Type by payor lists payor DC')
 

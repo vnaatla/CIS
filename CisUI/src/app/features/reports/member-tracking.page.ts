@@ -204,6 +204,8 @@ export class MemberTrackingPage implements OnInit {
 
   protected async search(): Promise<void> {
     if (this.type() < 0) return this.notify.notify('Please select a report type.', 'info')
+    // The choice list may have arrived after the type was picked: the shown (first) choice is the one searched.
+    if (!this.selections().some((r) => r.selection === this.selection)) this.selection = this.selections()[0]?.selection ?? ''
     const filters: Record<string, string> = {}
     for (const [k, v] of Object.entries(this.f)) {
       if (v === '' || v == null || v === false) continue

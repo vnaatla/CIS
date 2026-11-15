@@ -73,7 +73,18 @@ public class ClmTrkDatabaseTests
             new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/03/2021'", strAppendCase = 35 },
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Count(), monthly.Rows.Count);
         Assert.Matches(@"^\d{2}/07/2021-\w+day$", monthly.Rows[0][1]);
-        Assert.Equal(MbmTrkService.Pending, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
-            service.SearchAsync(new ClmTrkRequest(4, "By Clinic Type & Clinic Panel", new())))).Message);
+        Assert.All(service.Reports(), x => Assert.True(x.Migrated, $"{x.Type} {x.Selection}"));
+        var day = new Dictionary<string, string?> { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" };
+        async Task<List<dynamic>> Legacy(int c, string append) => (await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
+            new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'" + append, strAppendCase = c },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        // Clinic type & panel: the panel claims of each type equal the desktop's case 31 with CLNPanel = 'C'.
+        var panel = await service.SearchAsync(new ClmTrkRequest(4, "By Clinic Type & Clinic Panel", day));
+        Assert.Equal((await Legacy(24, "")).Count, panel.Rows.Count);
+        Assert.Equal((await Legacy(31, " AND CLNPanel = 'C'")).Sum(x => (int)x.TotalClaimP), panel.Rows.Sum(r => int.Parse(r[1])));
+        // Utilization by illness: one row per reason of case 6, total visits = GP + SP + others.
+        var illness = await service.SearchAsync(new ClmTrkRequest(22, "Summary (By Illness)", day));
+        Assert.Equal((await Legacy(6, "")).Count, illness.Rows.Count);
+        Assert.All(illness.Rows, r => Assert.Equal(int.Parse(r[2]) + int.Parse(r[3]) + int.Parse(r[4]), int.Parse(r[5])));
     }
 }
