@@ -70,6 +70,9 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
           <app-field label="Member Type">
             <select name="memberType" [(ngModel)]="memberType"><option value="B">Both</option><option value="P">P - Principal</option><option value="S">S - Supplementary</option></select>
           </app-field>
+          <app-field label="Billing">
+            <select name="billing" [(ngModel)]="f['billing']"><option value=""></option><option>ASO</option><option>INSURER</option></select>
+          </app-field>
           <app-field label="Principal Type">
             <select name="principalType" [(ngModel)]="principalType"><option>Both</option><option>C - Combined Limit</option><option>S - Separated Limit</option></select>
           </app-field>

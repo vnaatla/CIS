@@ -53,5 +53,7 @@ range('suppBordx', 'MBMBordxDate', 'datetime')
 // Detail listings only: principal type (all their queries) and the supplementary registration date (their supplementary queries).
 add('@detailPrinType nvarchar(1) = NULL', "IF @detailPrinType = 'C' SET @w += N' AND (MBMMemberType = ''P'' OR MBMMemberType = ''C'')'; IF @detailPrinType = 'S' SET @w += N' AND (MBMMemberType = ''Q'')';")
 range('suppReg', 'MBMCRegDate', 'datetime'); blank('suppReg', 'MBMCRegDate')
+// General Listing (Details) only: billing ASO (group companies of payor DC) / INSURER.
+add('@billing nvarchar(10) = NULL', "IF @billing = 'ASO' SET @w += N' And GRPCoPaycode = ''DC'''; IF @billing = 'INSURER' SET @w += N' And GRPCoPaycode <> ''DC''';")
 fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-filters.sql', [...P.map((p) => '--PARAM ' + p), ...W.map((w) => '--WHERE ' + w)].join('\n') + '\n')
 console.log(P.length, 'params', W.length, 'where')

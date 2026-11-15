@@ -113,6 +113,8 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
         var filters = Filters(r.Filters);
         // The principal type and the supplementary registration date belong to the detail listings only (their own criteria in the desktop).
         if (e.Detail is null) foreach (var k in DetailOnly) filters.Remove(k);
+        // The billing type (ASO / INSURER) is a criterion of General Listing (Details) only.
+        if (e.Routine != "GeneralListing") filters.Remove("billing");
         var type = (r.MemberType ?? "P").Trim().ToUpperInvariant() is var t && t.Length > 0 ? t[..1] : "P";
         await using var s = await sessions.OpenAsync();
         if (e.Detail is not null) return await DetailAsync(s, e, type, filters);
