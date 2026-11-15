@@ -31,6 +31,9 @@ public interface IClmTrkRepository
 {
     /// <summary>cis.ClmTrk_Run: one case of CISClaimTracking with the typed filters.</summary>
     Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters);
+
+    /// <summary>cis.ClmTrk_Lookup: a combo.</summary>
+    Task<List<string>> LookupAsync(IDbSession session, string kind, string? key);
 }
 
 /// <summary>Claim / Bordx > Claim Tracking (frmClaimRpt).</summary>
@@ -41,6 +44,9 @@ public interface IClmTrkService
 
     /// <summary>CmdSearch_Click.</summary>
     Task<ClmTrkResult> SearchAsync(ClmTrkRequest request);
+
+    /// <summary>A combo: polstatus, states, clinicgroups, clinics, payors (key = health type), companies (key = payor), departments (key = group company).</summary>
+    Task<List<string>> LookupAsync(string kind, string? key);
 }
 
 /// <inheritdoc />
@@ -48,6 +54,16 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
 {
     internal static readonly List<Entry> Catalogue = Load<List<Entry>>("ClmTracking.catalogue.json");
     private static readonly Dictionary<string, string> Params = Load<List<Param>>("ClmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
+
+    private static readonly string[] Kinds = ["polstatus", "states", "clinicgroups", "clinics", "payors", "companies", "departments"];
+
+    /// <inheritdoc />
+    public async Task<List<string>> LookupAsync(string kind, string? key)
+    {
+        if (!Kinds.Contains(kind)) throw new NotFoundException("Unknown list.");
+        await using var s = await sessions.OpenAsync();
+        return await repository.LookupAsync(s, kind, string.IsNullOrWhiteSpace(key) ? null : key.Trim());
+    }
 
     /// <inheritdoc />
     public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special)).ToList();

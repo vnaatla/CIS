@@ -15,4 +15,7 @@ public sealed class ClmTrkRepository : IClmTrkRepository
         p.Add("case", caseNo);
         return session.RowsAsync("cis.ClmTrk_Run", p, 600);
     }
+
+    /// <inheritdoc />
+    public Task<List<string>> LookupAsync(IDbSession session, string kind, string? key) => session.QueryAsync<string>("cis.ClmTrk_Lookup", new { kind, key });
 }

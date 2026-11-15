@@ -54,6 +54,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
   },
   {
+    path: 'claim-bordx/claim-tracking/standard',
+    title: 'CIS - Claim Tracking',
+    canActivate: [accessGuard],
+    data: { access: Access.ClaimTracking, legacyForm: 'frmClaimRpt' },
+    loadComponent: () => import('./claim-tracking.page').then((m) => m.ClaimTrackingPage),
+  },
+  {
     path: 'tracking/grp-company-clinic',
     title: 'CIS - Group Company Clinic Tracking',
     canActivate: [accessGuard],

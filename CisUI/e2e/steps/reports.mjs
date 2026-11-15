@@ -98,4 +98,23 @@ export async function reports(page, base, check) {
   if (!res.ok()) console.log('MBM Tracking search:', res.status(), (await res.text()).slice(0, 300))
   await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('DC'), { timeout: 30000 })
   check(true, 'MBM Tracking: INS Type & MBM Type by payor lists payor DC')
+
+  // Claim Tracking: Ageband summary for payor DC, visits of 01/07/2021.
+  await page.goto(`${base}/claim-bordx/claim-tracking/standard`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType] option:nth-child(20)')
+  await page.evaluate(() => {
+    const s = document.querySelector('select[name=reportType]')
+    s.value = [...s.options].find((o) => o.textContent.trim() === 'Ageband').value
+    s.dispatchEvent(new Event('change'))
+  })
+  await page.waitForFunction(() => [...document.querySelectorAll('select[name=selection] option')].some((o) => o.textContent.includes('Summary')))
+  await page.type('input[name=payor]', 'DC - x')
+  await page.type('input[aria-label="DOV From"]', '01/07/2021')
+  await page.type('input[aria-label="DOV To"]', '01/07/2021')
+  const claimSearch = page.waitForResponse((r) => r.url().includes('/api/tracking/claim/search'), { timeout: 240000 })
+  await click(page, 'Search')
+  const claimRes = await claimSearch
+  if (!claimRes.ok()) console.log('Claim Tracking search:', claimRes.status(), (await claimRes.text()).slice(0, 300))
+  await page.waitForFunction(() => Number(document.querySelector('p[aria-label=Totals] strong')?.textContent) > 0, { timeout: 30000 })
+  check(true, 'Claim Tracking: Ageband summary for payor DC, 01/07/2021 lists age bands')
 }
