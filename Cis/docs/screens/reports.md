@@ -179,3 +179,15 @@ The claim tracking page and engine with each form's own catalogue (`sql/tools/an
 | SUN System | frmClaimRptSUN | CISClaimTracking | 23 (no Verification) | general listing without remarks from case 112 with the clinic invoice batch, PV no. and PV date |
 
 The desktop read the Jupiter (Neptune) server for the Jupiter screens; here the same databases. MBM Tracking (old) (FrmMBMTracking, never opened) is an older inline-SQL copy of MBM Tracking: nothing to build.
+
+## Claim / Bordx > Claim Tracking 2 and (Jupiter) — FrmClaimRpt2 / FrmNewClaimRpt2 (`/claim-bordx/claim-tracking/v2`, `v2-jupiter`, rights ClaimTracking2 / ClaimTracking2Jupiter, `api/tracking/claim2`, `claim2-jupiter`)
+
+| Part | How it is migrated |
+|---|---|
+| Queries | `cis.ClmTrk2_Run` (`sql/main/1154_claim_tracking2.sql`, `gen-trk.js claim2`) from CISWorksheet CISClaimTracking2 with the form's own criteria (`sql/tools/build-ct2-filters.js`): member type on MBMPatientCovID, clinic / clinic group on HOSName / HOSGRPName, branch, case status as typed, ... Cases 41 / 42 (payors of a health type) are lookups. |
+| Reports | `ClmTracking2.catalogue.json` / `ClmTracking2Jupiter.catalogue.json` (`sql/tools/analyse-ct2.js`): Actual / Approved x 17 reports (Claim, Insured Type & Plan / Ageband / Gender / Relation, Ageband, Gender, Ageband & Gender, Final Diagnosis, Clinic, Payor, Payor / Insured Type & Plan, Group Company, Insured Type, Bordx No, Policy Year, Takeover): the key columns, the 28 fee amounts and the row total; Cost Detail: the 28 fee categories x Actual / Approved / Pay2Clinic / Pay2/fr Mem (cases 37 – 40) with the Total row. |
+| Jupiter copy | The same, with agent code / policy no. / patient name compared exactly (FrmClaimRpt2: LIKE); the desktop read the Jupiter server. |
+
+Fixed desktop bug: CISClaimTracking2 is stored with QUOTED_IDENTIFIER ON while 40 of its 41 cases quote values with double quotes ("Z", ...), so every desktop report failed with "Invalid column name"; the generated cases use single quotes. The figures are therefore checked against the views the procedure reads.
+
+Known desktop issues (kept): the Approved reports' headers are another system's hospital labels (Hospital, 101(R&B), 102(ICU), …, Limit Exceeded) and do not name the CIS fee columns; Case Status "A - All" filters on CASStatus = 'A'; the clinic criterion compares HOSName with the whole picked "code - name" text.

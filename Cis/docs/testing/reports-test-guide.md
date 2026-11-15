@@ -91,3 +91,11 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 | C2 | Admission / Monthly Report, DOV 30/06/2021 – 01/07/2021 | `Must key in same Month` |
 | C3 | Admission / YTD Report without a year | `Please enter Year` |
 | C4 | General Listing / Without Remarks, payor DC, DOV 01/07/2021 | one row per claim, 54 columns |
+
+## 12. Claim Tracking 2 — `/claim-bordx/claim-tracking/v2` (FrmClaimRpt2)
+
+| # | Action | Expected |
+|---|---|---|
+| T1 | Actual + Claim, payor EA, DOV 01/07/2021 – 01/07/2021 → Search | one row per claim of `CISWorksheet.dbo.VIEW_CLMReport_Actual` for EA on that day (PAYCode not starting with Z), 28 fee columns and the total |
+| T2 | Cost Detail, same criteria | the 28 fee categories and Total; the Actual total = the sum of the fee columns of that view |
+| T3 | Claim Tracking 2 (Jupiter), Agent Code "A" | only agent code exactly "A" (the main screen: containing "A") |

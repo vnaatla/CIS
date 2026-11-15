@@ -153,4 +153,18 @@ export async function reports(page, base, check) {
   await page.waitForSelector('select[name=reportType] option:nth-child(20)')
   const simpleTypes = await page.evaluate(() => [...document.querySelectorAll('select[name=reportType] option')].map((x) => x.textContent.trim()))
   check(simpleTypes[3] === 'Bordx' && !simpleTypes.includes('Agent No'), 'Claim Tracking (Simple): offers its own report types')
+
+  // Claim Tracking 2: Cost Detail for payor EA, visits of 01/07/2021.
+  await page.goto(`${base}/claim-bordx/claim-tracking/v2`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=report] option')
+  await page.evaluate(() => [...document.querySelectorAll('label.check-field')].find((l) => l.textContent.trim() === 'Cost Detail').querySelector('input').click())
+  await page.type('input[name=payor]', 'EA - x')
+  await page.type('input[aria-label="DOV From"]', '01/07/2021')
+  await page.type('input[aria-label="DOV To"]', '01/07/2021')
+  const ct2Search = page.waitForResponse((r) => r.url().includes('/api/tracking/claim2/search'), { timeout: 240000 })
+  await click(page, 'Search')
+  const ct2Res = await ct2Search
+  if (!ct2Res.ok()) console.log('Claim Tracking 2 search:', ct2Res.status(), (await ct2Res.text()).slice(0, 300))
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Claim tracking 2"] tbody')?.textContent.includes('503 - Preventive Checkup'), { timeout: 30000 })
+  check(true, 'Claim Tracking 2: Cost Detail lists the fee categories')
 }

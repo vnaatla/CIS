@@ -103,6 +103,20 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./claim-tracking.page').then((m) => m.ClaimTrackingPage),
   },
   {
+    path: 'claim-bordx/claim-tracking/v2',
+    title: 'CIS - Claim Tracking 2',
+    canActivate: [accessGuard],
+    data: { access: Access.ClaimTracking2, legacyForm: 'FrmClaimRpt2', variant: 'main' },
+    loadComponent: () => import('./claim-tracking2.page').then((m) => m.ClaimTracking2Page),
+  },
+  {
+    path: 'claim-bordx/claim-tracking/v2-jupiter',
+    title: 'CIS - Claim Tracking 2 (Jupiter)',
+    canActivate: [accessGuard],
+    data: { access: Access.ClaimTracking2Jupiter, legacyForm: 'FrmNewClaimRpt2', variant: 'jupiter' },
+    loadComponent: () => import('./claim-tracking2.page').then((m) => m.ClaimTracking2Page),
+  },
+  {
     path: 'claim-bordx/claim-tracking/standard',
     title: 'CIS - Claim Tracking',
     canActivate: [accessGuard],

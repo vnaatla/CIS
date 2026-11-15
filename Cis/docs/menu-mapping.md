@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**110 screens to build · 105 migrated · 15 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**110 screens to build · 107 migrated · 15 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
 
 ## Summary
 
@@ -17,14 +17,14 @@ calculation, cheque / PV range print, ...) are listed with that screen.
 | [MCO Fees](#mco-fees) | 5 | 5 | 0 |
 | [Invoice](#invoice) | 28 | 25 | 4 |
 | [Claim](#claim) | 1 | 1 | 0 |
-| [Claim Bordx](#claim-bordx) | 29 | 27 | 4 |
+| [Claim Bordx](#claim-bordx) | 29 | 29 | 4 |
 | [LG & Audit](#lg--audit) | 3 | 3 | 0 |
 | [Payment](#payment) | 8 | 8 | 2 |
 | [Receipt](#receipt) | 6 | 6 | 1 |
 | [A/C Export](#ac-export) | 11 | 11 | 3 |
 | [Tracking](#tracking) | 2 | 2 | 0 |
 | [Maintenance](#maintenance) | 10 | 10 | 1 |
-| **Total** | **110** | **105** | **15** |
+| **Total** | **110** | **107** | **15** |
 
 ## Membership
 
@@ -131,10 +131,10 @@ Module page: `/claim-bordx`
 | Monitoring | Bordx & Worksheet | FrmBordxWks | 131 |  | 6 | **Migrated** | `/claim-bordx/monitoring/bordx-worksheet` |
 | Claim Tracking | Claim Tracking | frmClaimRpt | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/standard` |
 | Claim Tracking | Claim Tracking (Simple) | frmClaimRptSimple | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/simple` |
-| Claim Tracking | Claim Tracking 2 | FrmClaimRpt2 | 120 |  | 10 | Pending | `/claim-bordx/claim-tracking/v2` |
+| Claim Tracking | Claim Tracking 2 | FrmClaimRpt2 | 120 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/v2` |
 | Claim Tracking | Claim Tracking (Jupiter) | frmNewClaimRpt | 163 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/jupiter` |
 | Claim Tracking | Claim Tracking (Jupiter - Simple) | frmNewClaimRptSimpleJup | 163 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/jupiter-simple` |
-| Claim Tracking | Claim Tracking 2 (Jupiter) | FrmNewClaimRpt2 | 164 |  | 10 | Pending | `/claim-bordx/claim-tracking/v2-jupiter` |
+| Claim Tracking | Claim Tracking 2 (Jupiter) | FrmNewClaimRpt2 | 164 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/v2-jupiter` |
 | Claim Tracking | Claim Tracking (SUN System) | frmClaimRptSUN | 132 |  | 10 | **Migrated** | `/claim-bordx/claim-tracking/sun` |
 | Bordx | ClaimBordxDate | FrmBordxDate | 122 |  | 6 | **Migrated** | `/claim-bordx/bordx-date` |
 
