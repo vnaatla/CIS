@@ -129,4 +129,22 @@ export async function reports(page, base, check) {
   await page.waitForFunction(() => [...document.querySelectorAll('select[name=selection] option')].some((o) => o.textContent.includes('Print Label')))
   const options = await page.evaluate(() => [...document.querySelectorAll('select[name=selection] option')].map((x) => x.textContent))
   check(!options.some((o) => o.includes('Card Sent')), 'MBM Tracking (Jupiter): General Listing offers its own choices')
+
+  // MBM Tracking (Simple): Head Count of July 2021.
+  await page.goto(`${base}/membership/tracking-simple`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType] option:nth-child(20)')
+  await page.evaluate(() => {
+    const s = document.querySelector('select[name=reportType]')
+    s.value = [...s.options].find((o) => o.textContent.trim() === 'Head Count').value
+    s.dispatchEvent(new Event('change'))
+  })
+  await page.waitForSelector('input[aria-label="Head Count From"]')
+  await page.type('input[aria-label="Head Count From"]', '01/07/2021')
+  await page.type('input[aria-label="Head Count To"]', '31/07/2021')
+  const hcSearch = page.waitForResponse((r) => r.url().includes('/api/tracking/member-simple/search'), { timeout: 240000 })
+  await click(page, 'Search')
+  const hcRes = await hcSearch
+  if (!hcRes.ok()) console.log('Head Count search:', hcRes.status(), (await hcRes.text()).slice(0, 300))
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('July'), { timeout: 30000 })
+  check(true, 'MBM Tracking (Simple): Head Count lists July 2021')
 }

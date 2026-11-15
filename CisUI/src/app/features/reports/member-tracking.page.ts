@@ -13,14 +13,16 @@ import { saveCsv } from '../../shared/lib/download'
 import { formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-/** The variant forms: their API base, title and form. */
-const VARIANTS: Record<string, { base: string; title: string; form: string }> = {
-  main: { base: '/api/tracking/member', title: 'MBM Tracking', form: 'FrmNewMBMTracking' },
-  jupiter: { base: '/api/tracking/member-jupiter', title: 'MBM Tracking (Jupiter)', form: 'FrmNewMBMTracking2' },
-}
 type Row = Record<string, string>
 const TYPES = ['Ageband', 'Agents', 'Bordx', 'Branch', 'Date', 'Effective Period', 'Gender', 'General Listing', 'Group Company', 'IC/Pol Year/Renewal...',
   'INS Type & MBM Type', 'MBM By Month', 'MCO Invoice', 'Payor', 'Plan Code', 'Policy', 'Race', 'States']
+/** The variant forms: their API base, title and form. */
+const VARIANTS: Record<string, { base: string; title: string; form: string; types: string[] }> = {
+  main: { base: '/api/tracking/member', title: 'MBM Tracking', form: 'FrmNewMBMTracking', types: TYPES },
+  jupiter: { base: '/api/tracking/member-jupiter', title: 'MBM Tracking (Jupiter)', form: 'FrmNewMBMTracking2', types: TYPES },
+  simple: { base: '/api/tracking/member-simple', title: 'MBM Tracking (Simple)', form: 'frmNewMBMTrackingSimple', types: [...TYPES, 'Head Count'] },
+  jupitersimple: { base: '/api/tracking/member-jupiter-simple', title: 'MBM Tracking (Jupiter - Simple)', form: 'frmNewMBMTrackingRepSimple', types: TYPES.slice(0, 17) },
+}
 /** Ranges (from / to boxes) with their "empty" box; dates use the date input. */
 const RANGES: { key: string; label: string; date?: boolean; blank?: boolean }[] = [
   { key: 'eff', label: 'Eff. Date', date: true, blank: true }, { key: 'exp', label: 'Exp. Date', date: true, blank: true },
@@ -72,6 +74,10 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
               @for (r of selections(); track r.selection) { <option [value]="r.selection">{{ r.selection || '(all)' }}{{ r.migrated ? '' : ' — not migrated yet' }}</option> }
             </select>
           </app-field>
+          @if (type() === 18) {
+            <app-field label="Head Count From"><app-date-input name="hcFrom" ariaLabel="Head Count From" [(ngModel)]="f.hcFrom" /></app-field>
+            <app-field label="Head Count To"><app-date-input name="hcTo" ariaLabel="Head Count To" [(ngModel)]="f.hcTo" /></app-field>
+          }
           <app-field label="Member Type">
             <select name="memberType" [(ngModel)]="memberType"><option value="B">Both</option><option value="P">P - Principal</option><option value="S">S - Supplementary</option></select>
           </app-field>
@@ -154,7 +160,7 @@ export class MemberTrackingPage implements OnInit {
   private readonly notify = inject(NotifyService)
   protected readonly v = VARIANTS[inject(ActivatedRoute).snapshot.data['variant'] ?? 'main']
 
-  protected readonly types = TYPES
+  protected readonly types = this.v.types
   protected readonly ranges = RANGES
   protected readonly combos = COMBOS
   protected readonly texts = TEXTS

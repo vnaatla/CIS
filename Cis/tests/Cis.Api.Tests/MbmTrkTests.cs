@@ -29,6 +29,15 @@ public class MbmTrkRuleTests
     }
 
     [Fact]
+    public void The_simple_screens_offer_their_own_report_types()
+    {
+        var service = new MbmTrkService(null!, null!);
+        Assert.Contains(service.Reports("simple"), r => r.Type == 18);
+        Assert.DoesNotContain(service.Reports("jupitersimple"), r => r.Type > 16);
+        Assert.DoesNotContain(service.Reports("main"), r => r.Type > 17);
+    }
+
+    [Fact]
     public void Only_known_filters_are_passed_typed()
     {
         var f = MbmTrkService.Filters(new() { ["payor"] = "DC", ["effFrom"] = "01/07/2021", ["hltBlank"] = "true", ["evil; drop"] = "x", ["premiumFrom"] = "10.5" });
@@ -85,6 +94,14 @@ public class MbmTrkDatabaseTests
         var branch = await service.SearchAsync(new MbmTrkRequest(3, "By Agent", "P", oneDay));
         Assert.Equal((await Legacy(61, oneDayLegacy)).Count, branch.Rows.Count);
         Assert.Equal((await Legacy(66, oneDayLegacy + " AND INSCode = 'I'")).Sum(x => (int)x.TotalP), branch.Rows.Sum(r => int.Parse(r[2])));
+        // Simple: CISMBMTracking_Simple (its own views) and Head Count (ActiveHeadcount_CIS).
+        var simple = await service.SearchAsync(new MbmTrkRequest(10, "By Payor", "P", new() { ["payor"] = "DC", ["status"] = "0" }), "simple");
+        Assert.Equal((await s.Sql().Connection.QueryAsync("HISDB.dbo.CISMBMTracking_Simple", new { strAppend = " AND PAYCode = 'DC' And MBMStatus = 'A' ", strAppendCase = 113 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).Count(), simple.Rows.Count);
+        var hc = await service.SearchAsync(new MbmTrkRequest(18, "", "P", new() { ["hcFrom"] = "01/07/2021", ["hcTo"] = "31/07/2021" }), "simple");
+        Assert.Equal("July", hc.Rows[0][0]);
+        Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
+            service.SearchAsync(new MbmTrkRequest(17, "By Payor", "P", new()), "jupitersimple"))).Message);
         Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new MbmTrkRequest(10, "Nope", "P", new()))))
             .Message);

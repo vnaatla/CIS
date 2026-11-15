@@ -5,10 +5,12 @@ const T = 'C:/Users/Naresh/AppData/Local/Temp/'
 const CFG = {
   mbm: { src: T + 'CISMBMTracking.sql', filters: T + 'mbmtrk-filters.sql', out: 'D:/CIS/Cis/sql/main/1140_mbm_tracking.sql', proc: 'cis.MbmTrk_Run', db: 'HISDB',
     title: 'Tracking > MBM Tracking (FrmNewMBMTracking and its variants): the {n} cases of HISDB CISMBMTracking' },
+  mbmsimple: { src: T + 'CISMBMTracking_Simple.sql', filters: T + 'mbmtrk-filters.sql', out: 'D:/CIS/Cis/sql/main/1142_mbm_tracking_simple.sql', proc: 'cis.MbmTrkSimple_Run', db: 'HISDB',
+    title: 'Tracking > MBM Tracking (Simple) (frmNewMBMTrackingSimple and its Jupiter copy): the {n} cases of HISDB CISMBMTracking_Simple' },
   claim: { src: T + 'CISClaimTracking.sql', filters: T + 'clmtrk-filters.sql', out: 'D:/CIS/Cis/sql/main/1150_claim_tracking.sql', proc: 'cis.ClmTrk_Run', db: 'CISWorksheet',
     title: 'Claim / Bordx > Claim Tracking (frmClaimRpt and its variants): the {n} cases of CISWorksheet CISClaimTracking' },
 }[process.argv[2]]
-if (!CFG) throw new Error('usage: node gen-trk.js mbm | claim')
+if (!CFG) throw new Error('usage: node gen-trk.js mbm | mbmsimple | claim')
 const src = fs.readFileSync(CFG.src, 'utf8').replace(/\r\n/g, '\n')
 const parts = src.split(/\n\s*if @strAppendCase = (\d+)\s*\n/)
 const cases = []

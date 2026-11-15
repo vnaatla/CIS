@@ -16,6 +16,16 @@ public sealed class MbmTrkController(IMbmTrkService tracking) : MbmTrkController
 [RequireAccess(AccessRight.MbmTrackingJupiter)]
 public sealed class MbmTrkJupiterController(IMbmTrkService tracking) : MbmTrkControllerBase(tracking, "jupiter");
 
+/// <summary>Membership > MBM Tracking (Simple) (frmNewMBMTrackingSimple): CISMBMTracking_Simple and Head Count.</summary>
+[Route("api/tracking/member-simple")]
+[RequireAccess(AccessRight.MbmTracking)]
+public sealed class MbmTrkSimpleController(IMbmTrkService tracking) : MbmTrkControllerBase(tracking, "simple");
+
+/// <summary>Membership > MBM Tracking (Jupiter - Simple) (frmNewMBMTrackingRepSimple).</summary>
+[Route("api/tracking/member-jupiter-simple")]
+[RequireAccess(AccessRight.MbmTrackingJupiter)]
+public sealed class MbmTrkJupiterSimpleController(IMbmTrkService tracking) : MbmTrkControllerBase(tracking, "jupitersimple");
+
 /// <summary>The member tracking endpoints of one variant form.</summary>
 public abstract class MbmTrkControllerBase(IMbmTrkService tracking, string variant) : ApiControllerBase
 {

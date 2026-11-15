@@ -159,3 +159,10 @@ Speed: the illness reports run three queries per treatment reason, as the deskto
 The same page and engine as MBM Tracking with the catalogue generated from FrmNewMBMTracking2 (`MbmTrackingJupiter.catalogue.json`, `sql/tools/gen-mbm-all.sh FrmNewMBMTracking2 MbmTrackingJupiter.catalogue.json`): 72 reports (no Card Sent Date Listing), no billing type, the supplementaries' payor effective / expiry dates in the detail listings, the MCO invoice summary without the principal / dependent pivot, and its own headers. The desktop read the "Jupiter" (Neptune) server; here the same databases are read.
 
 Also fixed on MBM Tracking: General Listing (Details)' billing type (ASO / INSURER) had been missed; it is a criterion of that listing.
+
+## Membership > MBM Tracking (Simple) and (Jupiter - Simple) — frmNewMBMTrackingSimple / frmNewMBMTrackingRepSimple (`/membership/tracking-simple`, `/membership/tracking-jupiter-simple`)
+
+The member tracking page and engine on HISDB CISMBMTracking_Simple (the same cases on the `_Simple` views): `cis.MbmTrkSimple_Run` (`sql/main/1142_mbm_tracking_simple.sql`, `gen-trk.js mbmsimple`, checked against the desktop: case 1 identical), with each form's own catalogue (`MbmTrackingSimple.catalogue.json`, `MbmTrackingJupiterSimple.catalogue.json`).
+
+- Simple adds report type 18 Head Count (bindHeadcount): HISDB ActiveHeadcount_CIS between the Head Count dates (`cis.MbmTrk_Headcount`, `1143_mbm_tracking_headcount.sql`): month, payor, principal / dependant / total head count. Known desktop issue: its Excel export tested report type 22 and could never run; Print saves the list as the other reports.
+- Jupiter - Simple offers report types 0 – 16 only (its combo has no States); the desktop read the Jupiter server.

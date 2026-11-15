@@ -48,7 +48,7 @@ public sealed partial class MbmTrkService
 
     private async Task<MbmTrkResult> PivotAsync(IDbSession s, Entry e, Pivot p, string type, Dictionary<string, object?> filters)
     {
-        var groups = await repository.RunAsync(s, type == "S" ? p.BaseS : p.BaseP, filters);
+        var groups = await RunAsync(s, type == "S" ? p.BaseS : p.BaseP, filters);
         var sums = new List<Dictionary<string, (decimal Count, decimal Amount)>>();
         foreach (var c in p.Cats)
         {
@@ -62,7 +62,7 @@ public sealed partial class MbmTrkService
                 // A category's own criteria replace the user's insured type / adult-child ones, as the desktop appended both (ANDed: the same rows unless they differ).
                 if (c.Ins is not null && filters.TryGetValue("ins", out var ui) && !Equals(ui, c.Ins)) f["ins"] = "\u0000";
                 if (c.AdultChild is not null && filters.TryGetValue("adultChild", out var ua) && !Equals(ua, c.AdultChild)) f["adultChild"] = "\u0000";
-                foreach (var x in await repository.RunAsync(s, c.Case, f))
+                foreach (var x in await RunAsync(s, c.Case, f))
                 {
                     var k = Key(x, p.Keys);
                     var (n, a) = by.GetValueOrDefault(k);
@@ -101,7 +101,7 @@ public sealed partial class MbmTrkService
         string Inv(IReadOnlyDictionary<string, object?> x) => Empty(T(x, "MBMInvoiceNo"));
         string Date(IReadOnlyDictionary<string, object?> x) => Empty(T(x, "MBMInvoiceDate"));
         string M(IReadOnlyDictionary<string, object?> x, string k) => N(x, k).ToString("#,##0.00", En);
-        foreach (var x in await repository.RunAsync(s, type switch { "B" => 178, "S" => 133, _ => 132 }, filters))
+        foreach (var x in await RunAsync(s, type switch { "B" => 178, "S" => 133, _ => 132 }, filters))
         {
             if (type == "B")
             {
@@ -135,15 +135,15 @@ public sealed partial class MbmTrkService
         var rows = new List<List<string>>();
         int principals = 0, supps = 0;
         if (type == "S")
-            foreach (var x in await repository.RunAsync(s, 81, filters))
+            foreach (var x in await RunAsync(s, 81, filters))
             {
                 rows.Add([Day(x), "0", T(x, "TotalS")]);
                 supps += (int)N(x, "TotalS");
             }
         else
         {
-            var supp = type == "B" ? (await repository.RunAsync(s, 81, filters)).GroupBy(x => T(x, "DayInsured")).ToDictionary(g => g.Key, g => g.Sum(x => N(x, "TotalS"))) : null;
-            foreach (var x in await repository.RunAsync(s, 80, filters))
+            var supp = type == "B" ? (await RunAsync(s, 81, filters)).GroupBy(x => T(x, "DayInsured")).ToDictionary(g => g.Key, g => g.Sum(x => N(x, "TotalS"))) : null;
+            foreach (var x in await RunAsync(s, 80, filters))
             {
                 var n = supp?.GetValueOrDefault(T(x, "DayInsured")) ?? 0;
                 rows.Add([Day(x), T(x, "TotalP"), supp is null ? "" : ((int)n).ToString(En)]);
@@ -166,7 +166,7 @@ public sealed partial class MbmTrkService
             var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase);
             f["ins"] = filters.TryGetValue("ins", out var ui) && !Equals(ui, ins) ? "\u0000" : ins;
             var d = new Dictionary<string, (decimal, decimal)>();
-            foreach (var x in await repository.RunAsync(s, c, f))
+            foreach (var x in await RunAsync(s, c, f))
             {
                 var (n, a) = d.GetValueOrDefault(Key(x, keys));
                 d[Key(x, keys)] = (n + N(x, count), a + N(x, amount));
@@ -190,7 +190,7 @@ public sealed partial class MbmTrkService
         var rows = new List<List<string>>();
         int principals = 0, supps = 0;
         decimal premium = 0;
-        foreach (var g in await repository.RunAsync(s, type == "S" ? 62 : 61, filters))
+        foreach (var g in await RunAsync(s, type == "S" ? 62 : 61, filters))
         {
             var k = Key(g, keys);
             (decimal C, decimal A) V(Dictionary<string, (decimal, decimal)> d) => d.GetValueOrDefault(k);

@@ -54,6 +54,20 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
   },
   {
+    path: 'membership/tracking-simple',
+    title: 'CIS - MBM Tracking (Simple)',
+    canActivate: [accessGuard],
+    data: { access: Access.MbmTracking, legacyForm: 'frmNewMBMTrackingSimple', variant: 'simple' },
+    loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
+  },
+  {
+    path: 'membership/tracking-jupiter-simple',
+    title: 'CIS - MBM Tracking (Jupiter - Simple)',
+    canActivate: [accessGuard],
+    data: { access: Access.MbmTrackingJupiter, legacyForm: 'frmNewMBMTrackingRepSimple', variant: 'jupitersimple' },
+    loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
+  },
+  {
     path: 'membership/tracking-jupiter',
     title: 'CIS - MBM Tracking (Jupiter)',
     canActivate: [accessGuard],

@@ -21,7 +21,7 @@ public sealed class MbmTrkRequestValidator : Common.RequestValidator<MbmTrkReque
     /// <summary>Defines the rules.</summary>
     public MbmTrkRequestValidator()
     {
-        RuleFor(r => r.ReportType).InclusiveBetween(0, 17);
+        RuleFor(r => r.ReportType).InclusiveBetween(0, 18);
         RuleFor(r => r.Selection).MaximumLength(100);
         RuleFor(r => r.Filters).Must(f => f.Count <= 200 && f.All(x => x.Key.Length <= 40 && (x.Value ?? "").Length <= 300));
     }
@@ -37,7 +37,14 @@ public sealed record MbmTrkReport(int Type, string Selection, bool Migrated);
 public interface IMbmTrkRepository
 {
     /// <summary>cis.MbmTrk_Run: one case of CISMBMTracking with the typed filters.</summary>
-    Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters);
+    /// <param name="session">The session.</param>
+    /// <param name="caseNo">The case.</param>
+    /// <param name="filters">The typed filters.</param>
+    /// <param name="proc">cis.MbmTrk_Run (CISMBMTracking) or cis.MbmTrkSimple_Run (CISMBMTracking_Simple).</param>
+    Task<List<Dictionary<string, object?>>> RunAsync(IDbSession session, int caseNo, IReadOnlyDictionary<string, object?> filters, string proc = "cis.MbmTrk_Run");
+
+    /// <summary>cis.MbmTrk_Headcount (ActiveHeadcount_CIS).</summary>
+    Task<List<Dictionary<string, object?>>> HeadcountAsync(IDbSession session, DateTime from, DateTime to);
 
     /// <summary>cis.MbmTrk_Lookup: a combo.</summary>
     Task<List<string>> LookupAsync(IDbSession session, string kind, string? key);
@@ -92,7 +99,23 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
     {
         ["main"] = Catalogue,
         ["jupiter"] = Load<List<Entry>>("MbmTrackingJupiter.catalogue.json"),
+        ["simple"] = Load<List<Entry>>("MbmTrackingSimple.catalogue.json"),
+        ["jupitersimple"] = Load<List<Entry>>("MbmTrackingJupiterSimple.catalogue.json"),
     };
+
+    /// <summary>Per variant: its procedure and the last report type its combo offers (Simple adds 18 Head Count; Jupiter (Simple) stops at 16 Race).</summary>
+    private static readonly Dictionary<string, (string Proc, int MaxType)> Variants = new()
+    {
+        ["main"] = ("cis.MbmTrk_Run", 17), ["jupiter"] = ("cis.MbmTrk_Run", 17), ["simple"] = ("cis.MbmTrkSimple_Run", 18), ["jupitersimple"] = ("cis.MbmTrkSimple_Run", 16),
+    };
+
+    /// <summary>The procedure of the variant being searched (the service is scoped to one request).</summary>
+    private string proc = "cis.MbmTrk_Run";
+
+    private Task<List<Dictionary<string, object?>>> RunAsync(IDbSession s, int caseNo, IReadOnlyDictionary<string, object?> filters) => repository.RunAsync(s, caseNo, filters, proc);
+
+    /// <summary>Desktop headers of Head Count (ListViewHeader19).</summary>
+    private static readonly List<string> HeadcountHeaders = ["Month", "Paycode", "Principle Head count", "Dependent Head count", "Total Head Count"];
 
     private static List<Entry> Of(string variant) => Catalogues.TryGetValue(variant, out var c) ? c : throw new NotFoundException("Unknown tracking screen.");
     private static readonly Dictionary<string, string> Params = Load<List<Param>>("MbmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
@@ -114,11 +137,16 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<MbmTrkReport> Reports(string variant = "main") => Of(variant).Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || HandPorted.Contains(e.Routine))).ToList();
+    public IReadOnlyList<MbmTrkReport> Reports(string variant = "main") => Of(variant).Where(e => e.Type <= Variants[variant].MaxType)
+        .Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || HandPorted.Contains(e.Routine)))
+        .Concat(variant == "simple" ? [new MbmTrkReport(18, "", true)] : []).ToList();
 
     /// <inheritdoc />
     public async Task<MbmTrkResult> SearchAsync(MbmTrkRequest r, string variant = "main")
     {
+        proc = Variants.TryGetValue(variant, out var vv) ? vv.Proc : throw new NotFoundException("Unknown tracking screen.");
+        if (r.ReportType > vv.MaxType) throw new BusinessRuleException(NoReport);
+        if (variant == "simple" && r.ReportType == 18) return await HeadcountAsync(r);
         var e = Of(variant).FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
         if (e.Special && !HandPorted.Contains(e.Routine)) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
@@ -135,9 +163,9 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
         decimal mco = 0, premium = 0, access = 0;
         if (type is "P" or "B")
         {
-            var prin = await repository.RunAsync(s, e.P!.C, filters);
+            var prin = await RunAsync(s, e.P!.C, filters);
             List<Dictionary<string, object?>>? supp = null;
-            if (type == "B" && e.Helper is not null) supp = await repository.RunAsync(s, e.Helper.C, filters);
+            if (type == "B" && e.Helper is not null) supp = await RunAsync(s, e.Helper.C, filters);
             var keys = e.P.Cols!.Where(c => c.K is "f" or "fe" or "d" or "fl" && !(c.N ?? "").StartsWith("Total", StringComparison.OrdinalIgnoreCase)).Select(c => c.N!)
                 .Concat(e.P.Cols!.Any(c => c.K == "ym") ? ["Year", "Month"] : []).ToList();
             var merged = supp is not null && e.Helper is { Append: false }
@@ -162,7 +190,7 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
                 }
         }
         else if (e.S is { Cols: not null })
-            foreach (var x in await repository.RunAsync(s, e.S.C, filters))
+            foreach (var x in await RunAsync(s, e.S.C, filters))
             {
                 rows.Add(e.S.Cols.Select(c => Cell(c, x, null)).ToList());
                 supps += (int)N(x, "TotalS");
@@ -199,12 +227,12 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
                 }
             }
         }
-        if (type == "S") Add(await repository.RunAsync(s, d.S, filters), d.Supp, true);
+        if (type == "S") Add(await RunAsync(s, d.S, filters), d.Supp, true);
         else
         {
             var prinFilters = filters.Where(x => !SuppOnly.Contains(x.Key)).ToDictionary(x => x.Key, x => x.Value, StringComparer.OrdinalIgnoreCase);
-            Add(await repository.RunAsync(s, type == "B" ? d.Bp : d.P, prinFilters), d.Prin, false);
-            if (type == "B") Add(await repository.RunAsync(s, d.Bs, filters), d.Supp, true);
+            Add(await RunAsync(s, type == "B" ? d.Bp : d.P, prinFilters), d.Prin, false);
+            if (type == "B") Add(await RunAsync(s, d.Bs, filters), d.Supp, true);
         }
         if (rows.Count == 0) throw new NotFoundException(NoDetailRecord);
         return new MbmTrkResult(e.Headers, rows, principals, supps, mco, premium, access);
@@ -223,6 +251,20 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
         "d" => x.GetValueOrDefault(c.N!) is DateTime dt ? dt.ToString("dd/MM/yyyy", En) : T(x, c.N!),
         _ => Cell(c, x, null),
     };
+
+    /// <summary>Head Count (bindHeadcount): active principals / dependants per policy-expiry month and payor between the Head Count dates.</summary>
+    private async Task<MbmTrkResult> HeadcountAsync(MbmTrkRequest r)
+    {
+        var from = ClinicInvoiceRules.Date(r.Filters.GetValueOrDefault("hcFrom")) ?? throw new BusinessRuleException(BadDate);
+        var to = ClinicInvoiceRules.Date(r.Filters.GetValueOrDefault("hcTo")) ?? throw new BusinessRuleException(BadDate);
+        await using var s = await sessions.OpenAsync();
+        var rows = (await repository.HeadcountAsync(s, from, to)).Select(x => new List<string>
+        {
+            T(x, "Mnth"), T(x, "PAYCode"), ((int)N(x, "Princ")).ToString(En), ((int)N(x, "Dep")).ToString(En), ((int)(N(x, "Princ") + N(x, "Dep"))).ToString(En),
+        }).ToList();
+        if (rows.Count == 0) throw new NotFoundException(NoRecord);
+        return new MbmTrkResult(HeadcountHeaders, rows, rows.Sum(x => int.Parse(x[2], En)), rows.Sum(x => int.Parse(x[3], En)), 0, 0, 0);
+    }
 
     /// <summary>The typed filters: only known names, each converted to its parameter type.</summary>
     internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input) => Filters(input, Params);
