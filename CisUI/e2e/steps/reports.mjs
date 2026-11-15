@@ -92,7 +92,10 @@ export async function reports(page, base, check) {
   await page.waitForFunction(() => [...document.querySelectorAll('select[name=selection] option')].some((o) => o.textContent.includes('By Payor')))
   await page.select('select[name=status]', '0 - Active')
   await page.type('input[name=payor]', 'DC - x')
+  const searched = page.waitForResponse((r) => r.url().includes('/api/tracking/member/search'), { timeout: 240000 })
   await click(page, 'Search')
-  await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('DC'), { timeout: 180000 })
+  const res = await searched
+  if (!res.ok()) console.log('MBM Tracking search:', res.status(), (await res.text()).slice(0, 300))
+  await page.waitForFunction(() => document.querySelector('table[aria-label="Member tracking"] tbody')?.textContent.includes('DC'), { timeout: 30000 })
   check(true, 'MBM Tracking: INS Type & MBM Type by payor lists payor DC')
 }

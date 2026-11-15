@@ -67,7 +67,13 @@ public class MbmTrkDatabaseTests
         // MCO invoice summary (Both): the desktop's case 178 rows.
         var inv = await service.SearchAsync(new MbmTrkRequest(12, "Summary", "B", new() { ["payor"] = "DC", ["invoiceDateFrom"] = "01/07/2021", ["invoiceDateTo"] = "31/07/2021" }));
         Assert.Equal((await Legacy(178, " AND PAYCode = 'DC' AND MBMInvoiceDate >= '07/01/2021' AND MBMInvoiceDate <= '07/31/2021' ")).Count, inv.Rows.Count);
-        Assert.Contains(service.Reports(), x => x.Type == 2 && x.Selection == "INS Type & MBM Type (MCO)" && x.Migrated);
+        Assert.All(service.Reports(), x => Assert.True(x.Migrated, $"{x.Type} {x.Selection}"));
+        // Branch by agent (payor DC, registered 01/07/2021): the desktop's case 61 groups; individual policies summed from case 66 with INSCode I.
+        var oneDay = new Dictionary<string, string?> { ["payor"] = "DC", ["dorFrom"] = "01/07/2021", ["dorTo"] = "01/07/2021" };
+        const string oneDayLegacy = " AND PAYCode = 'DC' AND MBMValueDate >= '07/01/2021' AND MBMValueDate <= '07/01/2021' ";
+        var branch = await service.SearchAsync(new MbmTrkRequest(3, "By Agent", "P", oneDay));
+        Assert.Equal((await Legacy(61, oneDayLegacy)).Count, branch.Rows.Count);
+        Assert.Equal((await Legacy(66, oneDayLegacy + " AND INSCode = 'I'")).Sum(x => (int)x.TotalP), branch.Rows.Sum(r => int.Parse(r[2])));
         Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new MbmTrkRequest(10, "Nope", "P", new()))))
             .Message);

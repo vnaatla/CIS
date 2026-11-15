@@ -32,12 +32,13 @@ public sealed partial class MbmTrkService
     };
 
     /// <summary>The summaries ported by hand.</summary>
-    internal static readonly string[] HandPorted = [.. Pivots.Keys, "MCOInvoiceSum", "EffPeriodSum"];
+    internal static readonly string[] HandPorted = [.. Pivots.Keys, "MCOInvoiceSum", "EffPeriodSum", "BranchByAgent"];
 
     private Task<MbmTrkResult> SummaryAsync(IDbSession s, Entry e, string type, Dictionary<string, object?> filters) => e.Routine switch
     {
         "MCOInvoiceSum" => McoInvoiceSumAsync(s, e, type, filters),
         "EffPeriodSum" => EffPeriodSumAsync(s, e, type, filters),
+        "BranchByAgent" => BranchByAgentAsync(s, e, type, filters),
         _ => PivotAsync(s, e, Pivots[e.Routine], type, filters),
     };
 
@@ -153,4 +154,73 @@ public sealed partial class MbmTrkService
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         return new MbmTrkResult(e.Headers, rows, principals, supps, 0, 0, 0);
     }
+
+    /// <summary>BranchByAgent: per branch / agent the policies and premiums (individual, family, group family, group individual), the claims and their paid
+    /// amounts, the claims per policy and the paid / premium ratio. The desktop ran four case variants per row by blank branch / agent; one run of the
+    /// unrestricted case (66 principals, 70 supplementaries, 74 claims) per insured type joined on the row's branch and agent gives the same figures.</summary>
+    private async Task<MbmTrkResult> BranchByAgentAsync(IDbSession s, Entry e, string type, Dictionary<string, object?> filters)
+    {
+        string[] keys = ["BRNCode", "MBMAgentCode"];
+        async Task<Dictionary<string, (decimal Count, decimal Amount)>> By(int c, string ins, string count, string amount)
+        {
+            var f = new Dictionary<string, object?>(filters, StringComparer.OrdinalIgnoreCase);
+            f["ins"] = filters.TryGetValue("ins", out var ui) && !Equals(ui, ins) ? "\u0000" : ins;
+            var d = new Dictionary<string, (decimal, decimal)>();
+            foreach (var x in await repository.RunAsync(s, c, f))
+            {
+                var (n, a) = d.GetValueOrDefault(Key(x, keys));
+                d[Key(x, keys)] = (n + N(x, count), a + N(x, amount));
+            }
+            return d;
+        }
+        var prin = type is "P" or "B";
+        var supp = type is "B" or "S";
+        var none = new Dictionary<string, (decimal, decimal)>();
+        var ind = prin ? await By(66, "I", "TotalP", "PremiumGross") : none;
+        var fam = prin ? await By(66, "F", "TotalP", "PremiumGross") : none;
+        var famS = supp ? await By(70, "F", "TotalS", "PremiumGross") : none;
+        var grpFam = prin ? await By(66, "H", "TotalP", "PremiumGross") : none;
+        var grpFamS = supp ? await By(70, "H", "TotalS", "PremiumGross") : none;
+        var grpInd = prin ? await By(66, "G", "TotalP", "PremiumGross") : none;
+        var cInd = prin ? await By(74, "I", "TotalClaim", "AppAmt") : none;
+        var cFam = prin ? await By(74, "F", "TotalClaim", "AppAmt") : none;
+        var cGrpFam = prin ? await By(74, "H", "TotalClaim", "AppAmt") : none;
+        var cGrpInd = prin ? await By(74, "G", "TotalClaim", "AppAmt") : none;
+        string M(decimal v) => v.ToString("#,##0.00", En);
+        var rows = new List<List<string>>();
+        int principals = 0, supps = 0;
+        decimal premium = 0;
+        foreach (var g in await repository.RunAsync(s, type == "S" ? 62 : 61, filters))
+        {
+            var k = Key(g, keys);
+            (decimal C, decimal A) V(Dictionary<string, (decimal, decimal)> d) => d.GetValueOrDefault(k);
+            var policies = new[] { V(ind).C, V(fam).C + V(famS).C, V(grpFam).C + V(grpFamS).C, V(grpInd).C };
+            var prems = new[] { V(ind).A, V(fam).A + V(famS).A, V(grpFam).A + V(grpFamS).A, V(grpInd).A };
+            var claims = new[] { V(cInd).C, V(cFam).C, V(cGrpFam).C, V(cGrpInd).C };
+            var paid = new[] { V(cInd).A, V(cFam).A, V(cGrpFam).A, V(cGrpInd).A };
+            decimal totalPolicy = policies.Sum(), totalPrem = prems.Sum(), totalClaims = claims.Sum(), totalPaid = paid.Sum();
+            var row = new List<string> { Empty(T(g, "BRNCode")), Empty(T(g, "MBMAgentCode")) };
+            row.AddRange(policies.Select(x => ((int)x).ToString(En)));
+            row.Add(((int)totalPolicy).ToString(En));
+            row.AddRange(prems.Select(M));
+            row.Add(M(totalPrem));
+            row.AddRange(claims.Select(x => ((int)x).ToString(En)));
+            row.Add(((int)totalClaims).ToString(En));
+            row.AddRange(paid.Select(M));
+            row.Add(M(totalPaid));
+            // Desktop: Round(claims / policies, 0) (banker's rounding), shown only when both are non-zero.
+            row.Add(totalClaims != 0 && totalPolicy != 0 ? Math.Round(totalClaims / totalPolicy, 0, MidpointRounding.ToEven).ToString(En) : "");
+            // Desktop: "If CDbl(paid) And CDbl(premium)" is a bitwise And of the two values rounded to whole numbers (known desktop issue, kept).
+            row.Add((VbLong(totalPaid) & VbLong(totalPrem)) != 0 ? M(Math.Round(totalPaid / totalPrem, 2, MidpointRounding.ToEven)) : "0.00");
+            rows.Add(row);
+            principals += (int)(V(ind).C + V(fam).C + V(grpFam).C + V(grpInd).C);
+            supps += (int)(V(famS).C + V(grpFamS).C);
+            premium += totalPrem;
+        }
+        if (rows.Count == 0) throw new NotFoundException(NoRecord);
+        return new MbmTrkResult(e.Headers, rows, principals, supps, 0, premium, 0);
+    }
+
+    /// <summary>VB CLng: round half to even to a whole number.</summary>
+    private static long VbLong(decimal v) => (long)Math.Round(v, 0, MidpointRounding.ToEven);
 }

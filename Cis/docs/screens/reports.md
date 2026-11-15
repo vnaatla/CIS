@@ -118,7 +118,7 @@ Generate: CISDB View_CLN_OMNI panel clinics (C / Y; `cis.ClaimAscii_OmniPanel`) 
 | Claims Excel (Sin Chew) | frmClaimsExcelSinChew | Never opened; the form has no code. |
 | Test Form | frmTest | A developer test form: posts a sample SOAP request to an HLA UAT web service and checks scanned-document files against a scratch table (tmp_CasFloderstatus). |
 
-## Membership > MBM Tracking — FrmNewMBMTracking (`/membership/tracking`, right MbmTracking, `api/tracking/member`) — in progress
+## Membership > MBM Tracking — FrmNewMBMTracking (`/membership/tracking`, right MbmTracking, `api/tracking/member`)
 
 The desktop form is a report engine: 18 report types (Ageband … States), each with report choices, 73 reports in all, built from the 178 cases of HISDB CISMBMTracking.
 
@@ -128,6 +128,10 @@ The desktop form is a report engine: 18 report types (Ageband … States), each 
 | Reports | `Reports/MbmTracking.catalogue.json` is generated from the form (`sql/tools/analyse-mbmtrk*.js`, `gen-mbmtrk-catalogue.js`, `gen-mbmtrk-spec.js`): per report its principal / supplementary cases, column mapping and headers. Member type P lists the principal case, S the supplementary case, Both the principal rows with the supplementary values merged on the group keys or the supplementary rows appended, as the desktop's routines. Totals: principals, supplementaries, total, MCO, premium, access. `Please select a report type.`, `No record found!`. |
 | Combos | States, insured types, payors of the health type, group companies of the payor, departments of the group company (`cis.MbmTrk_Lookup`), and the desktop's fixed lists. |
 
-Status: 40 of the 73 reports run; the other 33 (the detail listings — General Listing ×4, Print Label, Card Sent, Agent detail, MCO invoice detail, Date, IC, Bordx details, Effective period —, the month reports, the bordx / invoice MCO and premium summaries, Top 20, Branch by agent, the group company by bordx date summaries and the principal plan reports) answer `This report is not migrated yet.` and are marked so in the report choice list.
+All 73 reports run. 56 come straight from the catalogue; the 10 detail listings (one row per member: principals, then supplementaries, a member / cover id once, names marked (Suspended) / (Cancelled) / (Deleted), with their own principal-type and supplementary DOR filters) use the catalogue's detail columns; 7 summaries are ported by hand (`Reports/MbmTrackingSummaries.cs`): the bordx and MCO invoice INS type & member type summaries (MCO, premium), the MCO invoice summary (case 178's principal / dependent pivot for Both), the effective period summary (days insured + 1) and Branch by Agent. Where the desktop ran a category query once per row (with the row's payor / bordx date / invoice / branch / agent added), each query runs once and is joined on those keys: the same figures, far fewer queries.
+
+The generator also keeps case 178's pivot step and rewrites the double-quoted values 20 cases relied on (the desktop procedure runs with QUOTED_IDENTIFIER OFF). Checked against the desktop procedure: cases 1, 37, 44, 61, 66, 88, 113, 117 and 178.
+
+Known desktop issues (kept): Branch by Agent's claims per policy uses banker's rounding; its paid / premium ratio is shown only when the two amounts, rounded to whole numbers, have a bit in common (`If CDbl(paid) And CDbl(premium)` is a bitwise And), else 0.00.
 
 Fixed desktop bugs: the employee no. "from" box was added to an unused string (ignored); the States headers were never set (the header routine tested report type 18).
