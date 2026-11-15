@@ -62,6 +62,53 @@ public sealed partial class ClmTrkService
                 F(x, "CLMBTBGAmt"), F(x, "CLMBordxAmt"),
             ];
         }),
+        // ReportCLMGeneralListing (Monthly Reports > Claims Listing): department, case, clinic, five treatment reasons, GP / specialist amounts.
+        ["ReportCLMGeneralListing"] = new(1, (x, _) =>
+        {
+            (string, string) Reason(string code, string desc) => Has(x, code) ? (F(x, code), F(x, desc)) : ("Empty", "Empty");
+            var net = M(MbmTrkService.N(x, "CLMBordxAmt") - MbmTrkService.N(x, "ClmNonGPFee"));
+            var specialist = F(x, "CLNType") == "S";
+            var r1 = Reason("CASTreatReason1", "ReasonDesc");
+            var r2 = Reason("CASTreatReason2", "ReasonDesc2");
+            var r3 = Reason("CASTreatReason3", "ReasonDesc3");
+            var r4 = Reason("CASTreatReason4", "ReasonDesc4");
+            // Reason 5: codes 199 / 299 show the free-text diagnosis instead of the reason description.
+            var r5 = !Has(x, "CASTreatReason5") ? ("Empty", "Empty")
+                : F(x, "CASTreatReason5") is "199" or "299" ? (F(x, "CASTreatReason5"), F(x, "CASDiagnosis5")) : (F(x, "CASTreatReason5"), F(x, "ReasonDesc5"));
+            return
+            [
+                Fe(x, "MBMDepartment"), Fe(x, "CASNumber"), F(x, "Bordxrefno"), D(x, "BordxDate"), F(x, "MBMNumber"), F(x, "coverid"), F(x, "PatientName"),
+                F(x, "ClinicCode"), F(x, "CLNName"), F(x, "INVPayTo"), r1.Item1, r1.Item2, Has(x, "CLMTotalActual") ? M(MbmTrkService.N(x, "CLMTotalActual")) : "",
+                specialist ? "0.00" : net, specialist ? net : "0.00", M0(x, "ClmNonGPFee"), D(x, "DateVisit"), Has(x, "MCDays") ? F(x, "MCDays") : "0",
+                r2.Item1, r2.Item2, r3.Item1, r3.Item2, r4.Item1, r4.Item2, r5.Item1, r5.Item2,
+            ];
+        }),
+        // ReportCLNSummary (Monthly Reports > Summary (by Clinics)): visits, MC times / days, bill amount and the per-visit figures.
+        ["ReportCLNSummary"] = new(2, (x, _) =>
+        {
+            decimal visits = MbmTrkService.N(x, "NoofVisit"), times = MbmTrkService.N(x, "MCTimes"), days = MbmTrkService.N(x, "MCDays");
+            return
+            [
+                Fe(x, "ClinicCode"), Fe(x, "CLNName"), F(x, "CLNType"), Has(x, "NoofVisit") ? F(x, "NoofVisit") : "0",
+                times != 0 ? F(x, "MCTimes") : "0", days != 0 ? F(x, "MCDays") : "0", M0(x, "BillAmt"),
+                Has(x, "BillAmt") && visits != 0 ? M(MbmTrkService.N(x, "BillAmt") / visits) : "0.00",
+                times != 0 && visits != 0 ? R2(times / visits * 100) : "0",
+                days != 0 ? (times != 0 ? M(days / times) : "0.00") : "0",
+            ];
+        }),
+        // UtilizationByMBM (Utilization > Summary (By Member)): claims, MC, annual limit and the balance (FULL when unlimited).
+        ["UtilizationByMBM"] = new(79, (x, _) =>
+        {
+            var limit = Has(x, "AnnLimit") ? F(x, "AnnLimit") : "FULL";
+            var approved = Has(x, "ApprovedAmt") ? MbmTrkService.N(x, "ApprovedAmt") : 0;
+            var balance = limit == "FULL" ? "FULL"
+                : decimal.TryParse(limit, NumberStyles.Any, En, out var l) ? M(l - Math.Round(approved, 2, MidpointRounding.AwayFromZero)) : limit;
+            return
+            [
+                Fe(x, "MBMNumber"), Fe(x, "MBMName"), Has(x, "TotalClaim") ? F(x, "TotalClaim") : "0", Has(x, "MCStatus") ? F(x, "MCStatus") : "0",
+                Has(x, "MCDays") ? F(x, "MCDays") : "0", limit, M0(x, "ActualAmt"), M0(x, "ApprovedAmt"), balance,
+            ];
+        }),
     };
 
     /// <summary>Whether a catalogue entry is ported by hand here.</summary>
