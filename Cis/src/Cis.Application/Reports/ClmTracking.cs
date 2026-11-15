@@ -78,7 +78,12 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
         if (e.Special) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
         await using var s = await sessions.OpenAsync();
-        var rows = (await repository.RunAsync(s, e.P!.C, filters)).Select(x => e.P.Cols!.Select(c => Cell(c, x, null)).ToList()).ToList();
+        // The treatment reason descriptions (the desktop looked each row's code up with CISClaimTracking case 10).
+        var reasons = e.P!.Cols!.Any(c => c.K == "tr")
+            ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
+            : null;
+        string Value(Col c, IReadOnlyDictionary<string, object?> x) => c.K == "tr" ? reasons!.GetValueOrDefault(T(x, c.N!)) ?? "" : Cell(c, x, null);
+        var rows = (await repository.RunAsync(s, e.P.C, filters)).Select(x => e.P.Cols!.Select(c => Value(c, x)).ToList()).ToList();
         if (rows.Count == 0) throw new NotFoundException(NoRecord);
         return new ClmTrkResult(e.Headers, rows, rows.Count);
     }

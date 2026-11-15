@@ -12,6 +12,8 @@ BEGIN
     ELSE IF @kind = 'clinics' SELECT RTRIM(CLNCode) + ' - ' + RTRIM(CLNName) FROM HISDB.dbo.CLN WHERE CLNPanel = 'C' OR CLNPanel = 'Y';
     ELSE IF @kind = 'payors' SELECT RTRIM(PAYCode) + ' - ' + RTRIM(PAYCompanyName) FROM HISDB.dbo.PAY WHERE HLTCode = LEFT(@key, 1);
     ELSE IF @kind = 'companies' SELECT RTRIM(GRPCoName) FROM dbo.GRPCompany WHERE GRPCoPAYCode = LEFT(@key, 2);
+    -- CISClaimTracking case 10 (a treatment reason's description), for all codes at once: 'code|description'.
+    ELSE IF @kind = 'reasons' SELECT RTRIM(ReasonCode) + '|' + RTRIM(ISNULL(ReasonDesc, '')) FROM CISDB.dbo.TreatmentReason;
     ELSE IF @kind = 'departments' SELECT DISTINCT RTRIM(MBMDepartment) FROM HISDB.dbo.MBMOthers WHERE MBMGroupCompany = @key AND MBMDepartment IS NOT NULL;
 END
 GO

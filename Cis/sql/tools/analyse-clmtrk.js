@@ -57,7 +57,18 @@ const parse = (e) => {
 }
 const out = dispatch.map((d) => {
   const b = body[d.routine] ?? []
-  const cases = [...new Set(b.map((l) => /strAppendCase = "(\d+)"/.exec(l)?.[1]).filter(Boolean).map(Number))]
+  let cases = [...new Set(b.map((l) => /strAppendCase = "(\d+)"/.exec(l)?.[1]).filter(Boolean).map(Number))]
+  // Routines that pick their case by the report choice (AgentSumListing, FinalDiagListing): the case of this choice.
+  if (cases.length > 1) {
+    const bySel = {}; let sel = null
+    for (const l of b) {
+      const c = /^(?:Else)?If CboSelection\.Text = "([^"]*)" Then/.exec(l.trim())
+      if (c) sel = c[1]
+      const k = /strAppendCase = "(\d+)"/.exec(l)
+      if (k && sel !== null && !(sel in bySel)) bySel[sel] = Number(k[1])
+    }
+    if (d.selection in bySel && Object.keys(bySel).length === cases.length) cases = [bySel[d.selection]]
+  }
   const calls = b.map((l) => /^Call (\w+)/.exec(l.trim())?.[1]).filter(Boolean)
   let first = null; const cols = {}; const firstAlts = []; const alts = {}
   for (const l of b) {
@@ -67,10 +78,13 @@ const out = dispatch.map((d) => {
     if (s) { if (!(s[1] in cols)) cols[s[1]] = s[2]; (alts[s[1]] ??= []).push(s[2]) }
   }
   // A field column whose other branch writes "Empty" (blank values) is shown as "Empty" when blank, as the desktop.
+  // The treatment reason description of the row's code (EXEC CISClaimTracking '<code>', 10 per row): kind tr on the code field.
+  const reasonOf = b.some((l) => /EXEC CISClaimTracking '" & Trim\((\w+)\) & "',10/.test(l)) ? /^Set Record = \w+\.ListItems\.Add\(, , rst2!(\w+)\)/.exec(b.map((l) => l.trim()).find((l) => /ListItems\.Add\(, , rst2!/.test(l)) ?? '')?.[1] : null
+  const withReason = (c, list) => reasonOf && (list ?? []).some((x) => /Description/.test(x)) ? { k: 'tr', n: reasonOf } : c
   const withEmpty = (c, list) => c && c.k === 'f' && (list ?? []).some((x) => x.trim() === '"Empty"') ? { k: 'fe', n: c.n } : c
   const n = Math.max(0, ...Object.keys(cols).map(Number))
   const spec = [withEmpty(parse(first), firstAlts)]
-  for (let i = 1; i <= n; i++) spec.push(cols[i] === undefined ? { k: 'l', v: '' } : withEmpty(parse(cols[i]), alts[i]))
+  for (let i = 1; i <= n; i++) spec.push(cols[i] === undefined ? { k: 'l', v: '' } : withReason(withEmpty(parse(cols[i]), alts[i]), alts[i]))
   const special = cases.length !== 1 || calls.length > 0 || spec.some((c) => c === null)
   return { type: d.type, selection: d.selection, routine: d.routine, headers: headers(headerOf[d.type], d.selection), special,
     p: special ? { c: cases[0] ?? 0, special: true } : { c: cases[0], cols: spec }, s: null, helper: null,

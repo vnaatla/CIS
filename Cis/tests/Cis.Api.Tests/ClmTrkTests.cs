@@ -43,6 +43,13 @@ public class ClmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacy.Count, r.Rows.Count);
         Assert.Equal(legacy.Sum(x => (int)x.TotalCases), r.Rows.Sum(x => int.Parse(x[1])));
+        // Diagnosis general summary (case chosen by the report choice) with the treatment reason descriptions.
+        var diag = await service.SearchAsync(new ClmTrkRequest(7, "General Summary", new() { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" }));
+        var legacyDiag = (await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
+            new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'", strAppendCase = 106 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        Assert.Equal(legacyDiag.Count, diag.Rows.Count);
+        Assert.Contains(diag.Rows, x => x[1].Length > 0);
         Assert.Equal(MbmTrkService.Pending, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new ClmTrkRequest(0, "Daily Report", new())))).Message);
     }

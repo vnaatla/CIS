@@ -420,21 +420,34 @@
    "Total Actual Amt",
    "Total Approved Amt"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 18,
-   "special": true
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
   },
   "s": null,
-  "helper": null,
-  "why": {
-   "cases": [
-    18,
-    19
-   ],
-   "calls": [],
-   "bad": []
-  }
+  "helper": null
  },
  {
   "type": 2,
@@ -447,21 +460,34 @@
    "Total Actual Amt",
    "Total Approved Amt"
   ],
-  "special": true,
+  "special": false,
   "p": {
-   "c": 18,
-   "special": true
+   "c": 19,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "PAYCode"
+    },
+    {
+     "k": "fe",
+     "n": "MBMAgentCode"
+    },
+    {
+     "k": "f",
+     "n": "TotalCases"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
   },
   "s": null,
-  "helper": null,
-  "why": {
-   "cases": [
-    18,
-    19
-   ],
-   "calls": [],
-   "bad": []
-  }
+  "helper": null
  },
  {
   "type": 3,
@@ -1427,22 +1453,38 @@
    "Total Actual Amt",
    "Total Approved Amt"
   ],
-  "special": true,
+  "special": false,
   "p": {
    "c": 104,
-   "special": true
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "tr",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "f",
+     "n": "total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
   },
   "s": null,
-  "helper": null,
-  "why": {
-   "cases": [
-    104,
-    105,
-    106
-   ],
-   "calls": [],
-   "bad": []
-  }
+  "helper": null
  },
  {
   "type": 7,
@@ -1456,22 +1498,38 @@
    "Total Actual Amt",
    "Total Approved Amt"
   ],
-  "special": true,
+  "special": false,
   "p": {
-   "c": 104,
-   "special": true
+   "c": 105,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "tr",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "f",
+     "n": "total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
   },
   "s": null,
-  "helper": null,
-  "why": {
-   "cases": [
-    104,
-    105,
-    106
-   ],
-   "calls": [],
-   "bad": []
-  }
+  "helper": null
  },
  {
   "type": 7,
@@ -1485,22 +1543,38 @@
    "Total Actual Amt",
    "Total Approved Amt"
   ],
-  "special": true,
+  "special": false,
   "p": {
-   "c": 104,
-   "special": true
+   "c": 106,
+   "cols": [
+    {
+     "k": "fe",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "tr",
+     "n": "CASTreatReason1"
+    },
+    {
+     "k": "f",
+     "n": "total"
+    },
+    {
+     "k": "f",
+     "n": "MCDays"
+    },
+    {
+     "k": "m",
+     "n": "TotalActual"
+    },
+    {
+     "k": "m",
+     "n": "TotalApproved"
+    }
+   ]
   },
   "s": null,
-  "helper": null,
-  "why": {
-   "cases": [
-    104,
-    105,
-    106
-   ],
-   "calls": [],
-   "bad": []
-  }
+  "helper": null
  },
  {
   "type": 7,
@@ -1525,8 +1599,8 @@
      "n": "CASTreatReason1"
     },
     {
-     "k": "l",
-     "v": ""
+     "k": "tr",
+     "n": "CASTreatReason1"
     },
     {
      "k": "fe",
