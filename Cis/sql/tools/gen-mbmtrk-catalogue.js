@@ -1,9 +1,12 @@
 // Joins FrmNewMBMTracking's dispatch (report type + selection -> listing routine), the routines' cases / columns and the headers into one catalogue JSON.
 const fs = require('fs')
+const FORM = process.env.TRK_FORM || 'FrmNewMBMTracking'
+const SUF = FORM === 'FrmNewMBMTracking' ? '' : '-' + FORM
+const CAT = process.env.TRK_CAT || 'MbmTracking.catalogue.json'
 const T = 'C:/Users/Naresh/AppData/Local/Temp/'
-const lines = fs.readFileSync(T + 'p10/FrmNewMBMTracking.txt', 'utf8').split(/\r?\n/)
-const listings = JSON.parse(fs.readFileSync(T + 'mbmtrk-listings.json', 'utf8'))
-const headers = JSON.parse(fs.readFileSync(T + 'mbmtrk-headers.json', 'utf8'))
+const lines = fs.readFileSync(T + 'p10/' + FORM + '.txt', 'utf8').split(/\r?\n/)
+const listings = JSON.parse(fs.readFileSync(T + 'mbmtrk-listings' + SUF + '.json', 'utf8'))
+const headers = JSON.parse(fs.readFileSync(T + 'mbmtrk-headers' + SUF + '.json', 'utf8'))
 const dispatch = {}
 let cond = null
 for (const l of lines) {
@@ -24,12 +27,24 @@ for (const l of lines) {
   if (m) { cur = m[1]; body[cur] = []; continue }
   if (cur) body[cur].push(l)
 }
-const catalogue = Object.entries(dispatch).filter(([k]) => Number(k.split('|')[0]) <= 17).map(([key, routine]) => {
+// The choices the form offers (CboReportType_Click): a variant form may not offer every dispatched report.
+const offered = {}
+{
+  let t = null
+  for (const l of body.CboReportType_Click ?? []) {
+    const c = /CboReportType\.ListIndex = (\d+)/.exec(l)
+    if (c) { t = Number(c[1]); offered[t] ??= [] }
+    const a = /CboRptSelection\.AddItem "([^"]*)"/.exec(l)
+    if (a && t !== null) offered[t].push(a[1])
+  }
+}
+const isOffered = (k) => { const [t, s] = k.split('|'); const o = offered[Number(t)]; return !o || (o.length === 0 ? s === '' : o.includes(s)) }
+const catalogue = Object.entries(dispatch).filter(([k]) => Number(k.split('|')[0]) <= 17 && isOffered(k)).map(([key, routine]) => {
   const [type, selection] = key.split('|')
   const calls = [...new Set((body[routine] || []).map((l) => /^Call (\w+)\(strAppend\)/.exec(l.trim())?.[1]).filter(Boolean))]
   return { type: Number(type), selection, routine, blocks: listings[routine] ?? [], helpers: calls.map((c) => ({ name: c, blocks: listings[c] ?? [] })),
     headers: headers[key] ?? headers[`${type}|`] ?? [] }
 })
-fs.writeFileSync(T + 'mbmtrk-catalogue.json', JSON.stringify(catalogue, null, 1))
+fs.writeFileSync(T + 'mbmtrk-catalogue' + SUF + '.json', JSON.stringify(catalogue, null, 1))
 console.log(catalogue.length, 'reports;', 'no blocks:', catalogue.filter((c) => !c.blocks.length).map((c) => `${c.type}|${c.selection}=${c.routine}`).join(', '))
 console.log('no headers:', catalogue.filter((c) => !c.headers.length).map((c) => `${c.type}|${c.selection}`).join(', '))

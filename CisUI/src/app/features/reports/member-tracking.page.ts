@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { ActivatedRoute } from '@angular/router'
 import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
@@ -12,7 +13,11 @@ import { saveCsv } from '../../shared/lib/download'
 import { formatMoney } from '../../shared/lib/format'
 import { ActionBarComponent, PageShellComponent } from '../../shared/screen.components'
 
-const BASE = '/api/tracking/member'
+/** The variant forms: their API base, title and form. */
+const VARIANTS: Record<string, { base: string; title: string; form: string }> = {
+  main: { base: '/api/tracking/member', title: 'MBM Tracking', form: 'FrmNewMBMTracking' },
+  jupiter: { base: '/api/tracking/member-jupiter', title: 'MBM Tracking (Jupiter)', form: 'FrmNewMBMTracking2' },
+}
 type Row = Record<string, string>
 const TYPES = ['Ageband', 'Agents', 'Bordx', 'Branch', 'Date', 'Effective Period', 'Gender', 'General Listing', 'Group Company', 'IC/Pol Year/Renewal...',
   'INS Type & MBM Type', 'MBM By Month', 'MCO Invoice', 'Payor', 'Plan Code', 'Policy', 'Race', 'States']
@@ -47,13 +52,13 @@ const COMBOS: { key: string; label: string; items: string[]; blank?: boolean }[]
 const TEXTS: { key: string; label: string }[] = [{ key: 'mbmNo', label: 'Member No' }, { key: 'policy', label: 'Policy No' }, { key: 'agent', label: 'Agent Code' }]
 const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : v).trim()
 
-/** Membership > MBM Tracking (FrmNewMBMTracking). */
+/** Membership > MBM Tracking (FrmNewMBMTracking) and its variants (route data variant: jupiter = FrmNewMBMTracking2). */
 @Component({
   selector: 'app-member-tracking-page',
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MBM Tracking" subtitle="Replaces FrmNewMBMTracking">
+    <app-page-shell [title]="v.title" [subtitle]="'Replaces ' + v.form">
       <div class="screen-form">
         <fieldset aria-label="Report">
           <legend>Report</legend>
@@ -147,6 +152,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
 export class MemberTrackingPage implements OnInit {
   private readonly http = inject(HttpClient)
   private readonly notify = inject(NotifyService)
+  protected readonly v = VARIANTS[inject(ActivatedRoute).snapshot.data['variant'] ?? 'main']
 
   protected readonly types = TYPES
   protected readonly ranges = RANGES
@@ -171,7 +177,7 @@ export class MemberTrackingPage implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      this.reports.set(await firstValueFrom(this.http.get<{ type: number; selection: string; migrated: boolean }[]>(`${BASE}/reports`)))
+      this.reports.set(await firstValueFrom(this.http.get<{ type: number; selection: string; migrated: boolean }[]>(`${this.v.base}/reports`)))
       await Promise.all([this.load('ins'), this.load('states')])
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
@@ -180,7 +186,7 @@ export class MemberTrackingPage implements OnInit {
 
   private async load(kind: string, key?: string): Promise<void> {
     const params = key ? new HttpParams().set('key', key) : undefined
-    const items = await firstValueFrom(this.http.get<string[]>(`${BASE}/lookup/${kind}`, { params }))
+    const items = await firstValueFrom(this.http.get<string[]>(`${this.v.base}/lookup/${kind}`, { params }))
     this.lists.update((l) => ({ ...l, [kind]: items }))
   }
 
@@ -222,7 +228,7 @@ export class MemberTrackingPage implements OnInit {
     this.rows.set([])
     try {
       const r = await firstValueFrom(this.http.post<{ headers: string[]; rows: string[][]; principals: number; supplementaries: number; mco: number; premium: number;
-        access: number }>(`${BASE}/search`, { reportType: this.type(), selection: this.selection, memberType: this.memberType, filters }))
+        access: number }>(`${this.v.base}/search`, { reportType: this.type(), selection: this.selection, memberType: this.memberType, filters }))
       this.headers.set(r.headers)
       this.rows.set(r.rows.map((cells) => Object.fromEntries(cells.map((c, i) => [`c${i}`, c]))))
       this.totals.set({ principals: r.principals, supps: r.supplementaries, mco: r.mco, premium: r.premium, access: r.access })

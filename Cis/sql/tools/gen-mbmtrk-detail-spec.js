@@ -1,8 +1,11 @@
 // Adds the detail listings (one row per member) to MbmTracking.catalogue.json: cases [P, S, B principal, B supplementary] and per loop the column specs.
 // Kinds: f field, d date, m money, cv cover id (literal fallback), nm name + " (Suspended / Cancelled / Deleted)", l literal.
 const fs = require('fs')
-const detail = JSON.parse(fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-detail.json', 'utf8'))
-const file = 'D:/CIS/Cis/src/Cis.Application/Reports/MbmTracking.catalogue.json'
+const FORM = process.env.TRK_FORM || 'FrmNewMBMTracking'
+const SUF = FORM === 'FrmNewMBMTracking' ? '' : '-' + FORM
+const CAT = process.env.TRK_CAT || 'MbmTracking.catalogue.json'
+const detail = JSON.parse(fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-detail' + SUF + '.json', 'utf8'))
+const file = 'D:/CIS/Cis/src/Cis.Application/Reports/' + CAT
 const cat = JSON.parse(fs.readFileSync(file, 'utf8'))
 const one = (alts) => {
   const xs = alts.map((a) => a.trim().replace(/\b\w+!/g, '!'))

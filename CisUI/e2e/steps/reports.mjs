@@ -117,4 +117,16 @@ export async function reports(page, base, check) {
   if (!claimRes.ok()) console.log('Claim Tracking search:', claimRes.status(), (await claimRes.text()).slice(0, 300))
   await page.waitForFunction(() => Number(document.querySelector('p[aria-label=Totals] strong')?.textContent) > 0, { timeout: 30000 })
   check(true, 'Claim Tracking: Ageband summary for payor DC, 01/07/2021 lists age bands')
+
+  // MBM Tracking (Jupiter): its own choices (no Card Sent Date Listing).
+  await page.goto(`${base}/membership/tracking-jupiter`, { waitUntil: 'domcontentloaded' })
+  await page.waitForSelector('select[name=reportType] option:nth-child(12)')
+  await page.evaluate(() => {
+    const s = document.querySelector('select[name=reportType]')
+    s.value = [...s.options].find((o) => o.textContent.trim() === 'General Listing').value
+    s.dispatchEvent(new Event('change'))
+  })
+  await page.waitForFunction(() => [...document.querySelectorAll('select[name=selection] option')].some((o) => o.textContent.includes('Print Label')))
+  const options = await page.evaluate(() => [...document.querySelectorAll('select[name=selection] option')].map((x) => x.textContent))
+  check(!options.some((o) => o.includes('Card Sent')), 'MBM Tracking (Jupiter): General Listing offers its own choices')
 }

@@ -47,10 +47,12 @@ public interface IMbmTrkRepository
 public interface IMbmTrkService
 {
     /// <summary>The report catalogue (type, choice, whether it is migrated).</summary>
-    IReadOnlyList<MbmTrkReport> Reports();
+    IReadOnlyList<MbmTrkReport> Reports(string variant = "main");
 
     /// <summary>cmdSearch_Click.</summary>
-    Task<MbmTrkResult> SearchAsync(MbmTrkRequest request);
+    /// <param name="request">The search.</param>
+    /// <param name="variant">main (FrmNewMBMTracking) or jupiter (FrmNewMBMTracking2).</param>
+    Task<MbmTrkResult> SearchAsync(MbmTrkRequest request, string variant = "main");
 
     /// <summary>A combo: states, ins, payors (key = health type), companies (key = payor), departments (key = group company).</summary>
     Task<List<string>> LookupAsync(string kind, string? key);
@@ -84,6 +86,15 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
 
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
     internal static readonly List<Entry> Catalogue = Load<List<Entry>>("MbmTracking.catalogue.json");
+
+    /// <summary>The catalogue of each variant form (generated from that form).</summary>
+    internal static readonly Dictionary<string, List<Entry>> Catalogues = new()
+    {
+        ["main"] = Catalogue,
+        ["jupiter"] = Load<List<Entry>>("MbmTrackingJupiter.catalogue.json"),
+    };
+
+    private static List<Entry> Of(string variant) => Catalogues.TryGetValue(variant, out var c) ? c : throw new NotFoundException("Unknown tracking screen.");
     private static readonly Dictionary<string, string> Params = Load<List<Param>>("MbmTracking.params.json").ToDictionary(p => p.N, p => p.T, StringComparer.OrdinalIgnoreCase);
 
     internal static T Load<T>(string name)
@@ -103,12 +114,12 @@ public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepositor
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || HandPorted.Contains(e.Routine))).ToList();
+    public IReadOnlyList<MbmTrkReport> Reports(string variant = "main") => Of(variant).Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || HandPorted.Contains(e.Routine))).ToList();
 
     /// <inheritdoc />
-    public async Task<MbmTrkResult> SearchAsync(MbmTrkRequest r)
+    public async Task<MbmTrkResult> SearchAsync(MbmTrkRequest r, string variant = "main")
     {
-        var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
+        var e = Of(variant).FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
         if (e.Special && !HandPorted.Contains(e.Routine)) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
         // The principal type and the supplementary registration date belong to the detail listings only (their own criteria in the desktop).

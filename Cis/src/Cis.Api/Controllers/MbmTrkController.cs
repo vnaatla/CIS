@@ -9,11 +9,19 @@ namespace Cis.Api.Controllers;
 /// <summary>Membership > MBM Tracking (FrmNewMBMTracking).</summary>
 [Route("api/tracking/member")]
 [RequireAccess(AccessRight.MbmTracking)]
-public sealed class MbmTrkController(IMbmTrkService tracking) : ApiControllerBase
+public sealed class MbmTrkController(IMbmTrkService tracking) : MbmTrkControllerBase(tracking, "main");
+
+/// <summary>Membership > MBM Tracking (Jupiter) (FrmNewMBMTracking2): its own report choices and columns; the desktop read the Jupiter server, here the same databases.</summary>
+[Route("api/tracking/member-jupiter")]
+[RequireAccess(AccessRight.MbmTrackingJupiter)]
+public sealed class MbmTrkJupiterController(IMbmTrkService tracking) : MbmTrkControllerBase(tracking, "jupiter");
+
+/// <summary>The member tracking endpoints of one variant form.</summary>
+public abstract class MbmTrkControllerBase(IMbmTrkService tracking, string variant) : ApiControllerBase
 {
     /// <summary>The report catalogue.</summary>
     [HttpGet("reports")]
-    public IReadOnlyList<MbmTrkReport> Reports() => tracking.Reports();
+    public IReadOnlyList<MbmTrkReport> Reports() => tracking.Reports(variant);
 
     /// <summary>A combo: states, ins, payors (key = health type), companies (key = payor), departments (key = group company).</summary>
     [HttpGet("lookup/{kind}")]
@@ -21,5 +29,5 @@ public sealed class MbmTrkController(IMbmTrkService tracking) : ApiControllerBas
 
     /// <summary>Search.</summary>
     [HttpPost("search")]
-    public Task<MbmTrkResult> Search(MbmTrkRequest request) => tracking.SearchAsync(request);
+    public Task<MbmTrkResult> Search(MbmTrkRequest request) => tracking.SearchAsync(request, variant);
 }

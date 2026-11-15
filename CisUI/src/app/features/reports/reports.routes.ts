@@ -54,6 +54,13 @@ export const reportsRoutes: Routes = [
     loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
   },
   {
+    path: 'membership/tracking-jupiter',
+    title: 'CIS - MBM Tracking (Jupiter)',
+    canActivate: [accessGuard],
+    data: { access: Access.MbmTrackingJupiter, legacyForm: 'FrmNewMBMTracking2', variant: 'jupiter' },
+    loadComponent: () => import('./member-tracking.page').then((m) => m.MemberTrackingPage),
+  },
+  {
     path: 'claim-bordx/claim-tracking/standard',
     title: 'CIS - Claim Tracking',
     canActivate: [accessGuard],

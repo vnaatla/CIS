@@ -48,7 +48,7 @@ export const MENU: MenuModule[] = [
       { label: 'MBM Topup Adj', path: '/membership/topup', access: Access.MbmTopup, form: 'FrmMBMTopupLmt', phase: 2, migrated: true },
       { label: 'MBM Tracking', path: '/membership/tracking', access: Access.MbmTracking, form: 'FrmNewMBMTracking', group: 'Tracking', phase: 10, migrated: true },
       { label: 'MBM Tracking (Simple)', path: '/membership/tracking-simple', access: Access.MbmTracking, form: 'frmNewMBMTrackingSimple', group: 'Tracking', phase: 10 },
-      { label: 'MBM Tracking (Jupiter)', path: '/membership/tracking-jupiter', access: Access.MbmTrackingJupiter, form: 'FrmNewMBMTracking2', group: 'Tracking', phase: 10 },
+      { label: 'MBM Tracking (Jupiter)', path: '/membership/tracking-jupiter', access: Access.MbmTrackingJupiter, form: 'FrmNewMBMTracking2', group: 'Tracking', phase: 10, migrated: true },
       { label: 'MBM Tracking (Jupiter - Simple)', path: '/membership/tracking-jupiter-simple', access: Access.MbmTrackingJupiter, form: 'frmNewMBMTrackingRepSimple', group: 'Tracking', phase: 10 },
       { label: 'MBM Tracking (old)', path: '/membership/tracking-legacy', access: Access.MbmTracking, form: 'FrmMBMTracking', group: 'Tracking', desktop: 'never-opened', phase: 10 },
     ],

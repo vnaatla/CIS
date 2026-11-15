@@ -18,6 +18,17 @@ public class MbmTrkRuleTests
     }
 
     [Fact]
+    public void The_jupiter_screen_has_its_own_choices_and_columns()
+    {
+        var jupiter = MbmTrkService.Catalogues["jupiter"];
+        Assert.Equal(72, jupiter.Count);
+        Assert.DoesNotContain(jupiter, e => e.Selection == "Card Sent Date Listing");
+        // Its detail listings show the supplementaries' payor effective date (the main form: their cover effective date).
+        Assert.Contains(jupiter.First(e => e.Routine == "GeneralListing4").Detail!.Supp, c => c.N == "MBMPayorEffDate");
+        Assert.Contains(MbmTrkService.Catalogue.First(e => e.Routine == "GeneralListing4").Detail!.Supp, c => c.N == "MBMCEffDate");
+    }
+
+    [Fact]
     public void Only_known_filters_are_passed_typed()
     {
         var f = MbmTrkService.Filters(new() { ["payor"] = "DC", ["effFrom"] = "01/07/2021", ["hltBlank"] = "true", ["evil; drop"] = "x", ["premiumFrom"] = "10.5" });

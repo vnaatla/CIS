@@ -1,6 +1,9 @@
 // Summarises FrmNewMBMTracking's listing routines: cases called, first column, SubItems columns, per branch (P/B vs S).
 const fs = require('fs')
-const lines = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/p10/FrmNewMBMTracking.txt', 'utf8').split(/\r?\n/)
+const FORM = process.env.TRK_FORM || 'FrmNewMBMTracking'
+const SUF = FORM === 'FrmNewMBMTracking' ? '' : '-' + FORM
+const CAT = process.env.TRK_CAT || 'MbmTracking.catalogue.json'
+const lines = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/p10/' + FORM + '.txt', 'utf8').split(/\r?\n/)
 const subs = []
 let cur = null
 for (const l of lines) {
@@ -27,6 +30,6 @@ for (const s of subs) {
   }
   out[s.name] = blocks.map((x) => ({ c: x.c, first: (x.first || '').replace(/rst2!/g, '!'), cols: x.cols, empty: x.empty }))
 }
-fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-listings.json', JSON.stringify(out, null, 1))
+fs.writeFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-listings' + SUF + '.json', JSON.stringify(out, null, 1))
 console.log(Object.keys(out).length, 'routines with cases')
 for (const [k, v] of Object.entries(out).slice(0, 6)) console.log(k, JSON.stringify(v).slice(0, 300))

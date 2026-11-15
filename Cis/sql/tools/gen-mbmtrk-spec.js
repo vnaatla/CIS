@@ -2,8 +2,11 @@
 // Column spec: { k: 'f', n: field } | { k: 'm', n: field } (money) | { k: 'l', v: literal } | { k: 'sc' } supp count | { k: 'sm' } supp MCO | { k: 'sp' } supp premium
 // | { k: 'fl', n: field, v: suffix } (field + literal suffix). Reports whose columns use other accumulators are marked special (ported by hand).
 const fs = require('fs')
+const FORM = process.env.TRK_FORM || 'FrmNewMBMTracking'
+const SUF = FORM === 'FrmNewMBMTracking' ? '' : '-' + FORM
+const CAT = process.env.TRK_CAT || 'MbmTracking.catalogue.json'
 const T = 'C:/Users/Naresh/AppData/Local/Temp/'
-const cat = JSON.parse(fs.readFileSync(T + 'mbmtrk-catalogue.json', 'utf8'))
+const cat = JSON.parse(fs.readFileSync(T + 'mbmtrk-catalogue' + SUF + '.json', 'utf8'))
 const parse = (e) => {
   e = (e || '').trim().replace(/\brst\d!/g, '!')
   let m
@@ -38,5 +41,5 @@ const out = cat.map((r) => {
   return { type: r.type, selection: r.selection, routine: r.routine, headers: r.headers, special: !!special, p, s,
     helper: h ? { c: h.c, append: !!(helper.blocks[0].first), cols: h.cols ?? null } : null }
 })
-fs.writeFileSync('D:/CIS/Cis/src/Cis.Application/Reports/MbmTracking.catalogue.json', JSON.stringify(out, null, 1))
+fs.writeFileSync('D:/CIS/Cis/src/Cis.Application/Reports/' + CAT, JSON.stringify(out, null, 1))
 console.log(out.length, 'reports;', out.filter((r) => !r.special).length, 'generic;', 'special:', out.filter((r) => r.special).map((r) => r.routine).join(' '))

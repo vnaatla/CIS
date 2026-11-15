@@ -153,3 +153,9 @@ Fixed desktop bugs: the GP / SP (/ others) columns of Utilization (By Member), D
 Known desktop issues (kept): the illness summary's % is of the running bill total (the rows above and this one); O/S Utilized (Separate) tests the MCO fee column for "FULL", so its utilisation is always computed.
 
 Speed: the illness reports run three queries per treatment reason, as the desktop (several minutes for a busy day); the other reports answer in seconds to about a minute.
+
+## Membership > MBM Tracking (Jupiter) — FrmNewMBMTracking2 (`/membership/tracking-jupiter`, right MbmTrackingJupiter, `api/tracking/member-jupiter`)
+
+The same page and engine as MBM Tracking with the catalogue generated from FrmNewMBMTracking2 (`MbmTrackingJupiter.catalogue.json`, `sql/tools/gen-mbm-all.sh FrmNewMBMTracking2 MbmTrackingJupiter.catalogue.json`): 72 reports (no Card Sent Date Listing), no billing type, the supplementaries' payor effective / expiry dates in the detail listings, the MCO invoice summary without the principal / dependent pivot, and its own headers. The desktop read the "Jupiter" (Neptune) server; here the same databases are read.
+
+Also fixed on MBM Tracking: General Listing (Details)' billing type (ASO / INSURER) had been missed; it is a criterion of that listing.
