@@ -1,5 +1,5 @@
 -- Tracking > MBM Tracking (FrmNewMBMTracking and its variants): the 178 cases of HISDB CISMBMTracking (generated from the procedure by
--- gen-mbmtrk.js). Each case's query text is kept as the desktop's; the pasted criteria are replaced by a WHERE fragment built only from the filters that are set,
+-- gen-trk.js). Each case's query text is kept as the desktop's; the pasted criteria are replaced by a WHERE fragment built only from the filters that are set,
 -- with every value passed as a parameter.
 SET QUOTED_IDENTIFIER ON;
 GO
