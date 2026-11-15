@@ -50,6 +50,13 @@ public class ClmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacyDiag.Count, diag.Rows.Count);
         Assert.Contains(diag.Rows, x => x[1].Length > 0);
+        // General listing without remarks (hand-ported row rules): one row per desktop case 93 row.
+        var list = await service.SearchAsync(new ClmTrkRequest(9, "Without Remarks", new() { ["payor"] = "DC", ["dovFrom"] = "01/07/2021", ["dovTo"] = "01/07/2021" }));
+        var legacyList = (await s.Sql().Connection.QueryAsync("CISWorksheet.dbo.CISClaimTracking",
+            new { strAppend = " AND PAYCode = 'DC' And DateVisit >= '07/01/2021' And DateVisit <= '07/01/2021'", strAppendCase = 93 },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        Assert.Equal(legacyList.Count, list.Rows.Count);
+        Assert.Equal(54, list.Rows[0].Count);
         Assert.Equal(MbmTrkService.Pending, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new ClmTrkRequest(0, "Daily Report", new())))).Message);
     }

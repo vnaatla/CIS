@@ -66,7 +66,7 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special)).ToList();
+    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || IsHandPorted(e.Routine))).ToList();
 
     /// <summary>The typed filters (only the known names).</summary>
     internal static Dictionary<string, object?> Filters(Dictionary<string, string?> input) => MbmTrkService.Filters(input, Params);
@@ -75,9 +75,15 @@ public sealed partial class ClmTrkService(IDbSessions sessions, IClmTrkRepositor
     public async Task<ClmTrkResult> SearchAsync(ClmTrkRequest r)
     {
         var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
-        if (e.Special) throw new BusinessRuleException(Pending);
+        if (e.Special && !IsHandPorted(e.Routine)) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
         await using var s = await sessions.OpenAsync();
+        if (e.Special)
+        {
+            var special = await SpecialRowsAsync(s, e, filters);
+            if (special.Count == 0) throw new NotFoundException(NoRecord);
+            return new ClmTrkResult(e.Headers, special, special.Count);
+        }
         // The treatment reason descriptions (the desktop looked each row's code up with CISClaimTracking case 10).
         var reasons = e.P!.Cols!.Any(c => c.K == "tr")
             ? (await repository.LookupAsync(s, "reasons", null)).Select(x => x.Split('|', 2)).GroupBy(x => x[0]).ToDictionary(g => g.Key, g => g.First()[1])
