@@ -48,4 +48,9 @@
   To avoid timeouts while building: run only the new test classes (`dotnet test --filter`), only the new browser steps
   (`$env:E2E_STEPS='claim-bordx'; node e2e/only.mjs`, modules in `CisUI\e2e\steps`), no SQL queries in parallel with tests,
   small sample data in tests (no 5,000-row results), `dotnet build-server shutdown` before DB tests; the full suites once at the end of a phase.
+- Tracking screens (MBM / Claim Tracking and variants) are generated from the desktop procedures and forms (`Cis\sql\tools`, run with node from
+  `%TEMP%` copies of the form extracts / procedure text): `gen-trk.js mbm|mbmsimple|claim|claimsimple|claim2` -> `sql\main\114x/115x_*.sql`;
+  catalogues: `gen-mbm-all.sh <form> <catalogue>`, `TRK_FORM=<form> TRK_CAT=<catalogue> node analyse-clmtrk.js`, `analyse-ct2.js`. Hand-ported
+  reports live in `Reports\MbmTrackingSummaries.cs` / `ClmTrackingSpecials.cs`. Generated SQL must use single-quoted values (the legacy procs'
+  double-quoted ones fail under QUOTED_IDENTIFIER ON; CISClaimTracking2 fails on the desktop for that reason).
 - Git: repo github.com/vnaatla/CIS (remote URL carries `vnaatla@`); commit with `git -c user.name="vnaatla" -c user.email="vishnu.reddy.naatla@gmail.com" commit ...`.
