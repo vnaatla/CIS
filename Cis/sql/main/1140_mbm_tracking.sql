@@ -217,38 +217,38 @@ BEGIN
     IF @case = 37 SELECT @b = N'SELECT PAYCode, MBMBordxDate From VIEW_CISMBM_Search Where 0 = 0', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 38 SELECT @b = N'SELECT PAYCode, MBMBordxDate From View_CISMBM_Supplementary Where 0 = 0', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 39 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalIC,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "I" AND MBMAdultChild = "C"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''I'' AND MBMAdultChild = ''C''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 40 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalIA,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "I" AND MBMAdultChild = "A"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''I'' AND MBMAdultChild = ''A''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 41 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalF,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "F"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''F''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 42 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalGC,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "G" AND MBMAdultChild = "C"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''G'' AND MBMAdultChild = ''C''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 43 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalGA,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "G" AND MBMAdultChild = "A"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''G'' AND MBMAdultChild = ''A''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 44 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalH,
-						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = "H"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFEE) AS MCOFEE From VIEW_CISMBM_Search Where INSCode = ''H''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 45 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalFS,
-						SUM(MBMMCOFee) AS MCOFee From View_CISMBM_Supplementary Where INSCode = "F"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFee) AS MCOFee From View_CISMBM_Supplementary Where INSCode = ''F''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 46 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalHS,
-						SUM(MBMMCOFee) AS MCOFee From View_CISMBM_Supplementary Where INSCode = "H"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						SUM(MBMMCOFee) AS MCOFee From View_CISMBM_Supplementary Where INSCode = ''H''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 47 SELECT @b = N'SELECT PAYCode, MBMBordxDate From VIEW_CISMBM_Search Where 0 = 0', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 48 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalIC,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "I" AND MBMAdultChild = "C"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''I'' AND MBMAdultChild = ''C''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 49 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalIA,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "I" AND MBMAdultChild = "A"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''I'' AND MBMAdultChild = ''A''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 50 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalF,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "F"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''F''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 51 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalFS,
-						       SUM(MBMPremium) AS Premium From View_CISMBM_Supplementary Where INSCode = "F"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From View_CISMBM_Supplementary Where INSCode = ''F''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 52 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalGC,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "G" AND MBMAdultChild = "C"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''G'' AND MBMAdultChild = ''C''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 53 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalGA,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "G" AND MBMAdultChild = "A"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''G'' AND MBMAdultChild = ''A''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 54 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalH,
-						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = "H"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From VIEW_CISMBM_Search Where INSCode = ''H''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 55 SELECT @b = N'SELECT PAYCode, MBMBordxDate, COUNT(MBMNumber) AS TotalHS,
-						       SUM(MBMPremium) AS Premium From View_CISMBM_Supplementary Where INSCode = "H"', @a = N'GROUP BY PAYCode, MBMBordxDate';
+						       SUM(MBMPremium) AS Premium From View_CISMBM_Supplementary Where INSCode = ''H''', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 56 SELECT @b = N'SELECT PAYCode, MBMBordxDate From View_CISMBM_Supplementary Where 0 = 0', @a = N'GROUP BY PAYCode, MBMBordxDate';
     IF @case = 57 SELECT @b = N'SELECT PAYCode, MBMBordxDate, MBMBatchNo, COUNT(MBMNumber) AS TotalP,
 						       SUM(MBMMCOFee) AS MCOGross, SUM(MBMAccessFee) AS EAFee,
@@ -509,9 +509,9 @@ BEGIN
 						        From View_CISMBM_Supplementary Where 0 = 0', @a = N'GROUP BY PAYCode';
     IF @case = 140 SELECT @b = N'SELECT PAYCompanyName, MBMGroupCompany, COUNT(MBMNumber) AS TotalP,
 						        SUM(MBMPremium) AS PremiumGross, SUM(CLMTotalApproved) AS CLMTotalApproved
-						        From VIEW_MBM_Search4 Where (INSCode = "G" OR INSCode = "H")', @a = N'GROUP BY PAYCompanyName, MBMGroupCompany';
+						        From VIEW_MBM_Search4 Where (INSCode = ''G'' OR INSCode = ''H'')', @a = N'GROUP BY PAYCompanyName, MBMGroupCompany';
     IF @case = 141 SELECT @b = N'SELECT PAYCompanyName, MBMGroupCompany, COUNT(MBMNumber) AS TotalS
-						        From View_MBM_Supplementary4 Where (INSCode = "G" OR INSCode = "H")', @a = N'GROUP BY PAYCompanyName, MBMGroupCompany';
+						        From View_MBM_Supplementary4 Where (INSCode = ''G'' OR INSCode = ''H'')', @a = N'GROUP BY PAYCompanyName, MBMGroupCompany';
     IF @case = 142 SELECT @b = N'SELECT HLTCode, INSCode, PLNCode, COUNT(MBMNumber) AS TotalP,
 						        SUM(MBMMCOFEE) AS MCOGross, SUM(MBMAccessFee) AS EAFee,
 						        SUM(MBMPremium) AS PremiumGross From VIEW_CISMBM_Search Where 0 = 0', @a = N'GROUP BY HLTCode, INSCode, PLNCode';
@@ -560,11 +560,11 @@ BEGIN
     IF @case = 158 SELECT @b = N'SELECT PAYCode, HLTCode, RELCode, AGECode, COUNT(DISTINCT MBMNumber) AS TotalP,
 						        COUNT(MBMNumber) AS TotalS From VIEW_MBM_Search3 Where 0 = 0', @a = N'GROUP BY PAYCode, HLTCode, RELCode, AGECode';
     IF @case = 159 SELECT @b = N'SELECT PAYCode, HLTCode, RELCode, AGECode, COUNT(DISTINCT MBMNumber) AS TotalP,
-						        COUNT(MBMNumber) AS TotalS From View_CISMBM_Supplementary Where RELCode <> "P"', @a = N'GROUP BY PAYCode, HLTCode, RELCode, AGECode';
+						        COUNT(MBMNumber) AS TotalS From View_CISMBM_Supplementary Where RELCode <> ''P''', @a = N'GROUP BY PAYCode, HLTCode, RELCode, AGECode';
     IF @case = 160 SELECT @b = N'SELECT PAYCode, HLTCode, INSCode, RELCode, COUNT(DISTINCT MBMNumber) AS TotalP,
 						        COUNT(MBMNumber) AS TotalS From VIEW_MBM_Search3 Where 0 = 0', @a = N'GROUP BY PAYCode, HLTCode, INSCode, RELCode';
     IF @case = 161 SELECT @b = N'SELECT PAYCode, HLTCode, INSCode, RELCode, COUNT(DISTINCT MBMNumber) AS TotalP,
-						        COUNT(MBMNumber) AS TotalS From View_CISMBM_Supplementary Where RELCode <> "P"', @a = N'GROUP BY PAYCode, HLTCode, INSCode, RELCode';
+						        COUNT(MBMNumber) AS TotalS From View_CISMBM_Supplementary Where RELCode <> ''P''', @a = N'GROUP BY PAYCode, HLTCode, INSCode, RELCode';
     IF @case = 162 SELECT @b = N'SELECT HLTCode, STACode, COUNT(MBMNumber) AS TotalP,
 						        SUM(MBMMCOFEE) AS MCOGross, SUM(MBMAccessFee) AS EAFee,
 						        SUM(MBMPremium) AS PremiumGross From VIEW_CISMBM_Search Where 0 = 0', @a = N'GROUP BY HLTCode, STACode';
@@ -609,7 +609,29 @@ BEGIN
 										PAYCode, MBMInvoiceNo, MBMInvoiceDate, COUNT(MBMNumber) AS TotalMBM,SUM(MBMMCOFEE) AS MCOFEE 
 										,MBMGroupCompany,coalesce(Subsidiary,'''') as Subsidiary,OPAccCode
 										into #temp 
-										From VIEW_MBM_Search_MCO_V1 Where 0 = 0  ', @a = N' GROUP BY case when MBMCCoverID=''00'' then ''Principal'' else ''Dependent'' end,PAYCode, MBMInvoiceNo, MBMInvoiceDate,MBMGroupCompany,Subsidiary,OPAccCode ';
+										From VIEW_MBM_Search_MCO_V1 Where 0 = 0  ', @a = N' GROUP BY case when MBMCCoverID=''00'' then ''Principal'' else ''Dependent'' end,PAYCode, MBMInvoiceNo, MBMInvoiceDate,MBMGroupCompany,Subsidiary,OPAccCode 
+										Select [PAYCode],Sum(coalesce(Principal_amt,0)) as Principal_amt,
+										Sum(coalesce(Dependent_amt,0)) as Dependent_amt, 
+										Sum(coalesce(Principal_mbmcnt,0)) as Principal_mbmcnt,
+										Sum(coalesce(Dependent_mbmcnt,0)) as Dependent_mbmcnt,
+										MBMInvoiceNo, MBMInvoiceDate,MBMGroupCompany,Subsidiary,OPAccCode
+										from (
+										Select 
+										[PAYCode],MBMInvoiceNo, MBMInvoiceDate
+										,Sum(MCOFEE) as MCOFEE
+										,Sum(TotalMBM) as TotalMBM 
+										,[MCOFEE_amt]=[CC]+''_amt''
+										,[TotalMBM_cnt]=[CC]+''_mbmcnt''
+										,MBMGroupCompany,Subsidiary,OPAccCode
+										from #temp 
+										group by PAYCode,[CC],MBMInvoiceNo, MBMInvoiceDate,MBMGroupCompany,Subsidiary,OPAccCode
+										)NN 
+										PIVOT (Sum(MCOFEE) for [MCOFEE_amt] IN (Principal_amt,Dependent_amt)) As PV1
+										PIVOT (Sum(TotalMBM) for [TotalMBM_cnt] IN (Principal_mbmcnt,Dependent_mbmcnt)) As PV2
+										group by [PAYCode],MBMInvoiceNo, MBMInvoiceDate,MBMGroupCompany,Subsidiary,OPAccCode	
+										order by MBMInvoiceNo asc										
+										Drop table #temp   
+									';
     IF @b IS NULL RETURN;
     DECLARE @w nvarchar(max) = N'';
     IF @hlt IS NOT NULL SET @w += N' AND HLTCode = @hlt';

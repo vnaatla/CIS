@@ -3,6 +3,7 @@ const fs = require('fs')
 const src = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/CISMBMTracking.sql', 'utf8').replace(/\r\n/g, '\n')
 const parts = src.split(/\n\s*if @strAppendCase = (\d+)\s*\n/)
 const cases = []
+const extra = []
 for (let i = 1; i < parts.length; i += 2) {
   const n = Number(parts[i]); const body = parts[i + 1]
   // String literal assignments: set @var = N'...' or '...'
@@ -13,9 +14,16 @@ for (let i = 1; i < parts.length; i += 2) {
   const comp = /set\s+(@\w+)\s*=\s*(@\w+)\s*\+\s*@strAppend(?:\s*\+\s*(@\w+))?/i.exec(body)
   if (!comp) throw new Error('case ' + n + ': no composition')
   const before = lits[comp[2].toLowerCase()]
-  const after = comp[3] ? lits[comp[3].toLowerCase()] : ''
+  let after = comp[3] ? lits[comp[3].toLowerCase()] : ''
+  // Pieces appended after the criteria (e.g. case 178's pivot): set @sql = @sql + @piece.
+  const more = new RegExp('set\\s+' + comp[1] + '\\s*=\\s*' + comp[1] + '\\s*\\+\\s*(@\\w+)', 'gi')
+  more.lastIndex = comp.index + comp[0].length
+  let mm
+  while ((mm = more.exec(body))) { if (lits[mm[1].toLowerCase()] === undefined) throw new Error('case ' + n + ': piece missing'); after += lits[mm[1].toLowerCase()]; extra.push(n) }
   if (before === undefined || after === undefined) throw new Error('case ' + n + ': literal missing')
-  cases.push({ n, before, after })
+  // The desktop's procedure runs with QUOTED_IDENTIFIER OFF and some cases quote values with double quotes; written as single-quoted values here.
+  const dq = (t) => t.replace(/"([^"]*)"/g, "''$1''")
+  cases.push({ n, before: dq(before), after: dq(after) })
 }
 const esc = (s) => s.replace(/'/g, "''") // the literals are already in doubled-quote form; re-emit as they were
 const filters = fs.readFileSync('C:/Users/Naresh/AppData/Local/Temp/mbmtrk-filters.sql', 'utf8')
@@ -42,4 +50,5 @@ END
 GO
 `
 fs.writeFileSync('D:/CIS/Cis/sql/main/1140_mbm_tracking.sql', out)
+console.log('extra pieces in cases', extra.join(','));
 console.log('cases', cases.length, cases.slice(0, 3).map((c) => c.n).join(','), '...', cases[cases.length - 1].n)

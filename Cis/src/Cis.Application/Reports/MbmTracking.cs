@@ -57,7 +57,7 @@ public interface IMbmTrkService
 }
 
 /// <inheritdoc />
-public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository repository) : IMbmTrkService
+public sealed partial class MbmTrkService(IDbSessions sessions, IMbmTrkRepository repository) : IMbmTrkService
 {
     /// <summary>Desktop texts.</summary>
     public const string NoReport = "Please select a report type.", NoRecord = "No record found!", BadDate = "Invalid Date Format! ";
@@ -103,19 +103,20 @@ public sealed class MbmTrkService(IDbSessions sessions, IMbmTrkRepository reposi
     }
 
     /// <inheritdoc />
-    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special)).ToList();
+    public IReadOnlyList<MbmTrkReport> Reports() => Catalogue.Select(e => new MbmTrkReport(e.Type, e.Selection, !e.Special || HandPorted.Contains(e.Routine))).ToList();
 
     /// <inheritdoc />
     public async Task<MbmTrkResult> SearchAsync(MbmTrkRequest r)
     {
         var e = Catalogue.FirstOrDefault(x => x.Type == r.ReportType && x.Selection == (r.Selection ?? "").Trim()) ?? throw new BusinessRuleException(NoReport);
-        if (e.Special) throw new BusinessRuleException(Pending);
+        if (e.Special && !HandPorted.Contains(e.Routine)) throw new BusinessRuleException(Pending);
         var filters = Filters(r.Filters);
         // The principal type and the supplementary registration date belong to the detail listings only (their own criteria in the desktop).
         if (e.Detail is null) foreach (var k in DetailOnly) filters.Remove(k);
         var type = (r.MemberType ?? "P").Trim().ToUpperInvariant() is var t && t.Length > 0 ? t[..1] : "P";
         await using var s = await sessions.OpenAsync();
         if (e.Detail is not null) return await DetailAsync(s, e, type, filters);
+        if (e.Special) return await SummaryAsync(s, e, type, filters);
         var rows = new List<List<string>>();
         int principals = 0, supps = 0;
         decimal mco = 0, premium = 0, access = 0;

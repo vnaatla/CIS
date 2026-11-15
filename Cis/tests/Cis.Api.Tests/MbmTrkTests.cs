@@ -56,6 +56,18 @@ public class MbmTrkDatabaseTests
             commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
         Assert.Equal(legacyDetail.Select(x => (string)x.MBMNumber).Distinct().Count(), detail.Rows.Count);
         Assert.Equal("WKHA3578533*01", detail.Rows[0][0]);
+        // Summaries ported by hand. Bordx MCO (INS & MBM type): one row per desktop case 37 group, the H column summed from case 44.
+        var dc = new Dictionary<string, string?> { ["payor"] = "DC", ["status"] = "0" };
+        var bordx = await service.SearchAsync(new MbmTrkRequest(2, "INS Type & MBM Type (MCO)", "P", dc));
+        async Task<List<dynamic>> Legacy(int c, string append) => (await s.Sql().Connection.QueryAsync("HISDB.dbo.CISMBMTracking", new { strAppend = append, strAppendCase = c },
+            commandType: System.Data.CommandType.StoredProcedure, commandTimeout: 600)).ToList();
+        const string dcActive = " AND PAYCode = 'DC' And MBMStatus = 'A' ";
+        Assert.Equal((await Legacy(37, dcActive)).Count, bordx.Rows.Count);
+        Assert.Equal((await Legacy(44, dcActive)).Sum(x => (int)x.TotalH), bordx.Rows.Sum(r => int.Parse(r[16])));
+        // MCO invoice summary (Both): the desktop's case 178 rows.
+        var inv = await service.SearchAsync(new MbmTrkRequest(12, "Summary", "B", new() { ["payor"] = "DC", ["invoiceDateFrom"] = "01/07/2021", ["invoiceDateTo"] = "31/07/2021" }));
+        Assert.Equal((await Legacy(178, " AND PAYCode = 'DC' AND MBMInvoiceDate >= '07/01/2021' AND MBMInvoiceDate <= '07/31/2021' ")).Count, inv.Rows.Count);
+        Assert.Contains(service.Reports(), x => x.Type == 2 && x.Selection == "INS Type & MBM Type (MCO)" && x.Migrated);
         Assert.Equal(MbmTrkService.NoReport, (await Assert.ThrowsAsync<BusinessRuleException>(() =>
             service.SearchAsync(new MbmTrkRequest(10, "Nope", "P", new()))))
             .Message);
