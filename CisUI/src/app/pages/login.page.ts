@@ -68,7 +68,7 @@ import { IconComponent } from '../shared/icon.component'
 
           @if (changing()) {
             <fieldset class="change-password">
-              <legend>Please enter a new Password:</legend>
+              <legend><app-icon name="lock" [size]="15" /> Enter a new password</legend>
               <label class="login-field">
                 <span>New Password</span>
                 <span class="login-input">
