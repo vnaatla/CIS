@@ -504,6 +504,44 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .home-modules a:hover .home-module-go { color: var(--accent); transform: translateX(2px); }
 @media (prefers-reduced-motion: reduce) { .home-modules a, .home-module-go, .home-module-icon { transition: none; } }
 
+/* Rail and sidebar. Pinned: the sidebar is a column beside the content. Unpinned: it floats over the content while hovered. */
+.shell { grid-template-columns: 60px 248px 1fr; }
+.shell.no-sidebar { grid-template-columns: 60px 1fr; }
+.rail { gap: 6px; padding: 14px 0; background: linear-gradient(180deg, #fff 0%, #fbf8fb 100%); }
+.rail a { color: #8a6f87; }
+.rail a:hover { background: var(--accent-soft); color: var(--accent); }
+.rail a.active { background: linear-gradient(140deg, #a8329a, var(--accent-strong)); color: #fff; box-shadow: 0 6px 14px rgb(156 43 142 / 30%); }
+.rail a:first-child { margin-bottom: 6px; }
+.sidebar { padding: 12px 10px 16px; gap: 0; background: #fff; border-right: 1px solid var(--border); min-height: 0; }
+.sidebar.floating {
+  position: fixed; top: 52px; bottom: 0; left: 60px; z-index: 40; width: 248px; /* above sticky bars (20), below modals (60) and toasts (100) */
+  box-shadow: 12px 0 32px rgb(76 18 69 / 14%); animation: sidebar-in 0.16s ease-out;
+}
+@keyframes sidebar-in { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+.sidebar-head { display: flex; align-items: center; gap: 6px; padding: 4px 2px 12px; margin-bottom: 6px; border-bottom: 1px solid var(--border); }
+.sidebar .sidebar-module { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 10px; color: #1f2937; }
+.sidebar .sidebar-module:hover { background: #f7f2f7; transform: none; }
+.sidebar .sidebar-module.active { background: var(--accent-soft); font-weight: 400; }
+.sidebar-module-icon { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(140deg, #a8329a, var(--accent-strong)); color: #fff; }
+.sidebar .sidebar-module-text { display: grid; line-height: 1.2; padding: 0; min-width: 0; }
+.sidebar-module-text strong { font-size: 13.5px; color: var(--accent-strong); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-module-text small { font-size: 11px; color: #8a8193; }
+.sidebar-pin { flex: none; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border-radius: 8px; background: none; color: #a39aac; }
+.sidebar-pin:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
+.sidebar-pin.on { color: var(--accent); }
+.sidebar-items { display: flex; flex-direction: column; gap: 1px; overflow-y: auto; min-height: 0; padding-right: 2px; }
+.sidebar .nav-group { margin: 14px 10px 4px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #a39aac; }
+.sidebar .nav-group:first-child { margin-top: 4px; }
+.sidebar-items a, .sidebar-items > span { position: relative; padding: 7px 10px 7px 14px; border-radius: 8px; font-size: 13px; line-height: 1.35; color: #334155; }
+.sidebar-items a:hover { background: #f7f2f7; color: var(--accent-strong); }
+.sidebar-items a.active { background: var(--accent-soft); color: var(--accent-strong); font-weight: 600; }
+.sidebar-items a.active::before { content: ''; position: absolute; left: 4px; top: 7px; bottom: 7px; width: 3px; border-radius: 3px; background: var(--accent); }
+.sidebar-items > span.disabled { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.sidebar-items > span.disabled app-icon { display: flex; opacity: 0.7; }
+.sidebar-items::-webkit-scrollbar { width: 6px; }
+.sidebar-items::-webkit-scrollbar-thumb { background: #e5dbe4; border-radius: 3px; }
+@media (prefers-reduced-motion: reduce) { .sidebar.floating { animation: none; } }
+
 /* Editable grid cell (frmMaintenanceBenefitsCln FGrid RM Payable Fee). */
 .grid td .cell-input { width: 100%; min-width: 7rem; box-sizing: border-box; }
 .grid td .cell-input.num { text-align: right; font-variant-numeric: tabular-nums; }
