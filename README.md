@@ -153,10 +153,11 @@ Step-by-step guide: [Cis/docs/onboarding.md](Cis/docs/onboarding.md).
 | `ConnectionStrings:CisDb` | CISDB; every other database is reached through synonyms |
 | `ConnectionStrings:Reporting` | Jupiter / Neptune replica for the "(Jupiter)" screens; empty = CisDb |
 | `ConnectionStrings:SunSystems` | SUN Systems accounting database (A/C Export > SUN screens); empty = those screens answer "not configured" |
-| `Auth:JwtKey`, `Auth:TokenHours` | token signing key and lifetime |
+| `Auth:JwtKey`, `Auth:Issuer`, `Auth:TokenHours` | token signing key, issuer and lifetime |
 | `Session:LoginLogPath` | optional login log file (the desktop's `LoginCIS.txt`) |
 | `Email:Host`, `Port`, `UseTls`, `From`, `PickupDirectory` | SMTP settings for the e-mail notification screens; development writes e-mails to `LocalRun\MailPickup` and sends nothing |
 | `Reports:TemplateRoot`, `Reports:MaxRows` | folder of the report templates; row cap for large listings |
+| `Files:Folders:<name>` | optional server folders the desktop wrote to or read from (`ClaimAscii`, `Bordx`, `McoInvoice`, `PaymentVoucher`, `Outpatient`, `ClinicPvs`, `PolicyWording`, `LgLetters`); not set = files are downloaded, and the document lists answer "not configured" |
 | `Cors:Origins` | allowed browser origins when the UI is not served by the API |
 
 Production checklist (open items):

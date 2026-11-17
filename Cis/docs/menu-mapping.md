@@ -7,7 +7,7 @@ how the item appears in the desktop, the migration phase of the plan and the sta
 disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet
 calculation, cheque / PV range print, ...) are listed with that screen.
 
-**110 screens to build · 107 migrated · 15 menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**
+**110 screens to build · 107 migrated · 15 menu items with nothing to build (no handler, no form, an empty form, a database that is not available, a developer test form or an older copy).**
 
 ## Summary
 

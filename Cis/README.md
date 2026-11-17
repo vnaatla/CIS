@@ -10,6 +10,6 @@ ASP.NET Core 10 Web API that, with the Angular app in `../CisUI`, replaces the V
 | `src/Cis.Api` | HTTP host and composition root: controllers, JWT, access filter, error handling, Swagger |
 | `tests/Cis.Api.Tests` | unit, service, architecture, integration and database tests |
 | `sql` | additive SQL scripts for CISDB (`cis-main.sql` is generated) |
-| `docs` | [architecture](docs/architecture.md), [onboarding](docs/onboarding.md), [menu mapping](docs/menu-mapping.md) (every desktop menu item and its status), [screen checklists](docs/screens) |
+| `docs` | [migration plan](docs/migration-plan.md), [architecture](docs/architecture.md), [onboarding](docs/onboarding.md), [menu mapping](docs/menu-mapping.md) (every desktop menu item and its status), [screen docs](docs/screens), [test guides](docs/testing) |
 
-Quick start: [docs/onboarding.md](docs/onboarding.md).
+Quick start: [docs/onboarding.md](docs/onboarding.md). Project overview: [../README.md](../README.md).

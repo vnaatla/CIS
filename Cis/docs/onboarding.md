@@ -57,9 +57,10 @@ step 1. After editing `CisUI/src/app/layout/menu.ts`: `node scripts/menu-mapping
 | `ConnectionStrings:CisDb` | CISDB (everything else through synonyms) |
 | `ConnectionStrings:Reporting` | Jupiter / Neptune replica for the "(Jupiter)" menu items; empty = CisDb |
 | `ConnectionStrings:SunSystems` | SUN Systems accounting DB (A/C Export > SUN screens); empty = those screens answer "not configured" |
-| `Auth:JwtKey` / `TokenHours` | token signing key (set via env `Auth__JwtKey`) and lifetime |
+| `Auth:JwtKey` / `Issuer` / `TokenHours` | token signing key (set via env `Auth__JwtKey`), issuer and lifetime |
 | `Session:LoginLogPath` | desktop's `DocPath\FileLogin\LoginCIS.txt`; empty = not written |
 | `Reports:TemplateRoot` | copies of `\\svr-doc\HISREPORTS` templates as .xltx; empty = layouts generated in code |
+| `Reports:MaxRows` | row cap for large listings |
 | `Files:Folders:<name>` | server folders the desktop wrote to (`ClaimAscii`, `Bordx`, `McoInvoice`, `PaymentVoucher`, `Outpatient`, `ClinicPvs`, `PolicyWording`, `LgLetters`) |
 | `Email:*` | SMTP (`Host`, `Port`, `User`, `Password` via env) or `PickupDirectory` |
 | `Cors:Origins` | dev UI origin |

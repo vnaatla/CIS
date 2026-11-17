@@ -76,13 +76,13 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 |---|---|---|
 | M1 | Generate | `<today>_OUTPATIENTPROVIDER.txt` with 131 clinics (nothing is updated) |
 
-## 10. MBM Tracking — `/membership/tracking` (FrmNewMBMTracking, in progress)
+## 10. MBM Tracking — `/membership/tracking` (FrmNewMBMTracking)
 
 | # | Action | Expected |
 |---|---|---|
 | T1 | INS Type & MBM Type / By Payor, member type P, status 0 - Active, payor DC → Search | the same rows as `EXEC HISDB.dbo.CISMBMTracking N' AND PAYCode = ''DC'' And MBMStatus = ''A'' ', 113` (about 15 s) |
 | T2 | No report type → Search | `Please select a report type.` |
-| T3 | A report marked "not migrated yet" → Search | `This report is not migrated yet.` |
+| T3 | Detail Listing / General Listing (Details), payor DC, member no. one member → Search | the principal, then the supplementaries, a member / cover id once, names marked (Suspended) / (Cancelled) / (Deleted) |
 
 ## 11. Claim Tracking — `/claim-bordx/claim-tracking/standard` (frmClaimRpt)
 

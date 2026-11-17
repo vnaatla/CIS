@@ -18,6 +18,9 @@ npm run e2e        # browser smoke test against a running API + UI (see e2e/READ
 | `src/app/shared` | reusable UI (button, field, date input, code select, data grid, tabs, modal, page shell, icons) and pure helpers (`lib`) |
 | `src/app/layout` | app layout (topbar, rail, sidebar) and `menu.ts`, the full CIS desktop menu with status per item |
 | `src/app/pages` | login, home, module overview |
+| `src/app/features` | one folder per module (maintenance, membership, invoice, claim, claim-bordx, lg-audit, mco-fees, payment, receipt, ac-export, reports) with its pages and routes |
+| `e2e` | browser checks (see `e2e/README.md`) |
 | `scripts/menu-mapping.mjs` | regenerates `../Cis/docs/menu-mapping.md` from `menu.ts` |
+| `scripts/test-guide-coverage.cjs` | lists migrated menu items that no test guide in `../Cis/docs/testing` mentions |
 
 Node.js ≥ 22.22.3 is required. Dependencies are pinned to exact versions (`.npmrc` `save-exact=true`).

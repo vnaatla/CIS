@@ -2,7 +2,9 @@
 
 `run.mjs` drives headless Chrome / Edge (puppeteer-core, the browser installed on the PC) against a running API (:5100) and UI (:4200):
 login redirect, the desktop's wrong-password message (one attempt only: three suspend the account), login, layout (rail, home cards),
-module overview and sidebar, unknown-screen fallback, logout.
+module overview and sidebar, unknown-screen fallback, a check per migrated screen of Phases 1–5, the module steps in `steps/`
+(claim-bordx, payment, receipt, ac-export, reports), and logout: 111 checks in all. The checks search or open screens only; nothing is
+posted, sent or saved.
 
 ```powershell
 $env:E2E_PASSWORD = '<password of E2E_USER>'   # required

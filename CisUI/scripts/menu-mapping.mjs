@@ -39,7 +39,7 @@ const lines = [
   'disabled and never-opened forms are migrated too. Pop-up forms opened from a screen (member / ICD / clinic search, case list, worksheet',
   'calculation, cheque / PV range print, ...) are listed with that screen.',
   '',
-  `**${buildable.length} screens to build · ${buildable.filter((i) => i.migrated).length} migrated · ${all.length - buildable.length} menu items with no handler, no form, an empty form or a database that is not available (nothing to build).**`,
+  `**${buildable.length} screens to build · ${buildable.filter((i) => i.migrated).length} migrated · ${all.length - buildable.length} menu items with nothing to build (no handler, no form, an empty form, a database that is not available, a developer test form or an older copy).**`,
   '',
   '## Summary',
   '',
