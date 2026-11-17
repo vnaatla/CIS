@@ -530,8 +530,17 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .sidebar-pin:hover:not(:disabled) { background: var(--accent-soft); color: var(--accent); }
 .sidebar-pin.on { color: var(--accent); }
 .sidebar-items { display: flex; flex-direction: column; gap: 1px; overflow-y: auto; min-height: 0; padding-right: 2px; }
-.sidebar .nav-group { margin: 14px 10px 4px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #a39aac; }
-.sidebar .nav-group:first-child { margin-top: 4px; }
+/* Sub-menu headings: a marker, the name and a hairline to the edge. */
+.sidebar .nav-group {
+  display: flex; align-items: center; gap: 8px; margin: 16px 6px 6px; padding: 0 4px;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent-strong);
+}
+.sidebar .nav-group::before {
+  content: ''; flex: none; width: 6px; height: 6px; border-radius: 2px; transform: rotate(45deg);
+  background: linear-gradient(140deg, #a8329a, var(--accent-strong)); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.sidebar .nav-group::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, #e9d6e6, transparent); }
+.sidebar .nav-group:first-child { margin-top: 6px; }
 .sidebar-items a, .sidebar-items > span { position: relative; padding: 7px 10px 7px 14px; border-radius: 8px; font-size: 13px; line-height: 1.35; color: #334155; }
 .sidebar-items a:hover { background: #f7f2f7; color: var(--accent-strong); }
 .sidebar-items a.active { background: var(--accent-soft); color: var(--accent-strong); font-weight: 600; }
