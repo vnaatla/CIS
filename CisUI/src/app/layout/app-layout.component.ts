@@ -23,13 +23,30 @@ const NAV_COLLAPSED = 'nav-collapsed'
         <button type="button" class="nav-toggle" (click)="toggleNav()" [title]="open() ? 'Hide sidebar' : 'Show sidebar'" [attr.aria-label]="open() ? 'Hide sidebar' : 'Show sidebar'" [attr.aria-expanded]="open()">
           <app-icon [name]="open() ? 'chevLeft' : 'chevRight'" />
         </button>
-        <span class="brand-mark"><app-icon name="cross" [size]="14" /></span>
-        <strong>CIS</strong>
-        <span class="muted">MediExpress Clinical Information System</span>
+        <a routerLink="/" class="topbar-brand" aria-label="CIS home">
+          <span class="brand-mark"><app-icon name="cross" [size]="16" /></span>
+          <span class="topbar-title">
+            <strong>CIS</strong>
+            <small>MediExpress Clinical Information System</small>
+          </span>
+        </a>
+        @if (section(); as s) {
+          <span class="topbar-crumb"><app-icon name="chevRight" [size]="14" /> {{ s.label }}</span>
+        }
         <span class="spacer"></span>
-        <button type="button" class="link" title="Print this screen (File > Print)" (click)="print()">Print</button>
-        <span>{{ session.user()?.userName }} ({{ session.user()?.userCode }})</span>
-        <button type="button" class="link" (click)="logout()">Log out</button>
+        <div class="topbar-actions">
+          <button type="button" class="topbar-icon" title="Print this screen (File > Print)" aria-label="Print" (click)="print()">
+            <app-icon name="printer" [size]="17" />
+          </button>
+          <span class="topbar-user" [title]="session.user()?.userName + ' (' + session.user()?.userCode + ')'">
+            <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+            <span class="topbar-user-text">
+              <strong>{{ session.user()?.userName }}</strong>
+              <small>{{ session.user()?.userCode }}</small>
+            </span>
+          </span>
+          <button type="button" class="link topbar-logout" (click)="logout()"><app-icon name="logout" [size]="16" /> Log out</button>
+        </div>
       </header>
 
       <nav class="rail" aria-label="Modules" (mouseenter)="open.set(true)" (mouseleave)="navLeave($event)">
@@ -71,6 +88,15 @@ export class AppLayoutComponent {
   protected readonly modules = MENU
   protected readonly open = signal(localStorage.getItem(NAV_COLLAPSED) !== '1')
   protected readonly hover = signal<string | null>(null)
+  /** Up to two initials of the user's name, for the avatar. */
+  protected readonly initials = computed(() =>
+    (this.session.user()?.userName ?? this.session.user()?.userCode ?? '?')
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((w) => w[0]!.toUpperCase())
+      .join(''),
+  )
   protected readonly path = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),
