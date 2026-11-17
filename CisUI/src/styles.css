@@ -459,7 +459,8 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 @media (max-width: 900px) { .topbar-title small, .topbar-user-text, .topbar-crumb { display: none; } .topbar-user { padding-right: 3px; } }
 
 /* Home page. */
-.home { max-width: 1240px; display: grid; gap: 18px; }
+/* Fills the content area (wider with the sidebar hidden, narrower with it open); the grids reflow. */
+.home { width: 100%; min-width: 0; display: grid; gap: 18px; }
 .home-hero {
   position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 32px;
   border-radius: 16px; color: #fff; background: linear-gradient(135deg, #a8329a 0%, var(--accent-strong) 55%, #4a1245 100%);
@@ -478,13 +479,14 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .home-progress-label { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; line-height: 1.1; }
 .home-progress-label strong { font-size: 24px; }
 .home-progress-label span { font-size: 11px; color: rgb(255 255 255 / 80%); }
-.home-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.home-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 1000px) { .home-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .home-stat { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: #fff; border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 2px 8px rgb(15 42 56 / 4%); }
 .home-stat > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); }
 .home-stat strong { display: block; font-size: 22px; line-height: 1.1; color: #1f2937; }
 .home-stat small { font-size: 12px; color: #64748b; }
 .home-section { margin: 6px 0 -4px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a8193; }
-.home-modules { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.home-modules { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 14px; }
 .home-modules a {
   display: flex; align-items: center; gap: 14px; padding: 16px; background: #fff; border: 1px solid var(--border); border-radius: 14px;
   color: #1f2937; text-decoration: none; box-shadow: 0 2px 8px rgb(15 42 56 / 4%); transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
