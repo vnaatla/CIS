@@ -592,3 +592,52 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .section-title { margin: 12px 0 6px; font-size: 14px; }
 textarea.highlight { background: #fff8c5; }
 .limit-note { white-space: pre-line; }
+
+/* ===== Screen design (all screens on app-page-shell / fieldsets / app-field / app-action-bar / app-tabs) ===== */
+/* Frame: full width of the content area. */
+.registration { max-width: none; width: 100%; gap: 16px; }
+/* Header: title with an accent bar, the replaced VB6 form as a badge. */
+.screen-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; padding: 2px 0 4px 14px; position: relative; }
+.screen-head::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 6px; width: 4px; border-radius: 4px; background: linear-gradient(180deg, #a8329a, var(--accent-strong)); }
+.screen-head h2 { font-size: 22px; font-weight: 800; letter-spacing: 0.01em; }
+.screen-head p.muted { padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: 11.5px; font-weight: 600; }
+/* Section cards: the legend becomes a header inside the card (marker, name, hairline) instead of text on the border. */
+.registration fieldset { border-radius: 14px; padding: 16px 18px 18px; gap: 12px 18px; border-color: #ece6ee; box-shadow: 0 2px 10px rgb(76 18 69 / 5%); }
+.registration fieldset > legend {
+  float: left; grid-column: 1 / -1; width: 100%; display: flex; align-items: center; gap: 9px; margin: 0 0 2px; padding: 0 0 10px;
+  border-bottom: 1px solid #f0e8ef; font-size: 12px; letter-spacing: 0.08em; color: var(--accent-strong);
+}
+.registration fieldset > legend::before {
+  content: ''; flex: none; width: 7px; height: 7px; border-radius: 2px; transform: rotate(45deg);
+  background: linear-gradient(140deg, #a8329a, var(--accent-strong)); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.registration fieldset:disabled > legend::before { background: #cbd5e1; box-shadow: 0 0 0 3px #f1f5f9; }
+/* Nested sections (a card inside a tab or card) are lighter. */
+.registration fieldset fieldset, .tab-body fieldset { box-shadow: none; background: #fdfcfd; }
+/* Fields: clearer labels, softer controls, read-only / disabled values readable. */
+.form-field { gap: 5px; }
+.form-field > span { font-size: 11.5px; font-weight: 600; color: #5b5268; letter-spacing: 0.02em; }
+.registration input:not([type='checkbox']):not([type='radio']), .registration select, .registration textarea { border-radius: 8px; border-color: #ddd5df; background: #fff; transition: border-color 0.15s, box-shadow 0.15s; }
+.registration input:not([type='checkbox']):not([type='radio']):hover:not(:disabled), .registration select:hover:not(:disabled), .registration textarea:hover:not(:disabled) { border-color: #c6b4c4; }
+.registration input:disabled, .registration select:disabled, .registration textarea:disabled, .registration input[readonly], .registration textarea[readonly] {
+  background: #f7f4f8; color: #2b2333; border-color: #ebe4ec; opacity: 1; -webkit-text-fill-color: #2b2333;
+}
+.registration textarea { min-height: 52px; padding: 8px 10px; line-height: 1.45; resize: vertical; }
+.form-field .req { color: #c0399f; text-decoration: none; margin-left: 1px; }
+/* Command bars: inside a card a plain row of buttons (no box); a stand-alone bar keeps its sticky card. */
+.registration fieldset > app-action-bar .cr-actions, .tab-body app-action-bar .cr-actions {
+  position: static; padding: 2px 0 0; border: 0; border-radius: 0; background: none; box-shadow: none;
+}
+.cr-actions { border-radius: 12px; border-color: #ece6ee; box-shadow: 0 4px 14px rgb(76 18 69 / 7%); }
+.actions > button:not(.link):not(.ghost):not(.danger) { border-radius: 9px; font-weight: 600; box-shadow: 0 3px 8px rgb(156 43 142 / 20%); }
+.actions > button:not(.link):hover:not(:disabled) { transform: translateY(-1px); }
+.actions > button:disabled { box-shadow: none; }
+/* Tabs: a card with a tab strip on top. */
+.tabbed { border-radius: 14px; background: #fff; border: 1px solid #ece6ee; box-shadow: 0 2px 10px rgb(76 18 69 / 5%); overflow: hidden; }
+.tabbed > .tabs { gap: 4px; padding: 8px 10px 0; border-bottom: 1px solid #ece6ee; background: linear-gradient(180deg, #fbf8fb, #fff); }
+.tabbed > .tabs button { padding: 9px 16px 10px; border-radius: 9px 9px 0 0; border-bottom-width: 3px; color: #64748b; font-weight: 600; }
+.tabbed > .tabs button:hover:not(:disabled) { background: #f6eef5; color: var(--accent-strong); }
+.tabbed > .tabs button.active { background: #fff; color: var(--accent-strong); border-bottom-color: var(--accent); }
+.tabbed > .tab-body { border: 0; border-radius: 0; padding: 16px 18px 18px; }
+.tabbed > .tab-body > .screen-form, .tabbed > .tab-body > fieldset { gap: 14px; }
+@media (prefers-reduced-motion: reduce) { .actions > button:not(.link):hover:not(:disabled) { transform: none; } }
