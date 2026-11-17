@@ -656,6 +656,6 @@ textarea.highlight { background: #fff8c5; }
 .tabbed > .tabs button { padding: 9px 16px 10px; border-radius: 9px 9px 0 0; border-bottom-width: 3px; color: #64748b; font-weight: 600; }
 .tabbed > .tabs button:hover:not(:disabled) { background: #f6eef5; color: var(--accent-strong); }
 .tabbed > .tabs button.active { background: #fff; color: var(--accent-strong); border-bottom-color: var(--accent); }
-.tabbed > .tab-body { border: 0; border-radius: 0; padding: 16px 18px 18px; }
+.tabbed > .tab-body { border: 0; border-radius: 0; padding: 16px 18px 18px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-content: start; }
 .tabbed > .tab-body > .screen-form, .tabbed > .tab-body > fieldset { gap: 14px; }
 @media (prefers-reduced-motion: reduce) { .actions > button:not(.link):hover:not(:disabled) { transform: none; } }
