@@ -9,7 +9,7 @@ Phase 0. Source: `CIS VB/frmLogin.frm`, `MDIMain.frm` (Logout_Click, mnuCloseCon
 |---|---|
 | txtUserName (Enter → password) | User Name (Enter → password), max 10 |
 | txtPassword (Enter → OK) | Password (Enter submits), max 10 |
-| cmdOK | **OK** |
+| cmdOK | **Sign in** (renamed from OK on request, 17 Nov 2026) |
 | cmdCancel (Unload) | not needed (close the tab) |
 | cmdChange → form grows to show txtnewpass / txtnewconfirm | **Change Password** opens the same two fields under the login box |
 | cmdSave | **Save** (in change mode) |

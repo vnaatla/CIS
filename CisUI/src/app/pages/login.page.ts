@@ -98,7 +98,7 @@ import { IconComponent } from '../shared/icon.component'
               <button appButton variant="primary" type="submit" [busy]="busy()">{{ busy() ? 'Saving…' : 'Save' }}</button>
               <button appButton variant="link" (click)="cancelChange()">Cancel</button>
             } @else {
-              <button appButton variant="primary" type="submit" [busy]="busy()">{{ busy() ? 'Signing in…' : 'OK' }}</button>
+              <button appButton variant="primary" type="submit" [busy]="busy()">{{ busy() ? 'Signing in…' : 'Sign in' }}</button>
               <button appButton variant="link" (click)="startChange()">Change Password</button>
             }
           </div>
