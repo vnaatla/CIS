@@ -39,7 +39,7 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | D3 | Update with no date | `Please Enter Bordx Date` |
 | D4 | (writes) New date 05/08/2021 → Update | `BordxDate Updated Successfully..!!` (restore: set it back to 02/08/2021) |
 
-## 4. Bordx Delivery — `/claim-bordx/delivery/send-to-payor`, `returned`, `send-to-ac`, `send-to-mnrb`
+## 4. Bordx Delivery — `/claim-bordx/delivery/send-to-payor`, `/claim-bordx/delivery/returned` (FrmReturnPayor), `/claim-bordx/delivery/send-to-ac` (FrmSendtoAC), `/claim-bordx/delivery/send-to-mnrb` (FrmSendtoMNRB), Bor Acc Period `/claim-bordx/ac-period` (FrmACPeriod)
 
 | # | Action | Expected |
 |---|---|---|
@@ -53,7 +53,7 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | B7 | Bor Acc Period: same company / date → Search | 17 bordereaux with their A/C periods |
 | B8 | B7 → tick one → Update without a month | `Month cannot be Empty.` |
 
-## 5. Monitoring — `/claim-bordx/monitoring/control`, `outstanding`, `bordx-worksheet`
+## 5. Monitoring — `/claim-bordx/monitoring/control`, `/claim-bordx/monitoring/outstanding` (FrmOSBordx), `/claim-bordx/monitoring/bordx-worksheet` (FrmBordxWks)
 
 | # | Action | Expected |
 |---|---|---|
@@ -75,3 +75,43 @@ UPDATE CISWorksheet.dbo.CLAIM_BordxSEQ SET CLMBordxNo = '<previous>' WHERE PAYCo
 | P6 | `/claim-bordx/print/bsn` (or any variant): `KDC55049` → Search → Summary Preview (June 2021) | the list without company / bill type; the variant's summary workbook |
 
 Clean-up after B4: `UPDATE CISWorksheet.dbo.Bordx SET BordxPayToStatus = 0, BordxPAYSentDate = NULL WHERE BordxRefNo = '<no>';`
+
+## 7. Insert Invoice — `/claim-bordx/insert-invoice` (frmWSBordx2)
+
+| # | Action | Expected |
+|---|---|---|
+| I1 | Group company `A242 - ASIAFLEX PRODUCTS SDN. BHD.`, register date 01/08/2021 – 04/08/2021 → Search | 48 rows, including invoice 7486; payor DC filled from the group company |
+| I2 | I1 → Bordx with nothing ticked | `Please select at least one record to be updated! ` |
+| I3 | I1 → tick a row without an invoice date | `Invoice Date cannot be empty.` |
+| I4 | Group company `A242`, register date 01/01/2030 → Search | `No record found!` |
+| I5 | (writes) tick invoice 7486 → Bordx → Yes | a new bordx no. from payor DC; its claims get that bordx no. |
+
+Clean-up after I5 (replace the bordx no.):
+
+```sql
+UPDATE CISWorksheet.dbo.Claim SET BordxRefNo = NULL, ClaimBordxStatus = 0 WHERE BordxRefNo = '<bordx>';
+UPDATE CISWorksheet.dbo.ClaimInvoice SET INVBordxRefNo = NULL, INVBordxed = 0 WHERE INVBordxRefNo = '<bordx>';
+DELETE CISWorksheet.dbo.Bordx WHERE BordxRefNo = '<bordx>';
+```
+
+## 8. BSN-PrintSummary — `/claim-bordx/print/bsn-summary` (frmBSNPrintSummary)
+
+| # | Action | Expected |
+|---|---|---|
+| S1 | Search with the bordx box empty | `Please Enter Bordx Refno..! ` |
+| S2 | `KDC55481` → Search | 1 row: 772 claims, with the bordx amount and date |
+| S3 | Add Bordx → second box `KDC55049` → Search | both bordereaux are listed |
+| S4 | Export | the list as CSV |
+
+## 9. Print Bordx client variants — `/claim-bordx/print/seb` (frmPrintBordxIBM), `prasarana` (frmPrintBordxSPNB), `axa-affin` (frmPrintBordxAXAAffin), `time-dotcom` (frmPrintBordxTimeDotcom), `bsn` (frmPrintBordxBSN), `berjaya-sompo` (frmPrintBordxBSI), `crystal` (frmPrintBordx)
+
+All variants: no Company / Bill Type fields; `Please enter Bordx Reference No` with a blank box; `KDC55049` → Search lists EA12409034, 250.00, printed NO.
+
+| # | Variant | Action | Expected (Summary Preview, KDC55049, June 2021) |
+|---|---|---|---|
+| V1 | SEB / Indah Water | Summary Preview | VIEW_OP_GRPSummaryALL: 1 visit, 250.00, DAYANG ENTERPRISE SDN BHD, bordx date 28/06/2021 |
+| V2 | Prasarana | Summary Preview | View_CISBordxSummary_SPNB has no rows locally → `No record found!` |
+| V3 | AXA Affin, Time Dotcom | Summary Preview | VIEW_OP_AXASummary: 1 visit, 250.00, co-pay 75.05 |
+| V4 | BSN | Summary Preview | View_OP_BSNSummary: 1 visit, 250.00, co-pay 75.05 |
+| V5 | Berjaya Sompo, Crystal | Summary Preview | View_CIS_PrintBordx_Summary: 1 case, MARINE, final approved 250.00, total 325.05 |
+| V6 | any variant (writes) | Print Details | printed YES; restore as P5 |

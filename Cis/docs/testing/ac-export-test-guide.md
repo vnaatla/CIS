@@ -88,3 +88,12 @@ Clean-up after a real post: `UPDATE CISDB.dbo.CISCas SET CASInvPost = '0', CASIn
 | E1 | Receipt date 01/06/2021 – 31/07/2021 → Search | 975 rows (about 10 s) |
 | E2 | Receipt no. RP37386 – RP37386 → Search | one receipt: `7610` D and `65P262` C 103,547.24 (PERBADANAN INSURANS DEPOSIT MALAYSIA), its 4 bordereaux listed together |
 | E3 | Tick → Post without receipt dates | `Please Enter Receipt Date! ` |
+
+## 10. Invoice Posting > Clinic (GST-2017 Zeroised) — `/ac-export/invoice/clinic-gst-2017-zeroised` (frmPostingInvClnGST2017Zeroised)
+
+| # | Action | Expected |
+|---|---|---|
+| Z1 | Invoice date 01/07/2021 – 01/07/2021, invoice 0210152590 – 0210152590 → Search | PANTAI HOSPITAL KUALA LUMPUR (P320), account 84P320, 983.00 |
+| Z2 | Invoice date 01/07/2021 – 01/07/2021 → Search | the same 105 unposted invoices as GST-2017 (Y1); the FFS fee is on 1002 and the 8830 GST line is 0.00 |
+| Z3 | Status 1 - Yes, batch 2660 – 2660 → select a line → Generate Tax Invoice | the tax invoice shows the fee without GST (the desktop still split it into 94.34 % and GST) |
+| Z4 | (writes) Post | as GST-2017 (type InvClnGST2017); clean-up as section 3 |

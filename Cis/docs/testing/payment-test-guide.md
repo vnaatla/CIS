@@ -60,3 +60,20 @@ Clean-up after C7 (replace the PV no.; set PVSeq2013 back to the number before t
 DELETE CISPayment.dbo.Payment2CLN WHERE PVCLNNo = 'CP100472168';
 UPDATE CISPayment.dbo.PVSeq2013 SET PVSEQNO = '100472167' WHERE BankCode = 'MB';
 ```
+
+## 6. Pay Clinic Post — `/payment/post/clinic` (frmPayClinicPost)
+
+| # | Action | Expected |
+|---|---|---|
+| C1 | Post status 0 - No, register date 01/08/2021 – 03/08/2021 → Search | 29 unposted clinic payments (two posting lines each: `84` + clinic code debit and the bank credit), including PV CP100470829 |
+| C2 | Register date From 31/02/2021 | `Invalid date format!` |
+| C3 | Register date From in the future | `Invoice Date cannot greater than system date ! ` |
+| C4 | C1 → Print to File | the list as CSV |
+| C5 | (writes) C1 → Post | a workbook of the listed lines; their cases get CASPayCLNPost 1 |
+
+Clean-up after C5:
+
+```sql
+UPDATE CISDB.dbo.CISCas SET CASPayCLNPost = '0', CASPayCLNPostUser = NULL, CASPayCLNPostDate = NULL
+WHERE CASPayCLNPostDate = CAST(GETDATE() AS date) AND CASPayCLNPostUser = '<user>';
+```

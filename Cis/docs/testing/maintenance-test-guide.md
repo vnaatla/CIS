@@ -99,7 +99,7 @@ Treatment Reason with 612 rows is the quickest way to test the browser pager (G1
 Saved → `New Record Inserted Successfully..`; edited → `Record Updated Successfully..`; search = text contains. No Delete button: remove
 test rows with SQL (section 9).
 
-## 6. Benefit — `/maintenance/benefit/...`
+## 6. Benefit — `/maintenance/benefit/member` (frmMaintenanceBenefits), `/maintenance/benefit/clinic` (frmMaintenanceBenefitsCln), `/maintenance/benefit/clinic-new` (frmMaintenanceBenefitsClnNew)
 
 ### 6.1 Member — Category (BNFCategoryNew, right 141)
 

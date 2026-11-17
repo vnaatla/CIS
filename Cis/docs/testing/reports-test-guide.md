@@ -22,11 +22,12 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 
 | # | Screen | Action | Expected |
 |---|---|---|---|
-| A1 | Bintulu | Bordx KIV03274 – KIV03274, clinic NP → Generate | file `KIV03274(NP)<month><year>`, 78 visits |
-| A2 | Toshiba | Bordx KIV03274 – KIV03274 → Generate | `KIV03274(M-MEDIX).txt`, lines start with `M-MEDIX KIV03274` |
-| A3 | Singer | Bordx KIV03274, no "to" | `Please Enter Bordx No To ` |
-| A4 | TIMS | Bordx KDC55481 → Generate | 18 visits |
-| A5 | CIMB | Bordx KIS01540, Cashless → Generate | 571 visits |
+| A1 | Bintulu (`/invoice/claim-ascii/bintulu`, frmClaimDetailsASCII) | Bordx KIV03274 – KIV03274, clinic NP → Generate | file `KIV03274(NP)<month><year>`, 78 visits |
+| A2 | Toshiba (`/invoice/claim-ascii/toshiba`, frmClaimASCIIToshiba) | Bordx KIV03274 – KIV03274 → Generate | `KIV03274(M-MEDIX).txt`, lines start with `M-MEDIX KIV03274` |
+| A3 | Singer (`/invoice/claim-ascii/singer`, frmClaimASCIISinger) | Bordx KIV03274, no "to" | `Please Enter Bordx No To ` |
+| A4 | TIMS (`/invoice/claim-ascii/tims`, frmClaimASCIITIMS) | Bordx KDC55481 → Generate | 18 visits |
+| A5 | CIMB (`/invoice/claim-ascii/cimb`, frmClaimASCIICIMB) | Bordx KIS01540, Cashless → Generate | 571 visits |
+| A7 | Utusan Melayu (`/invoice/claim-ascii/utusan`, frmClaimASCIIUtusan) | Bordx KDC55481 – KDC55481 → Generate → Yes | the SQL error for `FWHSHISDB.dbo.MBMCoveredPersons` (view 01A needs a database that is not restored; the desktop fails the same way). The file layout is covered by the unit test |
 | A6 | OMNI | Generate | zip; the provider file marks the clinics as sent (clean-up: `UPDATE HISDB.dbo.CLN SET CLNOMNISent = NULL WHERE ...` for the listed codes) |
 
 ## 4. Invoice > Tracking — `/invoice/tracking` (FrmInvoiceTracking)
@@ -98,4 +99,27 @@ Log in as DEVADMIN / Gen12345. Browser steps for this phase alone: `$env:E2E_STE
 |---|---|---|
 | T1 | Actual + Claim, payor EA, DOV 01/07/2021 – 01/07/2021 → Search | one row per claim of `CISWorksheet.dbo.VIEW_CLMReport_Actual` for EA on that day (PAYCode not starting with Z), 28 fee columns and the total |
 | T2 | Cost Detail, same criteria | the 28 fee categories and Total; the Actual total = the sum of the fee columns of that view |
-| T3 | Claim Tracking 2 (Jupiter), Agent Code "A" | only agent code exactly "A" (the main screen: containing "A") |
+| T3 | Claim Tracking 2 (Jupiter) (`/claim-bordx/claim-tracking/v2-jupiter`, FrmNewClaimRpt2), Agent Code "A" | only agent code exactly "A" (the main screen: containing "A") |
+
+## 13. MBM Tracking variants — `/membership/tracking-jupiter` (FrmNewMBMTracking2), `/membership/tracking-simple` (frmNewMBMTrackingSimple), `/membership/tracking-jupiter-simple` (frmNewMBMTrackingRepSimple)
+
+| # | Screen | Action | Expected |
+|---|---|---|---|
+| V1 | Jupiter | Report Type General Listing | the choices offered by FrmNewMBMTracking2: no "Card Sent Date Listing"; no Billing combo effect |
+| V2 | Jupiter | General Listing (Details), payor DC, member no. one member | the supplementaries' Eff. / Exp. dates are their payor dates (main screen: cover dates) |
+| V3 | Simple | INS Type & MBM Type / By Payor, Status 0 - Active, payor DC → Search | 2 rows (DC N G 4,173 principals; DC N H 110,890), as `EXEC HISDB.dbo.CISMBMTracking_Simple N' AND PAYCode = ''DC'' And MBMStatus = ''A'' ', 113` |
+| V4 | Simple | Report Type Head Count, Head Count From 01/07/2021, To 31/07/2021 → Search | July · DC · 1375 · 121 · 1496 (`EXEC HISDB.dbo.ActiveHeadcount_CIS '2021-07-01','2021-07-31'`) |
+| V5 | Simple | Head Count → Print | the list as a file (the desktop's Excel export of it could never run) |
+| V6 | Jupiter - Simple | open the Report Type list | Age Band … Race only (no States, no Head Count) |
+
+## 14. Claim Tracking variants — `/claim-bordx/claim-tracking/simple` (frmClaimRptSimple), `jupiter` (frmNewClaimRpt), `jupiter-simple` (frmNewClaimRptSimpleJup), `sun` (frmClaimRptSUN)
+
+| # | Screen | Action | Expected |
+|---|---|---|---|
+| W1 | Simple | open the Report Type list | 20 types: Admission, Ageband, Bordx, Clinic, … Utilization (no Agent No, Clinic Group, Invoice, Verification of Claims) |
+| W2 | Simple | Ageband / Summary, payor `EA`, DOV 01/07/2021 – 01/07/2021 → Search | 9 age bands, the first (blank age band) 221 cases, 28,324.30 actual; as `EXEC CISWorksheet.dbo.CISClaimTracking_Simple N' AND PAYCode = ''EA'' And DateVisit >= ''07/01/2021'' And DateVisit <= ''07/01/2021''', 14` |
+| W3 | Simple | payor `DC` instead of EA | no DC → DC / EA rewrite on this screen: only DC claims |
+| W4 | Simple | General Listing / Without Remarks, payor EA, DOV 01/07/2021 | 42 columns (main screen: 54) |
+| W5 | Jupiter | Ageband / Summary, payor DC, DOV 01/07/2021 | the same 9 rows as the main screen (DC includes EA); the Report Type list stops at State (21 types) |
+| W6 | Jupiter - Simple | open the Report Type list | 19 types (Simple without Utilization) |
+| W7 | SUN System | General Listing / Without Remarks, payor EA, DOV 01/07/2021 → Search | 2,207 rows (case 112) with Clinic Invoice Batch, PV No and PV Date before the BTBG columns; no Verification of Claims type |
