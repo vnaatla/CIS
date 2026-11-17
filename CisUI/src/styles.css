@@ -442,9 +442,12 @@ input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='d
 .topbar::before { content: ''; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, #a8329a, var(--accent-strong), #4a1245); }
 .topbar-brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
 .topbar-brand .brand-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(140deg, #a8329a, var(--accent-strong)); box-shadow: 0 4px 10px rgb(156 43 142 / 28%); }
-.topbar-title { display: grid; line-height: 1.15; }
-.topbar-title strong { font-size: 15px; letter-spacing: 0.05em; color: var(--accent-strong); }
-.topbar-title small { font-size: 11.5px; color: #64748b; }
+.topbar-title { display: flex; align-items: center; gap: 12px; line-height: 1.15; }
+.topbar-title strong { font-size: 18px; font-weight: 800; letter-spacing: 0.06em; color: var(--accent-strong); }
+.topbar-title small {
+  padding-left: 12px; border-left: 2px solid #ead5e7; font-size: 14px; font-weight: 600; letter-spacing: 0.01em;
+  background: linear-gradient(90deg, #a8329a, var(--accent-strong) 60%, #5a1653); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
 .topbar-crumb { display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-strong); font-size: 12.5px; font-weight: 600; }
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 .topbar-icon { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border-radius: 9px; background: none; color: #64748b; }
