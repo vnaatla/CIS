@@ -231,7 +231,10 @@ button.ghost:hover:not(:disabled) { background: var(--accent-soft); color: var(-
 .doc-list .doc-name { text-align: left; word-break: break-all; }
 .doc-list .muted { margin-left: auto; white-space: nowrap; }
 .doc-list .link.danger { color: #b91c1c; }
-button.danger:not(:disabled) { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+/* Destructive actions (Delete, Reject, Cancel Supp): a light red outline, filled red on hover; faded when disabled. */
+button.danger { background: #fff; border: 1px solid #f1b4ae; color: #b42318; }
+button.danger:hover:not(:disabled) { background: #b42318; border-color: #b42318; color: #fff; }
+button.danger:disabled { background: #fff; border-color: #f4d3cf; color: #d99a93; opacity: 1; }
 
 /* ---- Motion: subtle, fast, respects reduced-motion ---- */
 button, .sidebar a, .rail a, .nav-toggle, input, select, textarea, .tabs button {
