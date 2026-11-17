@@ -93,10 +93,10 @@ import { IconComponent } from '../shared/icon.component'
             <p class="success login-message" role="status"><app-icon name="check" [size]="16" /> {{ info() }}</p>
           }
 
-          <div class="login-actions">
+          <div class="login-actions" [class.row]="changing()">
             @if (changing()) {
+              <button appButton variant="ghost" (click)="cancelChange()">Cancel</button>
               <button appButton variant="primary" type="submit" [busy]="busy()">{{ busy() ? 'Saving…' : 'Save' }}</button>
-              <button appButton variant="link" (click)="cancelChange()">Cancel</button>
             } @else {
               <button appButton variant="primary" type="submit" [busy]="busy()">{{ busy() ? 'Signing in…' : 'Sign in' }}</button>
               <button appButton variant="link" (click)="startChange()">Change Password</button>
