@@ -22,8 +22,7 @@ const NAV_PINNED = 'nav-pinned'
   template: `
     <div class="shell" [class.no-sidebar]="!docked()">
       <header class="topbar">
-        <button type="button" class="nav-toggle" (click)="togglePin()" [title]="pinned() ? 'Unpin the sidebar' : 'Pin the sidebar'"
-          [attr.aria-label]="pinned() ? 'Unpin the sidebar' : 'Pin the sidebar'" [attr.aria-pressed]="pinned()">
+        <button type="button" class="nav-toggle" (click)="togglePin()" [title]="pinTitle()" [attr.aria-label]="pinTitle()" [attr.aria-pressed]="pinned()">
           <app-icon [name]="pinned() ? 'chevLeft' : 'chevRight'" />
         </button>
         <a routerLink="/" class="topbar-brand" aria-label="CIS home">
@@ -72,9 +71,9 @@ const NAV_PINNED = 'nav-pinned'
                   <small>{{ migratedCount(s) }} / {{ sidebarItems(s).length }} screens</small>
                 </span>
               </a>
-              <button type="button" class="sidebar-pin" [class.on]="pinned()" (click)="togglePin()" [title]="pinned() ? 'Unpin the sidebar' : 'Pin the sidebar'"
-                [attr.aria-label]="pinned() ? 'Unpin the sidebar' : 'Pin the sidebar'" [attr.aria-pressed]="pinned()">
-                <app-icon [name]="pinned() ? 'pinOff' : 'pin'" [size]="15" />
+              <button type="button" class="sidebar-pin" [class.on]="docked()" (click)="pinClick(s)" [title]="docked() ? 'Unpin the sidebar' : 'Pin the sidebar'"
+                [attr.aria-label]="docked() ? 'Unpin the sidebar' : 'Pin the sidebar'" [attr.aria-pressed]="docked()">
+                <app-icon [name]="docked() ? 'pinOff' : 'pin'" [size]="15" />
               </button>
             </div>
             <div class="sidebar-items">
@@ -148,12 +147,29 @@ export class AppLayoutComponent {
     return this.sidebarItems(m).filter((i) => i.migrated).length
   }
 
+  /** Top-bar button title: on Home (no module open) the setting applies once a module is opened. */
+  protected readonly pinTitle = computed(() =>
+    (this.pinned() ? 'Unpin the sidebar' : 'Pin the sidebar') + (this.current() ? '' : ' (applies when a module is open)'),
+  )
+
   /** Pin / unpin the sidebar (kept in localStorage). */
   protected togglePin(): void {
-    this.pinned.update((p) => {
-      localStorage.setItem(NAV_PINNED, p ? '0' : '1')
-      return !p
-    })
+    this.setPinned(!this.pinned())
+  }
+
+  /**
+   * The sidebar's pin button. Docked: unpin. Floating (unpinned, or on Home where nothing can dock): pin, and open the module shown in the
+   * sidebar if it is not the current one, so the menu docks where the user pinned it.
+   */
+  protected async pinClick(m: MenuModule): Promise<void> {
+    if (this.docked()) return this.setPinned(false)
+    this.setPinned(true)
+    if (this.current()?.key !== m.key) await this.router.navigateByUrl(m.path)
+  }
+
+  private setPinned(p: boolean): void {
+    localStorage.setItem(NAV_PINNED, p ? '1' : '0')
+    this.pinned.set(p)
     this.open.set(false)
     this.hover.set(null)
   }
