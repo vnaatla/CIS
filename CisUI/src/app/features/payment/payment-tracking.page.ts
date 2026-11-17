@@ -76,7 +76,7 @@ const money = /Amt|Paid|Payable|Fee|Approve|Actual/i
             </app-action-bar>
           </fieldset>
         } @else {
-          <app-action-bar label="Tracking view actions"><button appButton (click)="fullView.set(false)">Back</button></app-action-bar>
+          <app-action-bar label="Tracking view actions"><button appButton variant="ghost" (click)="fullView.set(false)">Back</button></app-action-bar>
         }
         <app-data-grid caption="Payment tracking" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
         <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong> · Total Amount: <strong>{{ formatMoney(total()) }}</strong></p>

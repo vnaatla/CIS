@@ -49,7 +49,7 @@ export interface PendingDetails {
       </fieldset>
       <app-action-bar label="Pending actions">
         <button appButton variant="primary" [disabled]="!editable()" (click)="save()">Save</button>
-        <button appButton (click)="cancel()">Cancel</button>
+        <button appButton variant="ghost" (click)="cancel()">Cancel</button>
       </app-action-bar>
     </app-modal>
   `,
