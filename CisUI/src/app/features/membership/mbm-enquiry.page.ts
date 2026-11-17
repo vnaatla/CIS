@@ -167,7 +167,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
   imports: [FormsModule, NgTemplateOutlet, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent, TabsComponent, TabDirective, MemberSearchModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MBM Enquiry" subtitle="Replaces FrmMBMCLNEnq">
+    <app-page-shell title="MBM Enquiry">
       <div class="screen-form">
         <fieldset aria-label="Member">
           <legend>Member</legend>

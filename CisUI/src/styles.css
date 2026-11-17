@@ -612,7 +612,7 @@ textarea.highlight { background: #fff8c5; }
 .screen-crumbs a:hover { color: var(--accent); text-decoration: underline; }
 .screen-crumbs app-icon { display: flex; color: #c9bcc8; }
 .screen-crumbs span { color: var(--accent-strong); font-weight: 600; }
-.screen-head h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.01em; color: #2b1229; }
+.screen-head h2 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: 0.01em; color: var(--accent-strong); }
 .screen-head p.screen-head-badge {
   position: relative; z-index: 1; margin: 0 0 0 auto; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
   border: 1px solid #ead5e7; background: #fff; color: var(--accent-strong); font-size: 12px; font-weight: 600; white-space: nowrap;

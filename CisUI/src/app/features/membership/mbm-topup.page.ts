@@ -36,7 +36,7 @@ interface TopupMember {
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, MemberSearchModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Member Topup Limit" subtitle="Member Topup Limit and Amendment · replaces FrmMBMTopupLmt">
+    <app-page-shell title="Member Topup Limit" subtitle="Member Topup Limit and Amendment">
       <div class="screen-form">
         <fieldset aria-label="Member">
           <legend>Member</legend>

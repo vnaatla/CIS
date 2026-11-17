@@ -60,7 +60,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="v.title" [subtitle]="'Replaces ' + v.form">
+    <app-page-shell [title]="v.title">
       <div class="screen-form">
         <fieldset aria-label="Report">
           <legend>Report</legend>
