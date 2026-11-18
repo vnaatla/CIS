@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core'
   selector: 'app-field',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <label class="form-field" [class.wide]="wide()" [class.invalid]="!!error()">
+    <label class="form-field" [class.wide]="wide()" [class.span-2]="span() === 2" [class.invalid]="!!error()">
       <span>
         {{ label() }}
         @if (required()) {
@@ -31,5 +31,7 @@ export class FieldComponent {
   readonly error = input<string | null | undefined>(null)
   readonly hint = input<string | undefined>()
   readonly wide = input(false)
+  /** 2 = two grid columns (a long value that should not take the whole row). */
+  readonly span = input<1 | 2>(1)
   readonly required = input(false)
 }

@@ -73,7 +73,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
               <option [ngValue]="-1"></option>@for (t of types; track $index) { <option [ngValue]="$index">{{ t }}</option> }
             </select>
           </app-field>
-          <app-field label="Report Selection" [wide]="true">
+          <app-field label="Report Selection" [span]="2">
             <select name="selection" [(ngModel)]="selection">
               @for (r of selections(); track r.selection) { <option [value]="r.selection">{{ r.selection || '(all)' }}{{ r.migrated ? '' : ' — not migrated yet' }}</option> }
             </select>
@@ -118,12 +118,12 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
         </fieldset>
         <fieldset aria-label="Payor">
           <legend>Payor, company and clinic</legend>
-          <app-field label="Payor" [wide]="true">
+          <app-field label="Payor" [span]="2">
             <input name="payor" list="ct-payors" (focus)="payors()" (change)="companies()" [(ngModel)]="f['payor']" />
             <datalist id="ct-payors">@for (c of lists()['payors'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="company" list="ct-companies" (change)="departments()" [(ngModel)]="f['company']" />
             <datalist id="ct-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -132,12 +132,12 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
             <select name="deptSelection" [(ngModel)]="f['deptSelection']"><option value=""></option>@for (c of lists()['departments'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
           </app-field>
           <label class="check-field"><input type="checkbox" name="departmentBlank" [(ngModel)]="f['departmentBlank']" /> Empty</label>
-          <app-field label="Clinic" [wide]="true">
+          <app-field label="Clinic" [span]="2">
             <input name="clinic" list="ct-clinics" (focus)="load('clinics')" [(ngModel)]="f['clinic']" />
             <datalist id="ct-clinics">@for (c of lists()['clinics'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="clinicBlank" [(ngModel)]="f['clinicBlank']" /> Empty</label>
-          <app-field label="Clinic Group" [wide]="true">
+          <app-field label="Clinic Group" [span]="2">
             <input name="clinicGroup" list="ct-groups" (focus)="load('clinicgroups')" [(ngModel)]="f['clinicGroup']" />
             <datalist id="ct-groups">@for (c of lists()['clinicgroups'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>

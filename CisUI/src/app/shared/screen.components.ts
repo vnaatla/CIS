@@ -53,7 +53,8 @@ export class PageShellComponent {
     for (const m of MENU)
       for (const i of m.items)
         if ((this.url === i.path || this.url.startsWith(i.path + '/')) && i.path.length > (best?.len ?? 0)) best = { module: m, group: i.group, len: i.path.length }
-    return best ?? (MENU.find((m) => this.url.startsWith(m.path)) ? { module: MENU.find((m) => this.url.startsWith(m.path))!, len: 0 } : undefined)
+    const module = MENU.find((m) => this.url === m.path || this.url.startsWith(m.path + '/'))
+    return best ?? (module ? { module, len: 0 } : undefined)
   })
 }
 

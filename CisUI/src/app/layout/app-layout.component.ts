@@ -54,7 +54,7 @@ const NAV_PINNED = 'nav-pinned'
       <nav class="rail" aria-label="Modules" (mouseenter)="open.set(true)" (mouseleave)="navLeave($event)">
         <a routerLink="/" title="Home" aria-label="Home" [class.active]="path() === '/'"><app-icon name="home" /></a>
         @for (m of modules; track m.key) {
-          <a [routerLink]="m.path" [title]="m.label" [attr.aria-label]="m.label" [class.active]="path().startsWith(m.path)" (mouseenter)="hover.set(m.key)">
+          <a [routerLink]="m.path" [title]="m.label" [attr.aria-label]="m.label" [class.active]="inModule(m)" (mouseenter)="hover.set(m.key)">
             <app-icon [name]="m.icon" />
           </a>
         }
@@ -126,7 +126,13 @@ export class AppLayoutComponent {
   )
 
   /** The module of the current route. */
-  private readonly current = computed(() => MENU.find((m) => this.path().startsWith(m.path)))
+  private readonly current = computed(() => MENU.find((m) => this.inModule(m)))
+
+  /** The route is inside the module: its path, or below it ('/claim' must not match '/claim-bordx'). */
+  protected inModule(m: MenuModule): boolean {
+    const p = this.path()
+    return p === m.path || p.startsWith(m.path + '/')
+  }
 
   /** The module whose items the sidebar shows: the one under the pointer, else the current one. */
   protected readonly section = computed<MenuModule | undefined>(() => {

@@ -69,7 +69,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
               <option [ngValue]="-1"></option>@for (t of types; track $index) { <option [ngValue]="$index">{{ t }}</option> }
             </select>
           </app-field>
-          <app-field label="Report Selection" [wide]="true">
+          <app-field label="Report Selection" [span]="2">
             <select name="selection" [(ngModel)]="selection">
               @for (r of selections(); track r.selection) { <option [value]="r.selection">{{ r.selection || '(all)' }}{{ r.migrated ? '' : ' — not migrated yet' }}</option> }
             </select>
@@ -117,12 +117,12 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
         </fieldset>
         <fieldset aria-label="Payor">
           <legend>Payor and company</legend>
-          <app-field label="Payor" [wide]="true">
+          <app-field label="Payor" [span]="2">
             <input name="payor" list="mt-payors" (focus)="payors()" (change)="companies()" [(ngModel)]="f['payor']" />
             <datalist id="mt-payors">@for (c of lists()['payors'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="company" list="mt-companies" (change)="departments()" [(ngModel)]="f['company']" />
             <datalist id="mt-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>

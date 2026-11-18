@@ -63,7 +63,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
             <label class="check-field"><input type="radio" name="basis" [value]="3" [ngModel]="basis()" (ngModelChange)="basis.set($event)" /> Cost Detail</label>
           </div>
           @if (basis() !== 3) {
-            <app-field label="Report" [wide]="true">
+            <app-field label="Report" [span]="2">
               <select name="report" [(ngModel)]="report">@for (r of choices(); track r.report) { <option [ngValue]="r.report">{{ r.name }}</option> }</select>
             </app-field>
           }
@@ -102,22 +102,22 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
         </fieldset>
         <fieldset aria-label="Payor">
           <legend>Payor, company and clinic</legend>
-          <app-field label="Payor" [wide]="true">
+          <app-field label="Payor" [span]="2">
             <input name="payor" list="ct2-payors" (focus)="payors()" (change)="companies()" [(ngModel)]="f['payor']" />
             <datalist id="ct2-payors">@for (c of lists()['payors'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="company" list="ct2-companies" [(ngModel)]="f['company']" />
             <datalist id="ct2-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="companyBlank" [(ngModel)]="f['companyBlank']" /> Empty</label>
-          <app-field label="Clinic" [wide]="true">
+          <app-field label="Clinic" [span]="2">
             <input name="clinicName" list="ct2-clinics" (focus)="load('clinics')" [(ngModel)]="f['clinicName']" />
             <datalist id="ct2-clinics">@for (c of lists()['clinics'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
           <label class="check-field"><input type="checkbox" name="clinicNameBlank" [(ngModel)]="f['clinicNameBlank']" /> Empty</label>
-          <app-field label="Clinic Group" [wide]="true">
+          <app-field label="Clinic Group" [span]="2">
             <input name="clinicGroup" list="ct2-groups" (focus)="load('clinicgroups')" [(ngModel)]="f['clinicGroup']" />
             <datalist id="ct2-groups">@for (c of lists()['clinicgroups'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
