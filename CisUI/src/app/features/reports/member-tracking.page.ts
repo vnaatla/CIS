@@ -96,53 +96,45 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
         <fieldset aria-label="Member">
           <legend>Member</legend>
           @for (t of texts; track t.key) {
-            <app-field [label]="t.label"><input [name]="t.key" [attr.name]="t.key" maxlength="60" [(ngModel)]="f[t.key]" /></app-field>
-            <label class="check-field"><input type="checkbox" [name]="t.key + 'Blank'" [attr.name]="t.key + 'Blank'" [(ngModel)]="f[t.key + 'Blank']" /> Empty</label>
+            <div class="tf"><app-field [label]="t.label"><input [name]="t.key" [attr.name]="t.key" maxlength="60" [(ngModel)]="f[t.key]" /></app-field><label class="check-inline"><input type="checkbox" [name]="t.key + 'Blank'" [attr.name]="t.key + 'Blank'" [(ngModel)]="f[t.key + 'Blank']" /> Empty</label></div>
           }
           @for (c of combos; track c.key) {
-            <app-field [label]="c.label">
+            <div class="tf"><app-field [label]="c.label">
               <select [name]="c.key" [attr.name]="c.key" [(ngModel)]="f[c.key]"><option value=""></option>@for (i of c.items; track i) { <option [value]="i">{{ i }}</option> }</select>
-            </app-field>
-            @if (c.blank) { <label class="check-field"><input type="checkbox" [name]="c.key + 'Blank'" [attr.name]="c.key + 'Blank'" [(ngModel)]="f[c.key + 'Blank']" /> Empty</label> }
+            </app-field>@if (c.blank) { <label class="check-inline"><input type="checkbox" [name]="c.key + 'Blank'" [attr.name]="c.key + 'Blank'" [(ngModel)]="f[c.key + 'Blank']" /> Empty</label> }</div>
           }
-          <app-field label="Insured Type">
+          <div class="tf"><app-field label="Insured Type">
             <select name="ins" [(ngModel)]="f['ins']"><option value=""></option>@for (i of lists()['ins'] ?? []; track i) { <option [value]="i">{{ i }}</option> }</select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="insBlank" [(ngModel)]="f['insBlank']" /> Empty</label>
-          <app-field label="State">
+          </app-field><label class="check-inline"><input type="checkbox" name="insBlank" [(ngModel)]="f['insBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="State">
             <select name="state" [(ngModel)]="f['state']"><option value=""></option>@for (i of lists()['states'] ?? []; track i) { <option [value]="i">{{ i }}</option> }</select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="stateBlank" [(ngModel)]="f['stateBlank']" /> Empty</label>
+          </app-field><label class="check-inline"><input type="checkbox" name="stateBlank" [(ngModel)]="f['stateBlank']" /> Empty</label></div>
           <label class="check-field"><input type="checkbox" name="memberTypeBlank" [(ngModel)]="f['memberTypeBlank']" /> Member type empty</label>
         </fieldset>
         <fieldset aria-label="Payor">
           <legend>Payor and company</legend>
-          <app-field label="Payor" [span]="2">
+          <div class="tf"><app-field label="Payor" [span]="2">
             <input name="payor" list="mt-payors" (focus)="payors()" (change)="companies()" [(ngModel)]="f['payor']" />
             <datalist id="mt-payors">@for (c of lists()['payors'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label>
-          <app-field label="Group Company" [span]="2">
+          </app-field><label class="check-inline"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="Group Company" [span]="2">
             <input name="company" list="mt-companies" (change)="departments()" [(ngModel)]="f['company']" />
             <datalist id="mt-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="companyBlank" [(ngModel)]="f['companyBlank']" /> Empty</label>
-          <app-field label="Department">
+          </app-field><label class="check-inline"><input type="checkbox" name="companyBlank" [(ngModel)]="f['companyBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="Department">
             <select name="department" [(ngModel)]="f['department']"><option value=""></option>@for (c of lists()['departments'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="departmentBlank" [(ngModel)]="f['departmentBlank']" /> Empty</label>
+          </app-field><label class="check-inline"><input type="checkbox" name="departmentBlank" [(ngModel)]="f['departmentBlank']" /> Empty</label></div>
         </fieldset>
         <fieldset aria-label="Ranges">
           <legend>Ranges</legend>
           @for (r of ranges; track r.key) {
             @if (r.date) {
               <app-field [label]="r.label + ' From'"><app-date-input [name]="r.key + 'From'" [attr.name]="r.key + 'From'" [ariaLabel]="r.label + ' From'" [(ngModel)]="f[r.key + 'From']" /></app-field>
-              <app-field [label]="r.label + ' To'"><app-date-input [name]="r.key + 'To'" [attr.name]="r.key + 'To'" [ariaLabel]="r.label + ' To'" [(ngModel)]="f[r.key + 'To']" /></app-field>
+              <div class="tf"><app-field [label]="r.label + ' To'"><app-date-input [name]="r.key + 'To'" [attr.name]="r.key + 'To'" [ariaLabel]="r.label + ' To'" [(ngModel)]="f[r.key + 'To']" /></app-field>@if (r.blank) { <label class="check-inline"><input type="checkbox" [name]="r.key + 'Blank'" [attr.name]="r.key + 'Blank'" [(ngModel)]="f[r.key + 'Blank']" /> Empty</label> }</div>
             } @else {
               <app-field [label]="r.label + ' From'"><input [name]="r.key + 'From'" [attr.name]="r.key + 'From'" maxlength="50" [(ngModel)]="f[r.key + 'From']" /></app-field>
-              <app-field [label]="r.label + ' To'"><input [name]="r.key + 'To'" [attr.name]="r.key + 'To'" maxlength="50" [(ngModel)]="f[r.key + 'To']" /></app-field>
+              <div class="tf"><app-field [label]="r.label + ' To'"><input [name]="r.key + 'To'" [attr.name]="r.key + 'To'" maxlength="50" [(ngModel)]="f[r.key + 'To']" /></app-field>@if (r.blank) { <label class="check-inline"><input type="checkbox" [name]="r.key + 'Blank'" [attr.name]="r.key + 'Blank'" [(ngModel)]="f[r.key + 'Blank']" /> Empty</label> }</div>
             }
-            @if (r.blank) { <label class="check-field"><input type="checkbox" [name]="r.key + 'Blank'" [attr.name]="r.key + 'Blank'" [(ngModel)]="f[r.key + 'Blank']" /> Empty</label> }
           }
         </fieldset>
         <app-data-grid caption="Member tracking" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
