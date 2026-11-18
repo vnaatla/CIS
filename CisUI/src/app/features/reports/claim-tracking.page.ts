@@ -75,6 +75,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
           </app-field>
           <app-field label="Report Selection" [span]="2">
             <select name="selection" [(ngModel)]="selection">
+              @if (!selections().length) { <option value="" disabled>-- Select a Report Type first --</option> }
               @for (r of selections(); track r.selection) { <option [value]="r.selection">{{ r.selection || '(all)' }}{{ r.migrated ? '' : ' — not migrated yet' }}</option> }
             </select>
           </app-field>
