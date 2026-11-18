@@ -138,10 +138,13 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
           }
         </fieldset>
         <app-data-grid caption="Member tracking" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">
-          Principals: <strong>{{ totals().principals }}</strong> · Supplementaries: <strong>{{ totals().supps }}</strong> · Total:
-          <strong>{{ totals().principals + totals().supps }}</strong> · MCO: <strong>{{ money(totals().mco) }}</strong> · Premium: <strong>{{ money(totals().premium) }}</strong>
-          · Access: <strong>{{ money(totals().access) }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Principals</span><strong>{{ count(totals().principals) }}</strong></span>
+          <span class="total-card"><span>Supplementaries</span><strong>{{ count(totals().supps) }}</strong></span>
+          <span class="total-card main"><span>Total members</span><strong>{{ count(totals().principals + totals().supps) }}</strong></span>
+          <span class="total-card money"><span>MCO (RM)</span><strong>{{ money(totals().mco) }}</strong></span>
+          <span class="total-card money"><span>Premium (RM)</span><strong>{{ money(totals().premium) }}</strong></span>
+          <span class="total-card money"><span>Access (RM)</span><strong>{{ money(totals().access) }}</strong></span>
         </p>
       </div>
     </app-page-shell>
@@ -157,6 +160,8 @@ export class MemberTrackingPage implements OnInit {
   protected readonly combos = COMBOS
   protected readonly texts = TEXTS
   protected readonly money = (v: number) => formatMoney(v)
+  /** Member counts with thousands separators (116,110). */
+  protected readonly count = (v: number) => v.toLocaleString('en-US')
   protected readonly reports = signal<{ type: number; selection: string; migrated: boolean }[]>([])
   protected readonly type = signal(-1)
   protected readonly selections = computed(() => this.reports().filter((r) => r.type === this.type()))

@@ -744,3 +744,15 @@ textarea.highlight { background: #fff8c5; }
 .tf > .check-inline:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .tf .form-field > span { padding-right: 64px; }
 @media (max-width: 760px) { .registration fieldset > .tf:has(.form-field.span-2) { grid-column: 1 / -1; } }
+
+/* Totals under a list: a light card with the values in purple; .totals-cards shows each figure as its own card. */
+p.totals { margin: 0; padding: 10px 14px; border: 1px solid #ece6ee; border-radius: 12px; background: #fff; color: #6b5a69; font-size: 12.5px;
+  box-shadow: 0 2px 8px rgb(76 18 69 / 5%); }
+p.totals strong { color: var(--accent-strong); font-weight: 800; font-variant-numeric: tabular-nums; }
+/* .totals-cards: one quiet summary strip, small labels over the values, thin dividers between them. */
+p.totals.totals-cards { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; padding: 8px 4px; background: #fdfbfd; box-shadow: none; }
+.total-card { display: grid; gap: 2px; padding: 2px 18px; border-left: 1px solid #efe6ee; }
+.total-card:first-child { border-left: 0; }
+.total-card > span { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #9a8f99; }
+.total-card > strong { font-size: 14px; font-weight: 700; color: #3b2a39; }
+.total-card.main > strong, .total-card.money > strong { color: var(--accent-strong); }
