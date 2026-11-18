@@ -69,7 +69,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
         <fieldset aria-label="Report">
           <legend>Report</legend>
           <app-field label="Report Type">
-            <select name="reportType" [ngModel]="type()" (ngModelChange)="setType($event)">
+            <select name="reportType" data-required [ngModel]="type()" (ngModelChange)="setType($event)">
               <option [ngValue]="-1"></option>@for (t of types; track $index) { <option [ngValue]="$index">{{ t }}</option> }
             </select>
           </app-field>

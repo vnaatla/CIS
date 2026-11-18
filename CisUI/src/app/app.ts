@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { Router, RouterOutlet } from '@angular/router'
 import { ScreenAuditService } from './core/audit/screen-audit.service'
+import { SelectPlaceholderService } from './core/ui/select-placeholder.service'
 import { NotifyHostComponent } from './shared/notify-host.component'
 
 @Component({
@@ -12,5 +13,6 @@ import { NotifyHostComponent } from './shared/notify-host.component'
 export class App {
   constructor() {
     inject(ScreenAuditService).start(inject(Router))
+    inject(SelectPlaceholderService).start()
   }
 }
