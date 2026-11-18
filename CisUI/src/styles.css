@@ -772,6 +772,7 @@ select {
 select:hover:not(:disabled) { border-color: #c6b4c4; background-color: #fdfaFD; }
 select:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--ring); background-color: #fff; }
 select:disabled {
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
   cursor: default; background-color: #f7f4f8; border-color: #ebe4ec; color: #6b5a69; opacity: 1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9bcc8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
@@ -785,6 +786,7 @@ select option { padding: 6px 10px; }
 }
 .registration select:disabled, .modal-body select:disabled {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9bcc8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
 }
 
 /* ===== Data grids: a rounded card, tinted sticky header, roomy zebra rows, hover + selected accents, slim scrollbars ===== */
