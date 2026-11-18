@@ -6,7 +6,7 @@ import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
-import { FieldComponent } from '../../shared/field.component'
+import { IconComponent } from '../../shared/icon.component'
 import { saveCsv } from '../../shared/lib/download'
 import { formatDate } from '../../shared/lib/format'
 import { ModalComponent } from '../../shared/modal.component'
@@ -52,30 +52,34 @@ const date = (k: 'effDate' | 'expDate') => ({ value: (r: MemberRow) => formatDat
 /** The member search pop-ups; a click on a row returns it (the desktop's double-click). */
 @Component({
   selector: 'app-member-search-modal',
-  imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, DataGridComponent, ActionBarComponent, StatComponent],
+  imports: [FormsModule, ModalComponent, IconComponent, ButtonDirective, DataGridComponent, ActionBarComponent, StatComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal [title]="mode() === 'search' ? 'Search For Member' : 'Search MBM'" [wide]="true" (closed)="closed.emit()">
-      <div class="screen-form">
+    <app-modal [title]="mode() === 'search' ? 'Search For Member' : 'Search MBM'" icon="users" [wide]="true" (closed)="closed.emit()">
+      <div class="msearch">
         @if (mode() === 'search') {
-          <fieldset aria-label="Search">
-            <legend>Search</legend>
-            <app-field label="Search" [required]="true" hint="At least 3 characters">
-              <input name="memberSearchText" data-autofocus [(ngModel)]="text" (keydown.enter)="search()" />
-            </app-field>
-            <div class="radio-row" role="radiogroup" aria-label="Search by">
+          <div class="msearch-panel">
+            <label class="msearch-box">
+              <app-icon name="search" [size]="18" />
+              <input name="memberSearchText" aria-label="Search (at least 3 characters)" placeholder="Type at least 3 characters, then press Enter" data-autofocus
+                [(ngModel)]="text" (keydown.enter)="search()" />
+            </label>
+            <div class="msearch-by" role="radiogroup" aria-label="Search by">
+              <span class="msearch-by-label">Search by</span>
               @for (o of options; track o[0]) {
-                <label><input type="radio" name="memberSearchBy" [value]="o[0]" [(ngModel)]="by" /> {{ o[1] }}</label>
+                <label class="msearch-chip" [class.on]="by === o[0]">
+                  <input type="radio" name="memberSearchBy" [value]="o[0]" [(ngModel)]="by" /> {{ o[1] }}
+                </label>
               }
             </div>
-          </fieldset>
+          </div>
         }
         <app-action-bar label="Member search actions">
           @if (mode() === 'search') {
-            <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
+            <button appButton variant="primary" [busy]="busy()" (click)="search()"><app-icon name="search" [size]="15" /> Search</button>
             <button appButton variant="ghost" (click)="clear()">Clear</button>
           } @else {
-            <button appButton variant="ghost" [disabled]="rows().length === 0" (click)="print()">Print</button>
+            <button appButton variant="ghost" [disabled]="rows().length === 0" (click)="print()"><app-icon name="printer" [size]="15" /> Print</button>
           }
           <span class="spacer"></span>
           <app-stat label="Principal" [value]="principals()" />
@@ -83,10 +87,10 @@ const date = (k: 'effDate' | 'expDate') => ({ value: (r: MemberRow) => formatDat
           <app-stat label="Record(s)" [value]="rows().length" />
         </app-action-bar>
         @if (capped()) {
-          <p class="muted">Only the first 5,000 principals / supplementary members are listed; narrow the search.</p>
+          <p class="msearch-note">Only the first 5,000 principals / supplementary members are listed; narrow the search.</p>
         }
         <app-data-grid caption="Members found" [columns]="columns" [rows]="rows()" [rowKey]="rowKey" [selectable]="true" (rowSelected)="picked.emit($event)" />
-        <p class="muted">Click a member to choose it.</p>
+        <p class="msearch-hint"><app-icon name="check" [size]="14" /> Click a member to choose it.</p>
       </div>
     </app-modal>
   `,

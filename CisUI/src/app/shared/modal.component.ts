@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, input, output, viewChild } from '@angular/core'
+import { IconComponent, IconName } from './icon.component'
 
 const FOCUSABLE = 'input, select, textarea, button, [tabindex]'
 
@@ -8,13 +9,15 @@ const FOCUSABLE = 'input, select, textarea, button, [tabindex]'
  */
 @Component({
   selector: 'app-modal',
+  imports: [IconComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="modal-overlay" (keydown)="onKey($event)">
       <div #dialog [class]="wide() ? 'modal wide' : 'modal'" role="dialog" aria-modal="true" [attr.aria-label]="title()">
         <div class="modal-head">
+          <span class="modal-head-icon" aria-hidden="true"><app-icon [name]="icon()" [size]="17" /></span>
           <h3>{{ title() }}</h3>
-          <button type="button" class="link" aria-label="Close" (click)="closed.emit()">✕</button>
+          <button type="button" class="link modal-close" aria-label="Close" (click)="closed.emit()"><app-icon name="close" [size]="16" /></button>
         </div>
         <div class="modal-body"><ng-content /></div>
       </div>
@@ -24,6 +27,8 @@ const FOCUSABLE = 'input, select, textarea, button, [tabindex]'
 export class ModalComponent implements AfterViewInit, OnDestroy {
   readonly title = input.required<string>()
   readonly wide = input(false)
+  /** Icon in the header tile. */
+  readonly icon = input<IconName>('file')
   readonly closed = output<void>()
   private readonly dialog = viewChild.required<ElementRef<HTMLElement>>('dialog')
   private readonly previous = document.activeElement as HTMLElement | null
