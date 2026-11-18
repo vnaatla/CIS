@@ -395,9 +395,9 @@ export class InvoiceAdjustmentPage implements OnInit {
       || (pendingOpen && this.pending.reasonIds.join(',') !== x.pendingReasonIds.join(','))
     if (this.mode() === 'Full' && ubbs && this.xe.payTo === 'M' && changed) {
       const kind = rejection ? 'Rejection' : 'Pending'
-      notes = window.prompt(`Please Provide Additional Notes If Any.\nClick OK Button to Send ${kind} Email to member. Cancel to Abort..!`)
+      notes = await this.notify.prompt(`Please Provide Additional Notes If Any.\nClick OK Button to Send ${kind} Email to member. Cancel to Abort..!`, 'Additional notes')
       if (notes !== null && !x.email && !s(x.case['OPBatchNo']))
-        email = window.prompt('Member Email is not found in our Records. Please Provide Email Id If Any.\nClick OK Button to add Email Address. Cancel to Abort..!')
+        email = await this.notify.prompt('Member Email is not found in our Records. Please Provide Email Id If Any.\nClick OK Button to add Email Address. Cancel to Abort..!', 'Email')
     }
     this.busy.set(true)
     try {
