@@ -786,3 +786,30 @@ select option { padding: 6px 10px; }
 .registration select:disabled, .modal-body select:disabled {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9bcc8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
+
+/* ===== Data grids: a rounded card, tinted sticky header, roomy zebra rows, hover + selected accents, slim scrollbars ===== */
+.table-wrap { border: 1px solid #ece6ee; border-radius: 14px; background: #fff; box-shadow: 0 2px 10px rgb(76 18 69 / 6%); scrollbar-width: thin; scrollbar-color: #d9bfd5 #faf6fa; }
+.table-wrap::-webkit-scrollbar { width: 10px; height: 10px; }
+.table-wrap::-webkit-scrollbar-track { background: #faf6fa; }
+.table-wrap::-webkit-scrollbar-thumb { background: #dcc3d8; border-radius: 10px; border: 2px solid #faf6fa; }
+.table-wrap::-webkit-scrollbar-thumb:hover { background: #c79bc0; }
+.table-wrap::-webkit-scrollbar-corner { background: #faf6fa; }
+.grid th, .grid td { padding: 10px 14px; border-bottom: 1px solid #f3edf3; }
+.grid td { color: #2f2a35; font-size: 13px; vertical-align: middle; }
+.grid th {
+  z-index: 1; padding-top: 12px; padding-bottom: 11px; background: linear-gradient(180deg, #fbf7fb 0%, #f6eff6 100%); color: #6b5a69;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-bottom: 0; box-shadow: inset 0 -2px 0 #ead7e7;
+}
+.grid th button.th-sort .sort-mark { color: var(--accent); }
+.grid th[aria-sort='ascending'], .grid th[aria-sort='descending'] { color: var(--accent-strong); }
+.grid tbody tr:nth-child(even):not(.empty-row) { background: #fcfafd; }
+.grid tbody tr:last-child td { border-bottom: 0; }
+.grid tbody tr:not(.empty-row):hover { background: #f9f0f8; }
+.grid tr.clickable:hover { background: #f7ebf5; }
+.grid tbody tr.selected, .grid tbody tr.selected:hover { background: var(--accent-soft); }
+.grid tbody tr.selected td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.grid tbody tr.selected td { color: #3d1038; font-weight: 600; }
+.grid td.num { color: #3b2a39; }
+.grid tr.empty-row td { padding: 34px 14px; color: #9a8f99; font-size: 13px; background: repeating-linear-gradient(135deg, #fff, #fff 10px, #fdfafd 10px, #fdfafd 20px); }
+.grid-pager { padding-top: 12px; }
+@media (prefers-reduced-motion: reduce) { .grid tr { transition: none; } }
