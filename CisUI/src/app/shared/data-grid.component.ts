@@ -72,7 +72,7 @@ const compare = (a: string | number, b: string | number) =>
             </tr>
           } @empty {
             <tr class="empty-row">
-              <td [attr.colspan]="columns().length + (checkable() ? 1 : 0)">{{ empty() }}</td>
+              <td [attr.colspan]="columns().length + (checkable() ? 1 : 0)"><span class="empty-msg">{{ empty() }}</span></td>
             </tr>
           }
         </tbody>

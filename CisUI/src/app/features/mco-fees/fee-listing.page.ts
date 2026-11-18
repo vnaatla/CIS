@@ -35,7 +35,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MCO Fee Listing" subtitle="Replaces frmMCOFeeListNew">
+    <app-page-shell title="MCO Fee Listing">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -58,7 +58,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
               <app-field label="Invoice No."><input name="invoiceNo" maxlength="30" [(ngModel)]="f.invoiceNo" /></app-field>
             }
           }
-          <app-field label="Listing Version" [required]="true">
+          <app-field label="Listing Version" [required]="true" [span]="2">
             <select name="version" [(ngModel)]="f.version">
               <option [ngValue]="0">MCO Listing - by Payor</option><option [ngValue]="1">MCO Listing - by Group Company</option>
               <option [ngValue]="2">MCO Listing - by Department</option>
@@ -69,7 +69,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
               <select name="payor" [(ngModel)]="f.payor"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
             </app-field>
           } @else {
-            <app-field label="Group Company" [wide]="true">
+            <app-field label="Group Company" [span]="2">
               <input name="groupCompany" list="mco-groups" [(ngModel)]="f.groupCompany" />
               <datalist id="mco-groups">@for (g of groups(); track g.code) { <option [value]="g.code + ' - ' + g.name"></option> }</datalist>
             </app-field>
@@ -88,7 +88,10 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO fees" [columns]="columns" [rows]="rows()" [rowKey]="key" [selectable]="true" [selectedKey]="selected()" (rowSelected)="pick($any($event))" />
-        <p class="totals" aria-label="Totals">Principal: <strong>{{ result()?.principals ?? 0 }}</strong> · Supplementary: <strong>{{ result()?.supplementaries ?? 0 }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Principal</span><strong>{{ result()?.principals ?? 0 }}</strong></span>
+          <span class="total-card"><span>Supplementary</span><strong>{{ result()?.supplementaries ?? 0 }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

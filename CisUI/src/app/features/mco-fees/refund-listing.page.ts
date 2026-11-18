@@ -33,11 +33,11 @@ const m = (v: unknown) => (v == null ? '' : formatMoney(Number(v)))
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MCO Refund Listing" subtitle="Replaces frmMCORefundListing">
+    <app-page-shell title="MCO Refund Listing">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Listing Version" [required]="true">
+          <app-field label="Listing Version" [required]="true" [span]="2">
             <select name="version" [(ngModel)]="f.version" (ngModelChange)="versionChanged()">
               <option [ngValue]="null"></option><option [ngValue]="0">MCO Listing - by Payor</option>
               <option [ngValue]="1">MCO Listing - by Group Company</option><option [ngValue]="2">MCO Listing - by Department</option>
@@ -48,7 +48,7 @@ const m = (v: unknown) => (v == null ? '' : formatMoney(Number(v)))
               <select name="payor" [(ngModel)]="f.payor"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
             </app-field>
           } @else if (f.version !== null) {
-            <app-field label="Group Company" [wide]="true">
+            <app-field label="Group Company" [span]="2">
               <input name="groupCompany" list="refund-groups" [(ngModel)]="f.groupCompany" (change)="loadDepartments()" />
               <datalist id="refund-groups">@for (g of companies(); track g) { <option [value]="g"></option> }</datalist>
             </app-field>
@@ -77,10 +77,13 @@ const m = (v: unknown) => (v == null ? '' : formatMoney(Number(v)))
         </fieldset>
         <app-data-grid caption="MCO refunds" [columns]="columns" [rows]="rows()" [rowKey]="key" />
         @if (result(); as r) {
-          <p class="totals" aria-label="Totals">
-            Principal: <strong>{{ r.principals }}</strong> · Supplementary: <strong>{{ r.supplementaries }}</strong> ·
-            Refund (principal): <strong>{{ money(r.principalRefund) }}</strong> · MCO Fee Utilised: <strong>{{ money(r.utilisedFee) }}</strong> ·
-            Refund (supplementary): <strong>{{ money(r.supplementaryRefund) }}</strong> · Total Refund: <strong>{{ money(r.totalRefund) }}</strong>
+          <p class="totals totals-cards" aria-label="Totals">
+            <span class="total-card"><span>Principal</span><strong>{{ r.principals }}</strong></span>
+            <span class="total-card"><span>Supplementary</span><strong>{{ r.supplementaries }}</strong></span>
+            <span class="total-card money"><span>Refund (principal)</span><strong>{{ money(r.principalRefund) }}</strong></span>
+            <span class="total-card money"><span>MCO Fee Utilised</span><strong>{{ money(r.utilisedFee) }}</strong></span>
+            <span class="total-card money"><span>Refund (supplementary)</span><strong>{{ money(r.supplementaryRefund) }}</strong></span>
+            <span class="total-card main"><span>Total Refund</span><strong>{{ money(r.totalRefund) }}</strong></span>
           </p>
         }
       </div>

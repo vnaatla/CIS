@@ -815,3 +815,7 @@ select option { padding: 6px 10px; }
 .grid tr.empty-row td { padding: 34px 14px; color: #9a8f99; font-size: 13px; background: repeating-linear-gradient(135deg, #fff, #fff 10px, #fdfafd 10px, #fdfafd 20px); }
 .grid-pager { padding-top: 12px; }
 @media (prefers-reduced-motion: reduce) { .grid tr { transition: none; } }
+
+/* "No records found": centred in the visible part of a wide grid, not across the whole scrolled table. */
+.table-wrap { container-type: inline-size; }
+.grid tr.empty-row .empty-msg { position: sticky; left: 0; display: block; width: calc(100cqw - 28px); text-align: center; }

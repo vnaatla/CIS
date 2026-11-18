@@ -32,7 +32,7 @@ interface Result {
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MCO Invoice GST" subtitle="Replaces frmMCOFeeGST">
+    <app-page-shell title="MCO Invoice GST">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -65,7 +65,7 @@ interface Result {
               <select name="payor" [(ngModel)]="f.payor" [disabled]="f.criteria === 2"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
             </app-field>
           } @else {
-            <app-field label="Group Company" [wide]="true">
+            <app-field label="Group Company" [span]="2">
               <input name="groupCompany" list="inv-groups" [(ngModel)]="f.groupCompany" [disabled]="f.criteria === 2" (change)="loadDepartments()" />
               <datalist id="inv-groups">@for (g of groups(); track g.code) { <option [value]="g.code + ' - ' + g.name"></option> }</datalist>
             </app-field>
@@ -84,9 +84,10 @@ interface Result {
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO GST members" [columns]="columns" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">
-          Principal: <strong>{{ result()?.principals ?? 0 }}</strong> · Supplementary: <strong>{{ result()?.supplementaries ?? 0 }}</strong> ·
-          Invoice No: <strong>{{ result()?.invoiceNo || '-' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Principal</span><strong>{{ result()?.principals ?? 0 }}</strong></span>
+          <span class="total-card"><span>Supplementary</span><strong>{{ result()?.supplementaries ?? 0 }}</strong></span>
+          <span class="total-card main"><span>Invoice No</span><strong>{{ result()?.invoiceNo || '-' }}</strong></span>
         </p>
       </div>
     </app-page-shell>
