@@ -761,3 +761,28 @@ p.totals.totals-cards { display: flex; flex-wrap: wrap; align-items: stretch; ga
 select:has(option[data-ph]:checked) { color: #9a8f99; }
 select option { color: #1f2937; }
 select option[data-ph] { color: #9a8f99; }
+
+/* Dropdowns: no browser arrow; a slim chevron on the right, soft hover, purple focus ring, readable when disabled. */
+select {
+  appearance: none; -webkit-appearance: none; padding: 0 36px 0 12px; border-radius: 8px; border: 1px solid #ddd5df; background-color: #fff; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239c2b8e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+  text-overflow: ellipsis; transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
+}
+select:hover:not(:disabled) { border-color: #c6b4c4; background-color: #fdfaFD; }
+select:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--ring); background-color: #fff; }
+select:disabled {
+  cursor: default; background-color: #f7f4f8; border-color: #ebe4ec; color: #6b5a69; opacity: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9bcc8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+select[multiple], select[size]:not([size='1']) { padding: 6px 8px; background-image: none; }
+select option { padding: 6px 10px; }
+@media (prefers-reduced-motion: reduce) { select { transition: none; } }
+/* The screen / pop-up control rules set the background shorthand; keep the dropdown chevron on top of them. */
+.registration select, .modal-body select, .login select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239c2b8e' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 14px; padding-right: 36px;
+}
+.registration select:disabled, .modal-body select:disabled {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9bcc8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
