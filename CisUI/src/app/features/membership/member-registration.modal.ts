@@ -46,7 +46,7 @@ const EMPTY = Object.fromEntries(['ic', 'name', 'race', 'gender', 'staffCategory
   imports: [FormsModule, ModalComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Clinic Member Registration" [wide]="true" (closed)="closed.emit()">
+    <app-modal title="Clinic Member Registration" icon="users" [wide]="true" (closed)="closed.emit()">
       <div class="screen-form">
         <fieldset aria-label="Member">
           <legend>Member</legend>

@@ -819,3 +819,32 @@ select option { padding: 6px 10px; }
 /* "No records found": centred in the visible part of a wide grid, not across the whole scrolled table. */
 .table-wrap { container-type: inline-size; }
 .grid tr.empty-row .empty-msg { position: sticky; left: 0; display: block; width: calc(100cqw - 28px); text-align: center; }
+
+/* An input with a look-up button inside it on the right (Diagnosis ICD search, clinic look-up). */
+.input-action { position: relative; display: flex; align-items: center; min-width: 0; }
+.input-action > input { flex: 1; width: 100%; min-width: 0; padding-right: 40px; }
+.input-action > .input-action-btn {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%); display: grid; place-items: center; width: 30px; height: calc(100% - 8px); min-height: 26px;
+  padding: 0; border: 0; border-radius: 6px; background: var(--accent-soft); color: var(--accent-strong); box-shadow: none; cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.input-action > .input-action-btn:hover:not(:disabled) { background: var(--accent); color: #fff; transform: translateY(-50%); }
+.input-action > .input-action-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.input-action > .input-action-btn:disabled { background: transparent; color: #c9bcc8; cursor: default; }
+
+/* Pop-up form cards (fieldsets inside app-modal): the same layout as the screen cards - fields side by side, the heading inside the
+   card with its marker and hairline, the buttons as a plain row under the fields. */
+.modal-body fieldset:not(.modal-fields) {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px 16px; margin: 0; padding: 16px 18px 18px;
+}
+.modal-body fieldset:not(.modal-fields) > legend {
+  float: left; grid-column: 1 / -1; width: 100%; display: flex; align-items: center; gap: 9px; margin: 0 0 2px; padding: 0 0 10px;
+  border-bottom: 1px solid #f0e8ef; font-size: 12px; letter-spacing: 0.08em; color: var(--accent-strong);
+}
+.modal-body fieldset:not(.modal-fields) > legend::before {
+  content: ''; flex: none; width: 7px; height: 7px; border-radius: 2px; transform: rotate(45deg);
+  background: linear-gradient(140deg, #a8329a, var(--accent-strong)); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.modal-body fieldset > app-action-bar { grid-column: 1 / -1; }
+.modal-body fieldset > app-action-bar .cr-actions { position: static; padding: 2px 0 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.modal-body fieldset > .form-field.wide, .modal-body fieldset > app-field > .form-field.wide { grid-column: 1 / -1; }

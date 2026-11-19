@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { IconComponent } from '../../shared/icon.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { FieldComponent } from '../../shared/field.component'
 import { formatDate } from '../../shared/lib/format'
@@ -35,10 +36,10 @@ export interface CaseListRow {
 /** frmSearchICD: treatment reasons by code (starts with), description (contains) and a second description joined with AND / OR. */
 @Component({
   selector: 'app-icd-search-modal',
-  imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
+  imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, IconComponent, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Search Treatment Reason / ICD" [wide]="true" (closed)="closed.emit()">
+    <app-modal title="Search Treatment Reason / ICD" icon="search" [wide]="true" (closed)="closed.emit()">
       <div class="screen-form">
         <fieldset aria-label="ICD search">
           <legend>Search</legend>
@@ -49,8 +50,8 @@ export interface CaseListRow {
           </app-field>
           <app-field label="Description 2"><input name="icdDesc2" [(ngModel)]="desc2" (keydown.enter)="search()" /></app-field>
           <app-action-bar label="ICD search actions">
-            <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="primary" [busy]="busy()" (click)="search()"><app-icon name="search" [size]="15" /> Search</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Treatment reasons" [columns]="columns" [rows]="rows()" [rowKey]="key" [selectable]="true" (rowSelected)="picked.emit($event)" />
@@ -99,7 +100,7 @@ export class IcdSearchModalComponent {
   imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Case List" [wide]="true" (closed)="closed.emit()">
+    <app-modal title="Case List" icon="list" [wide]="true" (closed)="closed.emit()">
       <div class="screen-form">
         <fieldset aria-label="Case search">
           <legend>Search</legend>

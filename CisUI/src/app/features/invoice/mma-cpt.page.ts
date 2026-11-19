@@ -59,10 +59,10 @@ interface MmaRow {
     </app-page-shell>
 
     @if (detail(); as d) {
-      <app-modal title="MMA Details" (closed)="detail.set(null)">
+      <app-modal title="MMA Details" icon="file" (closed)="detail.set(null)">
         <div class="screen-form">
           <fieldset aria-label="MMA details">
-            <legend>{{ d.opcs }}</legend>
+            <legend>{{ d.opcs || 'MMA details' }}</legend>
             <app-field label="Body Part"><input name="dBodyPart" [value]="d.mainBp" disabled /></app-field>
             <app-field label="OPCS Code"><input name="dOpcs" [value]="d.opcs" disabled /></app-field>
             <app-field label="Surgical Category"><input name="dSurgCat" [value]="d.surgCat" disabled /></app-field>

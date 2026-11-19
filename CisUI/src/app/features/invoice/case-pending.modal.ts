@@ -21,7 +21,7 @@ export interface PendingDetails {
   imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, ActionBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Case Pending" (closed)="cancel()">
+    <app-modal title="Case Pending" icon="alert" (closed)="cancel()">
       @if (note()) {
         <p class="notice" role="alert">{{ note() }}</p>
       }

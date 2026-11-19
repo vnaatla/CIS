@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { IconComponent } from '../../shared/icon.component'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DateInputComponent } from '../../shared/date-input.component'
 import { FieldComponent } from '../../shared/field.component'
@@ -56,7 +57,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
 @Component({
   selector: 'app-invoice-adjustment-page',
   imports: [
-    FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, CaseListModalComponent, IcdSearchModalComponent,
+    FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, IconComponent, ActionBarComponent, CaseListModalComponent, IcdSearchModalComponent,
     MemberInfoModalComponent, WorksheetModalComponent, CasePendingModalComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -125,8 +126,10 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
             <legend>Diagnosis &amp; Remark</legend>
             @for (i of [0, 1, 2, 3, 4]; track i) {
               <app-field [label]="'Diagnosis ' + (i + 1)">
-                <input [attr.name]="'diag' + i" maxlength="20" [ngModel]="e.diagnoses[i]" (ngModelChange)="e.diagnoses[i] = $event" />
-                <button appButton type="button" (click)="icdFor.set(i)">…</button>
+                <span class="input-action">
+                  <input [attr.name]="'diag' + i" maxlength="20" [ngModel]="e.diagnoses[i]" (ngModelChange)="e.diagnoses[i] = $event" />
+                  <button type="button" class="input-action-btn" title="Search ICD" [attr.aria-label]="'Search ICD for Diagnosis ' + (i + 1)" (click)="icdFor.set(i)"><app-icon name="search" [size]="15" /></button>
+                </span>
               </app-field>
             }
             <app-field label="Others Diagnosis"><input name="diagnosisOther" [(ngModel)]="e.diagnosisOther" /></app-field>

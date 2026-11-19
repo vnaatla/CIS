@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs'
 import { errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { IconComponent } from '../../shared/icon.component'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DateInputComponent } from '../../shared/date-input.component'
 import { FieldComponent } from '../../shared/field.component'
@@ -64,7 +65,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
 @Component({
   selector: 'app-clinic-invoice-page',
   imports: [
-    FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, MemberSearchModalComponent,
+    FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, IconComponent, ActionBarComponent, MemberSearchModalComponent,
     IcdSearchModalComponent, MemberInfoModalComponent, WorksheetModalComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -127,8 +128,10 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
             <app-field label="MC"><input class="num" name="mcDays" [ngModel]="e.mcDays" (ngModelChange)="e.mcDays = num($event)" /></app-field>
             @for (n of [0, 1, 2, 3, 4]; track n) {
               <app-field [label]="'Diagnosis ' + (n + 1)">
-                <input [attr.name]="'diag' + n" maxlength="20" [ngModel]="e.diagnoses[n]" (ngModelChange)="e.diagnoses[n] = $event" (blur)="diagnosis(n)" />
-                <button appButton type="button" (click)="icdFor.set(n)">…</button>
+                <span class="input-action">
+                  <input [attr.name]="'diag' + n" maxlength="20" [ngModel]="e.diagnoses[n]" (ngModelChange)="e.diagnoses[n] = $event" (blur)="diagnosis(n)" />
+                  <button type="button" class="input-action-btn" title="Search ICD" [attr.aria-label]="'Search ICD for Diagnosis ' + (n + 1)" (click)="icdFor.set(n)"><app-icon name="search" [size]="15" /></button>
+                </span>
               </app-field>
               <app-field label="Description"><input [attr.name]="'diagDesc' + n" [value]="e.diagnosisDescriptions[n]" disabled /></app-field>
             }

@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { IconComponent } from '../../shared/icon.component'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
@@ -255,16 +256,16 @@ interface Found {
 /** frmMaintenanceEntity tab 4 "Clinic Access" (HISDB CLNAccessControl) with the frmSearchCLN look-up. */
 @Component({
   selector: 'app-entity-access-panel',
-  imports: [FormsModule, FieldComponent, DateInputComponent, ButtonDirective, DataGridComponent, ActionBarComponent, StatComponent, ModalComponent],
+  imports: [FormsModule, FieldComponent, DateInputComponent, ButtonDirective, IconComponent, DataGridComponent, ActionBarComponent, StatComponent, ModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="screen-form">
       <fieldset aria-label="Clinic Access">
         <legend>Clinic Access</legend>
         <app-field label="Clinic Code" [required]="true">
-          <span style="display: flex; gap: 0.5rem">
+          <span class="input-action">
             <input name="clinicCode" maxlength="10" [disabled]="!entering()" [(ngModel)]="code" />
-            <button appButton variant="ghost" [disabled]="!entering()" (click)="lookup.set(true)">...</button>
+            <button type="button" class="input-action-btn" title="Search clinic" aria-label="Search clinic" [disabled]="!entering()" (click)="lookup.set(true)"><app-icon name="search" [size]="15" /></button>
           </span>
         </app-field>
         <app-field label="Clinic Name"><output name="clinicName">{{ clinicName() }}</output></app-field>
@@ -290,16 +291,19 @@ interface Found {
     </div>
 
     @if (lookup()) {
-      <app-modal title="Search Clinic" [wide]="true" (closed)="lookup.set(false)">
+      <app-modal title="Search Clinic" icon="search" [wide]="true" (closed)="lookup.set(false)">
         <div class="screen-form">
-          <app-field label="Clinic Name" [required]="true">
-            <input name="lookupName" data-autofocus [(ngModel)]="lookupName" (keydown.enter)="find()" />
-          </app-field>
-          <app-action-bar label="Search clinic actions">
-            <button appButton variant="primary" [busy]="busy()" (click)="find()">Search</button>
-          </app-action-bar>
+          <fieldset aria-label="Clinic search">
+            <legend>Search</legend>
+            <app-field label="Clinic Name" [required]="true" [span]="2">
+              <input name="lookupName" data-autofocus [(ngModel)]="lookupName" (keydown.enter)="find()" />
+            </app-field>
+            <app-action-bar label="Search clinic actions">
+              <button appButton variant="primary" [busy]="busy()" (click)="find()"><app-icon name="search" [size]="15" /> Search</button>
+            </app-action-bar>
+          </fieldset>
           <app-data-grid caption="Clinics found" [columns]="foundColumns" [rows]="found()" [rowKey]="foundKey" [selectable]="true" (rowSelected)="pick($event)" />
-          <p class="muted">Click a clinic to choose it.</p>
+          <p class="msearch-hint"><app-icon name="check" [size]="14" /> Click a clinic to choose it.</p>
         </div>
       </app-modal>
     }

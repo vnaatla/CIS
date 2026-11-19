@@ -42,7 +42,7 @@ const m = (v: number | null | undefined) => (v == null || v === 0 ? '-' : format
   imports: [ModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Worksheet" [wide]="true" (closed)="closed.emit()">
+    <app-modal title="Worksheet" icon="grid" [wide]="true" (closed)="closed.emit()">
       @let w = worksheet();
       <div class="table-wrap">
         <table class="grid" aria-label="Worksheet">

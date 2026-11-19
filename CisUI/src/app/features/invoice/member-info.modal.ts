@@ -38,7 +38,7 @@ export interface MemberSupp {
   imports: [ModalComponent, FieldComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-modal title="Member Info" [wide]="true" (closed)="closed.emit()">
+    <app-modal title="Member Info" icon="user" [wide]="true" (closed)="closed.emit()">
       @if (info(); as m) {
         <div class="screen-form">
           <fieldset aria-label="Member">
