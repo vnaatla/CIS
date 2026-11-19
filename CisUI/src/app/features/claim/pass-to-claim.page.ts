@@ -96,7 +96,10 @@ function checkMessage(r: PassRow): string | null {
 
         <app-data-grid caption="Cases" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="onChecked($event)" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong> · Checked: <strong>{{ checked().size }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card"><span>Checked</span><strong>{{ checked().size }}</strong></span>
+        </p>
         <app-action-bar label="Pass actions">
           <button appButton (click)="checkAll()">Check</button>
           <button appButton variant="primary" [busy]="busy()" [disabled]="rows().length === 0" (click)="pass()">Pass</button>
