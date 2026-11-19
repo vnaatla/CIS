@@ -58,7 +58,7 @@ const m = (key: string, label: string): GridColumn<Row> => ({ key, label, align:
             <button appButton [disabled]="!info()" (click)="print(true, false)">Print Details</button>
             <button appButton [disabled]="!info()" (click)="print(false, true)">Summary Preview</button>
             <button appButton [disabled]="!info()" (click)="print(true, true)">Print Summary</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Bordereaux worksheets" [columns]="columns" [rows]="info()?.rows ?? []" [rowKey]="key" />

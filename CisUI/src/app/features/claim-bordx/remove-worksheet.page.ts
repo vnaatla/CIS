@@ -40,7 +40,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
           <app-action-bar label="Remove worksheet actions">
             <button appButton variant="primary" [busy]="busy()" (click)="go()">Go</button>
             <button appButton variant="danger" [disabled]="!checked().size" (click)="reject()">Reject</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Bordereaux worksheets" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"

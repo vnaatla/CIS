@@ -94,7 +94,7 @@ interface Result {
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [disabled]="!result()" (click)="print(false)">Print Preview</button>
             <button appButton [disabled]="!result() || printed()" [busy]="printing()" (click)="print(true)">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO invoice members" [columns]="columns" [rows]="rows()" [rowKey]="key" />

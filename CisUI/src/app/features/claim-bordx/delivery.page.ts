@@ -133,7 +133,7 @@ const screens: Record<Kind, Screen> = {
             <button appButton [disabled]="!rows().length" (click)="checkAll()">Check All</button>
             <button appButton variant="primary" (click)="update()">{{ screen.update }}</button>
             <button appButton (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Bordereaux" [columns]="screen.columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" />

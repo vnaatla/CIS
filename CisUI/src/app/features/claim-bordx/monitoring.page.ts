@@ -111,7 +111,7 @@ const screens: Record<Kind, { title: string; form: string; columns: GridColumn<R
           <app-action-bar label="Monitoring actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid [caption]="screen.title" [columns]="screen.columns" [rows]="rows()" [rowKey]="key" />

@@ -104,7 +104,7 @@ const DELIVERY_COMPLICATIONS = 'Inpatient Delivery Private-Complications'
           <app-field label="Membership No"><input name="mbmNo" data-autofocus maxlength="30" [(ngModel)]="mbmNo" (keydown.enter)="search()" /></app-field>
           <app-action-bar label="Search actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

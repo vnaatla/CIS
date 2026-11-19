@@ -72,7 +72,7 @@ const m = (v: unknown) => (v == null ? '' : formatMoney(Number(v)))
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="file('export', 'MCORefundListing.xlsx')">Print</button>
             <button appButton (click)="file('credit-note', 'MCOCreditNote.xlsx')">Print CR Note</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO refunds" [columns]="columns" [rows]="rows()" [rowKey]="key" />

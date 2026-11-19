@@ -118,7 +118,7 @@ const date = (v: unknown) => (!v || String(v).startsWith('1900') ? '' : formatDa
           <app-action-bar label="Search actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

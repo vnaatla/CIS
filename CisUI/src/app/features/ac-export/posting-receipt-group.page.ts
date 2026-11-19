@@ -51,7 +51,7 @@ const extra = (x: Line, k: string) => s((x['extra'] as Record<string, string> | 
             <button appButton (click)="search('C')">Search Credit</button>
             <button appButton (click)="checkAll()">Check All</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

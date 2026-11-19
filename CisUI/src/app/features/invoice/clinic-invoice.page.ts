@@ -199,7 +199,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
             <button appButton [disabled]="!line()" (click)="showWorksheet.set(true)">Compute</button>
             <button appButton [disabled]="!line()" [busy]="busy()" (click)="verify()">Verify</button>
             <button appButton variant="primary" [disabled]="!verified()" [busy]="busy()" (click)="save()">Save</button>
-            <button appButton (click)="clearAll()">Clear All</button>
+            <button appButton variant="ghost" (click)="clearAll()">Clear All</button>
           </app-action-bar>
 
           @if (line(); as l) {

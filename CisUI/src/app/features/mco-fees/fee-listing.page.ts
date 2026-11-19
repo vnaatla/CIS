@@ -84,7 +84,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [disabled]="!result()" (click)="print(false)">Print Preview</button>
             <button appButton [disabled]="!result()?.canPrint" [busy]="printing()" (click)="print(true)">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO fees" [columns]="columns" [rows]="rows()" [rowKey]="key" [selectable]="true" [selectedKey]="selected()" (rowSelected)="pick($any($event))" />

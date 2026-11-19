@@ -70,7 +70,7 @@ const COLS: [string, string][] = [
           <app-action-bar label="Clinic tracking actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Clinics" [columns]="columns" [rows]="rows()" [rowKey]="key" />

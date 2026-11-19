@@ -65,7 +65,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
             <button appButton (click)="checkAll()">Check All</button>
             <button appButton (click)="add()">Add</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

@@ -69,7 +69,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
           <app-action-bar label="Receipt search actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="export()">Export</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

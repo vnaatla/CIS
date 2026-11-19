@@ -48,7 +48,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
             <button appButton (click)="search('C')">Search Credit</button>
             <button appButton (click)="checkAll()">Check All</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 

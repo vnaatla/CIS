@@ -72,7 +72,7 @@ const money = /Amt|Paid|Payable|Fee|Approve|Actual/i
               <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
               <button appButton [disabled]="!rows().length" (click)="fullView.set(true)">View</button>
               <button appButton (click)="export()">Export</button>
-              <button appButton (click)="clear()">Clear</button>
+              <button appButton variant="ghost" (click)="clear()">Clear</button>
             </app-action-bar>
           </fieldset>
         } @else {

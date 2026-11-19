@@ -40,7 +40,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [busy]="posting()" (click)="post()">Post</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Clinic payment postings" [columns]="columns" [rows]="lines()" [rowKey]="key" />

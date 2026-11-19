@@ -38,7 +38,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [disabled]="!rows().length" (click)="checkAll()">Check All</button>
             <button appButton variant="primary" [busy]="saving()" (click)="bordx()">Bordx</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Invoices pending bordx" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"

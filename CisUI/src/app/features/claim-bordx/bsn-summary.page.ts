@@ -33,7 +33,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="add()">Add Bordx</button>
             <button appButton (click)="export()">Export</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="BSN bordereaux" [columns]="columns" [rows]="rows()" [rowKey]="key" />

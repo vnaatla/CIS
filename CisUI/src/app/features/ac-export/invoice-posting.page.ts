@@ -41,7 +41,7 @@ const x = (k: string, label: string): GridColumn<Line> => ({ key: k, label, valu
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton [busy]="posting()" (click)="post()">Post</button>
             <button appButton (click)="print()">Print to File</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Invoice postings" [columns]="columns" [rows]="lines()" [rowKey]="key" />

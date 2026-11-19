@@ -42,7 +42,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
             <button appButton (click)="step(false)">Prev</button>
             <button appButton (click)="step(true)">Next</button>
             <button appButton (click)="searching.set(true)">Search</button>
-            <button appButton (click)="clear()">Clear All</button>
+            <button appButton variant="ghost" (click)="clear()">Clear All</button>
           </app-action-bar>
         </fieldset>
         @if (c(); as x) {

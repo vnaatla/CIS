@@ -106,7 +106,7 @@ const m = (v: unknown) => (v == null || s(v) === '' ? '' : formatMoney(Number(v)
             <button appButton [disabled]="!rows().length" (click)="checkAll()">Check All</button>
             <button appButton variant="primary" [busy]="saving()" (click)="bordx()">Bordx</button>
             <button appButton (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Worksheets" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" />

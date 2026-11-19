@@ -48,7 +48,7 @@ interface BatchInfo {
           <app-field label="Total Amt"><input class="num" name="finalAmt" [value]="finalAmt()" disabled /></app-field>
           <app-action-bar label="Transfer actions">
             <button appButton variant="primary" [busy]="busy()" (click)="save()">Transfer</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
       </div>

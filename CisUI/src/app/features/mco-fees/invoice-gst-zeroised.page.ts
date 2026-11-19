@@ -83,7 +83,7 @@ interface Result {
             <button appButton [disabled]="!result()" (click)="checkAll()">{{ allChecked() ? 'Uncheck All' : 'Check All' }}</button>
             <button appButton (click)="printExcel()">Print Excel</button>
             <button appButton [disabled]="!result() || printed()" [busy]="printing()" (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="MCO GST zeroised members" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" />
