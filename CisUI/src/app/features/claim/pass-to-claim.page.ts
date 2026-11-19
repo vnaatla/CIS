@@ -45,7 +45,7 @@ function checkMessage(r: PassRow): string | null {
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Pass to Claim" subtitle="Replaces frmPass2Claim">
+    <app-page-shell title="Pass to Claim">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
