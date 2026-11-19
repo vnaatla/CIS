@@ -10,7 +10,7 @@ import { CodeTablePanelComponent } from './code-table-panel.component'
   imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, BenefitEntryPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Dental Benefits Maintenance" subtitle="Replaces frmMaintenanceBNFDental">
+    <app-page-shell title="Dental Benefits Maintenance">
       <app-tabs label="Dental Benefits Maintenance">
         <ng-template appTab="Tooth Category"><app-code-table-panel tableKey="tooth-category" /></ng-template>
         <ng-template appTab="Tooth Reference"><app-code-table-panel tableKey="tooth-reference" /></ng-template>

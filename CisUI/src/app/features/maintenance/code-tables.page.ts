@@ -17,7 +17,7 @@ export interface CodeTableTab {
   imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="title()" [subtitle]="'Replaces ' + legacyForm()">
+    <app-page-shell [title]="title()">
       @if (tabs().length === 1) {
         <app-code-table-panel [tableKey]="tabs()[0].key" />
       } @else {

@@ -14,7 +14,7 @@ import { PlanVisitPanelComponent } from './plan-visit.panel'
   imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, PlanCodePanelComponent, PlanPremiumPanelComponent, PlanAnnualPanelComponent, PlanVisitPanelComponent, PlanMcoPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Plan Maintenance" subtitle="Replaces frmMaintenancePlan">
+    <app-page-shell title="Plan Maintenance">
       <app-tabs label="Plan Maintenance">
         <ng-template appTab="HealthType"><app-code-table-panel tableKey="health-type" /></ng-template>
         <ng-template appTab="Insured Type"><app-code-table-panel tableKey="insured-type" /></ng-template>

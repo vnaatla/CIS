@@ -439,7 +439,7 @@ export class BenefitListingPanelComponent implements OnInit {
   imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, BenefitEntryPanelComponent, BenefitListingPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Benefits Maintenance" subtitle="Replaces frmMaintenanceBenefits">
+    <app-page-shell title="Benefits Maintenance">
       <app-tabs label="Benefits Maintenance">
         <ng-template appTab="Category"><app-code-table-panel tableKey="benefit-category" /></ng-template>
         <ng-template appTab="Benefit Entry"><app-benefit-entry-panel /></ng-template>

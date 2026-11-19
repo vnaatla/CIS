@@ -293,7 +293,7 @@ export class EntityGroupPanelComponent extends EntityListPanel {
         <app-field label="Doctor Code" hint="Searchable">
           <input name="code" maxlength="10" [disabled]="mode() !== 'search'" [(ngModel)]="code_" />
         </app-field>
-        <app-field label="Doctor Full Name" [required]="true" hint="Searchable" [wide]="true">
+        <app-field label="Doctor Full Name" [required]="true" hint="Searchable" [span]="2">
           <input name="name" maxlength="50" [disabled]="mode() === 'selected' || mode() === 'edit'" [(ngModel)]="name" />
         </app-field>
       </fieldset>
@@ -341,7 +341,7 @@ export class EntityDoctorPanelComponent extends EntityListPanel {
   imports: [PageShellComponent, TabsComponent, TabDirective, EntityGroupPanelComponent, EntityDoctorPanelComponent, EntityClinicPanelComponent, EntityGrpComPanelComponent, EntityAccessPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Entity Maintenance" subtitle="Replaces frmMaintenanceEntity">
+    <app-page-shell title="Entity Maintenance">
       <app-tabs label="Entity Maintenance">
         <ng-template appTab="Clinic Group"><app-entity-group-panel /></ng-template>
         <ng-template appTab="Doctor"><app-entity-doctor-panel /></ng-template>

@@ -23,7 +23,7 @@ const BASE = '/api/maintenance/benefit-clinic'
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, StatComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Clinic Benefits Maintenance" [subtitle]="'Replaces ' + legacyForm()">
+    <app-page-shell title="Clinic Benefits Maintenance">
       <div class="screen-form">
         <fieldset aria-label="Clinic Benefits">
           <legend>Clinic Benefits</legend>

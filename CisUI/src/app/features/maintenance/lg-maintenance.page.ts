@@ -10,7 +10,7 @@ import { LgBindingPanelComponent } from './lg-binding-panel.component'
   imports: [PageShellComponent, TabsComponent, TabDirective, CodeTablePanelComponent, LgBindingPanelComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="LG Maintenance" subtitle="Replaces frmLGMaintenance">
+    <app-page-shell title="LG Maintenance">
       <app-tabs label="LG Maintenance">
         <ng-template appTab="GL Template Binding"><app-lg-binding-panel /></ng-template>
         <ng-template appTab="GL Type Binding"><app-code-table-panel tableKey="gl-type" /></ng-template>
