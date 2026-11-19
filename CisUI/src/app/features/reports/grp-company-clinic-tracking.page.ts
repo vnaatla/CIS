@@ -27,7 +27,7 @@ const COLUMNS: Record<number, GridColumn<Row>[]> = {
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Group Company Clinic Tracking" subtitle="Replaces FrmTracking2">
+    <app-page-shell title="Group Company Clinic Tracking">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -40,11 +40,11 @@ const COLUMNS: Record<number, GridColumn<Row>[]> = {
           </app-field>
           <app-field label="Group Code"><input name="groupCode" maxlength="30" [(ngModel)]="f.groupCode" /></app-field>
           <app-field label="Clinic Code"><input name="clinicCode" maxlength="30" [(ngModel)]="f.clinicCode" /></app-field>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="gcc-companies" [(ngModel)]="f.groupCompany" />
             <datalist id="gcc-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
           </app-field>
-          <app-field label="Clinic Name" [wide]="true">
+          <app-field label="Clinic Name" [span]="2">
             <input name="clinic" list="gcc-clinics" [(ngModel)]="f.clinic" />
             <datalist id="gcc-clinics">@for (c of clinics(); track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -55,7 +55,9 @@ const COLUMNS: Record<number, GridColumn<Row>[]> = {
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Group company clinics" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

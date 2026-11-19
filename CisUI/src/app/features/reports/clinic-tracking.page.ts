@@ -29,13 +29,13 @@ const COLS: [string, string][] = [
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Clinic Tracking" subtitle="Replaces FrmTracking">
+    <app-page-shell title="Clinic Tracking">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
           <app-field label="Clinic Code"><input name="code" maxlength="10" [(ngModel)]="f.code" /></app-field>
           <app-field label="Clinic Name"><input name="name" maxlength="200" [(ngModel)]="f.name" /></app-field>
-          <app-field label="Clinic Group" [wide]="true">
+          <app-field label="Clinic Group" [span]="2">
             <select name="group" [(ngModel)]="f.group"><option value=""></option>@for (g of groups(); track g) { <option [value]="g">{{ g }}</option> }</select>
           </app-field>
           <app-field label="Postcode"><input name="postcode" maxlength="10" [(ngModel)]="f.postcode" /></app-field>
@@ -74,7 +74,9 @@ const COLS: [string, string][] = [
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Clinics" [columns]="columns" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,
