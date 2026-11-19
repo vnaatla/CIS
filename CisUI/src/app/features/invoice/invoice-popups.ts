@@ -10,7 +10,7 @@ import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { FieldComponent } from '../../shared/field.component'
 import { formatDate } from '../../shared/lib/format'
 import { ModalComponent } from '../../shared/modal.component'
-import { ActionBarComponent } from '../../shared/screen.components'
+import { ActionBarComponent, StatComponent } from '../../shared/screen.components'
 
 const BASE = '/api/invoice/popups'
 
@@ -97,28 +97,32 @@ export class IcdSearchModalComponent {
 /** frmCasList: cases of active members by member no, policy no, name, IC or case no (at least 3 characters). */
 @Component({
   selector: 'app-case-list-modal',
-  imports: [FormsModule, ModalComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
+  imports: [FormsModule, ModalComponent, ButtonDirective, IconComponent, ActionBarComponent, StatComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-modal title="Case List" icon="list" [wide]="true" (closed)="closed.emit()">
-      <div class="screen-form">
-        <fieldset aria-label="Case search">
-          <legend>Search</legend>
-          <app-field label="Search"><input name="caseSearch" data-autofocus [(ngModel)]="text" (keydown.enter)="search()" /></app-field>
-          <div class="radio-row" role="radiogroup" aria-label="Search by">
+      <div class="msearch">
+        <div class="msearch-panel">
+          <label class="msearch-box">
+            <app-icon name="search" [size]="18" />
+            <input name="caseSearch" aria-label="Search (at least 3 characters)" placeholder="Type at least 3 characters, then press Enter" data-autofocus
+              [(ngModel)]="text" (keydown.enter)="search()" />
+          </label>
+          <div class="msearch-by" role="radiogroup" aria-label="Search by">
+            <span class="msearch-by-label">Search by</span>
             @for (o of options; track o[0]) {
-              <label><input type="radio" name="caseBy" [value]="o[0]" [(ngModel)]="by" /> {{ o[1] }}</label>
+              <label class="msearch-chip" [class.on]="by === o[0]"><input type="radio" name="caseBy" [value]="o[0]" [(ngModel)]="by" /> {{ o[1] }}</label>
             }
           </div>
-          <app-action-bar label="Case search actions">
-            <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
-            <button appButton (click)="clear()">Clear</button>
-          </app-action-bar>
-        </fieldset>
+        </div>
+        <app-action-bar label="Case search actions">
+          <button appButton variant="primary" [busy]="busy()" (click)="search()"><app-icon name="search" [size]="15" /> Search</button>
+          <button appButton variant="ghost" (click)="clear()">Clear</button>
+          <span class="spacer"></span>
+          <app-stat label="Total" [value]="rows().length" />
+        </app-action-bar>
         <app-data-grid caption="Cases" [columns]="columns" [rows]="rows()" [rowKey]="key" [selectable]="true" (rowSelected)="picked.emit($event)" />
-        <p class="totals totals-cards">
-          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
-        </p>
+        <p class="msearch-hint"><app-icon name="check" [size]="14" /> Click a case to choose it.</p>
       </div>
     </app-modal>
   `,

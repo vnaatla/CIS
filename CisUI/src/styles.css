@@ -848,3 +848,5 @@ select option { padding: 6px 10px; }
 .modal-body fieldset > app-action-bar { grid-column: 1 / -1; }
 .modal-body fieldset > app-action-bar .cr-actions { position: static; padding: 2px 0 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 .modal-body fieldset > .form-field.wide, .modal-body fieldset > app-field > .form-field.wide { grid-column: 1 / -1; }
+/* The search pop-ups' stand-alone action bar (Search / Clear + counts) is a light card, not sticky. */
+.modal-body .msearch > app-action-bar .cr-actions { position: static; }
