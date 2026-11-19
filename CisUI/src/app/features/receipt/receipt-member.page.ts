@@ -25,7 +25,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Receipt from Member" subtitle="Replaces FrmReceiptMember">
+    <app-page-shell title="Receipt from Member">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -87,7 +87,10 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
 
         <app-data-grid caption="Member receipts" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="check($event)" [selectable]="true" [selectedKey]="selectedKey()" (rowSelected)="select($event)" />
-        <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong> · Amount to receive: <strong>{{ money(amount()) }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Amount to receive</span><strong>{{ money(amount()) }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

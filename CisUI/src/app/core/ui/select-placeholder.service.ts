@@ -41,8 +41,11 @@ export class SelectPlaceholderService {
       const ACTION = 'app-action-bar button, .modal-actions button, .actions > button, .cr-actions button'
       const card = select.closest('fieldset')
       const own = card ? card.querySelectorAll(ACTION) : null
-      const actions = own && own.length ? own : screen.querySelectorAll(ACTION)
-      const entry = Array.from(actions).some((b) => ENTRY_BUTTONS.test(b.textContent?.trim() ?? ''))
+      const actions = Array.from(own && own.length ? own : screen.querySelectorAll(ACTION))
+      const label = (b: Element) => b.textContent?.trim() ?? ''
+      // A card with its own Search button is a search card, even with an Add / Insert next to it (Receipt FFS: Search, Check All, Add).
+      const searchCard = !!own?.length && actions.some((b) => /^search$/i.test(label(b)))
+      const entry = !searchCard && actions.some((b) => ENTRY_BUTTONS.test(label(b)))
       const field = (select.closest('.form-field')?.querySelector(':scope > span')?.textContent ?? select.getAttribute('aria-label') ?? '').replace(/\*/g, '').trim()
       // A required field (or a dropdown that says so with data-prompt) must be chosen, even on a search screen.
       const required = !!select.closest('.form-field')?.querySelector('.req') || select.hasAttribute('data-required')

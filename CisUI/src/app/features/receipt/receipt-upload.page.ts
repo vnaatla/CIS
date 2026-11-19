@@ -24,11 +24,11 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="multiple ? 'Upload Receipt (Multiple Receipts)' : 'Upload Receipt'" [subtitle]="'Replaces ' + (multiple ? 'frmReceiptUpMultiple' : 'frmReceiptUpload')">
+    <app-page-shell [title]="multiple ? 'Upload Receipt (Multiple Receipts)' : 'Upload Receipt'">
       <div class="screen-form">
         <fieldset aria-label="Upload">
           <legend>Upload</legend>
-          <app-field label="File" [wide]="true"><input type="file" name="file" accept=".xlsx" (change)="pick($event)" /></app-field>
+          <app-field label="File" [span]="2"><input type="file" name="file" accept=".xlsx" (change)="pick($event)" /></app-field>
           <app-field label="DB"><input name="db" value="UHC" disabled /></app-field>
           <app-action-bar label="Upload actions">
             <button appButton variant="primary" [busy]="busy()" (click)="upload()">Upload</button>
@@ -53,7 +53,9 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
         </fieldset>
 
         <app-data-grid caption="Uploaded receipts" [columns]="columns" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

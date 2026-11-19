@@ -25,7 +25,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Receipt from MNRB" subtitle="Replaces FrmReceiptMNRB">
+    <app-page-shell title="Receipt from MNRB">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -46,7 +46,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
               <app-field label="Worksheet No To"><input name="caseTo" maxlength="30" [(ngModel)]="f.caseTo" /></app-field>
             }
           }
-          <app-field label="Payor" [wide]="true">
+          <app-field label="Payor" [span]="2">
             <select name="payor" [(ngModel)]="f.payor"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
           </app-field>
           @if (f.worksheet) {
@@ -95,7 +95,10 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
         <app-data-grid [caption]="f.worksheet ? 'MNRB worksheet receipts' : 'MNRB bordx receipts'" [columns]="f.worksheet ? wksColumns : bordxColumns" [rows]="rows()"
           [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" [selectable]="true" [selectedKey]="selectedKey()"
           (rowSelected)="select($event)" />
-        <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong> · Selected amount: <strong>{{ money(selected()) }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Selected amount</span><strong>{{ money(selected()) }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

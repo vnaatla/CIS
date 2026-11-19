@@ -25,7 +25,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Receipt from FFS" subtitle="Replaces FrmReceiptFFS">
+    <app-page-shell title="Receipt from FFS">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -34,7 +34,7 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
           @if (!f.scan) {
             <app-field label="Bordx No To"><input name="bordxTo" maxlength="20" [(ngModel)]="f.bordxTo" /></app-field>
           }
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="company" list="rf-companies" [(ngModel)]="f.company" />
             <datalist id="rf-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -81,8 +81,10 @@ const money = (key: string, label: string): GridColumn<Row> => ({ key, label, al
 
         <app-data-grid caption="FFS receipts" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)"
           [selectable]="true" [selectedKey]="selectedKey()" (rowSelected)="select($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ rows().length }}</strong> · Total FFS: <strong>{{ money(total()) }}</strong> · Checked: <strong>{{ money(amount()) }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Total FFS</span><strong>{{ money(total()) }}</strong></span>
+          <span class="total-card money"><span>Checked</span><strong>{{ money(amount()) }}</strong></span>
         </p>
       </div>
     </app-page-shell>
