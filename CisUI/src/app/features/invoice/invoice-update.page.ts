@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs'
 import { blobErrorMessage, errorMessage } from '../../core/http/errors'
 import { NotifyService } from '../../core/notify/notify.service'
 import { ButtonDirective } from '../../shared/button.directive'
+import { IconComponent } from '../../shared/icon.component'
 import type { LookupOption } from '../../shared/code-select.component'
 import { DataGridComponent, GridColumn } from '../../shared/data-grid.component'
 import { DateInputComponent } from '../../shared/date-input.component'
@@ -22,7 +23,7 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
 /** Invoice > Other > Invoice Update (frmUpdateCLNInvoice): find cases and stamp the checked ones with an invoice number and date. */
 @Component({
   selector: 'app-invoice-update-page',
-  imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
+  imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, IconComponent, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-shell title="Invoice Update">
@@ -47,8 +48,10 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
               }
             </datalist>
           </app-field>
-          <app-field label="Invoice No."><input name="invoiceNo" [(ngModel)]="f.invoiceNo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="noInvoice" [(ngModel)]="f.noInvoice" /> Without Invoice No.</label>
+          <div class="field-check">
+            <app-field label="Invoice No."><input name="invoiceNo" [(ngModel)]="f.invoiceNo" /></app-field>
+            <label class="check-field"><input type="checkbox" name="noInvoice" [(ngModel)]="f.noInvoice" /> Without Invoice No.</label>
+          </div>
           <app-field label="Visit Date From"><app-date-input name="visitFrom" ariaLabel="Visit Date From" [(ngModel)]="f.visitFrom" (focusout)="checkDate(f.visitFrom)" /></app-field>
           <app-field label="Visit Date To"><app-date-input name="visitTo" ariaLabel="Visit Date To" [(ngModel)]="f.visitTo" (focusout)="checkDate(f.visitTo)" /></app-field>
           <app-field label="Invoice Date From"><app-date-input name="invoiceFrom" ariaLabel="Invoice Date From" [(ngModel)]="f.invoiceFrom" (focusout)="checkDate(f.invoiceFrom)" /></app-field>
@@ -56,9 +59,9 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
           <app-field label="Invoice Amt From"><input class="num" name="amountFrom" [(ngModel)]="f.amountFrom" /></app-field>
           <app-field label="Invoice Amt To"><input class="num" name="amountTo" [(ngModel)]="f.amountTo" /></app-field>
           <app-action-bar label="Search actions">
-            <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
-            <button appButton (click)="print()">Print</button>
-            <button appButton (click)="clear()">Clear</button>
+            <button appButton variant="primary" [busy]="searching()" (click)="search()"><app-icon name="search" [size]="15" /> Search</button>
+            <button appButton (click)="print()"><app-icon name="printer" [size]="15" /> Print</button>
+            <button appButton variant="ghost" (click)="clear()">Clear</button>
           </app-action-bar>
         </fieldset>
 
@@ -76,8 +79,8 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
             <app-date-input name="newInvoiceDate" ariaLabel="Invoice Date" [(ngModel)]="invoiceDate" (focusout)="checkDate(invoiceDate)" />
           </app-field>
           <app-action-bar label="Update actions">
-            <button appButton (click)="checkAll()">Check</button>
-            <button appButton variant="primary" [busy]="busy()" (click)="update()">Update</button>
+            <button appButton variant="ghost" (click)="checkAll()"><app-icon name="check" [size]="15" /> Check</button>
+            <button appButton variant="primary" [busy]="updating()" (click)="update()">Update</button>
           </app-action-bar>
         </fieldset>
       </div>
@@ -92,7 +95,8 @@ export class InvoiceUpdatePage implements OnInit {
   protected readonly groups = signal<string[]>([])
   protected readonly rows = signal<Row[]>([])
   protected readonly checked = signal<ReadonlySet<string>>(new Set())
-  protected readonly busy = signal(false)
+  protected readonly searching = signal(false)
+  protected readonly updating = signal(false)
   protected readonly key = (r: Row) => String(r['CASNumber'])
   protected f = this.emptyFilters()
   protected invoiceNo = ''
@@ -125,7 +129,7 @@ export class InvoiceUpdatePage implements OnInit {
 
   /** CmdSearch_Click. */
   protected async search(): Promise<void> {
-    this.busy.set(true)
+    this.searching.set(true)
     this.rows.set([])
     this.checked.set(new Set())
     try {
@@ -133,7 +137,7 @@ export class InvoiceUpdatePage implements OnInit {
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
     } finally {
-      this.busy.set(false)
+      this.searching.set(false)
     }
   }
 
@@ -160,7 +164,7 @@ export class InvoiceUpdatePage implements OnInit {
     if (!parseDmy(this.invoiceDate)) return this.notify.notify('Invalid Invoice Date!', 'error')
     if (!this.invoiceNo) return this.notify.notify('Please Enter Cheque Amt!', 'error')
     if (!(await this.notify.ask('Do you want to update the record ? '))) return
-    this.busy.set(true)
+    this.updating.set(true)
     try {
       const body = { casNumbers: [...this.checked()], invoiceNo: this.invoiceNo, invoiceDate: this.invoiceDate }
       const r = await firstValueFrom(this.http.post<{ message: string; rows: Row[] }>(BASE, body))
@@ -170,7 +174,7 @@ export class InvoiceUpdatePage implements OnInit {
     } catch (e) {
       this.notify.notify(errorMessage(e), 'error')
     } finally {
-      this.busy.set(false)
+      this.updating.set(false)
     }
   }
 

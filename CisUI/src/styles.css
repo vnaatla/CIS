@@ -850,3 +850,27 @@ select option { padding: 6px 10px; }
 .modal-body fieldset > .form-field.wide, .modal-body fieldset > app-field > .form-field.wide { grid-column: 1 / -1; }
 /* The search pop-ups' stand-alone action bar (Search / Clear + counts) is a light card, not sticky. */
 .modal-body .msearch > app-action-bar .cr-actions { position: static; }
+
+/* A field with a check box beside it (Invoice Update: Invoice No. + Without Invoice No.), two grid columns. */
+.registration fieldset > .field-check { grid-column: span 2; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 12px; min-width: 0; }
+.registration fieldset > .field-check > .check-field {
+  height: var(--control-h); min-height: 0; padding: 0 14px 0 10px; gap: 8px; border: 1px solid #e6d9e4; border-radius: 999px; background: #fff;
+  color: #6b5a69; font-size: 12.5px; font-weight: 600; white-space: nowrap;
+}
+.registration fieldset > .field-check > .check-field input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); }
+.registration fieldset > .field-check > .check-field:has(input:checked) { background: var(--accent-soft); border-color: #dcb3d6; color: var(--accent-strong); }
+@media (max-width: 760px) { .registration fieldset > .field-check { grid-column: 1 / -1; } }
+
+/* A busy button (appButton [busy]): keeps its colour and shows a spinner instead of looking disabled. */
+button[aria-busy='true'] { opacity: 1 !important; cursor: progress; position: relative; }
+button[aria-busy='true']::before {
+  content: ''; display: inline-block; width: 12px; height: 12px; margin-right: 6px; border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: 50%; vertical-align: -2px; animation: btn-spin 0.7s linear infinite;
+}
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { button[aria-busy='true']::before { animation-duration: 2s; } }
+/* Buttons with an icon: icon and text spaced; while busy the spinner replaces the icon. */
+button:has(> app-icon) { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+button > app-icon { display: inline-flex; }
+button[aria-busy='true']:has(> app-icon)::before { margin-right: 0; }
+button[aria-busy='true'] > app-icon { display: none !important; } /* the icon host sets display inline */
