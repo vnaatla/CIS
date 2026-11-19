@@ -25,7 +25,7 @@ const money = /Amt|Paid|Payable|Fee|Approve|Actual/i
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="title" [subtitle]="'Replaces ' + form">
+    <app-page-shell [title]="title">
       <div class="screen-form">
         @if (!fullView()) {
           <fieldset aria-label="Search">
@@ -41,7 +41,7 @@ const money = /Amt|Paid|Payable|Fee|Approve|Actual/i
             </app-field>
             <app-field label="Claim No From"><input name="caseFrom" maxlength="30" [(ngModel)]="f.caseFrom" /></app-field>
             <app-field label="Claim No To"><input name="caseTo" maxlength="30" [(ngModel)]="f.caseTo" /></app-field>
-            <app-field label="Group Company" [wide]="true">
+            <app-field label="Group Company" [span]="2">
               <input name="company" list="pt-companies" [(ngModel)]="f.company" />
               <datalist id="pt-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
             </app-field>
@@ -79,7 +79,10 @@ const money = /Amt|Paid|Payable|Fee|Approve|Actual/i
           <app-action-bar label="Tracking view actions"><button appButton variant="ghost" (click)="fullView.set(false)">Back</button></app-action-bar>
         }
         <app-data-grid caption="Payment tracking" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong> · Total Amount: <strong>{{ formatMoney(total()) }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card"><span>Total Amount</span><strong>{{ formatMoney(total()) }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

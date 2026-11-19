@@ -893,3 +893,13 @@ button[aria-busy='true'] > app-icon { display: none !important; } /* the icon ho
 .registration fieldset > .check-row > .check-field:hover { border-color: #d6b9d2; color: var(--accent-strong); background: #fdf8fc; }
 .registration fieldset > .check-row > .check-field input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); }
 .registration fieldset > .check-row > .check-field:has(input:checked) { background: var(--accent-soft); border-color: #dcb3d6; color: var(--accent-strong); }
+
+/* Option check boxes grouped in a radio-row inside a card (Payment "Empty": PV No / PV Date / A/C Month ...): pill toggles. */
+.registration fieldset .radio-row > .check-field {
+  height: var(--control-h); min-height: 0; padding: 0 14px 0 10px; gap: 8px; border: 1px solid #e6d9e4; border-radius: 999px; background: #fff;
+  color: #6b5a69; font-size: 12.5px; font-weight: 600; white-space: nowrap; cursor: pointer;
+}
+.registration fieldset .radio-row > .check-field:hover { border-color: #d6b9d2; color: var(--accent-strong); background: #fdf8fc; }
+.registration fieldset .radio-row > .check-field input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); }
+.registration fieldset .radio-row > .check-field:has(input:checked) { background: var(--accent-soft); border-color: #dcb3d6; color: var(--accent-strong); }
+.registration fieldset .radio-row:has(> .check-field) { display: flex; flex-wrap: wrap; gap: 8px 10px; }

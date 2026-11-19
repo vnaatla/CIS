@@ -36,8 +36,12 @@ export class SelectPlaceholderService {
       if (option.dataset['ph'] && select.selectedIndex === -1) option.selected = true
       if (option.dataset['ph'] || option.textContent?.trim()) continue
       const screen = select.closest('.modal, section.screen') ?? document.body
-      // Only the screen's action buttons count (a date picker's "Register Date" button is not a Register action).
-      const actions = screen.querySelectorAll('app-action-bar button, .modal-actions button, .actions > button, .cr-actions button')
+      // Only action buttons count (a date picker's "Register Date" button is not a Register action), and those of the dropdown's own card
+      // when it has some: a Search card with Search / Print / Clear is a filter even if the screen also has a Save / Update card.
+      const ACTION = 'app-action-bar button, .modal-actions button, .actions > button, .cr-actions button'
+      const card = select.closest('fieldset')
+      const own = card ? card.querySelectorAll(ACTION) : null
+      const actions = own && own.length ? own : screen.querySelectorAll(ACTION)
       const entry = Array.from(actions).some((b) => ENTRY_BUTTONS.test(b.textContent?.trim() ?? ''))
       const field = (select.closest('.form-field')?.querySelector(':scope > span')?.textContent ?? select.getAttribute('aria-label') ?? '').replace(/\*/g, '').trim()
       // A required field (or a dropdown that says so with data-prompt) must be chosen, even on a search screen.
