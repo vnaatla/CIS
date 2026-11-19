@@ -23,11 +23,11 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="title" [subtitle]="'Replaces ' + form">
+    <app-page-shell [title]="title">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Clinic" [wide]="true"><input name="clinic" maxlength="300" placeholder="code - name" [(ngModel)]="f.clinic" /></app-field>
+          <app-field label="Clinic" [span]="2"><input name="clinic" maxlength="300" placeholder="code - name" [(ngModel)]="f.clinic" /></app-field>
           <app-field label="Invoice Date From"><app-date-input name="invDateFrom" ariaLabel="Invoice Date From" [(ngModel)]="f.invDateFrom" /></app-field>
           <app-field label="Invoice Date To"><app-date-input name="invDateTo" ariaLabel="Invoice Date To" [(ngModel)]="f.invDateTo" /></app-field>
           <app-field label="Invoice No From"><input name="invoiceFrom" maxlength="100" [(ngModel)]="f.invoiceFrom" /></app-field>
@@ -77,9 +77,11 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
 
         <app-data-grid [caption]="caption" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
           (checkedChange)="check($event)" [selectable]="true" [selectedKey]="selectedKey()" (rowSelected)="select($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
-          <strong>{{ postedList() ? 'Yes' : 'No' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ records() }}</strong></span>
+          <span class="total-card money"><span>Debit</span><strong>{{ money(debit()) }}</strong></span>
+          <span class="total-card money"><span>Credit</span><strong>{{ money(credit()) }}</strong></span>
+          <span class="total-card"><span>Posted</span><strong>{{ postedList() ? 'Yes' : 'No' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

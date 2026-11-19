@@ -23,11 +23,11 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Payment Posting - Member" subtitle="Replaces FrmPostingPay2MBM">
+    <app-page-shell title="Payment Posting - Member">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="ppm-companies" [(ngModel)]="f.groupCompany" />
             <datalist id="ppm-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -63,9 +63,11 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
 
         <app-data-grid caption="Member payment postings" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
           (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
-          <strong>{{ postedList() ? 'Yes' : 'No' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ records() }}</strong></span>
+          <span class="total-card money"><span>Debit</span><strong>{{ money(debit()) }}</strong></span>
+          <span class="total-card money"><span>Credit</span><strong>{{ money(credit()) }}</strong></span>
+          <span class="total-card"><span>Posted</span><strong>{{ postedList() ? 'Yes' : 'No' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

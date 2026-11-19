@@ -23,14 +23,14 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Payment Posting - Clinic" subtitle="Replaces FrmPostingPay2Cln">
+    <app-page-shell title="Payment Posting - Clinic">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
           <app-field label="Entity">
             <select name="entity" [(ngModel)]="f.entity"><option [ngValue]="0">Health Connect</option><option [ngValue]="1">Sihat Johor</option></select>
           </app-field>
-          <app-field label="Clinic" [wide]="true"><input name="clinic" maxlength="300" placeholder="code - name" [(ngModel)]="f.clinic" /></app-field>
+          <app-field label="Clinic" [span]="2"><input name="clinic" maxlength="300" placeholder="code - name" [(ngModel)]="f.clinic" /></app-field>
           <app-field label="PV Date From"><app-date-input name="pvDateFrom" ariaLabel="PV Date From" [(ngModel)]="f.pvDateFrom" /></app-field>
           <app-field label="PV Date To"><app-date-input name="pvDateTo" ariaLabel="PV Date To" [(ngModel)]="f.pvDateTo" /></app-field>
           <app-field label="PV No From"><input name="pvFrom" maxlength="30" [(ngModel)]="f.pvFrom" /></app-field>
@@ -63,9 +63,11 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
 
         <app-data-grid caption="Clinic payment postings" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
           (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
-          <strong>{{ postedList() ? 'Yes' : 'No' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ records() }}</strong></span>
+          <span class="total-card money"><span>Debit</span><strong>{{ money(debit()) }}</strong></span>
+          <span class="total-card money"><span>Credit</span><strong>{{ money(credit()) }}</strong></span>
+          <span class="total-card"><span>Posted</span><strong>{{ postedList() ? 'Yes' : 'No' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

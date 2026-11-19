@@ -24,11 +24,11 @@ const extra = (x: Line, k: string) => s((x['extra'] as Record<string, string> | 
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Posting - Member" subtitle="Replaces frmPostingInvoiceMember">
+    <app-page-shell title="Invoice Posting - Member">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="pim-companies" [(ngModel)]="f.groupCompany" />
             <datalist id="pim-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -71,9 +71,11 @@ const extra = (x: Line, k: string) => s((x['extra'] as Record<string, string> | 
 
         <app-data-grid caption="Member invoice postings" [columns]="columns" [rows]="lines()" [rowKey]="key" [checkable]="kind() === 'G'" [checked]="checked()"
           (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ records() }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong> · Posted:
-          <strong>{{ postedList() ? 'Yes' : 'No' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ records() }}</strong></span>
+          <span class="total-card money"><span>Debit</span><strong>{{ money(debit()) }}</strong></span>
+          <span class="total-card money"><span>Credit</span><strong>{{ money(credit()) }}</strong></span>
+          <span class="total-card"><span>Posted</span><strong>{{ postedList() ? 'Yes' : 'No' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

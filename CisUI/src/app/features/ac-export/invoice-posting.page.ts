@@ -23,11 +23,11 @@ const x = (k: string, label: string): GridColumn<Line> => ({ key: k, label, valu
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Posting" subtitle="Replaces frmInvPosting">
+    <app-page-shell title="Invoice Posting">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Payor" [wide]="true">
+          <app-field label="Payor" [span]="2">
             <select name="payor" [(ngModel)]="f.payor"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
           </app-field>
           <app-field label="Invoice No From"><input name="invoiceFrom" maxlength="50" [(ngModel)]="f.invoiceFrom" /></app-field>
@@ -45,8 +45,10 @@ const x = (k: string, label: string): GridColumn<Line> => ({ key: k, label, valu
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Invoice postings" [columns]="columns" [rows]="lines()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">
-          Lines: <strong>{{ lines().length }}</strong> · Debit: <strong>{{ money(debit()) }}</strong> · Credit: <strong>{{ money(credit()) }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Lines</span><strong>{{ lines().length }}</strong></span>
+          <span class="total-card money"><span>Debit</span><strong>{{ money(debit()) }}</strong></span>
+          <span class="total-card money"><span>Credit</span><strong>{{ money(credit()) }}</strong></span>
         </p>
       </div>
     </app-page-shell>
