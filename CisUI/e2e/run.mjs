@@ -308,7 +308,7 @@ try {
   await page.click('app-action-bar button.primary')
   await page.waitForFunction(() => document.querySelector('input[name="Accum. Amt"]')?.value === '1,985.000', { timeout: 90000 })
   await page.evaluate(() => [...document.querySelectorAll('.tabs button')].find((b) => b.textContent.trim() === 'Case').click())
-  await page.waitForFunction(() => document.querySelector('[aria-label="Specialist totals"]')?.textContent.includes('Total Visits: 10'), { timeout: 60000 })
+  await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Specialist totals"] .total-card')].find((c) => c.firstElementChild.textContent.trim() === 'Total Visits')?.lastElementChild.textContent.trim() === '10', { timeout: 60000 })
   check(true, 'MBM Enquiry: DCHC4245383 utilised 1,985.000 and 10 specialist cases')
   await page.$eval('input[name=member]', (i) => { i.value = '' })
   await page.type('input[name=member]', 'DCHC8922156')

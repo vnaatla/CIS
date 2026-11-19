@@ -280,15 +280,18 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
               @if (cases(); as cs) {
                 <h3 class="section-title">GP Cases</h3>
                 <app-data-grid caption="GP cases" [columns]="caseColumns" [rows]="cs.gp" [rowKey]="caseKey" />
-                <p class="totals" aria-label="GP totals">
-                  Total Visits: <strong>{{ cs.gpVisits }}</strong> · Bill Amount: <strong>{{ money(cs.gpBill) }}</strong> ·
-                  Bordx Amount: <strong>{{ money(cs.gpBordx) }}</strong> · FFS: <strong>{{ money(cs.gpFfs) }}</strong>
+                <p class="totals totals-cards" aria-label="GP totals">
+                  <span class="total-card"><span>Total Visits</span><strong>{{ cs.gpVisits }}</strong></span>
+                  <span class="total-card money"><span>Bill Amount</span><strong>{{ money(cs.gpBill) }}</strong></span>
+                  <span class="total-card money"><span>Bordx Amount</span><strong>{{ money(cs.gpBordx) }}</strong></span>
+                  <span class="total-card money"><span>FFS</span><strong>{{ money(cs.gpFfs) }}</strong></span>
                 </p>
                 <h3 class="section-title">Specialist Cases</h3>
                 <app-data-grid caption="Specialist cases" [columns]="caseColumns" [rows]="cs.specialist" [rowKey]="caseKey" />
-                <p class="totals" aria-label="Specialist totals">
-                  Total Visits: <strong>{{ cs.spVisits }}</strong> · Bill Amount: <strong>{{ money(cs.spBill) }}</strong> ·
-                  Bordx Amount: <strong>{{ money(cs.spBordx) }}</strong>
+                <p class="totals totals-cards" aria-label="Specialist totals">
+                  <span class="total-card"><span>Total Visits</span><strong>{{ cs.spVisits }}</strong></span>
+                  <span class="total-card money"><span>Bill Amount</span><strong>{{ money(cs.spBill) }}</strong></span>
+                  <span class="total-card money"><span>Bordx Amount</span><strong>{{ money(cs.spBordx) }}</strong></span>
                 </p>
               } @else {
                 <p class="muted">Loading cases…</p>
