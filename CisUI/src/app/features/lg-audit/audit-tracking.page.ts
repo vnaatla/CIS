@@ -43,50 +43,41 @@ const date = (v: unknown) => (!v || String(v).startsWith('1900') ? '' : formatDa
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Audit Tracking" subtitle="Replaces FrmAuditInvoiceTracking">
+    <app-page-shell title="Audit Tracking">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
           @for (r of ranges; track r[1]) {
             <app-field [label]="r[0] + ' From'"><input [attr.name]="r[1] + 'From'" [(ngModel)]="f[r[1] + 'From']" /></app-field>
-            <app-field [label]="r[0] + ' To'"><input [attr.name]="r[1] + 'To'" [(ngModel)]="f[r[1] + 'To']" /></app-field>
-            <label class="check-field"><input type="checkbox" [attr.name]="r[1] + 'Blank'" [(ngModel)]="f[r[1] + 'Blank']" /> {{ r[0] }} blank</label>
+            <div class="tf"><app-field [label]="r[0] + ' To'"><input [attr.name]="r[1] + 'To'" [(ngModel)]="f[r[1] + 'To']" /></app-field><label class="check-inline" [title]="r[0] + ' blank'"><input type="checkbox" [attr.name]="r[1] + 'Blank'" [(ngModel)]="f[r[1] + 'Blank']" /> Empty</label></div>
           }
           @for (r of dates; track r[1]) {
             <app-field [label]="r[0] + ' From'"><app-date-input [attr.name]="r[1] + 'From'" [ariaLabel]="r[0] + ' From'" [(ngModel)]="f[r[1] + 'From']" /></app-field>
-            <app-field [label]="r[0] + ' To'"><app-date-input [attr.name]="r[1] + 'To'" [ariaLabel]="r[0] + ' To'" [(ngModel)]="f[r[1] + 'To']" /></app-field>
-            @if (r[2]) {
-              <label class="check-field"><input type="checkbox" [attr.name]="r[1] + 'Blank'" [(ngModel)]="f[r[1] + 'Blank']" /> {{ r[0] }} blank</label>
-            }
+            <div class="tf"><app-field [label]="r[0] + ' To'"><app-date-input [attr.name]="r[1] + 'To'" [ariaLabel]="r[0] + ' To'" [(ngModel)]="f[r[1] + 'To']" /></app-field>@if (r[2]) { <label class="check-inline" [title]="r[0] + ' blank'"><input type="checkbox" [attr.name]="r[1] + 'Blank'" [(ngModel)]="f[r[1] + 'Blank']" /> Empty</label> }</div>
           }
-          <app-field label="Pay To">
+          <div class="tf"><app-field label="Pay To">
             <select name="payTo" [(ngModel)]="f['payTo']"><option value=""></option><option value="C">C - Clinic</option><option value="M">M - Member</option></select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="payToBlank" [(ngModel)]="f['payToBlank']" /> Pay To blank</label>
-          <app-field label="Clinic Code"><input name="clinic" maxlength="20" [(ngModel)]="f['clinic']" /></app-field>
-          <label class="check-field"><input type="checkbox" name="clinicBlank" [(ngModel)]="f['clinicBlank']" /> Clinic blank</label>
-          <app-field label="Payor">
+          </app-field><label class="check-inline" title="Pay To blank"><input type="checkbox" name="payToBlank" [(ngModel)]="f['payToBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="Clinic Code"><input name="clinic" maxlength="20" [(ngModel)]="f['clinic']" /></app-field><label class="check-inline" title="Clinic blank"><input type="checkbox" name="clinicBlank" [(ngModel)]="f['clinicBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="Payor">
             <select name="payor" [(ngModel)]="f['payor']">
               <option value=""></option>
               @for (p of payors(); track p.code) { <option [value]="p.code">{{ p.code }} - {{ p.name }}</option> }
             </select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Payor blank</label>
-          <app-field label="Group Company">
+          </app-field><label class="check-inline" title="Payor blank"><input type="checkbox" name="payorBlank" [(ngModel)]="f['payorBlank']" /> Empty</label></div>
+          <div class="tf"><app-field label="Group Company">
             <select name="groupCompany" [(ngModel)]="f['groupCompany']" (ngModelChange)="groupChanged($event)">
               <option value=""></option>
               @for (g of groups(); track g.code) { <option [value]="g.name">{{ g.name }}</option> }
             </select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="groupBlank" [(ngModel)]="f['groupBlank']" /> Group Company blank</label>
+          </app-field><label class="check-inline" title="Group Company blank"><input type="checkbox" name="groupBlank" [(ngModel)]="f['groupBlank']" /> Empty</label></div>
           <app-field label="Subsidiary">
             <select name="subsidiary" [(ngModel)]="f['subsidiary']"><option value=""></option>@for (x of subsidiaries(); track x) { <option [value]="x">{{ x }}</option> }</select>
           </app-field>
           <app-field label="Department">
             <select name="department" [(ngModel)]="f['department']"><option value=""></option>@for (x of departments(); track x) { <option [value]="x">{{ x }}</option> }</select>
           </app-field>
-          <app-field label="Patient Name"><input name="patientName" maxlength="200" [(ngModel)]="f['patientName']" /></app-field>
-          <label class="check-field"><input type="checkbox" name="nameBlank" [(ngModel)]="f['nameBlank']" /> Name blank</label>
+          <div class="tf"><app-field label="Patient Name"><input name="patientName" maxlength="200" [(ngModel)]="f['patientName']" /></app-field><label class="check-inline" title="Name blank"><input type="checkbox" name="nameBlank" [(ngModel)]="f['nameBlank']" /> Empty</label></div>
           <app-field label="Case Status">
             <select name="caseStatus" [(ngModel)]="f['caseStatus']">
               <option value=""></option><option value="O">O - Open</option><option value="C">C - Close</option><option value="D">D - Delete</option>
@@ -96,11 +87,9 @@ const date = (v: unknown) => (!v || String(v).startsWith('1900') ? '' : formatDa
             <select name="claimability" [(ngModel)]="f['claimability']"><option value=""></option><option value="A">A - Accepted</option><option value="R">R - Rejected</option></select>
           </app-field>
           <app-field label="A/C Period Month From"><select name="monthFrom" [(ngModel)]="f['monthFrom']"><option value=""></option>@for (m of months; track m) { <option [value]="m">{{ m }}</option> }</select></app-field>
-          <app-field label="A/C Period Month To"><select name="monthTo" [(ngModel)]="f['monthTo']"><option value=""></option>@for (m of months; track m) { <option [value]="m">{{ m }}</option> }</select></app-field>
-          <label class="check-field"><input type="checkbox" name="monthBlank" [(ngModel)]="f['monthBlank']" /> Month blank</label>
+          <div class="tf"><app-field label="A/C Period Month To"><select name="monthTo" [(ngModel)]="f['monthTo']"><option value=""></option>@for (m of months; track m) { <option [value]="m">{{ m }}</option> }</select></app-field><label class="check-inline" title="Month blank"><input type="checkbox" name="monthBlank" [(ngModel)]="f['monthBlank']" /> Empty</label></div>
           <app-field label="A/C Period Year From"><select name="yearFrom" [(ngModel)]="f['yearFrom']"><option value=""></option>@for (y of years; track y) { <option [value]="y">{{ y }}</option> }</select></app-field>
-          <app-field label="A/C Period Year To"><select name="yearTo" [(ngModel)]="f['yearTo']"><option value=""></option>@for (y of years; track y) { <option [value]="y">{{ y }}</option> }</select></app-field>
-          <label class="check-field"><input type="checkbox" name="yearBlank" [(ngModel)]="f['yearBlank']" /> Year blank</label>
+          <div class="tf"><app-field label="A/C Period Year To"><select name="yearTo" [(ngModel)]="f['yearTo']"><option value=""></option>@for (y of years; track y) { <option [value]="y">{{ y }}</option> }</select></app-field><label class="check-inline" title="Year blank"><input type="checkbox" name="yearBlank" [(ngModel)]="f['yearBlank']" /> Empty</label></div>
           <app-field label="Clinic Type">
             <select name="clinicType" [(ngModel)]="f['clinicType']">
               <option value=""></option><option value="0">0 - Specialised</option><option value="1">1 - General Practisional</option><option value="2">2 - Others</option>
@@ -112,9 +101,11 @@ const date = (v: unknown) => (!v || String(v).startsWith('1900') ? '' : formatDa
           <app-field label="OMNI Sent">
             <select name="omniSent" [(ngModel)]="f['omniSent']"><option value=""></option><option value="Y">Y - Yes</option><option value="N">N - No</option></select>
           </app-field>
-          <label class="check-field"><input type="checkbox" name="omni" [(ngModel)]="f['omni']" /> OMNI Status: Y - Yes</label>
-          <label class="check-field"><input type="checkbox" name="tims" [(ngModel)]="f['tims']" /> TIMS: Y - Yes</label>
-          <label class="check-field"><input type="checkbox" name="audited" [(ngModel)]="f['audited']" /> Audit: Y - Yes</label>
+          <div class="check-row" role="group" aria-label="Options">
+            <label class="check-field"><input type="checkbox" name="omni" [(ngModel)]="f['omni']" /> OMNI Status: Y - Yes</label>
+            <label class="check-field"><input type="checkbox" name="tims" [(ngModel)]="f['tims']" /> TIMS: Y - Yes</label>
+            <label class="check-field"><input type="checkbox" name="audited" [(ngModel)]="f['audited']" /> Audit: Y - Yes</label>
+          </div>
           <app-action-bar label="Search actions">
             <button appButton variant="primary" [busy]="busy()" (click)="search()">Search</button>
             <button appButton (click)="print()">Print to File</button>
@@ -123,7 +114,9 @@ const date = (v: unknown) => (!v || String(v).startsWith('1900') ? '' : formatDa
         </fieldset>
 
         <app-data-grid caption="Audit tracking" [columns]="columns" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

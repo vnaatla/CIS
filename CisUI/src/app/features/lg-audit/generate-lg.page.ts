@@ -97,7 +97,7 @@ const DELIVERY_COMPLICATIONS = 'Inpatient Delivery Private-Complications'
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent, TabsComponent, TabDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Generate Guarantee Letter" subtitle="Replaces frmLGGeneration">
+    <app-page-shell title="Generate Guarantee Letter">
       <div class="screen-form">
         <fieldset aria-label="Member">
           <legend>Member</legend>
@@ -143,7 +143,7 @@ const DELIVERY_COMPLICATIONS = 'Inpatient Delivery Private-Complications'
               <app-field label="Patient"><input name="patient" [value]="f.patient" disabled /></app-field>
               <app-field label="IC No"><input name="ic" [value]="f.ic" disabled /></app-field>
               <app-field label="Group Clinics"><label class="check-field"><input type="checkbox" name="chkCLN" [(ngModel)]="groupClinics" (ngModelChange)="loadClinics()" /> List the group company's clinics</label></app-field>
-              <app-field label="Clinic" [wide]="true" [required]="true">
+              <app-field label="Clinic" [span]="2" [required]="true">
                 <input name="clinic" list="lg-clinics" [(ngModel)]="f.clinic" />
                 <datalist id="lg-clinics">@for (c of clinics(); track c.code) { <option [value]="c.name + '     [ ' + c.code + ']'"></option> }</datalist>
               </app-field>

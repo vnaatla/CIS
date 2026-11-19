@@ -883,3 +883,13 @@ button[aria-busy='true'] > app-icon { display: none !important; } /* the icon ho
 .step-card app-action-bar .cr-actions { position: static; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
 .step-card app-action-bar .cr-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
 .step-card app-action-bar .cr-actions > button { width: 100%; margin: 0; }
+
+/* A row of option check boxes across a card (Audit Tracking: OMNI / TIMS / Audit Y - Yes), as pill toggles. */
+.registration fieldset > .check-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.registration fieldset > .check-row > .check-field {
+  height: var(--control-h); min-height: 0; padding: 0 14px 0 10px; gap: 8px; border: 1px solid #e6d9e4; border-radius: 999px; background: #fff;
+  color: #6b5a69; font-size: 12.5px; font-weight: 600; white-space: nowrap;
+}
+.registration fieldset > .check-row > .check-field:hover { border-color: #d6b9d2; color: var(--accent-strong); background: #fdf8fc; }
+.registration fieldset > .check-row > .check-field input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); }
+.registration fieldset > .check-row > .check-field:has(input:checked) { background: var(--accent-soft); border-color: #dcb3d6; color: var(--accent-strong); }

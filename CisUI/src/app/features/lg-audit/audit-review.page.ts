@@ -32,7 +32,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, TabsComponent, TabDirective, CaseListModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Audit Review" subtitle="Replaces frmAuditInvoice">
+    <app-page-shell title="Audit Review">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>
