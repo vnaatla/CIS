@@ -64,7 +64,7 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="v.title" [subtitle]="'Replaces ' + v.form">
+    <app-page-shell [title]="v.title">
       <div class="screen-form">
         <fieldset aria-label="Report">
           <legend>Report</legend>
@@ -148,7 +148,9 @@ const code = (v: string) => (v.includes(' - ') ? v.slice(0, v.indexOf(' - ')) : 
           }
         </fieldset>
         <app-data-grid caption="Claim tracking" [columns]="columns()" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ records() }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ records() }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

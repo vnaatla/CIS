@@ -28,7 +28,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Remove Worksheet from Bordereaux" subtitle="Replaces FrmBordxRevise">
+    <app-page-shell title="Remove Worksheet from Bordereaux">
       <div class="screen-form">
         <fieldset aria-label="Bordereaux">
           <legend>Bordereaux</legend>

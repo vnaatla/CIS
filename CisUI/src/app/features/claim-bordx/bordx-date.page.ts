@@ -25,7 +25,7 @@ interface Line {
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Change Bordx Date" subtitle="Replaces FrmBordxDate">
+    <app-page-shell title="Change Bordx Date">
       <div class="screen-form">
         <fieldset aria-label="Bordereaux">
           <legend>Bordereaux</legend>

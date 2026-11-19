@@ -20,7 +20,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="BSN - Print Summary" subtitle="Replaces frmBSNPrintSummary">
+    <app-page-shell title="BSN - Print Summary">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>

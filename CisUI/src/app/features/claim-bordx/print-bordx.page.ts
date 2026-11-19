@@ -29,7 +29,7 @@ const m = (key: string, label: string): GridColumn<Row> => ({ key, label, align:
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="title" [subtitle]="'Replaces ' + form">
+    <app-page-shell [title]="title">
       <div class="screen-form">
         <fieldset aria-label="Bordereaux">
           <legend>Bordereaux</legend>
@@ -62,9 +62,10 @@ const m = (key: string, label: string): GridColumn<Row> => ({ key, label, align:
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Bordereaux worksheets" [columns]="columns" [rows]="info()?.rows ?? []" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">
-          Total: <strong>{{ info()?.rows?.length ?? 0 }}</strong> · Total Amount: <strong>{{ money(info()?.totalAmount ?? 0) }}</strong> ·
-          Printed: <strong>{{ info() ? (info()!.printed ? 'YES' : 'NO') : '-' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ info()?.rows?.length ?? 0 }}</strong></span>
+          <span class="total-card money"><span>Total Amount</span><strong>{{ money(info()?.totalAmount ?? 0) }}</strong></span>
+          <span class="total-card"><span>Printed</span><strong>{{ info() ? (info()!.printed ? 'YES' : 'NO') : '-' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

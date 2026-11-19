@@ -21,13 +21,13 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Insert Invoice" subtitle="Replaces frmWSBordx2">
+    <app-page-shell title="Insert Invoice">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
           <app-field label="Register Date From"><app-date-input name="registerFrom" ariaLabel="Register Date From" [(ngModel)]="f.registerFrom" /></app-field>
           <app-field label="Register Date To"><app-date-input name="registerTo" ariaLabel="Register Date To" [(ngModel)]="f.registerTo" /></app-field>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="ii-companies" [(ngModel)]="f.groupCompany" (change)="company()" />
             <datalist id="ii-companies">@for (c of companies(); track c.code) { <option [value]="c.code + ' - ' + c.name"></option> }</datalist>
           </app-field>
@@ -43,9 +43,10 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
         </fieldset>
         <app-data-grid caption="Invoices pending bordx" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">
-          Total: <strong>{{ rows().length }}</strong> · Total Approved: <strong>{{ money(total()) }}</strong>
-          @if (bordxNo()) { · Bordx No: <strong>{{ bordxNo() }}</strong> }
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Total Approved</span><strong>{{ money(total()) }}</strong></span>
+          @if (bordxNo()) { <span class="total-card"><span>Bordx No</span><strong>{{ bordxNo() }}</strong></span> }
         </p>
       </div>
     </app-page-shell>

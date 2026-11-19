@@ -874,3 +874,12 @@ button:has(> app-icon) { display: inline-flex; align-items: center; justify-cont
 button > app-icon { display: inline-flex; }
 button[aria-busy='true']:has(> app-icon)::before { margin-right: 0; }
 button[aria-busy='true'] > app-icon { display: none !important; } /* the icon host sets display inline */
+
+/* Update Claims Data: one small card per data kind (Verify, then Update), side by side. */
+.registration fieldset > .step-cards { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.step-card { display: grid; gap: 8px; padding: 12px 14px; border: 1px solid #ece6ee; border-radius: 12px; background: #fdfbfd; }
+.step-card.ready { border-color: #dcb3d6; background: var(--accent-soft); }
+.step-card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent-strong); }
+.step-card app-action-bar .cr-actions { position: static; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+.step-card app-action-bar .cr-actions { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.step-card app-action-bar .cr-actions > button { width: 100%; margin: 0; }

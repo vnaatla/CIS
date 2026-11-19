@@ -77,7 +77,7 @@ const screens: Record<Kind, Screen> = {
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="screen.title" [subtitle]="'Replaces ' + screen.form">
+    <app-page-shell [title]="screen.title">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -86,7 +86,7 @@ const screens: Record<Kind, Screen> = {
               <select name="company" [(ngModel)]="f.company"><option value=""></option>@for (p of payors(); track p.code) { <option [value]="p.code + ' - ' + p.name">{{ p.code }} - {{ p.name }}</option> }</select>
             </app-field>
           } @else {
-            <app-field label="Group Company" [wide]="true">
+            <app-field label="Group Company" [span]="2">
               <input name="company" list="delivery-companies" [(ngModel)]="f.company" />
               <datalist id="delivery-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
             </app-field>
@@ -137,7 +137,10 @@ const screens: Record<Kind, Screen> = {
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Bordereaux" [columns]="screen.columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">Total: <strong>{{ rows().length }}</strong> · Total Amount: <strong>{{ money(total()) }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Total Amount</span><strong>{{ money(total()) }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

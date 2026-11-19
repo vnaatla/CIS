@@ -35,7 +35,7 @@ const m = (v: unknown) => (v == null || s(v) === '' ? '' : formatMoney(Number(v)
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Insert Worksheet into Bordereaux" subtitle="Replaces frmWSBordx">
+    <app-page-shell title="Insert Worksheet into Bordereaux">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -55,7 +55,7 @@ const m = (v: unknown) => (v == null || s(v) === '' ? '' : formatMoney(Number(v)
           <app-field label="Entity Type">
             <select name="entity" [(ngModel)]="f.entity"><option [ngValue]="0">Health Connect</option><option [ngValue]="1">Sihat Johor</option></select>
           </app-field>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="ws-groups" [(ngModel)]="f.groupCompany" (change)="companyChanged()" />
             <datalist id="ws-groups">@for (g of groups(); track g.code) { <option [value]="g.name + '|' + g.code"></option> }</datalist>
           </app-field>
@@ -110,9 +110,11 @@ const m = (v: unknown) => (v == null || s(v) === '' ? '' : formatMoney(Number(v)
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Worksheets" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()" (checkedChange)="check($event)" />
-        <p class="totals" aria-label="Totals">
-          Selected: <strong>{{ order().length }}</strong> · Total: <strong>{{ result()?.total ?? 0 }}</strong> · Total Amount:
-          <strong>{{ money(result()?.totalAmount ?? 0) }}</strong> · Bordx No: <strong>{{ bordxNo() || '-' }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Selected</span><strong>{{ order().length }}</strong></span>
+          <span class="total-card"><span>Total</span><strong>{{ result()?.total ?? 0 }}</strong></span>
+          <span class="total-card money"><span>Total Amount</span><strong>{{ money(result()?.totalAmount ?? 0) }}</strong></span>
+          <span class="total-card"><span>Bordx No</span><strong>{{ bordxNo() || '-' }}</strong></span>
         </p>
       </div>
     </app-page-shell>

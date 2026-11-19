@@ -40,26 +40,34 @@ const KINDS: [Kind, string, string][] = [
   imports: [PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Update Claims Data" subtitle="Replaces frmUpdateClaimsData">
+    <app-page-shell title="Update Claims Data">
       <div class="screen-form">
         <fieldset aria-label="File">
           <legend>File</legend>
-          <app-field label="File" [wide]="true">
+          <app-field label="File" [span]="2">
             <input type="file" name="file" accept=".xlsx,.xlsm" (change)="picked($any($event.target).files)" />
           </app-field>
-          @for (k of kinds; track k[0]) {
-            <app-action-bar [label]="k[2] + ' actions'">
-              <button appButton [busy]="busy()" (click)="verify(k[0])">{{ k[1] }}</button>
-              <button appButton variant="primary" [busy]="busy()" [disabled]="verified() !== k[0]" (click)="upload(k[0])">{{ k[2] }}</button>
-            </app-action-bar>
-          }
+          <div class="step-cards">
+            @for (k of kinds; track k[0]) {
+              <div class="step-card" [class.ready]="verified() === k[0]">
+                <span class="step-card-title">{{ k[2] }}</span>
+                <app-action-bar [label]="k[2] + ' actions'">
+                  <button appButton [busy]="busy()" (click)="verify(k[0])">{{ k[1] }}</button>
+                  <button appButton variant="primary" [busy]="busy()" [disabled]="verified() !== k[0]" (click)="upload(k[0])">{{ k[2] }}</button>
+                </app-action-bar>
+              </div>
+            }
+          </div>
           <app-action-bar label="Print">
             <button appButton (click)="print()">Print</button>
           </app-action-bar>
         </fieldset>
         @if (result(); as r) {
-          <p class="totals" aria-label="Result">{{ r.message }} · Rows: <strong>{{ r.rows }}</strong>
-            @if (r.updated) { · Updated: <strong>{{ r.updated }}</strong> }</p>
+          <p class="totals totals-cards" aria-label="Result">
+            <span class="total-card"><span>Result</span><strong>{{ r.message }}</strong></span>
+            <span class="total-card"><span>Rows</span><strong>{{ r.rows }}</strong></span>
+            @if (r.updated) { <span class="total-card main"><span>Updated</span><strong>{{ r.updated }}</strong></span> }
+          </p>
         }
         <app-data-grid caption="Rows with errors" [columns]="columns" [rows]="errors()" [rowKey]="key" />
       </div>

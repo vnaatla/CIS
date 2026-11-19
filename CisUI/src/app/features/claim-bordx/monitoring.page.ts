@@ -57,11 +57,11 @@ const screens: Record<Kind, { title: string; form: string; columns: GridColumn<R
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="screen.title" [subtitle]="'Replaces ' + screen.form">
+    <app-page-shell [title]="screen.title">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="company" list="monitoring-companies" [(ngModel)]="f.company" (change)="companyChanged()" />
             <datalist id="monitoring-companies">@for (c of companies(); track c) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -115,14 +115,13 @@ const screens: Record<Kind, { title: string; form: string; columns: GridColumn<R
           </app-action-bar>
         </fieldset>
         <app-data-grid [caption]="screen.title" [columns]="screen.columns" [rows]="rows()" [rowKey]="key" />
-        <p class="totals" aria-label="Totals">
-          Total: <strong>{{ rows().length }}</strong> ·
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
           @if (kind === 'outstanding') {
-            &lt;= 14 Days: <strong>{{ money(result()?.total14 ?? 0) }}</strong> · &gt; 14 Days: <strong>{{ money(result()?.totalOver14 ?? 0) }}</strong> · Total Due:
-          } @else {
-            Total Amount:
+            <span class="total-card money"><span>&lt;= 14 Days</span><strong>{{ money(result()?.total14 ?? 0) }}</strong></span>
+            <span class="total-card money"><span>&gt; 14 Days</span><strong>{{ money(result()?.totalOver14 ?? 0) }}</strong></span>
           }
-          <strong>{{ money(result()?.total ?? 0) }}</strong>
+          <span class="total-card money"><span>{{ kind === 'outstanding' ? 'Total Due' : 'Total Amount' }}</span><strong>{{ money(result()?.total ?? 0) }}</strong></span>
         </p>
       </div>
     </app-page-shell>

@@ -22,7 +22,7 @@ export async function claimBordx(page, base, check) {
     timeout: 120000,
   })
   await click(page, 'Check All')
-  await page.waitForFunction(() => document.querySelector('[aria-label=Totals]')?.textContent.includes('Selected: 1'), { timeout: 15000 })
+  await page.waitForFunction(() => [...document.querySelectorAll('[aria-label=Totals] .total-card')].find((c) => c.firstElementChild.textContent.trim() === 'Selected')?.lastElementChild.textContent.trim() === '1', { timeout: 15000 })
   check(true, 'Insert Worksheet: CREDIT NOTE-CN for M005 lists EA12573444 and Check All ticks it')
 
   // Remove Worksheet: bordx KIV03270 lists EA12476058 (nothing is removed).
