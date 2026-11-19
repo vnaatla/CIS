@@ -25,7 +25,7 @@ interface TransferCase {
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Case Transfer" subtitle="Replaces frmMembershipTransfer">
+    <app-page-shell title="Case Transfer">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>

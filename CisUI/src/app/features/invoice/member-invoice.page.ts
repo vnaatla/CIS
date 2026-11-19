@@ -68,7 +68,7 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Batch Processing - Member" subtitle="Replaces frmInvoiceMBM, frmWorksheet">
+    <app-page-shell title="Invoice Batch Processing - Member">
       <div class="screen-form">
         <fieldset aria-label="Invoice">
           <legend>Invoice</legend>
@@ -203,10 +203,11 @@ const money = (v: number | null | undefined) => (v == null ? '' : formatMoney(v)
           </app-action-bar>
 
           @if (line(); as l) {
-            <p class="totals" aria-label="Line">
-              Bill Amt: <strong>{{ money(l.total) }}</strong> · Final Approved: <strong data-final>{{ money(l.worksheet.finalApproved) }}</strong> ·
-              Co-Pymt: <strong>{{ money(l.amounts[29]) }}</strong>
-              @if (caseNo()) { · Case No : <strong data-case>{{ caseNo() }}</strong> }
+            <p class="totals totals-cards" aria-label="Line">
+              <span class="total-card money"><span>Bill Amt</span><strong>{{ money(l.total) }}</strong></span>
+              <span class="total-card money"><span>Final Approved</span><strong data-final>{{ money(l.worksheet.finalApproved) }}</strong></span>
+              <span class="total-card money"><span>Co-Pymt</span><strong>{{ money(l.amounts[29]) }}</strong></span>
+              @if (caseNo()) { <span class="total-card"><span>Case No</span><strong data-case>{{ caseNo() }}</strong></span> }
             </p>
           }
           @if (errors().length) {

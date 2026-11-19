@@ -25,7 +25,7 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Update" subtitle="Replaces frmUpdateCLNInvoice">
+    <app-page-shell title="Invoice Update">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -64,7 +64,10 @@ const money = (v: unknown) => (typeof v === 'number' ? formatMoney(v) : '0.00')
 
         <app-data-grid caption="Cases" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="checked.set($event)" />
-        <p class="totals">Records: <strong>{{ rows().length }}</strong> · Checked: <strong>{{ checked().size }}</strong></p>
+        <p class="totals totals-cards">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card"><span>Checked</span><strong>{{ checked().size }}</strong></span>
+        </p>
 
         <fieldset aria-label="Update">
           <legend>Update</legend>

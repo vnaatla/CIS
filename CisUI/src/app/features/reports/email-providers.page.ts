@@ -22,7 +22,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Email Notification (Providers)" subtitle="Replaces frmEmailNotificationProvider">
+    <app-page-shell title="Email Notification (Providers)">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -44,7 +44,7 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
         <fieldset aria-label="Send">
           <legend>Send</legend>
           <app-field label="Date Banked-in"><app-date-input name="sendDate" ariaLabel="Send Date" [(ngModel)]="sendDate" /></app-field>
-          <app-field label="Extra BCC" [wide]="true"><input name="extraBcc" maxlength="500" placeholder="a@b.com; c@d.com" [(ngModel)]="extraBcc" /></app-field>
+          <app-field label="Extra BCC" [span]="2"><input name="extraBcc" maxlength="500" placeholder="a@b.com; c@d.com" [(ngModel)]="extraBcc" /></app-field>
           <label class="check-field"><input type="checkbox" name="checkAll" [checked]="allChecked()" (change)="checkAll($any($event.target).checked)" /> Check all</label>
           <app-action-bar label="Send actions">
             <button appButton variant="primary" [busy]="sending()" (click)="send()">Send</button>
@@ -52,7 +52,10 @@ const s = (v: unknown) => (v == null ? '' : String(v).trim())
         </fieldset>
         <app-data-grid caption="Clinic payments to e-mail" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="onChecked($event)" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong> · Ticked: <strong>{{ checked().size }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card"><span>Ticked</span><strong>{{ checked().size }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

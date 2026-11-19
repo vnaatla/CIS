@@ -40,7 +40,7 @@ function checkMessage(r: Row): string | null {
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="OP Batch / Invoice" subtitle="Replaces frmUpdateInvoiceBatch">
+    <app-page-shell title="OP Batch / Invoice">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -111,9 +111,11 @@ function checkMessage(r: Row): string | null {
 
         <app-data-grid caption="Cases" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="onChecked($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ rows().length }}</strong> · Invoice Amt: <strong>{{ money(totals().invoice) }}</strong> ·
-          FFS: <strong>{{ money(totals().ffs) }}</strong> · Checked: <strong>{{ checked().size }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Invoice Amt</span><strong>{{ money(totals().invoice) }}</strong></span>
+          <span class="total-card money"><span>FFS</span><strong>{{ money(totals().ffs) }}</strong></span>
+          <span class="total-card"><span>Checked</span><strong>{{ checked().size }}</strong></span>
         </p>
 
         <fieldset aria-label="Update">

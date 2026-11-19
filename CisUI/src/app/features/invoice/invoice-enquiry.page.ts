@@ -48,7 +48,7 @@ const d = (v: unknown) => formatDate(v as string | null)
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, TabsComponent, TabDirective, NgTemplateOutlet, CaseListModalComponent, MemberInfoModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Enquiry" subtitle="Replaces FrmInvoiceEnq">
+    <app-page-shell title="Invoice Enquiry">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>

@@ -29,7 +29,7 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="screen.title" [subtitle]="'Replaces ' + screen.form">
+    <app-page-shell [title]="screen.title">
       <div class="screen-form">
         <fieldset aria-label="Generate">
           <legend>Generate</legend>
@@ -40,7 +40,7 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
             <app-field label="Bordx No To"><input name="bordxTo" maxlength="20" [(ngModel)]="f.bordxTo" /></app-field>
           }
           @if (screen.clinic) {
-            <app-field label="Clinic" [wide]="true">
+            <app-field label="Clinic" [span]="2">
               <input name="clinic" list="ascii-clinics" placeholder="code - name" [(ngModel)]="f.clinic" />
               <datalist id="ascii-clinics">@for (c of clinics(); track $index) { <option [value]="c"></option> }</datalist>
             </app-field>
@@ -54,7 +54,10 @@ const SCREENS: Record<Format, { title: string; form: string; range: boolean; cli
             <button appButton variant="primary" [busy]="busy()" (click)="generate()">Generate</button>
           </app-action-bar>
         </fieldset>
-        <p class="totals" aria-label="Totals">Total Visits: <strong>{{ visits() }}</strong> · Total Amount: <strong>{{ money(total()) }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Total Visits</span><strong>{{ visits() }}</strong></span>
+          <span class="total-card money"><span>Total Amount</span><strong>{{ money(total()) }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

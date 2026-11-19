@@ -23,7 +23,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Email Notification (Rejection)" subtitle="Replaces frmEmailRejectedClaim">
+    <app-page-shell title="Email Notification (Rejection)">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
@@ -34,7 +34,7 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
           <app-field label="Status">
             <select name="status" [(ngModel)]="f.status"><option value=""></option><option>N - New</option><option>R - Resend</option></select>
           </app-field>
-          <app-field label="Group Company" [wide]="true">
+          <app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="er-companies" [(ngModel)]="f.groupCompany" />
             <datalist id="er-companies">@for (c of companies(); track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -46,7 +46,10 @@ const d = (v: unknown) => (v ? formatDate(String(v)) : '')
         </fieldset>
         <app-data-grid caption="Rejected claims" [columns]="columns" [rows]="rows()" [rowKey]="key" [checkable]="true" [checked]="checked()"
           (checkedChange)="onChecked($event)" />
-        <p class="totals" aria-label="Totals">Records: <strong>{{ rows().length }}</strong> · Ticked: <strong>{{ checked().size }}</strong></p>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card"><span>Ticked</span><strong>{{ checked().size }}</strong></span>
+        </p>
       </div>
     </app-page-shell>
   `,

@@ -29,7 +29,7 @@ const BOXES: [string, string][] = [
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, TabsComponent, TabDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="General Exclusions (Enquiry)" subtitle="Replaces frmGeneralBenefitExcEnq">
+    <app-page-shell title="General Exclusions (Enquiry)">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>

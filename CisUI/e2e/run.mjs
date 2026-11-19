@@ -360,7 +360,7 @@ try {
   await page.type('input[aria-label="Visit Date From"]', '01/08/2021')
   await page.type('input[aria-label="Visit Date To"]', '31/08/2021')
   await page.click('app-action-bar button.primary')
-  await page.waitForFunction(() => document.querySelector('[aria-label="Totals"]')?.textContent.includes('Records: 3'), { timeout: 120000 })
+  await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Totals"] .total-card')].find((c) => c.firstElementChild.textContent.trim() === 'Records')?.lastElementChild.textContent.trim() === '3', { timeout: 120000 })
   check(true, 'OP Batch/Invoice lists the 3 open cases of clinic T301 in August 2021')
 
   // 19. Invoice > MMA/CPT: search BRAIN / A01, a row opens its details.
@@ -403,7 +403,7 @@ try {
   await page.type('input[name=clinicBillAmount]', '45')
   await page.select('select[name=claimability]', 'A')
   await page.click('app-action-bar[label="Invoice actions"] button.primary')
-  await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
+  await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Line"] .total-card')].find((c) => c.firstElementChild.textContent.trim() === 'Bill Amt')?.lastElementChild.textContent.trim() === '45.00', { timeout: 120000 })
   check(true, 'Clinic invoice: DCHC9086608 at T301 on 15/08/2021, GP fee 30 + X-Ray 15 → line 45.00 with its worksheet')
 
   // 22. Invoice > Member: the same case as a reimbursement claim (nothing is saved).
@@ -424,7 +424,7 @@ try {
   await page.evaluate(() => { const i = document.querySelector('input[name=a29]'); i.value = ''; i.dispatchEvent(new Event('input')) })
   await page.select('select[name=memoClaim]', 'Y')
   await page.click('app-action-bar[label="Invoice actions"] button.primary')
-  await page.waitForFunction(() => document.querySelector('[aria-label="Line"]')?.textContent.includes('Bill Amt: 45.00'), { timeout: 120000 })
+  await page.waitForFunction(() => [...document.querySelectorAll('[aria-label="Line"] .total-card')].find((c) => c.firstElementChild.textContent.trim() === 'Bill Amt')?.lastElementChild.textContent.trim() === '45.00', { timeout: 120000 })
   check(true, 'Member invoice: DCHC9086608 reimbursement on 15/08/2021 → line 45.00 with its worksheet')
 
   // 23. Invoice > Enquiry: case EA12586874 shows its clinic and stored worksheet.

@@ -115,7 +115,9 @@ export class IcdSearchModalComponent {
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Cases" [columns]="columns" [rows]="rows()" [rowKey]="key" [selectable]="true" (rowSelected)="picked.emit($event)" />
-        <p class="totals">Total: <strong>{{ rows().length }}</strong></p>
+        <p class="totals totals-cards">
+          <span class="total-card"><span>Total</span><strong>{{ rows().length }}</strong></span>
+        </p>
       </div>
     </app-modal>
   `,

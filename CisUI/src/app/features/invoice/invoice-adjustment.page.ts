@@ -61,7 +61,7 @@ const dmy = (v: unknown) => (v ? formatDate(String(v)) : '')
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="afterBordx ? 'Invoice Adjustment (After Bordx)' : afterPost ? 'Invoice Adjustment (After Posting)' : 'Invoice Adjustment'" [subtitle]="afterBordx ? 'Replaces frmInvoiceAdjAftBordx' : afterPost ? 'Replaces frmInvoiceAdjAfterPost' : 'Replaces frmInvoiceAdj, frmCasePending'">
+    <app-page-shell [title]="afterBordx ? 'Invoice Adjustment (After Bordx)' : afterPost ? 'Invoice Adjustment (After Posting)' : 'Invoice Adjustment'">
       <div class="screen-form">
         <fieldset aria-label="Case">
           <legend>Case</legend>

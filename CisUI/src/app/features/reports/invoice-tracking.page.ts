@@ -44,7 +44,7 @@ const COLUMNS: GridColumn<Row>[] = [
   imports: [FormsModule, PageShellComponent, FieldComponent, DateInputComponent, ButtonDirective, ActionBarComponent, DataGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell [title]="jupiter ? 'Invoice Tracking (Jupiter)' : 'Invoice Tracking'" [subtitle]="jupiter ? 'Replaces FrmInvoiceTracking2' : 'Replaces FrmInvoiceTracking'">
+    <app-page-shell [title]="jupiter ? 'Invoice Tracking (Jupiter)' : 'Invoice Tracking'">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Case and member</legend>
@@ -54,19 +54,14 @@ const COLUMNS: GridColumn<Row>[] = [
           </app-field>
           }
           <app-field label="Case No From"><input name="caseFrom" maxlength="20" [(ngModel)]="f.caseFrom" /></app-field>
-          <app-field label="Case No To"><input name="caseTo" maxlength="20" [(ngModel)]="f.caseTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="caseBlank" [(ngModel)]="f.caseBlank" /> Empty</label>
+          <div class="tf"><app-field label="Case No To"><input name="caseTo" maxlength="20" [(ngModel)]="f.caseTo" /></app-field><label class="check-inline"><input type="checkbox" name="caseBlank" [(ngModel)]="f.caseBlank" /> Empty</label></div>
           <app-field label="Member No From"><input name="memberFrom" maxlength="30" [(ngModel)]="f.memberFrom" /></app-field>
-          <app-field label="Member No To"><input name="memberTo" maxlength="30" [(ngModel)]="f.memberTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="memberBlank" [(ngModel)]="f.memberBlank" /> Empty</label>
-          <app-field label="Patient Name"><input name="patient" maxlength="200" [(ngModel)]="f.patient" /></app-field>
-          <label class="check-field"><input type="checkbox" name="patientBlank" [(ngModel)]="f.patientBlank" /> Empty</label>
+          <div class="tf"><app-field label="Member No To"><input name="memberTo" maxlength="30" [(ngModel)]="f.memberTo" /></app-field><label class="check-inline"><input type="checkbox" name="memberBlank" [(ngModel)]="f.memberBlank" /> Empty</label></div>
+          <div class="tf"><app-field label="Patient Name"><input name="patient" maxlength="200" [(ngModel)]="f.patient" /></app-field><label class="check-inline"><input type="checkbox" name="patientBlank" [(ngModel)]="f.patientBlank" /> Empty</label></div>
           <app-field label="IC No From"><input name="icFrom" maxlength="30" [(ngModel)]="f.icFrom" /></app-field>
-          <app-field label="IC No To"><input name="icTo" maxlength="30" [(ngModel)]="f.icTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="icBlank" [(ngModel)]="f.icBlank" /> Empty</label>
+          <div class="tf"><app-field label="IC No To"><input name="icTo" maxlength="30" [(ngModel)]="f.icTo" /></app-field><label class="check-inline"><input type="checkbox" name="icBlank" [(ngModel)]="f.icBlank" /> Empty</label></div>
           <app-field label="Plan From"><input name="planFrom" maxlength="20" [(ngModel)]="f.planFrom" /></app-field>
-          <app-field label="Plan To"><input name="planTo" maxlength="20" [(ngModel)]="f.planTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="planBlank" [(ngModel)]="f.planBlank" /> Empty</label>
+          <div class="tf"><app-field label="Plan To"><input name="planTo" maxlength="20" [(ngModel)]="f.planTo" /></app-field><label class="check-inline"><input type="checkbox" name="planBlank" [(ngModel)]="f.planBlank" /> Empty</label></div>
 @if (!jupiter) {
           <app-field label="Flex OP">
             <select name="flex" [(ngModel)]="f.flex"><option [ngValue]="null"></option><option [ngValue]="0">OutPatient</option><option [ngValue]="1">flexCare</option></select>
@@ -75,16 +70,14 @@ const COLUMNS: GridColumn<Row>[] = [
         </fieldset>
         <fieldset aria-label="Payor and clinic">
           <legend>Payor and clinic</legend>
-          <app-field label="Payor" [wide]="true">
+          <div class="tf"><app-field label="Payor" [span]="2">
             <input name="payor" list="it-payors" (focus)="load('payors')" (change)="companiesFor()" [(ngModel)]="f.payor" />
             <datalist id="it-payors">@for (c of lists()['payors'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="payorBlank" [(ngModel)]="f.payorBlank" /> Empty</label>
-          <app-field label="Group Company" [wide]="true">
+          </app-field><label class="check-inline"><input type="checkbox" name="payorBlank" [(ngModel)]="f.payorBlank" /> Empty</label></div>
+          <div class="tf"><app-field label="Group Company" [span]="2">
             <input name="groupCompany" list="it-companies" (change)="companyLists()" [(ngModel)]="f.groupCompany" />
             <datalist id="it-companies">@for (c of lists()['companies'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="groupCompanyBlank" [(ngModel)]="f.groupCompanyBlank" /> Empty</label>
+          </app-field><label class="check-inline"><input type="checkbox" name="groupCompanyBlank" [(ngModel)]="f.groupCompanyBlank" /> Empty</label></div>
 @if (!jupiter) {
           <app-field label="Subsidiary">
             <select name="subsidiary" [(ngModel)]="f.subsidiary"><option value=""></option>@for (c of lists()['subsidiaries'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
@@ -95,7 +88,7 @@ const COLUMNS: GridColumn<Row>[] = [
             <select name="department" [(ngModel)]="f.department"><option value=""></option>@for (c of lists()['departments'] ?? []; track $index) { <option [value]="c">{{ c }}</option> }</select>
           </app-field>
           }
-          <app-field label="Clinic" [wide]="true">
+          <app-field label="Clinic" [span]="2">
             <input name="clinic" list="it-clinics" (focus)="load('clinics')" [(ngModel)]="f.clinic" />
             <datalist id="it-clinics">@for (c of lists()['clinics'] ?? []; track $index) { <option [value]="c"></option> }</datalist>
           </app-field>
@@ -106,10 +99,9 @@ const COLUMNS: GridColumn<Row>[] = [
           <app-field label="FFS">
             <select name="ffs" [(ngModel)]="f.ffs"><option value=""></option><option>Y - Yes</option><option>N - No</option></select>
           </app-field>
-          <app-field label="Pay To">
+          <div class="tf"><app-field label="Pay To">
             <select name="payTo" [(ngModel)]="f.payTo"><option value=""></option><option>C - Clinic</option><option>M - Member</option></select>
-          </app-field>
-          <label class="check-field"><input type="checkbox" name="payToBlank" [(ngModel)]="f.payToBlank" /> Empty</label>
+          </app-field><label class="check-inline"><input type="checkbox" name="payToBlank" [(ngModel)]="f.payToBlank" /> Empty</label></div>
 @if (!jupiter) {
           <app-field label="Payment Status">
             <select name="paid" [(ngModel)]="f.paid"><option value=""></option><option>Yes</option><option>No</option></select>
@@ -119,21 +111,16 @@ const COLUMNS: GridColumn<Row>[] = [
         <fieldset aria-label="Invoice and bordereaux">
           <legend>Invoice and bordereaux</legend>
           <app-field label="Invoice No From"><input name="invoiceFrom" maxlength="50" [(ngModel)]="f.invoiceFrom" /></app-field>
-          <app-field label="Invoice No To"><input name="invoiceTo" maxlength="50" [(ngModel)]="f.invoiceTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="invoiceBlank" [(ngModel)]="f.invoiceBlank" /> Empty</label>
+          <div class="tf"><app-field label="Invoice No To"><input name="invoiceTo" maxlength="50" [(ngModel)]="f.invoiceTo" /></app-field><label class="check-inline"><input type="checkbox" name="invoiceBlank" [(ngModel)]="f.invoiceBlank" /> Empty</label></div>
           <app-field label="Invoice Amount From"><input name="amountFrom" [(ngModel)]="f.amountFrom" /></app-field>
-          <app-field label="Invoice Amount To"><input name="amountTo" [(ngModel)]="f.amountTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="amountBlank" [(ngModel)]="f.amountBlank" /> Empty</label>
+          <div class="tf"><app-field label="Invoice Amount To"><input name="amountTo" [(ngModel)]="f.amountTo" /></app-field><label class="check-inline"><input type="checkbox" name="amountBlank" [(ngModel)]="f.amountBlank" /> Empty</label></div>
           <app-field label="Bordx No From"><input name="bordxFrom" maxlength="20" [(ngModel)]="f.bordxFrom" /></app-field>
-          <app-field label="Bordx No To"><input name="bordxTo" maxlength="20" [(ngModel)]="f.bordxTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="bordxBlank" [(ngModel)]="f.bordxBlank" /> Empty</label>
+          <div class="tf"><app-field label="Bordx No To"><input name="bordxTo" maxlength="20" [(ngModel)]="f.bordxTo" /></app-field><label class="check-inline"><input type="checkbox" name="bordxBlank" [(ngModel)]="f.bordxBlank" /> Empty</label></div>
           <app-field label="OP Batch From"><input name="opBatchFrom" maxlength="30" [(ngModel)]="f.opBatchFrom" /></app-field>
-          <app-field label="OP Batch To"><input name="opBatchTo" maxlength="30" [(ngModel)]="f.opBatchTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="opBatchBlank" [(ngModel)]="f.opBatchBlank" /> Empty</label>
+          <div class="tf"><app-field label="OP Batch To"><input name="opBatchTo" maxlength="30" [(ngModel)]="f.opBatchTo" /></app-field><label class="check-inline"><input type="checkbox" name="opBatchBlank" [(ngModel)]="f.opBatchBlank" /> Empty</label></div>
 @if (!jupiter) {
           <app-field label="OMNI Ref From"><input name="omniRefFrom" maxlength="30" [(ngModel)]="f.omniRefFrom" /></app-field>
-          <app-field label="OMNI Ref To"><input name="omniRefTo" maxlength="30" [(ngModel)]="f.omniRefTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="omniRefBlank" [(ngModel)]="f.omniRefBlank" /> Empty</label>
+          <div class="tf"><app-field label="OMNI Ref To"><input name="omniRefTo" maxlength="30" [(ngModel)]="f.omniRefTo" /></app-field><label class="check-inline"><input type="checkbox" name="omniRefBlank" [(ngModel)]="f.omniRefBlank" /> Empty</label></div>
           <app-field label="OMNI Sent">
             <select name="omniSent" [(ngModel)]="f.omniSent"><option value=""></option><option>Y - Yes</option><option>N - No</option></select>
           </app-field>
@@ -141,18 +128,15 @@ const COLUMNS: GridColumn<Row>[] = [
           <label class="check-field"><input type="checkbox" name="tims" [(ngModel)]="f.tims" /> TIMS company</label>
           }
           <app-field label="A/C Month From"><input name="accMonthFrom" maxlength="2" [(ngModel)]="f.accMonthFrom" /></app-field>
-          <app-field label="A/C Month To"><input name="accMonthTo" maxlength="2" [(ngModel)]="f.accMonthTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="accMonthBlank" [(ngModel)]="f.accMonthBlank" /> Empty</label>
+          <div class="tf"><app-field label="A/C Month To"><input name="accMonthTo" maxlength="2" [(ngModel)]="f.accMonthTo" /></app-field><label class="check-inline"><input type="checkbox" name="accMonthBlank" [(ngModel)]="f.accMonthBlank" /> Empty</label></div>
           <app-field label="A/C Year From"><input name="accYearFrom" maxlength="4" [(ngModel)]="f.accYearFrom" /></app-field>
-          <app-field label="A/C Year To"><input name="accYearTo" maxlength="4" [(ngModel)]="f.accYearTo" /></app-field>
-          <label class="check-field"><input type="checkbox" name="accYearBlank" [(ngModel)]="f.accYearBlank" /> Empty</label>
+          <div class="tf"><app-field label="A/C Year To"><input name="accYearTo" maxlength="4" [(ngModel)]="f.accYearTo" /></app-field><label class="check-inline"><input type="checkbox" name="accYearBlank" [(ngModel)]="f.accYearBlank" /> Empty</label></div>
         </fieldset>
         <fieldset aria-label="Dates and status">
           <legend>Dates and status</legend>
           @for (d of jupiter ? jupiterDates : dates; track d.key) {
             <app-field [label]="d.label + ' From'"><app-date-input [name]="d.key + 'From'" [ariaLabel]="d.label + ' From'" [(ngModel)]="f[d.key + 'From']" /></app-field>
-            <app-field [label]="d.label + ' To'"><app-date-input [name]="d.key + 'To'" [ariaLabel]="d.label + ' To'" [(ngModel)]="f[d.key + 'To']" /></app-field>
-            @if (d.blank) { <label class="check-field"><input type="checkbox" [name]="d.key + 'Blank'" [(ngModel)]="f[d.key + 'Blank']" /> Empty</label> }
+            <div class="tf"><app-field [label]="d.label + ' To'"><app-date-input [name]="d.key + 'To'" [ariaLabel]="d.label + ' To'" [(ngModel)]="f[d.key + 'To']" /></app-field>@if (d.blank) { <label class="check-inline"><input type="checkbox" [name]="d.key + 'Blank'" [(ngModel)]="f[d.key + 'Blank']" /> Empty</label> }</div>
           }
           @if (jupiter) {
             <app-field label="Case Status">
@@ -176,9 +160,11 @@ const COLUMNS: GridColumn<Row>[] = [
           </app-action-bar>
         </fieldset>
         <app-data-grid caption="Invoices" [columns]="columns" [rows]="rows()" [rowKey]="key" (rowActivated)="open($event)" />
-        <p class="totals" aria-label="Totals">
-          Records: <strong>{{ rows().length }}</strong> · Invoice Amount: <strong>{{ fmt(total()) }}</strong> · Approved: <strong>{{ fmt(approved()) }}</strong>
-          · BTBG: <strong>{{ fmt(btbg()) }}</strong>
+        <p class="totals totals-cards" aria-label="Totals">
+          <span class="total-card"><span>Records</span><strong>{{ rows().length }}</strong></span>
+          <span class="total-card money"><span>Invoice Amount</span><strong>{{ fmt(total()) }}</strong></span>
+          <span class="total-card money"><span>Approved</span><strong>{{ fmt(approved()) }}</strong></span>
+          <span class="total-card money"><span>BTBG</span><strong>{{ fmt(btbg()) }}</strong></span>
         </p>
       </div>
     </app-page-shell>

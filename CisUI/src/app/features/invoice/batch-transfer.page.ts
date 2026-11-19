@@ -26,7 +26,7 @@ interface BatchInfo {
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="Invoice Batch Number Transfer" subtitle="Replaces FrmInvoiceBatchNoUpd">
+    <app-page-shell title="Invoice Batch Number Transfer">
       <div class="screen-form">
         @for (n of [0, 1]; track n) {
           <fieldset [attr.aria-label]="'Batch ' + (n + 1)">

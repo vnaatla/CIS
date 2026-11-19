@@ -34,7 +34,7 @@ interface MmaRow {
   imports: [FormsModule, PageShellComponent, FieldComponent, ButtonDirective, ActionBarComponent, DataGridComponent, ModalComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-shell title="MMA Schedule / CPT" subtitle="Replaces frmMMASchedule, frmShowInvestigation">
+    <app-page-shell title="MMA Schedule / CPT">
       <div class="screen-form">
         <fieldset aria-label="Search">
           <legend>Search</legend>
