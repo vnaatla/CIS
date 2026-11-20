@@ -17,7 +17,7 @@ npm run e2e
 While building a phase, run only its steps (one login, no wrong-password attempt, far less load on the local SQL Server):
 
 ```powershell
-$env:E2E_STEPS = 'claim-bordx'   # modules in e2e/steps (comma-separated)
+$env:E2E_STEPS = 'claim-bordx'   # modules in e2e/steps (comma-separated): claim-bordx, payment, receipt, ac-export, reports, theme
 node e2e/only.mjs
 ```
 

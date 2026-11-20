@@ -22,5 +22,9 @@ npm run e2e        # browser smoke test against a running API + UI (see e2e/READ
 | `e2e` | browser checks (see `e2e/README.md`) |
 | `scripts/menu-mapping.mjs` | regenerates `../Cis/docs/menu-mapping.md` from `menu.ts` |
 | `scripts/test-guide-coverage.cjs` | lists migrated menu items that no test guide in `../Cis/docs/testing` mentions |
+| `scripts/theme-tokens.cjs` | colour themes (Purple / Navy blue): turns brand colours in `src/styles.css` into tokens and regenerates the THEME TOKENS block; `--check` audits that no brand colour is typed in (see `../Cis/docs/architecture.md`, "Colour themes") |
+
+Colour themes: the palette button in the top bar switches Purple / Navy blue (`core/ui/theme.service.ts`, kept per browser in
+`localStorage` `cis.theme`). After editing colours in `src/styles.css`, run `node scripts/theme-tokens.cjs` (and `--check`).
 
 Node.js ≥ 22.22.3 is required. Dependencies are pinned to exact versions (`.npmrc` `save-exact=true`).

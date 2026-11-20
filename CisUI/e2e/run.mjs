@@ -8,6 +8,7 @@ import { payment } from './steps/payment.mjs'
 import { receipt } from './steps/receipt.mjs'
 import { acExport } from './steps/ac-export.mjs'
 import { reports } from './steps/reports.mjs'
+import { theme } from './steps/theme.mjs'
 
 const base = process.env.E2E_URL ?? 'http://localhost:4200'
 const user = process.env.E2E_USER ?? 'DEVADMIN'
@@ -610,6 +611,9 @@ try {
 
   // 39. Tracking and report (Phase 10) steps.
   await reports(page, base, check)
+
+  // 40. Colour theme: Navy blue and back to Purple.
+  await theme(page, base, check)
 
   // 16. Logout.
   await page.click('header.topbar button.link:last-of-type')

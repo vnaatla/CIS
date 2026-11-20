@@ -45,8 +45,12 @@ Phase 0. Source: `CIS VB/frmLogin.frm`, `MDIMain.frm` (Logout_Click, mnuCloseCon
   (memory of the API process); a successful login clears it.
 - **D6** The desktop wrote `Tbl_USRTrack` time / date with the PC's regional settings (e.g. `21:10:35` / `31-10-2026` on this PC); the web
   always writes the format of the production rows (`9:10:35 PM` / `31/10/2026`).
+- **D7** New, no desktop equivalent: a **colour theme** (Purple, the default, or Navy blue) chosen from the palette button in the top bar
+  of the main window. It recolours every screen at once and is kept in this browser (`localStorage` `cis.theme`), so the login page and
+  every user signing in on that browser get it too; nothing is stored in the database. See `../architecture.md`, "Colour themes".
 
 ## Tests
 
 `LoginTests.cs` (rules, messages, file line, suspend after three), `DatabaseTests.cs` (procedures on the real tables, rolled back),
 `ApiIntegrationTests.cs` (HTTP, Problem Details), `login.page.spec.ts`, `session.service.spec.ts`, `e2e/run.mjs`.
+Theme: `theme.service.spec.ts`, `e2e/steps/theme.mjs` (`E2E_STEPS=theme`), manual steps in `../testing/theme-test-guide.md`.

@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal, viewChild } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
 import { filter, map } from 'rxjs'
 import { SessionService } from '../core/auth/session.service'
+import { ThemeService } from '../core/ui/theme.service'
 import { IconComponent } from '../shared/icon.component'
 import { MENU, MenuItem, MenuModule, nothingToBuild } from './menu'
 
@@ -37,6 +38,24 @@ const NAV_PINNED = 'nav-pinned'
         }
         <span class="spacer"></span>
         <div class="topbar-actions">
+          <div class="theme-picker" (focusout)="themeBlur($event)" (keydown.escape)="closeThemes(true)">
+            <button #themeButton type="button" class="topbar-icon" title="Theme" aria-label="Theme" aria-haspopup="menu"
+              [attr.aria-expanded]="themesOpen()" (click)="themesOpen.set(!themesOpen())" (keydown.arrowDown)="openThemes($event)">
+              <app-icon name="palette" [size]="17" />
+            </button>
+            @if (themesOpen()) {
+              <div class="theme-menu" role="menu" aria-label="Theme" (keydown)="themeKey($event)">
+                <span class="theme-menu-title">Theme</span>
+                @for (t of theme.themes; track t.id) {
+                  <button type="button" role="menuitemradio" class="theme-option" [attr.aria-checked]="theme.theme() === t.id" (click)="pickTheme(t.id)">
+                    <span class="theme-swatch" aria-hidden="true" [style.background]="'linear-gradient(135deg, ' + t.swatch[1] + ', ' + t.swatch[0] + ')'"></span>
+                    <span class="theme-name">{{ t.label }}</span>
+                    @if (theme.theme() === t.id) { <app-icon name="check" [size]="15" /> }
+                  </button>
+                }
+              </div>
+            }
+          </div>
           <button type="button" class="topbar-icon" title="Print this screen (File > Print)" aria-label="Print" (click)="print()">
             <app-icon name="printer" [size]="17" />
           </button>
@@ -102,6 +121,9 @@ const NAV_PINNED = 'nav-pinned'
 })
 export class AppLayoutComponent {
   protected readonly session = inject(SessionService)
+  protected readonly theme = inject(ThemeService)
+  protected readonly themesOpen = signal(false)
+  private readonly themeButton = viewChild<ElementRef<HTMLButtonElement>>('themeButton')
   private readonly router = inject(Router)
   protected readonly modules = MENU
   /** Pinned: the sidebar stays beside the content. Unpinned: it slides out over the content while the pointer is on the rail / sidebar. */
@@ -157,6 +179,44 @@ export class AppLayoutComponent {
   protected readonly pinTitle = computed(() =>
     (this.pinned() ? 'Unpin the sidebar' : 'Pin the sidebar') + (this.current() ? '' : ' (applies when a module is open)'),
   )
+
+  /** Theme menu: Arrow Down on the button opens it on the current theme. */
+  protected openThemes(e: Event): void {
+    e.preventDefault()
+    this.themesOpen.set(true)
+    setTimeout(() => this.themeItems()[Math.max(0, this.theme.themes.findIndex((t) => t.id === this.theme.theme()))]?.focus())
+  }
+
+  /** Arrow keys move between the themes, Home / End to the first / last. */
+  protected themeKey(e: KeyboardEvent): void {
+    const items = this.themeItems()
+    const at = items.indexOf(document.activeElement as HTMLButtonElement)
+    const next = { ArrowDown: at + 1, ArrowUp: at - 1, Home: 0, End: items.length - 1 }[e.key]
+    if (next === undefined) return
+    e.preventDefault()
+    items[(next + items.length) % items.length]?.focus()
+  }
+
+  protected pickTheme(id: string): void {
+    this.theme.set(id)
+    this.closeThemes(true)
+  }
+
+  protected closeThemes(refocus = false): void {
+    if (!this.themesOpen()) return
+    this.themesOpen.set(false)
+    if (refocus) this.themeButton()?.nativeElement.focus()
+  }
+
+  /** Closes the menu when the focus leaves it (a click elsewhere, Tab). */
+  protected themeBlur(e: FocusEvent): void {
+    const to = e.relatedTarget as Node | null
+    if (!to || !(e.currentTarget as HTMLElement).contains(to)) this.closeThemes()
+  }
+
+  private themeItems(): HTMLButtonElement[] {
+    return Array.from(document.querySelectorAll<HTMLButtonElement>('.theme-menu .theme-option'))
+  }
 
   /** Pin / unpin the sidebar (kept in localStorage). */
   protected togglePin(): void {
